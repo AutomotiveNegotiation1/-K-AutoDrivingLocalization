@@ -1,0 +1,102 @@
+clear all;
+close all;
+
+fname = 'rosbag\test_b1_line_20220803_v1.mat';
+% fname = 'rosbag\test_o_line_20220729_v1.mat';
+
+load(fname,'Sens');
+N = 500;
+IMUacc = Sens.imu.acc;
+IMUgyro = Sens.imu.gyro;
+IMUtime = Sens.imu.time;
+PhiP = 0; ThetaP = 0; PsiP = 0;
+b_acc = [0 0 0]';
+b_gyro = [0 0 0]';
+acc_wo_bias = zeros(3,N);
+
+dt = 0.01;
+
+for k = 1 : Sens.length
+    if k>1
+        dt = IMUtime(k)-IMUtime(k-1);
+    else
+        dt = 0.01;
+    end
+    if (IMUtime(k)-StartTime) > 0.1
+        acc_org_av(:,Nindex) = acc_org_t;
+        acc_org_t = IMUacc(k,:)';
+        gyro_org_av(:,Nindex) = gyro_org_t;
+        gyro_org_t = IMUgyro(k,:)';
+        StartTime = IMUtime(k);
+        ll = 1;
+        Nindex = Nindex + 1;
+    else
+        acc_org_t = acc_org_t*(ll-1)/ll + IMUacc(k,:)'/ll;
+        gyro_org_t = gyro_org_t*(ll-1)/ll + IMUgyro(k,:)'/ll;
+        ll = ll + 1;
+    end    
+    if k <= N
+        b_acc = b_acc*(k-1)/k + IMUacc(k,:)'/k;
+        b_gyro = b_gyro*(k-1)/k + IMUgyro(k,:)'/k;
+        if k == N 
+            Gravity = norm(b_acc);
+            [PhiP,ThetaP]=EulerAcc(b_acc(1),b_acc(2), b_acc(3));
+            PsiP = 0;
+            acc_wo_bias(:,k) = [0 0 0];
+            acc_w_bias(:,k) = IMUacc(k,:)';
+        end
+        gyro_phi(k) = 0;
+        gyro_theta(k) = 0;
+        gyro_psi(k) = 0;
+        acc_pw(k)= 0;
+        acc_wo_pw(k)= 0;
+    else
+        p = (IMUgyro(k,1)-b_gyro(1));    q = (IMUgyro(k,2)-b_gyro(2));    r = (IMUgyro(k,3)-b_gyro(3));
+        UpdateEuler = GetGyroUpdateMatrix(PhiP, ThetaP)*dt*[p;q;r];
+        dPhi = UpdateEuler(1); dTheta = UpdateEuler(2);
+        acc_w_bias(:,k)= IMUacc(k,:)';
+        acc_pw(k)= norm(acc_w_bias(:,k)');
+        
+        SP = sin(PhiP); CP=cos(PhiP) ; ST = sin(ThetaP) ; CT = cos(ThetaP);SPE = sin(PhiP+dPhi); CPE=cos(PhiP+dPhi) ; STE = sin(ThetaP+dTheta) ; CTE = cos(ThetaP+dTheta);
+        acc_wo_bias(:,k) = acc_w_bias(:,k) - acc_w_bias(:,k-1) + acc_wo_bias(:,k-1) + Gravity*[ST-STE;-CT*SP+CTE*SPE;-CT*CP+CTE*CPE];
+        PhiP = PhiP + dPhi; ThetaP = ThetaP + dTheta;PsiP = PsiP + UpdateEuler(3);
+        gyro_phi(k) = PhiP;
+        gyro_theta(k) = ThetaP;
+        gyro_psi(k) = PsiP;
+        acc_wo_pw(k)= norm(acc_wo_bias(:,k)');
+
+    end
+end
+
+picnum = 0;
+picnum=picnum+1;figure(picnum);hold off;plot(acc_wo_bias(1,:));hold on;plot(acc_wo_bias(2,:),'r');plot(acc_wo_bias(3,:),'g');title('acc wo bias')
+picnum=picnum+1;figure(picnum);hold off;plot(acc_w_bias(1,:));hold on;plot(acc_w_bias(2,:),'r');plot(acc_w_bias(3,:),'g');title('acc w bias')
+picnum=picnum+1;figure(picnum);hold off;plot(gyro_phi);hold on;plot(gyro_theta,'m');plot(gyro_psi,'r');title('gyro euler');legend('phi','theta','psi')
+picnum=picnum+1;figure(picnum);hold off;plot(acc_pw-Gravity);title('acc power');grid on
+picnum=picnum+1;figure(picnum);hold off;plot(acc_wo_pw);title('acc wo power');grid on
+
+picnum=picnum+1;figure(picnum);hold off;plot(IMUgyro(:,1)-b_gyro(1));hold on;plot(IMUgyro(:,2)-b_gyro(2),'r');plot(IMUgyro(:,3)-b_gyro(3),'g');title('gyro wo bias')
+
+% figure(picnum);hold off;plot(kf_phi_m_t);hold on;plot(kf_phi_t,'m');plot(gyro_phi_t,'r');title('phi compare')
+% picnum=picnum+1;figure(picnum);hold off;plot(gyro_phi_t);hold on;plot(gyro_theta_t,'m');plot(gyro_psi_t,'r');title('gyro euler');legend('phi','theta','psi')
+% picnum=picnum+1;figure(picnum);hold off;plot(kf_phi_t);hold on;plot(kf_theta_t,'m');plot(kf_psi_t,'r');title('kf euler');legend('phi','theta','psi')
+% picnum=picnum+1;figure(picnum);hold off;plot(acc_phi_t);hold on;plot(acc_theta_t,'m');title('acc euler');legend('phi','theta')
+% picnum=picnum+1;figure(picnum);hold off;plot(acc_org(1,:));hold on;plot(acc_org(2,:),'r');plot(acc_org(3,:),'g');title('acc b')
+% picnum=picnum+1;figure(picnum);hold off;plot(acc_wo_bias(1,:));hold on;plot(acc_wo_bias(2,:),'r');plot(acc_wo_bias(3,:),'g');title('acc c')
+% picnum=picnum+1;figure(picnum);hold off;plot(acc_corrected(1,:));hold on;plot(acc_corrected(2,:),'r');plot(acc_corrected(3,:),'g');title('acc d')
+% picnum=picnum+1;figure(picnum);hold off;plot(vel(1,:));hold on;plot(vel(2,:),'m');plot(vel(3,:),'r');title('velocity')
+% picnum=picnum+1;figure(picnum);hold off;plot(pos(1,:));hold on;plot(pos(2,:),'m');plot(pos(3,:),'r');title('position')
+
+
+
+
+% picnum=picnum+1;figure(picnum);hold off;plot(acc_n(1,:));hold on;plot(acc_n(2,:),'r');plot(acc_n(3,:),'g');title('acc n')
+% picnum=picnum+1;figure(picnum);hold off;plot(acc_b(1,:));hold on;plot(acc_b(2,:),'r');plot(acc_b(3,:),'g');title('acc b bias compansated')
+% picnum=picnum+1;figure(picnum);hold off;plot(IMUgyro(:,1)-b_gyro(1));hold on;plot(IMUgyro(:,2)-b_gyro(2),'r');title('gyro original - bias')
+
+
+
+
+
+
+
