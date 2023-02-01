@@ -1,0 +1,39 @@
+function [data, info] = uwb_anchor
+%uwb_anchor gives an empty data for decawave_uwb/uwb_anchor
+% Copyright 2019-2020 The MathWorks, Inc.
+%#codegen
+data = struct();
+data.MessageType = 'decawave_uwb/uwb_anchor';
+[data.Header, info.Header] = ros.internal.ros.messages.std_msgs.header;
+info.Header.MLdataType = 'struct';
+[data.AnchorID, info.AnchorID] = ros.internal.ros.messages.ros.default_type('uint32',NaN);
+[data.ActiveNum, info.ActiveNum] = ros.internal.ros.messages.ros.default_type('uint8',1);
+[data.Range, info.Range] = ros.internal.ros.messages.ros.default_type('double',NaN);
+[data.Pos, info.Pos] = ros.internal.ros.messages.geometry_msgs.pose;
+info.Pos.MLdataType = 'struct';
+info.MessageType = 'decawave_uwb/uwb_anchor';
+info.constant = 0;
+info.default = 0;
+info.maxstrlen = NaN;
+info.MaxLen = 1;
+info.MinLen = 1;
+info.MatPath = cell(1,19);
+info.MatPath{1} = 'header';
+info.MatPath{2} = 'header.seq';
+info.MatPath{3} = 'header.stamp';
+info.MatPath{4} = 'header.stamp.sec';
+info.MatPath{5} = 'header.stamp.nsec';
+info.MatPath{6} = 'header.frame_id';
+info.MatPath{7} = 'AnchorID';
+info.MatPath{8} = 'ActiveNum';
+info.MatPath{9} = 'Range';
+info.MatPath{10} = 'Pos';
+info.MatPath{11} = 'Pos.position';
+info.MatPath{12} = 'Pos.position.x';
+info.MatPath{13} = 'Pos.position.y';
+info.MatPath{14} = 'Pos.position.z';
+info.MatPath{15} = 'Pos.orientation';
+info.MatPath{16} = 'Pos.orientation.x';
+info.MatPath{17} = 'Pos.orientation.y';
+info.MatPath{18} = 'Pos.orientation.z';
+info.MatPath{19} = 'Pos.orientation.w';
