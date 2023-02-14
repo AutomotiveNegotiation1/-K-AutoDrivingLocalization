@@ -29,6 +29,7 @@ class UWBProtocol(object):
     uwbMsg.AnchorID = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     uwbMsg.AnchorID = [991, 4630, 4302, 1221, 439, 894, 4599, 98, 191]
 
+
     def listToString(self, str_list):
         result = ""
         for s in str_list:
@@ -52,9 +53,10 @@ class UWBProtocol(object):
         time.sleep(1)
 
 
-    def pub_uwb_msg_set(self, uwbMsg, anchorList, dat):
+    def pub_uwb_msg_set(self, name, uwbMsg, anchorList, dat):
         uwbMsg.header.stamp = rospy.Time.now()
         uwbMsg.header.frame_id = 'MDEK1001'
+        uwbMsg.TagID = name
         
         numMeas = int(dat[1])
         uwbMsg.ActiveNum = numMeas
@@ -144,7 +146,7 @@ class Processing(UWBProtocol):
                     #if cnt%10 == 0:
                     # print(strr)
 
-                    self.pub_uwb_msg_set(uwbMsg, anchor_list, rawData)
+                    self.pub_uwb_msg_set(name, uwbMsg, anchor_list, rawData)
                     pub_uwb.publish(uwbMsg)
                     
 
