@@ -20,6 +20,13 @@ function start_imu()
 {
     echo START IMU
     rosrun ublox_f9r ublox_f9r_node.py &
+    # ports=$(python3 test5.py --imu)
+    # # echo $DBNames
+    # for port in $ports;
+    # do
+    #     echo $port
+    #     rosrun ublox_f9r ublox_f9r_node.py --port $port &
+    # done
 }
 
 function stop_imu()
@@ -38,7 +45,13 @@ function check_imu()
 function start_uwb()
 {
     echo START UWB
-    rosrun decawave_uwb mdek1001_node.py &
+    ports=$(python3 test5.py --uwb)
+    # echo $DBNames
+    for port in $ports;
+    do
+        echo $port
+        rosrun decawave_uwb mdek1001_node.py --port $port &
+    done
 }
 
 function stop_all()
