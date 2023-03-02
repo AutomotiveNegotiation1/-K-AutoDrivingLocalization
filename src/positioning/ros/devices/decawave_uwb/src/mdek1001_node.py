@@ -1,138 +1,229 @@
 #!/usr/bin/env python3
+
+import rospy, time, serial, os, sys, random
 import argparse
-import rospy
+
+from geometry_msgs.msg  import Pose
+from geometry_msgs.msg  import PoseStamped
+from std_msgs.msg       import Float64
 from decawave_uwb.msg import uwb_anchor
-import serial, time
-import numpy as np
 
-cnt = 1
-hz = 0
+from dwm1001_apiCommands import DWM1001_API_COMMANDS
 
-#anchor_list = ['991B', '4630', '4302', '1221', '439D', '89A4',  '4599', '9B8F']
-anchor_list = ['991B', '4630', '4302', '1221', '439D', '89A4',  '4599', '9B8F', '1A91']
-# anchor_list = ['991B', '439D', '89A4',  '9B8F']
+class dwm1001_localizer:
+       
+    def __init__(self, serial_instance) :
+        """
+        Initialize the node, open serial port
+        """
+
+        # Init node
+        rospy.init_node('DWM1001_Active_{}'.format(random.randint(0,100000)), anonymous=False)
+
+        # Get port and tag name
+        self.dwm_port = serial_instance.port
+        self.tag_name = self.dwm_port.split("/")[2]
+        self.use_network = False
+        self.network = ""
+        self.verbose = False
+        
+        # Set a ROS rate
+        self.rate = rospy.Rate(1)
+        
+        # Empty dictionary to store topics being published
+        self.topics = {}
+        
+        # Serial port settings
+        self.serialPortDWM1001 = serial.Serial(
+            port = self.dwm_port,
+            baudrate = 115200,
+            parity = serial.PARITY_ODD,
+            stopbits = serial.STOPBITS_TWO,
+            bytesize = serial.SEVENBITS
+        )
+    
+
+    def main(self) :
+        """
+        Initialize port and dwm1001 api
+        :param:
+        :returns: none
+        """
+
+        # close the serial port in case the previous run didn't closed it properly
+        self.serialPortDWM1001.close()
+        # sleep for one sec
+        time.sleep(1)
+        # open serial port
+        self.serialPortDWM1001.open()
+
+        # check if the serial port is opened
+        if(self.serialPortDWM1001.isOpen()):
+            rospy.loginfo("Port opened: "+ str(self.serialPortDWM1001.name) )
+            # start sending commands to the board so we can initialize the board
+            self.initializeDWM1001API()
+            # give some time to DWM1001 to wake up
+            time.sleep(2)
+            # send command lec, so we can get positions is CSV format
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.LEC)
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+            rospy.loginfo("Reading DWM1001 coordinates")
+        else:
+            rospy.loginfo("Can't open port: "+ str(self.serialPortDWM1001.name))
+
+        try:
+
+            while not rospy.is_shutdown():
+                # just read everything from serial port
+                serialReadLine = self.serialPortDWM1001.read_until().decode('utf-8')
+
+                try:
+                    self.publishTagPositions(serialReadLine)
+
+                except IndexError:
+                    rospy.loginfo("Found index error in the network array! DO SOMETHING!")
 
 
-def listToString(str_list):
-    result = ""
-    for s in str_list:
-        result += s
-    return result.strip()
+
+        except KeyboardInterrupt:
+            rospy.loginfo("Quitting DWM1001 Shell Mode and closing port, allow 1 second for UWB recovery")
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+
+        finally:
+            rospy.loginfo("Quitting, and sending reset command to dev board")
+            # self.serialPortDWM1001.reset_input_buffer()
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+            self.rate.sleep()
+            serialReadLine = self.serialPortDWM1001.read_until()
+            if "reset" in serialReadLine:
+                rospy.loginfo("succesfully closed ")
+                self.serialPortDWM1001.close()
 
 
-def listIntToString(str_list):
-    result = ""
-    for s in str_list:
-        result += str(s) + " "
-    return result.strip()
+    def publishTagPositions(self, serialData):
+        """
+        Publish anchors and tag in topics using Tag and Anchor Object
+        :param networkDataArray:  Array from serial port containing all informations, tag xyz and anchor xyz
+        :returns: none
+        """
 
-def DWM1001_init(ser):
-    ser.write(b'\x0D\x0D')
-    while(1):
-        raw = ser.readline()
-        rawData = raw.split(b'>')
-        if rawData[0] == b'dwm':
-            break
-    raw = ser.readline()
-    time.sleep(1)
+        arrayData = [x.strip() for x in serialData.strip().split(',')]
+
+        # If getting a tag position
+        if "DIST" in arrayData[0] :
+
+            # The number of elements should be 2 + 6*NUMBER_OF_ANCHORS + 5 (TAG POS)
+            number_of_anchors = int((len(arrayData) - 7)/6)
+
+            for i in range(number_of_anchors) :
+
+                node_id = arrayData[2+6*i]
+                first_time = False
+                if node_id not in self.topics :
+                    first_time = True
+                    self.topics[node_id] = rospy.Publisher(
+                        '/dwm1001' + 
+                        '/anchor/' + node_id + 
+                        "/position", 
+                        PoseStamped, 
+                        queue_size=100
+                    )
+                    self.topics[node_id+"_dist"] = rospy.Publisher(
+                        '/dwm1001' + 
+                        '/tag/' + self.tag_name +
+                        '/to/anchor/' + node_id +
+                        "/distance", 
+                        Float64, 
+                        queue_size=100
+                    )
+                try :
+                    p = PoseStamped()
+                    p.header.stamp = rospy.Time.now()
+                    p.pose.position.x = float(arrayData[4+6*i])
+                    p.pose.position.y = float(arrayData[5+6*i])
+                    p.pose.position.z = float(arrayData[6+6*i])
+                    p.pose.orientation.x = 0.0
+                    p.pose.orientation.y = 0.0
+                    p.pose.orientation.z = 0.0
+                    p.pose.orientation.w = 1.0
+                    self.topics[node_id].publish(p)
+                except :
+                    pass
+                try :
+                    dist = float(arrayData[7+6*i])
+                    self.topics[node_id+"_dist"].publish(dist)
+                except :
+                    pass
+
+                if self.verbose or first_time :
+                    rospy.loginfo("Anchor " + node_id + ": "
+                                  + " x: "
+                                  + str(p.pose.position.x)
+                                  + " y: "
+                                  + str(p.pose.position.y)
+                                  + " z: "
+                                  + str(p.pose.position.z))
+
+            # Now publish the position of the tag itself
+            if "POS" in arrayData[-5] :
+
+                # Topic is now a tag with same name as node_id
+                first_time = False
+                if self.tag_name not in self.topics :
+                    first_time = True
+                    self.topics[self.tag_name] = rospy.Publisher('/dwm1001/tag/'+self.tag_name+"/position", PoseStamped, queue_size=100)
+                p = PoseStamped()
+                p.header.stamp = rospy.Time.now()  
+                p.pose.position.x = float(arrayData[-4])
+                p.pose.position.y = float(arrayData[-3])
+                p.pose.position.z = float(arrayData[-2])
+                p.pose.orientation.x = 0.0
+                p.pose.orientation.y = 0.0
+                p.pose.orientation.z = 0.0
+                p.pose.orientation.w = 1.0
+                self.topics[self.tag_name].publish(p)
+
+                if self.verbose or first_time :
+                    rospy.loginfo("Tag " + self.tag_name + ": "
+                                  + " x: "
+                                  + str(p.pose.position.x)
+                                  + " y: "
+                                  + str(p.pose.position.y)
+                                  + " z: "
+                                  + str(p.pose.position.z))
+
+    def initializeDWM1001API(self):
+        """
+        Initialize dwm1001 api, by sending sending bytes
+        :param:
+        :returns: none
+        """
+        # reset incase previuos run didn't close properly
+        self.serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
+        # send ENTER two times in order to access api
+        self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+        # sleep for half a second
+        time.sleep(0.5)
+        self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+        # sleep for half second
+        time.sleep(0.5)
+        # send a third one - just in case
+        self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
 
 
-def pub_uwb_msg_set(name, msg, anchorList, dat):
-    msg.header.stamp = rospy.Time.now()
-    msg.header.frame_id = 'MDEK1001'
-
-    numMeas = int(dat[1])
-    msg.ActiveNum = numMeas
-    uwbMsg.TagID = name
-
-
-    msg.Range = [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan]
-    # msg.Range = [np.nan, np.nan, np.nan, np.nan]
-    for i in range(0, numMeas):
-        anchor = dat[6*i+3].decode('utf-8')
-        dist = float(dat[6*i+7])
-        idx = anchorList.index(anchor)
-        msg.Range[idx] = dist
-
-    if dat[-5].decode('utf-8') == 'POS':
-        msg.Pos.position.x = float(dat[-4])
-        msg.Pos.position.y = float(dat[-3])
-        msg.Pos.position.z = float(dat[-2])
-
-    print(msg)
-
-    return msg
 
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=str, help="Target device serial port")
     args = parser.parse_args()
-    
-    portName = str(args.port).split("/").pop()
-
-    rospy.init_node('get_uwb_data', anonymous=True)
-    pub_uwb = rospy.Publisher('/uwb/{}/ranging'.format(portName), uwb_anchor, queue_size=10)
-    uwbMsg = uwb_anchor()
-
-    uwbMsg.AnchorID = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    uwbMsg.AnchorID = [991, 4630, 4302, 1221, 439, 894, 4599, 98, 191]
-
-
-    ser = serial.Serial(args.port, 115200, timeout = 1)
-    if ser.is_open == False:
-        print("serial port >> error")
-    else:
-        print("Successfully opened {}".format(args.port))
-
-    time.sleep(1)
-
-    DWM1001_init(ser)
-
-    if len(ser.readline()) < 30:
-        ser.write(b'lec\n')
-
-
-    while not rospy.is_shutdown():
-        raw = ser.readline()
-        #print(raw)
-        rawData = raw.split(b',')
-        #print(rawData)
-
-
-        if len(rawData) >= 8:
-            numMeas = int(rawData[1])
-            start_time = time.perf_counter()
-            if cnt > 1:
-                hz = 1/(start_time - prev_time)
-                hz = round(hz, 2)
-
-            output = [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan]
-            flags = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-            for i in range(0, numMeas):
-                anchor = rawData[6*i+3].decode('utf-8')
-                dist = float(rawData[6*i+7])
-                idx = anchor_list.index(anchor)
-                output[idx] = dist
-                flags[idx] = 1
-
-            strr = str(cnt)+' '+str(start_time)+' '+str(hz)+' '+str(numMeas)+' '+listIntToString(flags)+' '+listIntToString(output)+'\n'
-
-            #if cnt%10 == 0:
-            # print(strr)
-
-            pub_uwb_msg_set(args.port, uwbMsg, anchor_list, rawData)
-            pub_uwb.publish(uwbMsg)
-
-            cnt += 1
-            prev_time = start_time
-
-
-
-    # time.sleep(1)
-    ser.close()
-
-
-
+    print("www")
+    try:
+        dwm1001 = dwm1001_localizer(args)
+        dwm1001.main()
+        #rospy.spin()
+    except rospy.ROSInterruptException:
+        pass
