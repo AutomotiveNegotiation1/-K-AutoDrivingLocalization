@@ -1,290 +1,243 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.8
 
+from pyrsistent import v
 import rospy
-from sensor_msgs.msg import Imu
-from ublox_f9r.msg import gnssPVT
-
-import serial, time, struct
+import sys
+import time
 import numpy as np
+import serial
+import argparse
+import math
+from sensor_msgs.msg import Imu
+from pyubx2 import UBXReader, UBXMessage, GET, SET
+import struct
+from ublox_f9r.msg import imu_message
 
-class imu_data:
-    gyro = [0, 0, 0]
-    accel = [0, 0, 0]
-    timeTag = 0
-    gTemp = 0
-    idx = 0
+class ZED_F9R_IMU_localizer:
 
-class gnss_data:
-    iTow = 0
-    date = [0, 0, 0, 0, 0, 0]
-    fixType = 0
-    pos_llh = [0, 0, 0]
-    hMSL = 0
-    gSpeed = 0
-    heading = 0
-    pDop = 0
-    headVeh = 0
-    vel_ned = [0, 0, 0]
-    numSV = 0
+    def __init__(self, serial_port):
+        
+        rospy.init_node('zed_f9r_imu_publisher', anonymous=True)
+        
+        self.serial_port = serial_port
+        self.prev_time = None
+        self.post_time = None
+        self.prev_roll = 0
+        self.prev_pitch = 0
+        self.prev_yaw = 0
+        
+        self.topics = None
+        
+        # Serial port settings
+        self.serial_instance = serial.Serial(
+            port = self.serial_port,
+            baudrate = 115200,
+            parity = serial.PARITY_ODD,
+            stopbits = serial.STOPBITS_TWO,
+            bytesize = serial.SEVENBITS
+        )
+        
+        self.serial_instance.reset_input_buffer()
+        
+        
+        
+    # def enable_esf_raw(self, ser):
+    #     cfg_msg = b'\xB5\x62\x06\x01\x08\x00\x10\x03\x01\x00\x00\x00\x00\x00\x1C\x8A'
+    #     ser.write(cfg_msg)
+    #     # msg = UBXMessage('CFG', 'CFG-MSG', SET,
+    #     #              msgClass=0x10,
+    #     #              msgID=0x03,
+    #     #              rate=1)
+    #     # ser.write(msg.serialize())
+    
+    # def set_message_rate(self, serial_port, msg_class, msg_id, rate):
+    #     # UBX-CFG-MSG 메시지 생성
+    #     cfg_msg = UBXMessage('CFG', 'CFG-MSG', SET, msgClass=msg_class, msgID=msg_id, rate=rate)
+        
+    #     # 시리얼 포트를 통해 메시지 전송
+    #     serial_port.write(cfg_msg.serialize())
 
+    #     # 응답 메시지를 기다린 다음 처리
+    #     # 이 부분은 ACK-ACK 메시지를 받을 때까지 기다리는 로직이 필요할 수 있습니다.
+    def scale_int2float(self, x, scaler):
+        y = (x & 0x7fffff) - (x & 0x800000)
+        return float(y) * scaler
+    
+    def low_pass_filter(self, data, alpha=0.8):
+        # print("Data:", data)  # Add this line to debug
+        filtered_data = [0] * len(data)
+        filtered_data[0] = data[0]
+        
+        for i in range(1, len(data)):
+            filtered_data[i] = alpha * data[i-1] + (1 - alpha) * data[i]
+        
+        return filtered_data
+    
+    def quaternion_from_euler(self, roll, pitch, yaw):
+        cy = math.cos(yaw * 0.5)
+        sy = math.sin(yaw * 0.5)
+        cp = math.cos(pitch * 0.5)
+        sp = math.sin(pitch * 0.5)
+        cr = math.cos(roll * 0.5)
+        sr = math.sin(roll * 0.5)
 
+        qw = cy * cp * cr + sy * sp * sr
+        qx = cy * cp * sr - sy * sp * cr
+        qy = sy * cp * sr + cy * sp * cr
+        qz = sy * cp * cr - cy * sp * sr
 
-tmpData = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-esf_meas = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        return qx, qy, qz, qw
+    
+    def get_roll_pitch_yaw(self, acc_data, gyro_data, dt, alpha=0.98):
+        # 가속도계 데이터에서 roll, pitch 계산
+        roll_acc = np.arctan2(acc_data[1], acc_data[2])
+        pitch_acc = np.arctan2(-acc_data[0], np.sqrt(acc_data[1]**2 + acc_data[2]**2))
 
-stag_prev = 0;
+        # 자이로스코프 데이터를 사용하여 오일러 각 누적
+        roll_rate = gyro_data[0] * dt
+        pitch_rate = gyro_data[1] * dt
+        yaw_rate = gyro_data[2] * dt
 
-def scale_int2float(x, scaler):
-    y = (x & 0x7fffff) - (x & 0x800000)
-    return float(y) * scaler
+        # 가속도계와 자이로스코프 데이터를 융합하기 위해 컴플리먼트 필터 사용
+        roll = alpha * (self.prev_roll + roll_rate) + (1 - alpha) * roll_acc
+        pitch = alpha * (self.prev_pitch + pitch_rate) + (1 - alpha) * pitch_acc
+        yaw = self.prev_yaw + yaw_rate
 
-def wire2tick(x):
-    y = (x & 0x7fffff) - (x & 0x800000)
-    return y
+        # 이전 오일러 각 업데이트
+        self.prev_roll = roll
+        self.prev_pitch = pitch
+        self.prev_yaw = yaw
 
-def ubx_esf_raw(raw):
+        return roll, pitch, yaw
 
-    # timeTag = struct.unpack('<I', raw[0:4])[0]
-    for idx in range(0, 7):
-        dat = struct.unpack('I', raw[4+idx*8:8+idx*8])[0]
-        sensorType = dat >> 24 & 0x1f
-        sTtag = struct.unpack('I', raw[8:12])[0]
-        #print(idx, sensorType, sTtag)
-        #print("sensor time tag: ", sTtag, "\n")
-        stag_prev = sTtag;
-
-        #print("diff time tag: ", sTtag-stag_prev, "\n")
-
-        if sensorType in [5, 12, 13, 14, 16, 17, 18]:
-            if (sensorType == 5):       # z-axis gyroscope angular rate
-                val = scale_int2float(dat & 0xffffff, 2 ** -12)
-                tmpData[3] = val
-            # elif (sensorType == 10):    # single tick (speed tick)
-            #     val = wire2tick(dat & 0xffffff)
-            # elif (sensorType == 11):    # speed
-            #     val = scale_int2float(dat & 0xffffff, 1e-3)
-            elif (sensorType == 12):    # gyroscope temperature
-                val = scale_int2float(dat & 0xffffff, 1e-2)
-                tmpData[4] = val
-            elif (sensorType == 13):    # y-axis gyroscope angular rate
-                val = scale_int2float(dat & 0xffffff, 2 ** -12)
-                tmpData[2] = val
-            elif (sensorType == 14):    # x-axis gyroscope angular rate
-                val = scale_int2float(dat & 0xffffff, 2 ** -12)
-                tmpData[1] = val
-                tmpData[0] = sTtag
-            elif (sensorType == 16):    # x-axis accelerometer-specific force
-                val = scale_int2float(dat & 0xffffff, 2 ** -10)
-                tmpData[6] = val
-                tmpData[5] = tmpData[5]+1
-            elif (sensorType == 17):    # y-axis accelerometer-specific force
-                val = scale_int2float(dat & 0xffffff, 2 ** -10)
-                tmpData[7] = val
-            elif (sensorType == 18):    # z-axis accelerometer-specific force
-                val = scale_int2float(dat & 0xffffff, 2 ** -10)
-                tmpData[8] = val
+    def main(self):
+        if(self.serial_instance.isOpen()):
+            rospy.loginfo("Port opened: "+ str(self.serial_instance.name) )
         else:
-            tmpData[1:5] = [0, 0, 0, 0]
-            tmpData[6:9] = [0, 0, 0]
+            rospy.loginfo("Can't open port: "+ str(self.serial_instance.name))
+        
+        try:
+            # self.enable_esf_raw(self.serial_instance)
+            # self.set_message_rate(self.serial_instance, 0x01, 0x07, 0)  # NAV-PVT 비활성화
+            # self.set_message_rate(self.serial_instance, 0x02, 0x10, 1)  # RXM-RAW 활성화
+            while not rospy.is_shutdown():
+                # just read everything from serial port
+                # ubx_reader = UBXReader(self.serial_instance)
+                ubx_reader = UBXReader(self.serial_instance)
 
-    return tmpData
+                try:
+                    self.publishIMUPositions(ubx_reader)
 
-
-
-
-def ubx_nav_pvt(raw):
-    global prev_time
-    iTow = struct.unpack('<I', raw[0:4])[0]
-    year = struct.unpack('<H', raw[4:6])[0]         # [y]
-    month = np.uint8(raw[6])                        # [month]
-    day = np.uint8(raw[7])                          # [d]
-    hour = np.uint8(raw[8])                         # [h]
-    minuts = np.uint8(raw[9])                       # [min]
-    sec = np.uint8(raw[10])                         # [s]
-    valid = hex(raw[11])
-    tAcc = struct.unpack('<I', raw[12:16])[0]       # [ns]
-    nano = struct.unpack('<i', raw[16:20])[0]       # [ns]
-    fixType = np.uint8(raw[20])                     # 0-no fix, 1-DR, 2-2D fix, 3-3D fix, 4-GNSS+DR, 5-time only fix
-    flags = hex(raw[21])
-    flags2 = hex(raw[22])
-    numSV = np.uint8(raw[23])
-    lon = struct.unpack('<i', raw[24:28])[0]
-    lat = struct.unpack('<i', raw[28:32])[0]
-    height = struct.unpack('<i', raw[32:36])[0]
-    hMSL = struct.unpack('<i', raw[36:40])[0]
-    hAcc = struct.unpack('<I', raw[40:44])[0] /1000         # [mm] --> [m]
-    vAcc = struct.unpack('<I', raw[44:48])[0] /1000         # [mm] --> [m]
-    velN = struct.unpack('<i', raw[48:52])[0]
-    velE = struct.unpack('<i', raw[52:56])[0]
-    velD = struct.unpack('<i', raw[56:60])[0]
-    gSpeed = struct.unpack('<i', raw[60:64])[0]
-    headMot = struct.unpack('<i', raw[64:68])[0]
-    sAcc = struct.unpack('<I', raw[68:72])[0] /1000         # [mm/s] --> [m/s]
-    headAcc = struct.unpack('<I', raw[72:76])[0] * 1e-5     # [deg]
-    pDOP =struct.unpack('<H', raw[76:78])[0]
-    flags3 = hex(raw[78])
-    headVeh = struct.unpack('<i', raw[84:88])[0]
-    magDec = struct.unpack('<h', raw[88:90])[0] * 1e-2      # [deg]
-    magAcc = struct.unpack('<H', raw[90:92])[0] * 1e-2      # [deg]
-
-    str_pvt = '1 ' + str(time.perf_counter()) +' '+ str(iTow) +' '+ str(hour)+' '+ str(min)+' '+ str(sec) +' '+ str(nano) +' '+ str(fixType) +' '+ str(numSV) +' '+ str(lat) +' '+ str(lon) +' '+ str(height) +' '+ str(velN) +' '+ str(velE) +' '+ str(velD) +' '+ str(gSpeed) + '\n'
-    # print('1', time.perf_counter(), iTow, year, month, day, hour, min, sec, valid, tAcc, nano, fixType, flags, flags2, numSV, lon, lat, height, hMSL, hAcc, vAcc, velN, velE, velD, gSpeed, headMot, sAcc, headAcc, pDOP, flags3, headVeh, magDec, magAcc)
-
-    gnssData.iTow = iTow
-    gnssData.date = [year, month, day, hour, minuts, sec]
-    gnssData.fixtype = fixType
-    gnssData.vel_ned = [velN, velE, velD]
-    gnssData.hMSL = hMSL
-    gnssData.gSpeed = gSpeed
-    gnssData.heading = headMot
-    gnssData.pDop = pDOP
-    gnssData.headVeh = headVeh
-    gnssData.numSV = numSV
-    gnssData.pos_llh = [lon, lat, height]
-    return True
+                except IndexError:
+                    rospy.loginfo("Found index error in the network array! DO SOMETHING!")
 
 
 
-def ublox_msg_decoding(cid, raw):
+        except KeyboardInterrupt:
+            rospy.loginfo("Quitting DWM1001 Shell Mode and closing port, allow 1 second for UWB recovery")
 
-    if (cid == b'\x10\x03'):
-        esf_meas = ubx_esf_raw(raw)
-        # print('0', time.perf_counter(), esf_meas[0], esf_meas[1], esf_meas[2], esf_meas[3], esf_meas[4], esf_meas[5], esf_meas[6], esf_meas[7], esf_meas[8])
-        str_raw = '0 ' + str(time.perf_counter()) +' '+ str(esf_meas[0]) +' '+ str(esf_meas[1]) +' '+ str(esf_meas[2]) +' '+ str(esf_meas[3]) +' '+ str(esf_meas[4]) +' '+ str(esf_meas[5]) +' '+ str(esf_meas[6]) +' '+ str(esf_meas[7]) +' '+ str(esf_meas[8]) +'\n'
+        finally:
+            rospy.loginfo("Quitting, and sending reset command to dev board")
+            # self.serial_instance.reset_input_buffer()
+            # self.rate.sleep()
+            serialReadLine = self.serial_instance.read_until()
+            if "reset" in serialReadLine:
+                rospy.loginfo("succesfully closed ")
+                self.serial_instance.close()
+                
+    
+    def publishIMUPositions(self, ubx_reader):        
+        if self.prev_time is None:
+            self.prev_time = time.time()
+            return  # Skip the first iteration
+        
+        (raw_data, parsed_data) = ubx_reader.read()
+        if parsed_data is not None:
+            msg_id = parsed_data.identity
+            if msg_id == "ESF-RAW":
+                # print(parsed_data)
+                # 가속도 및 자이로스코프 데이터 추출
+                acc_data = [0, 0, 0]
+                gyro_data = [0, 0, 0]
+                # print(parsed_data)
+                for idx in range(7):
+                    if self.topics is None:
+                        first_time = True
+                        
+                        self.topics = rospy.Publisher(
+                            '/ublox' + 
+                            '/imu/' +  
+                            "/twist", 
+                            imu_message, 
+                            queue_size=100
+                        )
+                    # data_field = raw_data
+                    # print(data_field)
+                    # data_field = struct.unpack('I', raw_data[4+idx*8:8+idx*8])[0]
+                    data_field = struct.unpack('I', raw_data[10+idx*8:14+idx*8])[0]
+                    # print(data_field)                     
+                    sensor_type = data_field >> 24 & 0x1F
 
-        imuData.timeTag = esf_meas[0]
-        imuData.gyro = [esf_meas[1], esf_meas[2], esf_meas[3]]
-        imuData.gTemp = esf_meas[4]
-        imuData.idx = esf_meas[5]
-        imuData.accel = [esf_meas[6], esf_meas[7], esf_meas[8]]
+                    if sensor_type == 16:
+                        acc_data[0] = self.scale_int2float(data_field & 0xFFFFFF, 2 ** -10)
+                    elif sensor_type == 17:
+                        acc_data[1] = self.scale_int2float(data_field & 0xFFFFFF, 2 ** -10)
+                    elif sensor_type == 18:
+                        acc_data[2] = self.scale_int2float(data_field & 0xFFFFFF, 2 ** -10)
+                    elif sensor_type == 14:
+                        gyro_data[0] = self.scale_int2float(data_field & 0xFFFFFF, 2 ** -12)
+                    elif sensor_type == 13:
+                        
+                        gyro_data[1] = self.scale_int2float(data_field & 0xFFFFFF, 2 ** -12)
+                    elif sensor_type == 5:
+                        gyro_data[2] = self.scale_int2float(data_field & 0xFFFFFF, 2 ** -12)
 
-        #if (esf_meas[5] % 1000 == 0):
-        #    print(str_raw)
-
-
-
-    elif (cid == b'\x01\x07'):
-        ubx_nav_pvt(raw)
-
-    return True
-
-
-def checkHeader(raw):
-    #print("checkHeader\n");
-    return raw == b'\xb5\x62'
-
-def checkSum(raw):
-    chk_A = 0
-    chk_B = 0
-
-    for i in range(2, len(raw)-2):
-        # print(rarostopic echo /ublox/imuw[i], end=', ')
-        chk_A = chk_A + np.uint8(raw[i])
-        chk_B = chk_B + chk_A
-
-    if (np.uint8(chk_A) == raw[-2]) and (np.uint8(chk_B) == raw[-1]):
-        return True
-    else:
-        return False
-
-
-def pub_gnss_msg_set(msg, dat):
-    msg.header.stamp = rospy.Time.now()
-    msg.iTOW = dat.iTow
-    msg.year = dat.date[0]
-    msg.month = dat.date[1]
-    msg.day = dat.date[2]
-    msg.hour = dat.date[3]
-    msg.min = dat.date[4]
-    msg.sec = dat.date[5]
-    msg.fixType = dat.fixtype
-    msg.numSV = dat.numSV
-    msg.velN = dat.vel_ned[0]
-    msg.velE = dat.vel_ned[1]
-    msg.velD = dat.vel_ned[2]
-    msg.lon = dat.pos_llh[0]
-    msg.lat = dat.pos_llh[1]
-    msg.height = dat.pos_llh[2]
-    msg.hMSL = dat.hMSL
-    msg.gSpeed = dat.gSpeed
-    msg.heading = dat.heading
-    msg.pDOP = dat.pDop
-    msg.headVeh = dat.headVeh
-
-    return msg
-
-
-def pub_imu_msg_set(msg, dat):
-    msg.header.stamp = rospy.Time.now()
-    msg.header.frame_id = 'ublox_f9r'
-    msg.angular_velocity.x = dat.gyro[0]
-    msg.angular_velocity.y = dat.gyro[1]
-    msg.angular_velocity.z = dat.gyro[2]
-    msg.linear_acceleration.x = dat.accel[0]
-    msg.linear_acceleration.y = dat.accel[1]
-    msg.linear_acceleration.z = dat.accel[2]
-
-    return msg
-
+                self.post_time = time.time()
+                dt = (self.post_time - self.prev_time)
+                self.prev_time = self.post_time  # Update the previous time
+                
+                # print(acc_data)
+                
+                # 가속도계 및 자이로스코프 데이터 필터링
+                filtered_acc_data = self.low_pass_filter(acc_data)
+                filtered_gyro_data = self.low_pass_filter(gyro_data)
+                
+                roll, pitch, yaw = self.get_roll_pitch_yaw(filtered_acc_data, filtered_gyro_data, dt, alpha=0.98)
+                qx, qy, qz, qw = self.quaternion_from_euler(roll, pitch, yaw)
+                
+                i = imu_message()
+                i.header.frame_id = 'ublox_f9r'
+                i.dt = dt
+                i.roll = roll
+                i.pitch = pitch
+                i.yaw = yaw
+                i.linear_x = filtered_acc_data[0]
+                i.linear_y = filtered_acc_data[1]
+                i.linear_z = filtered_acc_data[2]
+                i.angular_x = filtered_gyro_data[0]
+                i.angular_y = filtered_gyro_data[1]
+                i.angular_z = filtered_gyro_data[2]
+                i.quaternion_x = qx
+                i.quaternion_y = qy
+                i.quaternion_z = qz
+                i.quaternion_w = qw
+                self.topics.publish(i)
+                
+                
+                # print("Rotate Data:",roll, pitch, yaw)
+                # print("Quaternion Data:", qx, qy, qz, qw)
+                # print("Acc Data:", acc_data)
+                # print("Gyro Data:", gyro_data)
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", type=str, help="Target device serial port")
+    args = parser.parse_args()
 
-    ## ros setting
-    rospy.init_node('get_ublox_data', anonymous=True)
-    pub_imu = rospy.Publisher('/ublox/imu', Imu, queue_size=10)
-    pub_gnss = rospy.Publisher('/ublox/gnss_pvt', gnssPVT, queue_size=10)
-    imuMsg = Imu()
-    gnssMsg = gnssPVT()
-
-
-    ## serial setting
-    ser = serial.Serial("/dev/ttyIMU", 921600, timeout=1)
-    if ser.is_open == False:
-        rospy.logerr('Serial port')
-
-    # init variable
-    Buf = bytes(0)
-    classID = bytes(2)
-    pSize = bytes(2)
-    payload = []
-
-    imuData = imu_data()
-    gnssData = gnss_data()
-
-    while not rospy.is_shutdown():
-        Buf = Buf + ser.read()
-
-        if(len(Buf) >= 2):
-            if checkHeader(Buf):
-                Buf = Buf + ser.read(4)
-                classID = Buf[2:4]
-                #print("classID:", classID)
-                pSize = struct.unpack('<H', Buf[4:6])[0]
-
-                Buf = Buf + ser.read(pSize+2)
-
-                if checkSum(Buf):
-                    payload = Buf[6:6+pSize]
-                    ublox_msg_decoding(classID,payload)
-                    if (classID == b'\x10\x03'):
-                        #print("[IMU] data: ", imuData.idx, "time tag: ", imuData.timeTag, "gyro: ", imuData.gyro, "accel: ", imuData.accel,"\n\n\n")
-                        pub_imu.publish(pub_imu_msg_set(imuMsg, imuData))
-
-                    elif (classID == b'\x01\x07'):
-                        pub_gnss.publish(pub_gnss_msg_set(gnssMsg, gnssData))
-                        #print(gnssData.iTow, gnssData.vel_ned)
-
-
-                Buf = bytes(0)
-            else:
-                Buf = bytes(0)
-
-        #rate.sleep()
-
-    ser.close()
-
-
-
-
-
+    try:
+        zed_f9r_imu_pub = ZED_F9R_IMU_localizer(args.port)
+        zed_f9r_imu_pub.main()
+        rospy.spin()
+    except rospy.ROSInterruptException:
+        pass

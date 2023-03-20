@@ -51,6 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   uwb_anchor.msg
+  Ranging.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -165,6 +166,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   src/mdek1001_node.py
   src/uwb_pos_cal.py
+  src/mdek1001_init_node.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
