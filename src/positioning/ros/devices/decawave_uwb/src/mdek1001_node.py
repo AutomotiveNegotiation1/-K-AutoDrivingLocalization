@@ -1,14 +1,16 @@
 #!/usr/bin/env python3.8
 
-import rospy, time, serial, os, sys, random
-import argparse
+import rospy, time, serial, os, sys, random, argparse
+import threading
 
 from geometry_msgs.msg  import Pose
 from geometry_msgs.msg  import PoseStamped
 from std_msgs.msg       import Float64
 from decawave_uwb.msg import uwb_anchor
+from decawave_uwb.msg import Ranging
 
 from dwm1001_apiCommands import DWM1001_API_COMMANDS
+            
 
 class dwm1001_localizer:
        
@@ -18,7 +20,8 @@ class dwm1001_localizer:
         """
 
         # Init node
-        rospy.init_node('DWM1001_Active_{}'.format(random.randint(0,100000)), anonymous=False)
+        # rospy.init_node('DWM1001_Active_{}'.format(serial_instance.split("/")[2]), anonymous=False)
+        rospy.init_node('get_uwb_data', anonymous=True)
 
         # Get port and tag name
         self.dwm_port = serial_instance.port
@@ -28,7 +31,7 @@ class dwm1001_localizer:
         self.verbose = False
         
         # Set a ROS rate
-        self.rate = rospy.Rate(1)
+        self.rate = rospy.Rate(10)
         
         # Empty dictionary to store topics being published
         self.topics = {}
@@ -109,17 +112,21 @@ class dwm1001_localizer:
         :returns: none
         """
 
+        # arrayData = DWM1001_API_COMMANDS.set_arrayData(serialData)
         arrayData = [x.strip() for x in serialData.strip().split(',')]
 
         # If getting a tag position
         if "DIST" in arrayData[0] :
 
             # The number of elements should be 2 + 6*NUMBER_OF_ANCHORS + 5 (TAG POS)
+            # number_of_anchors = DWM1001_API_COMMANDS.set_node_number(arrayData)
             number_of_anchors = int((len(arrayData) - 7)/6)
 
             for i in range(number_of_anchors) :
 
-                node_id = arrayData[2+6*i]
+                # node_id = DWM1001_API_COMMANDS.set_node_id(arrayData, i)
+                node_id = arrayData[3+6*i]
+                
                 first_time = False
                 if node_id not in self.topics :
                     first_time = True
@@ -134,14 +141,17 @@ class dwm1001_localizer:
                     self.topics[node_id+"_dist"] = rospy.Publisher(
                         '/dwm1001' + 
                         '/tag/' + self.tag_name +
-                        '/to/anchor/' + node_id +
                         "/distance", 
-                        Float64, 
+                        Ranging, 
                         queue_size=100
                     )
                 try :
                     p = PoseStamped()
                     p.header.stamp = rospy.Time.now()
+                    p.header.frame_id = node_id
+                    # p.pose.position.x = DWM1001_API_COMMANDS.set_position(arrayData).x
+                    # p.pose.position.y = DWM1001_API_COMMANDS.set_position(arrayData).y
+                    # p.pose.position.z = DWM1001_API_COMMANDS.set_position(arrayData).z
                     p.pose.position.x = float(arrayData[4+6*i])
                     p.pose.position.y = float(arrayData[5+6*i])
                     p.pose.position.z = float(arrayData[6+6*i])
@@ -150,11 +160,15 @@ class dwm1001_localizer:
                     p.pose.orientation.z = 0.0
                     p.pose.orientation.w = 1.0
                     self.topics[node_id].publish(p)
-                    print(p)
                 except :
                     pass
                 try :
-                    dist = float(arrayData[7+6*i])
+                    dist = Ranging()
+                    dist.header.stamp = p.header.stamp
+                    dist.anchorId = node_id
+                    dist.tagId = self.tag_name
+                    # dist.range = DWM1001_API_COMMANDS.set_range(arrayData,i)
+                    dist.range = float(arrayData[7+6*i])
                     self.topics[node_id+"_dist"].publish(dist)
                 except :
                     pass
@@ -178,6 +192,9 @@ class dwm1001_localizer:
                     self.topics[self.tag_name] = rospy.Publisher('/dwm1001/tag/'+self.tag_name+"/position", PoseStamped, queue_size=100)
                 p = PoseStamped()
                 p.header.stamp = rospy.Time.now()  
+                # p.pose.position.x = DWM1001_API_COMMANDS.set_position(arrayData).x
+                # p.pose.position.y = DWM1001_API_COMMANDS.set_position(arrayData).y
+                # p.pose.position.z = DWM1001_API_COMMANDS.set_position(arrayData).z
                 p.pose.position.x = float(arrayData[-4])
                 p.pose.position.y = float(arrayData[-3])
                 p.pose.position.z = float(arrayData[-2])
@@ -218,7 +235,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=str, help="Target device serial port")
     args = parser.parse_args()
-    print("www")
     try:
         dwm1001 = dwm1001_localizer(args)
         dwm1001.main()

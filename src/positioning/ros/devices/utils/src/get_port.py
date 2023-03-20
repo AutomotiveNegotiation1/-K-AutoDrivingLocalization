@@ -4,75 +4,51 @@ import rospy
 from serial.tools import list_ports
 import argparse
 import yaml
+from utils.srv import deviceInfo, deviceInfoResponse
 
 class ketis_utils:
     
-    def __init__(self, mode=False):
+    def __init__(self):
         with open('/home/keti/keti_uwb_ws/src/utils/config/ketis_params.yaml', encoding='utf-8') as f:
             self._cfg = yaml.load(f, Loader=yaml.FullLoader)
         #self.mode = self._cfg['mode']
-        self.mode = mode
+        self.mode = None
         self.uwbInfo = self._cfg['UWB']
         self.imuInfo = self._cfg['IMU']
         self.uwbNum = []
         self.imuNum = []
         
-    def get_device_number(self):
-        deviceLen = None
-        self.get_device_parsing()
-        if self.mode == True:
-            deviceLen = len(self.uwbNum)
-        else:
-            deviceLen = len(self.imuNum)
-        
-        return deviceLen
+    def run(self):
+        rospy.init_node('info_server', anonymous=False)
+        server = rospy.Service('device_info', deviceInfo, self.set_mode)      
+        rospy.spin()  
     
-    def get_device_port(self):
-        deviceLen = None
-        self.get_device_parsing()
-        if self.mode == True:
-            deviceLen = self.uwbNum
-        else:
-            deviceLen = self.imuNum
+    def set_mode(self, msg):
+        self.mode = msg.mode
+        dev = self.get_device_parsing()
+        return deviceInfoResponse(dev)
         
-        return deviceLen
-            
-    
     def get_device_parsing(self):
         uart = list_ports.comports()
-        
+        devicePort = []
         for port, desc, hwid in sorted(uart):
             desc = desc.split(" ")[0]
             if(port is not None):
                 hwid_split = hwid.split(" ")
-                
                 for info in hwid_split:
                     if "=" in info:
                         VID_PID = info.split("=")[1]
-                        
-                        if self.mode == True:
+                        if self.mode == 'UWB':
                             if VID_PID == self.uwbInfo['VID_PID']:
-                                print(port)
-                                self.uwbNum.append(port)
-                                pass
-                        else:
+                                devicePort.append(port)
+                                # pass
+                        if self.mode == 'IMU':
                             if VID_PID == self.imuInfo['VID_PID']:
-                                print(port)
-                                self.imuNum.append(port)
-                                pass
-                        
-        
+                                # print(port)
+                                devicePort.append(port)
+                                # pass
+        return devicePort
     
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", action="store_true", help="Target device serial port")
-    args = parser.parse_args()
-    
-    try:
-        utils = ketis_utils(args.mode)
-        utils.get_device_parsing()
-    except rospy.ROSInterruptException: 
-        rospy.loginfo("Error get_device_parsing()")
-    finally: 
-        rospy.loginfo("modify get_device_parsing()")
-    
+    utils = ketis_utils()
+    utils.run()
