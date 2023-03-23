@@ -21,7 +21,7 @@ class DWM1001DataReader:
 
         # Init node
         # rospy.init_node('DWM1001_Active_{}'.format(serial_instance.split("/")[2]), anonymous=False)
-        rospy.init_node('DWM1001/Data/Reader', anonymous=True)
+        rospy.init_node('DWM1001_Data_Reader', anonymous=True)
 
         # Get port and tag name
         self.dwm_port = serial_instance.port
