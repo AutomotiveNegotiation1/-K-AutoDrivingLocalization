@@ -1,0 +1,20 @@
+tag1:
+  tag_name : tag1
+  id : 1366:0105
+  serial : 000760178940
+  baud : 115200
+tag2:
+  tag_name : tag2
+  id : 1366:0105
+  serial : 000760179526
+  baud : 115200
+tag3:
+  tag_name : tag3
+  id : 1366:0105
+  serial : 000760009648
+  baud : 115200
+tag4:
+  tag_name : tag4
+  id : 1366:0105
+  serial : 000760009277
+  baud : 115200
