@@ -1,7 +1,0 @@
-<launch>
-  <arg name="serial_data" default="$(find keti_ros)/params/DWM1001_dev.yaml"/>
-  <include file="$(find localizer_dwm1001)/launch/dwm1001.launch">
-      <arg name="serial_data" value="$(arg serial_data)"/>
-  </include>
-
-</launch>
