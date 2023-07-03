@@ -1,0 +1,8 @@
+<launch>
+  <!-- Node for IMU -->
+  <node name="zed_f9r" pkg="localizer_zed_f9r" type="zed_f9r_main.py" output="screen">
+    <param name="port" value="$(arg port)"/>
+    <param name="baud_rate" value="$(arg baud_rate)"/>
+    <param name="frame_id" value="zed_f9r"/>
+  </node>
+</launch>
