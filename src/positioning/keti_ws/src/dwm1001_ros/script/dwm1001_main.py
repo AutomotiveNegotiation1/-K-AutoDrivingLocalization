@@ -27,7 +27,7 @@ class dwm1001_localizer:
         rospy.init_node('Localizer_DWM1001', anonymous=True)
 
         # allow serial port to be detected by user
-        # os.popen("sudo chmod 777 /dev/ttyACM1", "w")
+        os.popen("sudo chmod 777 /dev/ttyACM1", "w")
 
         # initialize ros rate 10hz
         self.rate = rospy.Rate(10)
@@ -41,13 +41,13 @@ class dwm1001_localizer:
         # initialize serial port connections
         self.serialPortDWM1001 = serial.Serial(
 
-            port       = str('/dev/' + rospy.get_param('~port')),
-            baudrate   = int(rospy.get_param('~baud_rate')),
+            port       = str(rospy.get_param('~serial_port_name')),
+            baudrate   = int(rospy.get_param('~serial_baud_rate')),
             parity=SYS_DEFS.parity,
             stopbits=SYS_DEFS.stopbits,
             bytesize=SYS_DEFS.bytesize
         )
-        self.id = str(rospy.get_param('~frame_id'))
+        self.id = str(rospy.get_param('~device_id'))
         
         self.node_flag  = None
         self.verbose    = None
@@ -151,7 +151,6 @@ class dwm1001_localizer:
         tag    = Tag()
         # loop trough the array given by the serial port
         for network in networkDataArray:
-            # print(network)
 
             # check if there is any entry starting with AN, which means there is an anchor
             if 'AN' in network:
@@ -162,7 +161,7 @@ class dwm1001_localizer:
                 
                 # construct the object for anchor(s)
                 anchor.header.stamp    = rospy.Time.now()
-                anchor.header.frame_id = str(rospy.get_param('~port'))
+                anchor.header.frame_id = 'DWM1001_' + self.id
                 anchor.id.append(str(networkDataArray[networkDataArray.index(network) + 1]))
                 anchor.x.append(float(networkDataArray[networkDataArray.index(network) + 2]))
                 anchor.y.append(float(networkDataArray[networkDataArray.index(network) + 3]))
@@ -170,7 +169,7 @@ class dwm1001_localizer:
                 anchor.distanceFromTag.append(float(networkDataArray[networkDataArray.index(network) + 5]))
                 
                 if 'Anchor' not in self.topics :
-                     self.topics['Anchor'] = rospy.Publisher('/dwm1001/anchor/{}'.format(anchor.header.frame_id), Anchor, queue_size=1)
+                     self.topics['Anchor'] = rospy.Publisher('/dwm1001/anchor/{}'.format(self.id), Anchor, queue_size=1)
                      
                 self.topics['Anchor'].publish(anchor)
                 if self.verbose == None:
@@ -193,13 +192,13 @@ class dwm1001_localizer:
                 # construct the object for the tag
 
                 tag.header.stamp    = rospy.Time.now()
-                tag.header.frame_id = str(rospy.get_param('~port'))
+                tag.header.frame_id = 'DWM1001_' + str(rospy.get_param('~device_id'))
                 tag.x               = float(networkDataArray[networkDataArray.index(network) + 1])
                 tag.y               = float(networkDataArray[networkDataArray.index(network) + 2])
                 tag.z               = float(networkDataArray[networkDataArray.index(network) + 3])
                 
                 if 'Tag' not in self.topics :
-                     self.topics['Tag'] = rospy.Publisher('/dwm1001/{}'.format(tag.header.frame_id), Tag, queue_size=1)
+                     self.topics['Tag'] = rospy.Publisher('/dwm1001/{}'.format(self.id), Tag, queue_size=1)
                      
                 self.topics['Tag'].publish(tag)
                 if self.verbose == None:
@@ -313,4 +312,5 @@ if __name__ == '__main__':
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
+
 
