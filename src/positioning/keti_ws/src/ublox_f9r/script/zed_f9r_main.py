@@ -49,7 +49,7 @@ class zed_f9r_localizer:
         rospy.init_node('Localizer_ZED_F9R', anonymous=False)
 
         # allow serial port to be detected by user
-        os.popen("sudo chmod 777 /dev/ttyACM0", "w")
+        # os.popen("sudo chmod 777 /dev/ttyACM0", "w")
 
         # initialize ros rate 100hz
         self.rate = rospy.Rate(10)
@@ -63,8 +63,8 @@ class zed_f9r_localizer:
         # initialize serial port connections
         self.serialPortZED_F9R = serial.Serial(
 
-            port       = str(rospy.get_param('~serial_port_name')),
-            baudrate   = int(rospy.get_param('~serial_baud_rate')),
+            port       = str(rospy.get_param('~port')),
+            baudrate   = int(rospy.get_param('~baud_rate')),
             parity=SYS_DEFS.parity,
             stopbits=SYS_DEFS.stopbits,
             bytesize=SYS_DEFS.bytesize
