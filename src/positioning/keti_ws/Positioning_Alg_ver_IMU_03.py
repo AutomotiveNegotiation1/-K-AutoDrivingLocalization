@@ -691,6 +691,8 @@ class Sensor_fusion:
             gyro_gy   = np.real(gyro_gy)
             gyro_gz   = np.real(gyro_gz)
             
+            gyro_gz_D = np.sqrt(gyro_gx**2 + gyro_gy**2 + gyro_gz**2)
+            
             if (self.I == self.average_len*2+1):
                 ax, ay, az = [sum(coord[i] for coord in self.pos) / len(self.pos) for i in range(3)]
                 self.IMU_Position = np.array([ax, ay, az])
@@ -700,7 +702,7 @@ class Sensor_fusion:
             self.velocity = np.array([self.velocity[0][0], self.velocity[0][1], self.velocity[0][2]])
             self.IMU_Position = self.UWB_Position + self.velocity * self.dt + self.accel * self.dt**2 / 2
             self.IMU_Position = np.array([self.IMU_Position[0][0], self.IMU_Position[0][1], self.IMU_Position[0][2]])
-            self.IMU_Heading = gyro_gz
+            self.IMU_Heading = gyro_gz + self.UWB_Heading
             
             
     
@@ -734,8 +736,8 @@ class Sensor_fusion:
             tag_pos_est, heading_est = self.GetUWBPos_v1(self.UWB['x'], self.UWB['y'], self.UWB['dist'], self.angles_from_heading)
             # heading_est = self.IMU['ang']['z']
         else:
-            tag_pos_est = self.K_tag_pos_est
-            heading_est = self.K_heading_est
+            tag_pos_est = np.array([self.tag_pos_b * np.exp(1j*(self.IMU_Heading)) + self.IMU_Position[0] + 1j*self.IMU_Position[1]])
+            heading_est = self.UWB_Heading
             
         Xt_e = np.real(tag_pos_est)
         Yt_e = np.imag(tag_pos_est)
@@ -962,26 +964,26 @@ class Sensor_fusion:
                 posp.publish(pos)
                 
                 # print("re", Position)
-                tag_pos_est = np.array([self.tag_pos_b * np.exp(1j*(Heading)) + Position[0] + 1j*Position[1]])
-                tag_e = np.array([[np.real(tag), np.imag(tag)] for tag in tag_pos_est]).T
-                plt.figure(2)
-                plt.clf()  # Clear the figure
-                plt.axes().set_aspect('equal')
-                plt.text(self.UWB['x'][0], self.UWB['y'][0], self.UWB['id'][0], fontsize=12, color='red')
-                plt.text(self.UWB['x'][1], self.UWB['y'][1], self.UWB['id'][1], fontsize=12, color='red')
-                plt.text(self.UWB['x'][2], self.UWB['y'][2], self.UWB['id'][2], fontsize=12, color='red')
-                plt.text(self.UWB['x'][3], self.UWB['y'][3], self.UWB['id'][3], fontsize=12, color='red')
-                plt.plot(self.UWB['x'], self.UWB['y'], 'bo')
+                # tag_pos_est = np.array([self.tag_pos_b * np.exp(1j*(Heading)) + Position[0] + 1j*Position[1]])
+                # tag_e = np.array([[np.real(tag), np.imag(tag)] for tag in tag_pos_est]).T
+                # plt.figure(2)
+                # plt.clf()  # Clear the figure
+                # plt.axes().set_aspect('equal')
+                # plt.text(self.UWB['x'][0], self.UWB['y'][0], self.UWB['id'][0], fontsize=12, color='red')
+                # plt.text(self.UWB['x'][1], self.UWB['y'][1], self.UWB['id'][1], fontsize=12, color='red')
+                # plt.text(self.UWB['x'][2], self.UWB['y'][2], self.UWB['id'][2], fontsize=12, color='red')
+                # plt.text(self.UWB['x'][3], self.UWB['y'][3], self.UWB['id'][3], fontsize=12, color='red')
+                # plt.plot(self.UWB['x'], self.UWB['y'], 'bo')
                         
-                plt.plot(tag_e[0][0], tag_e[0][1], 'ro')
-                plt.plot(tag_e[1][0], tag_e[1][1], 'r*')
-                plt.plot(tag_e[2][0], tag_e[2][1], 'rv')
-                plt.plot(tag_e[3][0], tag_e[3][1], 'r^')
+                # plt.plot(tag_e[0][0], tag_e[0][1], 'ro')
+                # plt.plot(tag_e[1][0], tag_e[1][1], 'r*')
+                # plt.plot(tag_e[2][0], tag_e[2][1], 'rv')
+                # plt.plot(tag_e[3][0], tag_e[3][1], 'r^')
                 
-                print(self.UWB_Heading)
+                # print(self.UWB_Heading)
                 
-                plt.quiver(Position[0], Position[1], np.cos(Heading+np.pi/2), np.sin(Heading+np.pi/2), color='r', scale=1, scale_units='xy', angles='xy')
-                plt.quiver(Position[0], Position[1], np.cos(self.UWB_Heading+np.pi/2), np.sin(self.UWB_Heading+np.pi/2), color='g', scale=1, scale_units='xy', angles='xy')
+                # plt.quiver(Position[0], Position[1], np.cos(Heading+np.pi/2), np.sin(Heading+np.pi/2), color='r', scale=1, scale_units='xy', angles='xy')
+                # plt.quiver(Position[0], Position[1], np.cos(self.UWB_Heading+np.pi/2), np.sin(self.UWB_Heading+np.pi/2), color='g', scale=1, scale_units='xy', angles='xy')
                 
                 
                 plt.pause(0.001)
