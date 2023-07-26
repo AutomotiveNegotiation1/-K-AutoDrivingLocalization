@@ -43,9 +43,9 @@ class dwm1001_localizer:
 
             port       = str('/dev/' + rospy.get_param('~port')),
             baudrate   = int(rospy.get_param('~baud_rate')),
-            parity=SYS_DEFS.parity,
-            stopbits=SYS_DEFS.stopbits,
-            bytesize=SYS_DEFS.bytesize
+            parity     = SYS_DEFS.parity,
+            stopbits   = SYS_DEFS.stopbits,
+            bytesize   = SYS_DEFS.bytesize
         )
         self.id = str(rospy.get_param('~frame_id'))
         
@@ -170,7 +170,7 @@ class dwm1001_localizer:
                 anchor.distanceFromTag.append(float(networkDataArray[networkDataArray.index(network) + 5]))
                 
                 if 'Anchor' not in self.topics :
-                     self.topics['Anchor'] = rospy.Publisher('/dwm1001/anchor/{}'.format(anchor.header.frame_id), Anchor, queue_size=1)
+                     self.topics['Anchor'] = rospy.Publisher('/dwm1001/anchor/{}'.format(anchor.header.frame_id), Anchor, queue_size=10)
                      
                 self.topics['Anchor'].publish(anchor)
                 if self.verbose == None:

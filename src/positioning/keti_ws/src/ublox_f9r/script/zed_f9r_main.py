@@ -52,7 +52,7 @@ class zed_f9r_localizer:
         # os.popen("sudo chmod 777 /dev/ttyACM0", "w")
 
         # initialize ros rate 100hz
-        self.rate = rospy.Rate(10)
+        self.rate = rospy.Rate(100)
 
         self.serialReadLine = ""
         # For dynamic configuration
@@ -63,11 +63,11 @@ class zed_f9r_localizer:
         # initialize serial port connections
         self.serialPortZED_F9R = serial.Serial(
 
-            port       = str(rospy.get_param('~port')),
+            port       = str('/dev/' + rospy.get_param('~port')),
             baudrate   = int(rospy.get_param('~baud_rate')),
-            parity=SYS_DEFS.parity,
-            stopbits=SYS_DEFS.stopbits,
-            bytesize=SYS_DEFS.bytesize
+            parity     = SYS_DEFS.parity,
+            stopbits   = SYS_DEFS.stopbits,
+            bytesize   = SYS_DEFS.bytesize
         )
         
         # initialize the variation
@@ -175,7 +175,7 @@ class zed_f9r_localizer:
                     self.ublox_msg_decoding(ClassID, payload)
                     if (ClassID == ZED_F9R_API_MESSAGES.UBX_ESF_RAW):
                         #print("[IMU] data: ", imuData.idx, "time tag: ", imuData.timeTag, "gyro: ", imuData.gyro, "accel: ", imuData.accel,"\n\n\n")
-                        pub_imu = rospy.Publisher('/zed_f9r/imu', Imu, queue_size=10)
+                        pub_imu = rospy.Publisher('/zed_f9r/imu', Imu, queue_size=100)
                         imuMsg = Imu()
                         imuMsg.header.stamp = rospy.Time.now()
                         imuMsg.header.frame_id = 'zed_f9r'
@@ -190,7 +190,7 @@ class zed_f9r_localizer:
                         pub_imu.publish(imuMsg)
 
                     elif (ClassID == ZED_F9R_API_MESSAGES.UBX_NAV_PVT):
-                        pub_gnss = rospy.Publisher('/zed_f9r/gnss_pvt', GNSS, queue_size=10)
+                        pub_gnss = rospy.Publisher('/zed_f9r/gnss_pvt', GNSS, queue_size=10, latch=True)
                         gnssMsg = GNSS()
                         gnssMsg.header.stamp = rospy.Time.now()
                         gnssMsg.iTOW = self.gnssData.iTow
