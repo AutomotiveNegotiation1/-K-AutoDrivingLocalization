@@ -1,13 +1,83 @@
 #!/usr/bin/env python3.8
-from ctypes.wintypes import PPOINTL
+# from ctypes.wintypes import PPOINTL
+from stringprep import c6_set
 import rospy
 import numpy as np
 import matplotlib.pyplot as plt
 import cmath
+import time
 
 from sensor_msgs.msg import Imu
 from localizer_dwm1001.msg import Anchor
 from localizer_dwm1001.msg import Tag
+
+class Quaternion:
+    def __init__(self, w=1, i=0, j=0, k=0):
+        self.w = w
+        self.i = i
+        self.j = j
+        self.k = k
+
+    def normalize(self):
+        norm = (self.w**2 + self.i**2 + self.j**2 + self.k**2)**0.5
+        self.w /= norm
+        self.i /= norm
+        self.j /= norm
+        self.k /= norm
+
+class MadgwickFilter:
+    def __init__(self, beta, vel, pos):
+        self.beta = beta
+        self.vel = vel
+        self.pos = pos
+        self.q = Quaternion()
+
+    def update(self, accel, gyro, xt_c, yt_c, dt):
+        q = self.q
+        q_dot = Quaternion(
+            0.5 * (-q.i * gyro[0] - q.j * gyro[1] - q.k * gyro[2]),
+            0.5 * ( q.w * gyro[0] + q.j * gyro[2] - q.k * gyro[1]),
+            0.5 * ( q.w * gyro[1] - q.i * gyro[2] + q.k * gyro[0]),
+            0.5 * ( q.w * gyro[2] + q.i * gyro[1] - q.j * gyro[0])
+        )
+        
+        
+        accel = accel - np.cross(gyro, self.vel)
+        self.vel = self.vel + accel * 0.01
+        self.pos = np.array([xt_c, yt_c, 0]) + self.vel * 0.01
+
+        if np.linalg.norm(accel) == 0:
+            return
+        accel = accel / np.linalg.norm(accel)
+
+        print(accel)
+        f = np.array([
+            2 * (q.i * q.k - q.w * q.j) - accel[0],
+            2 * (q.w * q.i + q.j * q.k) - accel[1],
+            2 * (0.5 - q.i**2 - q.j**2) - accel[2]
+        ])
+
+        j = np.array([
+            [-2 * q.j,  2 * q.k, -2 * q.w, 2 * q.i],
+            [ 2 * q.i,  2 * q.w,  2 * q.k, 2 * q.j],
+            [     0, -4 * q.i, -4 * q.j,     0]
+        ])
+
+        grad = Quaternion(*np.dot(j.T, f))
+        grad.normalize()
+
+        q_dot.w -= self.beta * grad.w
+        q_dot.i -= self.beta * grad.i
+        q_dot.j -= self.beta * grad.j
+        q_dot.k -= self.beta * grad.k
+
+        q.w += q_dot.w * dt
+        q.i += q_dot.i * dt
+        q.j += q_dot.j * dt
+        q.k += q_dot.k * dt
+
+        self.q.normalize()
+
 
 class Sensor_fusion:
     def __init__(self):
@@ -23,9 +93,19 @@ class Sensor_fusion:
         self.uwb2 = dict()
         self.uwb3 = dict()
         
+        self.IMU = dict()
+        self.acc = dict()
+        self.ang = dict()
+        
         self.xt_b = np.array([-0.09, 0.09, -0.09, 0.09])
         self.yt_b = np.array([0.12, 0.12, -0.12, -0.12])
         
+        self.accel_bias = np.array([0, 0, 0])
+        self.gyro_bias = np.array([0, 0, 0])
+        
+        self.accel = np.array([0, 0, 0])
+        self.vel = np.array([0, 0, 0])
+        self.pos = np.array([0, 0, 0])
         
         self.xt_b_center = np.mean(self.xt_b);
         self.yt_b_center = np.mean(self.yt_b);
@@ -42,8 +122,10 @@ class Sensor_fusion:
         self.K_centerest_a_aver = np.array([]).reshape(-1, 2)
         self.K_headingest_a_aver = np.array([]).reshape(-1 ,1)
         
+        self.flag = None
+        
         # ROS 노드 구독
-        # rospy.Subscriber("/zed_f9r/imu", Imu, self.ImuCallback)
+        rospy.Subscriber("/zed_f9r/imu", Imu, self.ImuCallback)
         rospy.Subscriber("/dwm1001/anchor/ttyUWB0", Anchor, self.Anchorcallback0)
         rospy.Subscriber("/dwm1001/anchor/ttyUWB1", Anchor, self.Anchorcallback1)
         rospy.Subscriber("/dwm1001/anchor/ttyUWB2", Anchor, self.Anchorcallback2)
@@ -101,6 +183,19 @@ class Sensor_fusion:
             self.UWB['x'] = self.UWB['x']
             self.UWB['y'] = self.UWB['y']
             self.UWB['z'] = self.UWB['z']
+            
+    def ImuCallback(self, msg):
+        self.acc['x'] = msg.linear_acceleration.x
+        self.acc['y'] = msg.linear_acceleration.y
+        self.acc['z'] = msg.linear_acceleration.z
+        
+        self.ang['x'] = msg.angular_velocity.x
+        self.ang['y'] = msg.angular_velocity.y
+        self.ang['z'] = msg.angular_velocity.z
+        
+        self.IMU['acc'] = self.acc
+        self.IMU['ang'] = self.ang
+
 
     def Anchorcallback0(self, msg):
         self.uwb_sort(0, msg, self.uwb0)
@@ -256,31 +351,56 @@ class Sensor_fusion:
             Prob = np.array([X1S + Y1S, X2S + Y2S]).reshape(-1, 1)
             
         return Pos, Prob
+    
+    def calibrate_imu(self, imu_data, num_samples):
+        # imu_data는 가속도계 및 자이로스코프 데이터의 2D 배열이다.
+        # 각 행은 [ax, ay, az, gx, gy, gz] 형식이다.
+
+        # 캘리브레이션에 사용할 샘플 수 선택
+        data = np.array(imu_data[:num_samples])
+        
+        # 가속도계 및 자이로스코프 측정값의 평균 계산
+        accel_bias = np.mean(data[:, :3], axis=0)
+        gyro_bias = np.mean(data[:, 3:], axis=0)
+
+        # 중력 벡터의 크기 (일반적으로 9.81 m/s^2)에서 z축 가속도의 바이어스를 차감
+        accel_bias[2] -= 9.81
+
+        return accel_bias, gyro_bias
 
         
     def main(self):
         Ln = 4
         Lp = 4
         self.average_len = 10
-        
+        imu_data = []
         while not rospy.is_shutdown():
             try:
-
+                
+                
+                start_time = time.time()
                 self.uwb_init()
                 anch_pos = np.array([x + 1j*y for x, y in zip(self.UWB['x'], self.UWB['y'])])
                 
-                
                 if self.r == 0:
                     tag_pos_est, heading_est = self.GetUWBPos_v1(self.UWB['x'], self.UWB['y'], self.UWB['dist'], self.angles_from_heading)
+                    # heading_est = self.IMU['ang']['z']
                 else:
                     tag_pos_est = K_tag_pos_est
                     heading_est = K_heading_est
                 
                 Xt_e = np.real(tag_pos_est)
                 Yt_e = np.imag(tag_pos_est)
-                
                 Xt_c_e = np.mean(Xt_e)
                 Yt_c_e = np.mean(Yt_e)
+                
+                self.accel = np.array([self.IMU['acc']['x'], self.IMU['acc']['y'], self.IMU['acc']['z']]) - np.cross(np.array([self.IMU['ang']['x'], self.IMU['ang']['y'], self.IMU['ang']['z']]), self.vel)
+                self.vel = self.vel + self.accel * 0.01
+                self.pos = np.array([Xt_c_e, Yt_c_e, 0]) + self.vel * 0.01
+                
+                Xt_c_e = self.pos[0]
+                Yt_c_e = self.pos[1]
+                
 
                 A = [[] for _ in range(Ln)]  # List of empty lists
 
@@ -352,9 +472,21 @@ class Sensor_fusion:
 
                 for ls in range(Lp):
                     biasV[ls] = np.mean(QQ[ls][AT, indi[0]])
-
+                    
+                # Lk = 0
+                # C = np.zeros((48, 3))
+                # Z = np.zeros((48, 1))
+                # for p in range(4):
+                #     for n in range(4):    
+                #         for m in range(4):
+                #             if n != m:
+                #                 if n > 100:
+                #                     continue
+                #                 else: 
+                                    
+                                
                 dist_n = self.UWB['dist']
-                # /dist_n[indi[0], :] += biasV
+                dist_n[indi[0], :] += biasV
 
 
                 tag_center_pos_est, heading_est, Xt_c_e, Yt_c_e = self.GetUWBPosUpdate_v1(self.UWB['x'], self.UWB['y'], Xt_c_e, Yt_c_e, heading_est, self.rl, dist_n, self.angles_from_heading)
@@ -362,8 +494,14 @@ class Sensor_fusion:
 
                 self.heading_est_a = np.append(self.heading_est_a, [heading_est], axis=0)
                 self.centerest_a = np.append(self.centerest_a, np.array([Xt_c_e, Yt_c_e]).T, axis=0)
-                
+                acc = np.array([0, 0, 0])
+                ang = np.array([0, 0, 0])
                 if (self.r > (self.average_len*2)):
+                    self.accel_bias, self.gyro_bias = self.calibrate_imu(imu_data, self.average_len*2)
+                    imu_data.append(np.array([self.IMU['acc']['x'], self.IMU['acc']['y'], self.IMU['acc']['z'], self.IMU['ang']['x'], self.IMU['ang']['y'], self.IMU['ang']['z']]))
+                    imu_data.pop()
+                    acc = np.array([self.IMU['acc']['x']-self.accel_bias[0], self.IMU['acc']['y']-self.accel_bias[1], self.IMU['acc']['z']-self.accel_bias[2]])
+                    ang = np.array([self.IMU['ang']['x']-self.gyro_bias[0], self.IMU['ang']['y']-self.gyro_bias[1], self.IMU['ang']['z']-self.gyro_bias[2]])
                     MeanA = np.mean(self.centerest_a[self.r-19:self.r-10, 0] + 1j*self.centerest_a[self.r-19:self.r-10, 1])
                     MeanB = np.mean(self.centerest_a[self.r-9:self.r, 0] + 1j*self.centerest_a[self.r-9:self.r, 1])
                     # self.centerest_a_aver = np.append(self.centerest_a_aver, np.array([np.real(MeanB + (MeanB-MeanA)/2), np.imag(MeanB + (MeanB-MeanA)/2)]).T, axis=0)
@@ -372,12 +510,45 @@ class Sensor_fusion:
                     MeanB_head = np.mean(self.heading_est_a[self.r-self.average_len+1:self.r])
                     self.headingest_a_aver = np.append(self.headingest_a_aver, np.array([[MeanB_head + (MeanB_head-MeanA_head)/2]]), axis=0)
                 else:
+                    imu_data.append(np.array([self.IMU['acc']['x'], self.IMU['acc']['y'], self.IMU['acc']['z'], self.IMU['ang']['x'], self.IMU['ang']['y'], self.IMU['ang']['z']]))
+                    acc = np.array([self.IMU['acc']['x'], self.IMU['acc']['y'], self.IMU['acc']['z']])
+                    ang = np.array([self.IMU['ang']['x'], self.IMU['ang']['y'], self.IMU['ang']['z']])
                     self.centerest_a_aver = np.append(self.centerest_a_aver, np.array([Xt_c_e, Yt_c_e]).T, axis=0)
                     self.headingest_a_aver = np.append(self.headingest_a_aver, [heading_est], axis=0)
+               
+                # 가정: accelerometer_data, gyroscope_data는 각각 가속도, 각속도 측정값을 포함하는 numpy 배열입니다.
+                # Sampling period in seconds
+                dt = 0.01
+                # Create MadgwickFilter object
+                madgwick_filter = MadgwickFilter(beta=0.1, vel=self.vel, pos=self.pos)
 
+                madgwick_filter.update(accel=acc, gyro=ang, xt_c=Xt_c_e, yt_c=Yt_c_e, dt=dt)
+
+                # Get orientation (as quaternion)
+                orientation = madgwick_filter.q
+                
+                self.vel = madgwick_filter.vel
+                self.pos = madgwick_filter.pos
+
+                # Convert output list to numpy array
+                orientation_output = np.array([orientation.w, orientation.i, orientation.j, orientation.k])
+                
+                from scipy.spatial.transform import Rotation as R
+
+                rotation = R.from_quat(orientation_output)
+                euler_angles = rotation.as_euler('ZYX')  # ZYX order is commonly used in navigation.
+                yaw = euler_angles[0]  # yaw is the first element
+                
+                heading_est = heading_est + yaw
+                
+                
+                # print(self.IMU['ang']['x']-self.gyro_bias[0],"  ", self.IMU['ang']['y']-self.gyro_bias[1],"  ", self.IMU['ang']['z']-self.gyro_bias[2])
                 tag_pos_est_aver = self.get_tag_pos(self.centerest_a_aver[self.r, 0] + 1j*self.centerest_a_aver[self.r, 1], self.headingest_a_aver[self.r], self.tag_pos_b)
-                K_Xt_c_e = self.centerest_a_aver[self.r, 0]
-                K_Yt_c_e = self.centerest_a_aver[self.r, 1]
+                K_Xt_c_e = self.pos[0] 
+                K_Yt_c_e = self.pos[1]
+                
+                # K_Xt_c_e = self.centerest_a_aver[self.r, 0] 
+                # K_Yt_c_e = self.centerest_a_aver[self.r, 1]
                 K_tag_pos_est = self.tag_pos_b * np.exp(1j*(self.headingest_a_aver[self.r])) + K_Xt_c_e + 1j*K_Yt_c_e
                 K_tag_pos_est = K_tag_pos_est.reshape(1, -1)
                 K_heading_est = self.headingest_a_aver[self.r]
@@ -387,13 +558,12 @@ class Sensor_fusion:
                 # Figure 1
                 plt.figure(2)
                 plt.clf()  # Clear the figure
-                
+                plt.axes().set_aspect('equal')
                 plt.text(self.UWB['x'][0], self.UWB['y'][0], self.UWB['id'][0], fontsize=12, color='red')
                 plt.text(self.UWB['x'][1], self.UWB['y'][1], self.UWB['id'][1], fontsize=12, color='red')
                 plt.text(self.UWB['x'][2], self.UWB['y'][2], self.UWB['id'][2], fontsize=12, color='red')
                 plt.text(self.UWB['x'][3], self.UWB['y'][3], self.UWB['id'][3], fontsize=12, color='red')
                 plt.plot(self.UWB['x'], self.UWB['y'], 'bo')
-
 
                 tag_e = np.array([[np.real(tag), np.imag(tag)] for tag in tag_pos_est]).T
                 K_tag_e = np.array([[np.real(K_tag), np.imag(K_tag)] for K_tag in K_tag_pos_est]).T
@@ -406,6 +576,8 @@ class Sensor_fusion:
                 plt.text(tag_e[1][0], tag_e[1][1], "2", fontsize=12, color='blue')
                 plt.text(tag_e[2][0], tag_e[2][1], "3", fontsize=12, color='blue')
                 plt.text(tag_e[3][0], tag_e[3][1], "4", fontsize=12, color='blue')
+                
+                plt.plot(self.pos[0], self.pos[1], 'k*')
 
                 plt.plot(K_tag_e[0][0], K_tag_e[0][1], 'ro')
                 plt.plot(K_tag_e[1][0], K_tag_e[1][1], 'r*')
@@ -413,20 +585,26 @@ class Sensor_fusion:
                 plt.plot(K_tag_e[3][0], K_tag_e[3][1], 'r^')
 
                 # plt.quiver(x[r], y[r], np.cos(heading[r]), np.sin(heading[r]), color='g', scale=1, scale_units='xy', angles='xy')
-                plt.quiver(Xt_c_e, Yt_c_e, np.cos(heading_est), np.sin(heading_est), color='b', scale=1, scale_units='xy', angles='xy')
-                plt.quiver(K_Xt_c_e, K_Yt_c_e, np.cos(K_heading_est), np.sin(K_heading_est), color='r', scale=1, scale_units='xy', angles='xy')
-
+                plt.quiver(Xt_c_e, Yt_c_e, np.cos(heading_est+np.pi/2), np.sin(heading_est+np.pi/2), color='b', scale=1, scale_units='xy', angles='xy')
+                plt.quiver(K_Xt_c_e, K_Yt_c_e, np.cos(K_heading_est+np.pi/2), np.sin(K_heading_est+np.pi/2), color='r', scale=1, scale_units='xy', angles='xy')
+                plt.quiver(K_Xt_c_e, K_Yt_c_e, np.cos(yaw), np.sin(yaw), color='g', scale=1, scale_units='xy', angles='xy')
+                # print(self.IMU['ang']['z']-self.gyro_bias[2])
 
                 plt.title('Original(Blue) and estimated(Red) Tag to Anchor distance')
 
                 # Figure 4
-                plt.figure(3)
-                plt.clf()  # Clear the figure
-                plt.plot(self.UWB['x'], self.UWB['y'], 'go')
-                plt.plot(self.centerest_a_aver[:,0], self.centerest_a_aver[:,1], 'bo')
-                # plt.plot(x[:], y[:], 'g^')
-                plt.plot(self.K_centerest_a_aver[:,0], self.K_centerest_a_aver[:,1], 'ro')
-                plt.plot(self.centerest_a[:,0], self.centerest_a[:,1], 'ko')
+                if (self.r > (self.average_len*2)):
+                    plt.figure(3)
+                    plt.clf()  # Clear the figure
+                    plt.axes().set_aspect('equal')
+                    plt.plot(self.UWB['x'], self.UWB['y'], 'go')
+                    # plt.plot(self.centerest_a_aver[:,0], self.centerest_a_aver[:,1], 'b^')
+                    # plt.plot(x[:], y[:], 'g^')
+                    # plt.plot(self.K_centerest_a_aver[:,0], self.K_centerest_a_aver[:,1], 'ro')
+                    plt.plot(K_Xt_c_e, K_Yt_c_e, 'ro')
+                    # plt.plot(self.centerest_a[:,0], self.centerest_a[:,1], 'ko')
+                else:
+                    pass
 
                 plt.pause(0.01)
                 

@@ -1,0 +1,2 @@
+dwm1001_ros:keti_ros:ublox_f9r
+-DCATKIN_DEVEL_PREFIX=/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel -DCMAKE_INSTALL_PREFIX=/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/install -G Unix Makefiles

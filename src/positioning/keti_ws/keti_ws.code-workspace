@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../Trial & Error"
+		}
+	],
+	"settings": {
+		"python.autoComplete.extraPaths": [
+			"/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages",
+			"/opt/ros/noetic/lib/python3/dist-packages"
+		],
+		"python.analysis.extraPaths": [
+			"/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages",
+			"/opt/ros/noetic/lib/python3/dist-packages"
+		],
+		"ros.distro": "noetic"
+	}
+}

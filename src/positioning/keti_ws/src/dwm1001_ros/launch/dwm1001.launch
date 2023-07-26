@@ -1,5 +1,5 @@
 <launch>    
-    !--Exctract info from dwm1001 dev boards, filter them and publish them into topics-->
+    <!--Exctract info from dwm1001 dev boards, filter them and publish them into topics-->
     <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_01" output="screen">
 
         <param name="port"      value="ttyUWB0" /> <!-- Name of serial port -->
