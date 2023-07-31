@@ -1074,6 +1074,7 @@ class Sensor_fusion:
                 # plt.figure(2)
                 plt.clf()  # Clear the figure
                 plt.axes().set_aspect('equal')
+                
                 plt.text(self.UWB['x'][0], self.UWB['y'][0], self.UWB['id'][0], fontsize=12, color='red')
                 plt.text(self.UWB['x'][1], self.UWB['y'][1], self.UWB['id'][1], fontsize=12, color='red')
                 plt.text(self.UWB['x'][2], self.UWB['y'][2], self.UWB['id'][2], fontsize=12, color='red')
