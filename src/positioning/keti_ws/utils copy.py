@@ -22,6 +22,7 @@ def TwoAnchPos3(Xa, Ya, dist, tag_pos, EstCenter, anch_pos, dist_a):
     X1 = np.linalg.inv(A.T @ A) @ A.T @ Y1
     X2 = np.linalg.inv(A.T @ A) @ A.T @ Y2
 
+
     X1S = np.sum(np.abs(np.abs(anch_pos - (X1[0] + 1j * X1[1])) - dist_a.T))
     X2S = np.sum(np.abs(np.abs(anch_pos - (X2[0] + 1j * X2[1])) - dist_a.T))
     Y1S = np.sum((X1 - tag_pos.T)**2)

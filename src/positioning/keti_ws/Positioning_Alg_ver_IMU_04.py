@@ -1086,6 +1086,7 @@ class Sensor_fusion:
                 plt.plot(tag_e[2][0], tag_e[2][1], 'rv')
                 plt.plot(tag_e[3][0], tag_e[3][1], 'r^')
                 
+                
                 plt.quiver(Position[0], Position[1], np.cos(Heading+np.pi/2), np.sin(Heading+np.pi/2), color='r', scale=1, scale_units='xy', angles='xy')
                 
                 

@@ -19,6 +19,7 @@ from numpy.linalg import inv
 from utils import *
 
 
+
 class IMUKalmanFilter(object):
     def __init__(self, x, A, z):
         self.threshold = 100

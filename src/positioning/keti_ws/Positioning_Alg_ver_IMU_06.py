@@ -766,6 +766,7 @@ class Sensor_fusion:
             RxID = np.array(np.random.choice(range(1, self.Ln+1), Nanchor, replace=False)-1)
             # print("RxID",RxID)
             
+            
             # MATLAB의 randi(Lp)는 1부터 Lp까지의 수 중 하나를 무작위로 선택합니다.
             RxTag = np.random.randint(0, self.Lp) 
             PP = RxTag
