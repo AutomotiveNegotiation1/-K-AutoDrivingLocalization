@@ -16,6 +16,8 @@ from localizer_dwm1001.msg import Tag
 import numpy as np
 from numpy.linalg import inv
 
+from utils import *
+
 
 class IMUKalmanFilter(object):
     def __init__(self, x, A, z):
@@ -189,73 +191,6 @@ class IMUExtendedKalmanFilter(object):
         self.P_kM1 = self.P_kM
         
         return x
-        
-        
-# class Quaternion:
-#     def __init__(self, w=1, i=0, j=0, k=0):
-#         self.w = w
-#         self.i = i
-#         self.j = j
-#         self.k = k
-
-#     def normalize(self):
-#         norm = (self.w**2 + self.i**2 + self.j**2 + self.k**2)**0.5
-#         self.w /= norm
-#         self.i /= norm
-#         self.j /= norm
-#         self.k /= norm
-
-# class MadgwickFilter:
-#     def __init__(self, beta, vel, pos):
-#         self.beta = beta
-#         self.vel = vel
-#         self.pos = pos
-#         self.q = Quaternion()
-
-#     def update(self, accel, gyro, xt_c, yt_c, dt):
-#         q = self.q
-#         q_dot = Quaternion(
-#             0.5 * (-q.i * gyro[0] - q.j * gyro[1] - q.k * gyro[2]),
-#             0.5 * ( q.w * gyro[0] + q.j * gyro[2] - q.k * gyro[1]),
-#             0.5 * ( q.w * gyro[1] - q.i * gyro[2] + q.k * gyro[0]),
-#             0.5 * ( q.w * gyro[2] + q.i * gyro[1] - q.j * gyro[0])
-#         )
-        
-        
-#         accel = accel - np.cross(gyro, self.vel)
-#         self.vel = self.vel + accel * 0.01
-#         self.pos = np.array([xt_c, yt_c, 0]) + self.vel * 0.01
-
-#         if np.linalg.norm(accel) == 0:
-#             return
-#         accel = accel / np.linalg.norm(accel)
-
-#         f = np.array([
-#             2 * (q.i * q.k - q.w * q.j) - accel[0],
-#             2 * (q.w * q.i + q.j * q.k) - accel[1],
-#             2 * (0.5 - q.i**2 - q.j**2) - accel[2]
-#         ])
-
-#         j = np.array([
-#             [-2 * q.j,  2 * q.k, -2 * q.w, 2 * q.i],
-#             [ 2 * q.i,  2 * q.w,  2 * q.k, 2 * q.j],
-#             [     0, -4 * q.i, -4 * q.j,     0]
-#         ])
-
-#         grad = Quaternion(*np.dot(j.T, f))
-#         grad.normalize()
-
-#         q_dot.w -= self.beta * grad.w
-#         q_dot.i -= self.beta * grad.i
-#         q_dot.j -= self.beta * grad.j
-#         q_dot.k -= self.beta * grad.k
-
-#         q.w += q_dot.w * dt
-#         q.i += q_dot.i * dt
-#         q.j += q_dot.j * dt
-#         q.k += q_dot.k * dt
-
-#         self.q.normalize()
 
 
 class Sensor_fusion:
@@ -309,6 +244,8 @@ class Sensor_fusion:
         self.gyro_gz = 0
         self.gyro_gz_D = 0
         
+        self.average_len = 10
+        
         self.gyro_bias    = np.array([-0.2927, 0.1928, -0.0194])  # 초기값
         
         self.accel = np.array([[0],[0],[0]])
@@ -320,13 +257,23 @@ class Sensor_fusion:
         self.UWB_vel = np.array([0,0,0])
         self.UWB_pos = np.array([0,0,0]).reshape(-1,1)
         
-        self.xt_b_center = np.mean(self.xt_b);
-        self.yt_b_center = np.mean(self.yt_b);
-        self.angles_from_heading = np.arctan2(self.yt_b, self.xt_b);
+        self.xt_b_center = np.mean(self.xt_b)
+        self.yt_b_center = np.mean(self.yt_b)
+        self.angles_from_heading = np.arctan2(self.yt_b, self.xt_b)
         self.rl = np.sqrt(self.xt_b**2+self.yt_b**2)
-        self.tag_pos_b = self.xt_b + 1j*self.yt_b;
+        self.tag_pos_b = self.xt_b + 1j*self.yt_b
         self.I = 1
-        self.U = 0
+        self.U = 1
+        self.Lp = 4
+        self.Ln = 2
+        
+        self.NumInterpPoint = 4
+        self.Tag_Pos_List = np.zeros((self.NumInterpPoint, 2, self.Lp), dtype=complex)
+        self.InterpPosition = np.zeros((self.Lp, 2))
+        
+        
+        self.TagDistInit = np.zeros((self.Ln, self.Lp))
+        
         
         self.heading_est_a = np.array([]).reshape(-1 ,1)
         self.centerest_a = np.array([]).reshape(-1, 2)
@@ -341,10 +288,10 @@ class Sensor_fusion:
         
         # ROS 노드 구독
         rospy.Subscriber("/zed_f9r/imu", Imu, self.ImuCallback)
-        rospy.Subscriber("/dwm1001/anchor/ttyUWB0", Anchor, self.Anchorcallback0)
-        rospy.Subscriber("/dwm1001/anchor/ttyUWB1", Anchor, self.Anchorcallback1)
-        rospy.Subscriber("/dwm1001/anchor/ttyUWB2", Anchor, self.Anchorcallback2)
-        rospy.Subscriber("/dwm1001/anchor/ttyUWB3", Anchor, self.Anchorcallback3)
+        # rospy.Subscriber("/dwm1001/anchor/ttyUWB0", Anchor, self.Anchorcallback0)
+        # rospy.Subscriber("/dwm1001/anchor/ttyUWB1", Anchor, self.Anchorcallback1)
+        # rospy.Subscriber("/dwm1001/anchor/ttyUWB2", Anchor, self.Anchorcallback2)
+        # rospy.Subscriber("/dwm1001/anchor/ttyUWB3", Anchor, self.Anchorcallback3)
         # rospy.Subscriber("/dwm1001/ttyUWB0", Tag, s3elf.TagCallback)
         # rospy.Subscriber("/dwm1001/ttyUWB1", Tag, self.TagCallback)
         # rospy.Subscriber("/dwm1001/ttyUWB2", Tag, self.TagCallback)
@@ -582,44 +529,6 @@ class Sensor_fusion:
         tag_pos_est = tag_pos_b * np.exp(1j * heading_est) + tag_center_pos_est
         return tag_pos_est.reshape(1, -1)
 
-    
-    def TwoAnchPos3(self, Xa, Ya, dist, tag_pos, EstCenter, anch_pos, dist_a):
-        AA = np.sqrt((Xa[0] - Xa[1])**2 + (Ya[0] - Ya[1])**2)
-        B = dist[0]
-        C = dist[1]
-
-        if B**2 - ((B**2 - C**2 + AA**2) / (2*AA))**2 > 0:
-            d = np.sqrt(B**2 - ((B**2 - C**2 + AA**2) / (2*AA))**2)
-        else:
-            d = 0
-
-        A = np.array([[Ya[1] - Ya[0], -(Xa[1] - Xa[0])], [2 * (Xa[1] - Xa[0]), 2 * (Ya[1] - Ya[0])]])
-        Y1 = np.array([[d * np.sqrt((Ya[1] - Ya[0])**2 + (Xa[1] - Xa[0])**2) + Xa[0] * Ya[1] - Xa[1] * Ya[0], -(C**2 - B**2 - Xa[0]**2 + Xa[1]**2 - Ya[0]**2 + Ya[1]**2)]]).T
-        Y2 = np.array([[-d * np.sqrt((Ya[1] - Ya[0])**2 + (Xa[1] - Xa[0])**2) + Xa[0] * Ya[1] - Xa[1] * Ya[0], -(C**2 - B**2 - Xa[0]**2 + Xa[1]**2 - Ya[0]**2 + Ya[1]**2)]]).T
-
-        X1 = np.linalg.inv(A.T @ A) @ A.T @ Y1
-        X2 = np.linalg.inv(A.T @ A) @ A.T @ Y2
-
-        X1S = np.sum(np.abs(np.abs(anch_pos - (X1[0] + 1j * X1[1])) - dist_a.T))
-        X2S = np.sum(np.abs(np.abs(anch_pos - (X2[0] + 1j * X2[1])) - dist_a.T))
-        Y1S = np.sum((X1 - tag_pos.T)**2)
-        Y2S = np.sum((X2 - tag_pos.T)**2)
-        Z1S = np.abs(np.sum((X1 - EstCenter.T)**2) - 0.5)
-        Z2S = np.abs(np.sum((X2 - EstCenter.T)**2) - 0.5)
-        
-        Prob = np.array([[]])
-        
-
-        if (X1S + Y1S) > (X2S + Y2S):
-            list_of_arrays = [X2.T, X1.T]
-            Pos = np.vstack(list_of_arrays)
-            Prob = np.array([X2S + Y2S, X1S + Y1S]).reshape(-1, 1)
-        else:
-            list_of_arrays = [X1.T, X2.T]
-            Pos = np.vstack(list_of_arrays)
-            Prob = np.array([X1S + Y1S, X2S + Y2S]).reshape(-1, 1)
-            
-        return Pos, Prob
 
     def TwoAnchPos4(self, Xa, Ya, dist, tag_pos, EstCenter, anch_pos, dist_a):
         AA = np.sqrt((Xa[0] - Xa[1])**2 + (Ya[0] - Ya[1])**2)
@@ -823,277 +732,124 @@ class Sensor_fusion:
         # return Position, Heading
     
     def UWB_Positioning(self):
-        anch_pos = np.array([x + 1j*y for x, y in zip(self.UWB['x'], self.UWB['y'])])
-                
-        if self.U == 0:
-            # print("asdfasdf")
-            tag_pos_est, heading_est = self.GetUWBPos_v1(self.UWB['x'], self.UWB['y'], self.UWB['dist'], self.angles_from_heading)
-            # heading_est = self.IMU['ang']['z']
-        else:
-            tag_pos_est = np.array([self.tag_pos_b * np.exp(1j*(self.IMU_Heading)) + self.IMU_Position[0] + 1j*self.IMU_Position[1]])
-            heading_est = self.UWB_Heading
-            
-        Xt_e = np.real(tag_pos_est)
-        Yt_e = np.imag(tag_pos_est)
-        Xt_c_e = np.mean(Xt_e)
-        Yt_c_e = np.mean(Yt_e)
-    
-        A = [[] for _ in range(self.Ln)]  # List of empty lists
+        dist = np.array([[11.2340, 10.1285, 10.9581, 9.5884], [10.4505, 11.0299, 9.7431, 10.7766]])
+        xa = np.array([10, 10, -10, -10])
+        ya = np.array([10, -10, -10, 10])
+        anch_pos = np.array([xa + 1j*ya])
 
-        QDD = 0
-        for qd in range(self.Ln):
-            for qc in range(qd+1, self.Ln):
-                if qd != qc:
-                    for gg in range(self.Ln):
-                        if qd != gg and qc != gg:
-                            A[gg].append(QDD)
-                    QDD += 1
-        # print(A)
-        KK = np.zeros((6,4))
-    
-        Pos = [[] for _ in range(self.Lp)]  # 2D list
-        PosB = [[] for _ in range(self.Lp)]  # 2D list
-        Prob2T = [[] for _ in range(self.Lp)]  # 2D list
-        PosC = [[] for _ in range(self.Lp)]
-        QQ = [[] for _ in range(self.Lp)]
+        xt_b = np.array([-0.5, 0.5, -0.5, 0.5])
+        yt_b = np.array([0.5, 0.5, -0.5, -0.5])
+        tag_pos_b = np.array([xt_b + 1j*yt_b])
+        
+        x = [_ for _ in range(730)]
+        s_time = np.arange(0, len(x)) / 10.0
 
-        for PP in range(self.Lp):
-            Pos[PP] = np.array([]).reshape(-1, 2)
-            PosB[PP] = np.array([]).reshape(-1, 2)
-            Prob2T[PP] = np.array([]).reshape(-1, 2)
+        
+        tag_pos_est=None
+        heading_est=None
+        tag_center_pos_est = None
+        heading_est_a = None
+        
+        if self.U < 10*self.Lp:   
+            div = math.floor((self.U - 1) / self.Lp) + 1
             for NN in range(self.Ln):
-                for MM in range(NN+1, self.Ln):
-                    if NN != MM:
-                        Pos2, Prob2 = self.TwoAnchPos4([self.UWB['x'][NN], self.UWB['x'][MM]], [self.UWB['y'][NN], self.UWB['y'][MM]], [self.UWB['dist'][NN, PP], self.UWB['dist'][MM, PP]], np.array([np.real(tag_pos_est[0][PP]), np.imag(tag_pos_est[0][PP])]), np.array([Xt_c_e, Yt_c_e]), anch_pos, self.UWB['dist'][:, PP])
-                        Pos[PP] = np.append(Pos[PP], np.array([Pos2[0, :]]), axis=0)
-                        PosB[PP] = np.append(PosB[PP], np.array([Pos2[1, :]]), axis=0)
-                        Prob2T[PP] = np.append(Prob2T[PP], np.array(Prob2.T), axis=0)
+                for PP in range((self.U - 1) % self.Lp, ((self.U - 1) % self.Lp) +1):
+                    self.TagDistInit[NN, PP] = self.TagDistInit[NN,PP] * (div-1) / div + dist[NN,PP] / div
+                    
+        elif self.U == 10*self.Lp:
+            div = math.floor((self.U - 1) / self.Lp) + 1
+            for NN in range(self.Ln):
+                for PP in range((self.U - 1) % self.Lp, ((self.U - 1) % self.Lp) +1):
+                    self.TagDistInit[NN, PP] = self.TagDistInit[NN,PP] * (div-1) / div + dist[NN,PP] / div
+            tag_pos_est, heading_est =  GetInitPos(xa,ya,dist,anch_pos,tag_pos_b,self.Ln,self.Lp)
+            s_time_prev = 0
 
-            Temp = Prob2T[PP][:, 0].reshape(-1, 1) / Prob2T[PP][:, 1].reshape(-1, 1) * 2
-            ValM, IndM = np.sort(Temp, axis=0)[::-1], np.argsort(Temp, axis=0)[::-1]
-            
-            TopI = 0
-            # while TopI < len(ValM) and ValM[TopI][0] > 1:
-            while (ValM[TopI] > 1) and (ValM[TopI] > (ValM[-1] * 1)):
-                if np.sum((PosB[PP][IndM[0]] - Pos[PP][IndM[-1]])**2) - np.sum((Pos[PP][IndM[0]] - Pos[PP][IndM[-1]])**2) < 0:
-                    Pos[PP][IndM[0]] = PosB[PP][IndM[0]]
-                TopI += 1
-
-            PosC[PP] = np.array([np.array([x[0]+1j*x[1]]) for x in Pos[PP]])
-            if np.all(KK == 0):
-                KK = np.abs(PosC[PP] - anch_pos) - self.UWB['dist'][:, PP].T
-            else:
-                KK = KK + np.abs(PosC[PP] - anch_pos) - self.UWB['dist'][:, PP].T
-
-            QQ[PP] = np.abs(PosC[PP] - anch_pos) - self.UWB['dist'][:, PP].T
-        AB = np.zeros(self.Ln)
-        BB = np.zeros(self.Ln)
-
-
-        for CD in range(self.Ln):
-            TE = list(range(self.Ln))
-            TE.remove(CD)
-            AB[CD] = np.sum(np.abs(KK[np.ix_(A[CD], TE)]))
-            BB[CD] = -np.sum(KK[np.ix_(A[CD], [CD])])
-
-        CC = BB / AB
-        AB[BB < 0] += 10
-        Val, indi = np.sort(np.abs(AB)), np.argsort(np.abs(AB))
-        if indi[0] != 2:  # Python index starts from 0, so subtract 1 from original MATLAB index
-            dd = 1
-
-        AT = A[indi[0]]
-
-        biasV = np.zeros(self.Lp)
-
-        for ls in range(self.Lp):
-            biasV[ls] = np.mean(QQ[ls][AT, indi[0]])
-                        
-        dist_n = self.UWB['dist']
-        dist_n[indi[0], :] += biasV
-
-
-        
-        tag_center_pos_est, heading_est, Xt_c_e, Yt_c_e = self.GetUWBPosUpdate_v1(self.UWB['x'], self.UWB['y'], Xt_c_e, Yt_c_e, heading_est, self.rl, dist_n, self.angles_from_heading)
-        
-        tag_pos_est = self.get_tag_pos(tag_center_pos_est, heading_est, self.tag_pos_b)
-        # self.UWBpos = np.array([Xt_c_e, Yt_c_e, 0]).reshape(-1, 1)
-
-        # self.heading_est_a = np.append(self.heading_est_a, [heading_est], axis=0)
-        if self.heading_est_a.size != 0:
-            if (heading_est - self.heading_est_a[self.U-1]) > np.pi:
-                self.heading_est_a = np.append(self.heading_est_a, [heading_est - 2 * np.pi], axis=0)
-            elif (self.heading_est_a[self.U-1] - heading_est) > np.pi:
-                self.heading_est_a = np.append(self.heading_est_a, [heading_est + 2 * np.pi], axis=0)
-            else:
-                self.heading_est_a = np.append(self.heading_est_a, [heading_est], axis=0)
+            # Fill Tag_Pos_List using nested loops and array indexing
+            for LLp in range(1, self.Lp + 1):
+                for lo in range(self.NumInterpPoint, 0, -1):
+                    self.Tag_Pos_List[lo - 1, :, LLp - 1] = [s_time[self.U - lo], tag_pos_est[0][LLp - 1]]
         else:
-            self.heading_est_a = np.append(self.heading_est_a, [heading_est], axis=0)
+            #######################################################################################################################################################################
+            ################################################## Next position Prediction  ##########################################################################################
+            for PPC in range(1, self.Lp + 1):
+                # Calculate the interpolated position for real part
+                self.InterpPosition[PPC - 1, 0] = InterpPos(np.real(self.Tag_Pos_List[:, 0, PPC - 1].reshape(1, -1)), np.real(self.Tag_Pos_List[:, 1, PPC - 1]), s_time[self.U - 1])
+                # Calculate the interpolated position for imaginary part
+                self.InterpPosition[PPC - 1, 1] = InterpPos(np.real(self.Tag_Pos_List[:, 0, PPC - 1].reshape(1, -1)), np.imag(self.Tag_Pos_List[:, 1, PPC - 1]), s_time[self.U - 1])
+            #######################################################################################################################################################################
+                            
+            Xt_c_e = np.mean(self.InterpPosition[:, 0])
+            Yt_c_e = np.mean(self.InterpPosition[:, 1])
             
+            PosC = []
+            PosC_E = []
             
-        # print("test0", self.centerest_a_aver)
-        self.centerest_a = np.append(self.centerest_a, np.array([Xt_c_e, Yt_c_e]).T, axis=0)
-        if (self.U > (self.average_len*2)):
-            MeanA = np.mean(self.centerest_a[self.U-19:self.U-10, 0] + 1j*self.centerest_a[self.U-19:self.U-10, 1])
-            MeanB = np.mean(self.centerest_a[self.U-9:self.U, 0] + 1j*self.centerest_a[self.U-9:self.U, 1])
-            self.UWB_Velocity = (self.centerest_a[-1, :] - self.centerest_a[-10, :])/0.3
-            self.centerest_a_aver = np.array([[np.real(MeanB + (MeanB-MeanA)/2), np.imag(MeanB + (MeanB-MeanA)/2)]])
-            MeanA_head = np.mean(self.heading_est_a[self.U-self.average_len*2+1:self.U-self.average_len])
-            MeanB_head = np.mean(self.heading_est_a[self.U-self.average_len+1:self.U])
-            # self.headingest_a_aver = np.append(self.headingest_a_aver, np.array([[MeanB_head + (MeanB_head-MeanA_head)/2]]), axis=0)
-            self.headingest_a_aver = np.mod(MeanB_head + (MeanB_head - MeanA_head) / 2, 2 * np.pi)
-            # print("uwb vel :", self.UWB_Velocity)
-        else:
-            self.centerest_a_aver = np.array([Xt_c_e, Yt_c_e]).T
-            self.headingest_a_aver = heading_est
+            #######################################################################################################################################################################
+            ################################################## Next position Calc  ################################################################################################
             
-        # print(self.IMU['ang']['x']-self.gyro_bias[0],"  ", self.IMU['ang']['y']-self.gyro_bias[1],"  ", self.IMU['ang']['z']-self.gyro_bias[2])
-        
-        tag_pos_est_aver = self.get_tag_pos(self.centerest_a_aver[0][0] + 1j*self.centerest_a_aver[0][1], self.headingest_a_aver, self.tag_pos_b)
+            for PP in range((self.U - 1) % self.Lp, ((self.U - 1) % self.Lp) + 1):
+                tag_pos_est, heading_est = GetPos(xa, ya, dist[:, PP], anch_pos, tag_pos_b, self.Ln, PP, self.InterpPosition[:, 0] + 1j * self.InterpPosition[:, 1])
+                # Uncomment the following lines if you need to call GetPosRefine as well
+                # tag_pos_est, heading_est = GetPosRefine(xa, ya, dist[:, PP], anch_pos, tag_pos_b, Ln, PP, tag_pos_est, heading_est)
+                # Update Tag_Pos_List
+                self.Tag_Pos_List[:2, :, PP] = self.Tag_Pos_List[1:3, :, PP]
+                self.Tag_Pos_List[2, :, PP] = [s_time[self.U - 1], tag_pos_est[0][PP]]
 
+            tag_center_pos_est = np.mean(tag_pos_est)
+            
+            if self.heading_est_a.size != 0:
+                if (heading_est - self.heading_est_a[self.U-1]) > np.pi:
+                    self.heading_est_a = np.append(self.heading_est_a, [[heading_est - 2 * np.pi]], axis=0)
+                elif (self.heading_est_a[self.U-1] - heading_est) > np.pi:
+                    self.heading_est_a = np.append(self.heading_est_a, [[heading_est + 2 * np.pi]], axis=0)
+                else:
+                    self.heading_est_a = np.append(self.heading_est_a, [[heading_est]], axis=0)
+            else:
+                self.heading_est_a = np.append(self.heading_est_a, [[heading_est]], axis=0)
+            
+            # self.centerest_a = np.array([]).reshape(-1, 2)    
+            self.centerest_a = np.append(self.centerest_a, np.array([[Xt_c_e, Yt_c_e]]), axis=0)
 
-        Xt_e = np.real(tag_pos_est_aver)
-        Yt_e = np.imag(tag_pos_est_aver)
-        Xt_c_e = np.mean(Xt_e)
-        Yt_c_e = np.mean(Yt_e)
-        
-        # K_Xt_c_e = self.centerest_a_aver[self.U][0, 0]
-        # K_Yt_c_e = self.centerest_a_aver[self.U][0, 1]
-        
-        # self.K_tag_pos_est = self.tag_pos_b * np.exp(1j*(self.headingest_a_aver[self.U])) + K_Xt_c_e + 1j*K_Yt_c_e
-        # self.K_tag_pos_est = self.K_tag_pos_est.reshape(1, -1)
-        # self.K_heading_est = self.headingest_a_aver[self.U]
+            
+            if (self.U > (self.average_len*2)):
+                MeanA = np.mean(self.centerest_a[self.U-19:self.U-10, 0] + 1j*self.centerest_a[self.U-19:self.U-10, 1])
+                MeanB = np.mean(self.centerest_a[self.U-9:self.U, 0] + 1j*self.centerest_a[self.U-9:self.U, 1])
+                self.centerest_a_aver = np.array([[np.real(MeanB + (MeanB-MeanA)/2), np.imag(MeanB + (MeanB-MeanA)/2)]])
+                MeanA_head = np.mean(self.heading_est_a[self.U-self.average_len*2+1:self.U-self.average_len])
+                MeanB_head = np.mean(self.heading_est_a[self.U-self.average_len+1:self.U])
+                self.headingest_a_aver = np.mod(MeanB_head + (MeanB_head - MeanA_head) / 2, 2 * np.pi)
+            else:
+                self.centerest_a_aver = np.array([Xt_c_e, Yt_c_e]).T
+                self.headingest_a_aver = heading_est
+                
+            tag_pos_est_aver = get_tag_pos(self.centerest_a_aver[self.U-1, 1] + 1j * self.centerest_a_aver[self.U-1, 2], self.headingest_a_aver[self.U-1], tag_pos_b)
+            K_Xt_c_e = self.centerest_a_aver[self.U, 1]
+            K_Yt_c_e = self.centerest_a_aver[self.U, 2]
+            tag_pos_est = tag_pos_b * np.exp(1j * (self.headingest_a_aver[self.U])) + K_Xt_c_e + 1j * K_Yt_c_e
 
-               
-        self.UWB_Position = np.array([Xt_c_e, Yt_c_e, 0])
-        self.UWB_Heading = self.headingest_a_aver
-        # if self.imukalma_state == True:
-        try:
-            # print('===================================================================================')
-            R = 1e-2 * np.eye(6)
-            TEMP = self.acc.T - self.gyro_st
-            TEMP_bias = self.gyro_bias
-            
-            X = np.array([[self.IMU_Position[0]],[self.IMU_Position[1]],[self.IMU_Position[2]],
-                            [self.velocity[0]],[self.velocity[1]],[self.velocity[2]],
-                            [TEMP[0]],[TEMP[1]],[TEMP[2]],
-                            [TEMP_bias[0]],[TEMP_bias[1]],[TEMP_bias[2]]
-                            ])
-            
-            Cb2n = self.rotation_vector_to_matrix(self.rotation_vector).T
-            C = np.eye(12)
-            C[0:3, 3:6] = self.dt * np.eye(3) - 1/2 * self.dt**2 * np.array([[0, -self.ang[2], self.ang[1]], [self.ang[2], 0, -self.ang[0]], [-self.ang[1], self.ang[0], 0]])
-            C[0:3, 6:9] = Cb2n * self.dt**2 / 2
-            C[0:3, 9:12] = -Cb2n * self.dt**2 / 2
-            C[3:6, 3:6] = C[3:6, 3:6] - self.dt * np.array([[0, -self.ang[2], self.ang[1]], [self.ang[2], 0, -self.ang[0]], [-self.ang[1], self.ang[0], 0]])
-            C[3:6, 6:9] = Cb2n * self.dt
-            C[3:6, 9:12] = -Cb2n * self.dt
-            
-            Z = np.array([[Xt_c_e],[Yt_c_e],[0],
-                            [self.UWB_Velocity[0]],[self.UWB_Velocity[1]],[0]])
-            
-            pos_kf = UWBKalmanFilter(X, C, Z, R)
-            pos_kf.predict()
-            result = pos_kf.update()
+            K_heading_est = self.headingest_a_aver[self.U] % (2 * np.pi)
+            self.K_centerest_a_aver[self.U, :] = self.centerest_a_aver[self.U, :]
+            self.K_headingest_a_aver[self.U] = self.headingest_a_aver[self.U] % (2 * np.pi)
 
-            # print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee2eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+            plt.figure(1)
+            plt.plot(xa, ya, 'bo')
 
-            self.UWB_Position[0] = result[0][0]
-            self.UWB_Position[1] = result[1][0]
-            # Position[3] = result[2][0]
-            self.velocity[0] = result[3][0]
-            self.velocity[1] = result[4][0]
-            self.velocity[2] = result[5][0]
-            self.accel[0][0] = result[6][0]
-            self.accel[0][1] = result[7][0]
-            self.accel[0][2] = result[8][0]
-            self.gyro_bias[0] = result[9][0]
-            self.gyro_bias[1] = result[10][0]
-            self.gyro_bias[2] = result[11][0]
-            
-        except:
-            pass
-        
-            # print(Position)
-            
-        
-       
-        
+            plt.plot(tag_pos_est[0], 'bo')
+            plt.plot(tag_pos_est[1], 'b*')
+            plt.plot(tag_pos_est[2], 'bv')
+            plt.plot(tag_pos_est[3], 'b^')
+
+            plt.quiver(Xt_c_e, Yt_c_e, np.cos(heading_est), np.sin(heading_est), color='b', linewidth=1, headwidth=6)
+
+            plt.show()
+
         self.U += 1
-        
-        self.statusUWB = False
         
         # return Position, Heading
     
     def main(self):
-        self.Ln = 4
-        self.Lp = 4
-        self.average_len = 10
-        
-        plt.ion()
-        
-        Position = np.array([0, 0, 0])
-        Heading = 0
-        self.pos =[]
-        self.UWB_Position = np.array([0, 0, 0])
-        self.IMU_Position = self.UWB_Position
-        self.UWB_Heading= 0
-        self.IMU_Heading = self.UWB_Heading
-        self.gyro_st = np.array([0, 0, 0])
-        self.imukalma_state = False
-        fig, ax = plt.subplots()
-        
         while not rospy.is_shutdown():
-            
-            try:
-                if self.statusIMU == True:
-                    self.IMU_Positioning()
-                    Position = self.IMU_Position
-                    Heading = self.IMU_Heading
-                    # print("I", Position, Heading)
-                if self.statusUWB == True:
-                    self.UWB_Positioning()
-                    Position = self.UWB_Position
-                    Heading = self.IMU_Heading
-                    # print("U", Position, Heading)
-                    
-                else:
-                    self.uwb_init()
-                    
-                # pos = Quaternion()
-                # posp = rospy.Publisher('/fusion/positioning', Quaternion, queue_size=10)
-                # pos.x = Position[0]
-                # pos.y = Position[1]
-                # pos.z = 0
-                # pos.w = Heading
-                # posp.publish(pos)
-                
-                # print("re", Position)
-                tag_pos_est = np.array([self.tag_pos_b * np.exp(1j*(Heading)) + Position[0] + 1j*Position[1]])
-                tag_e = np.array([[np.real(tag), np.imag(tag)] for tag in tag_pos_est]).T
-                # plt.figure(2)
-                plt.clf()  # Clear the figure
-                plt.axes().set_aspect('equal')
-                plt.text(self.UWB['x'][0], self.UWB['y'][0], self.UWB['id'][0], fontsize=12, color='red')
-                plt.text(self.UWB['x'][1], self.UWB['y'][1], self.UWB['id'][1], fontsize=12, color='red')
-                plt.text(self.UWB['x'][2], self.UWB['y'][2], self.UWB['id'][2], fontsize=12, color='red')
-                plt.text(self.UWB['x'][3], self.UWB['y'][3], self.UWB['id'][3], fontsize=12, color='red')
-                plt.plot(self.UWB['x'], self.UWB['y'], 'bo')
-                        
-                plt.plot(tag_e[0][0], tag_e[0][1], 'ro')
-                plt.plot(tag_e[1][0], tag_e[1][1], 'r*')
-                plt.plot(tag_e[2][0], tag_e[2][1], 'rv')
-                plt.plot(tag_e[3][0], tag_e[3][1], 'r^')
-                
-                plt.quiver(Position[0], Position[1], np.cos(Heading+np.pi/2), np.sin(Heading+np.pi/2), color='r', scale=1, scale_units='xy', angles='xy')
-                
-                
-                plt.pause(0.001)
-            except KeyError:
-                pass
-            # liveplot.snap()
-        # animation = liveplot.animate()
-        plt.show()
+            self.UWB_Positioning()
         
         
     
