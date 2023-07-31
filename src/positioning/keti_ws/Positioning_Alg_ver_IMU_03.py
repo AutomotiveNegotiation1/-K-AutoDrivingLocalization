@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import cmath
 import math
 import time
+from numpy.lib.scimath import sqrt
 
 from sensor_msgs.msg import Imu
 from geometry_msgs.msg import Quaternion
@@ -16,7 +17,7 @@ from localizer_dwm1001.msg import Tag
 import numpy as np
 from numpy.linalg import inv
 
-from celluloid import Camera
+
 
 class IMUKalmanFilter(object):
     def __init__(self, x, A, z):
@@ -145,120 +146,19 @@ class IMUExtendedKalmanFilter(object):
         
         
     def predict(self):
-        # b = self.A
-        # c = self.A.T
-        # print("b", b)
-        # print("b", b.shape)
-        # print("c", c)
-        # print("c", c.shape)
-        
         self.P_kM = (self.A @ self.P_kM1 @ self.A.T) + self.GQG_T
         a = self.A @ self.P_kM1 @ self.A.T
-        # print("a", a)
-        # print("a", a.shape)
-        # print("#####################################################")
-        # print("self.P_kM1 :", self.P_kM1)
-        # print("self.P_kM1 :", self.P_kM1.shape)
-        # print("self.GQG_T :", self.GQG_T)
-        # print("self.GQG_T :", self.GQG_T.shape)
-        # print("self.P_kM :", self.P_kM)
-        # print("self.P_kM :", self.P_kM.shape)
         
     def update(self):
-        # print("x :", self.x)
-        # print("x :", self.x.shape)
-        # print("A :", self.A.shape)
-        # print("A :", self.A.shape)
-        # print("self.H : ", self.H)
-        # print("self.H : ", self.H.shape)
-        # print("self.R_gps : ", self.R_gps)
-        # print("self.R_gps : ", self.R_gps.shape)
         
         H = self.H @ self.x
-        # print("H :", H)
-        # print("H :", H.shape)
         K = self. P_kM @ self.H.T @ np.array(np.linalg.inv(self.H @ self.H.T @ self.R_gps))
-        # print("K :", K)
-        # print("K :", K.shape)
         x = self.x + K @ np.array(self.z - H)
-        # print("z", self.z)
-        # print("z", self.z.shape)
-        # print("x2", x)
-        # print("x2", x.shape)
         P = np.array(np.eye(6) - K @ self.H) @ self.P_kM
-        
         self.P_kM1 = self.P_kM
         
         return x
         
-        
-# class Quaternion:
-#     def __init__(self, w=1, i=0, j=0, k=0):
-#         self.w = w
-#         self.i = i
-#         self.j = j
-#         self.k = k
-
-#     def normalize(self):
-#         norm = (self.w**2 + self.i**2 + self.j**2 + self.k**2)**0.5
-#         self.w /= norm
-#         self.i /= norm
-#         self.j /= norm
-#         self.k /= norm
-
-# class MadgwickFilter:
-#     def __init__(self, beta, vel, pos):
-#         self.beta = beta
-#         self.vel = vel
-#         self.pos = pos
-#         self.q = Quaternion()
-
-#     def update(self, accel, gyro, xt_c, yt_c, dt):
-#         q = self.q
-#         q_dot = Quaternion(
-#             0.5 * (-q.i * gyro[0] - q.j * gyro[1] - q.k * gyro[2]),
-#             0.5 * ( q.w * gyro[0] + q.j * gyro[2] - q.k * gyro[1]),
-#             0.5 * ( q.w * gyro[1] - q.i * gyro[2] + q.k * gyro[0]),
-#             0.5 * ( q.w * gyro[2] + q.i * gyro[1] - q.j * gyro[0])
-#         )
-        
-        
-#         accel = accel - np.cross(gyro, self.vel)
-#         self.vel = self.vel + accel * 0.01
-#         self.pos = np.array([xt_c, yt_c, 0]) + self.vel * 0.01
-
-#         if np.linalg.norm(accel) == 0:
-#             return
-#         accel = accel / np.linalg.norm(accel)
-
-#         f = np.array([
-#             2 * (q.i * q.k - q.w * q.j) - accel[0],
-#             2 * (q.w * q.i + q.j * q.k) - accel[1],
-#             2 * (0.5 - q.i**2 - q.j**2) - accel[2]
-#         ])
-
-#         j = np.array([
-#             [-2 * q.j,  2 * q.k, -2 * q.w, 2 * q.i],
-#             [ 2 * q.i,  2 * q.w,  2 * q.k, 2 * q.j],
-#             [     0, -4 * q.i, -4 * q.j,     0]
-#         ])
-
-#         grad = Quaternion(*np.dot(j.T, f))
-#         grad.normalize()
-
-#         q_dot.w -= self.beta * grad.w
-#         q_dot.i -= self.beta * grad.i
-#         q_dot.j -= self.beta * grad.j
-#         q_dot.k -= self.beta * grad.k
-
-#         q.w += q_dot.w * dt
-#         q.i += q_dot.i * dt
-#         q.j += q_dot.j * dt
-#         q.k += q_dot.k * dt
-
-#         self.q.normalize()
-
-
 class Sensor_fusion:
     def __init__(self):
         # ROS 노드 초기화
@@ -364,10 +264,7 @@ class Sensor_fusion:
         try:
             uwb['tag_id'] = num
             uwb['id'] = [id for id in self.id_order]
-            print(self.id_order)
             self.order_indices = [msg.id.index(id) for id in self.id_order]
-            # self.order_indices = [msg.id.index(id) for id in self.id_order]
-            print(self.order_indices)
             # 이제 order_indices를 사용해서 msg의 나머지 속성을 재정렬하거나 'Nan'을 할당합니다:
             uwb['x'] = [msg.x[i] for i in self.order_indices]
             uwb['y'] = [msg.y[i] for i in self.order_indices]
@@ -379,6 +276,7 @@ class Sensor_fusion:
         
     def uwb_sort_v2(self, num, msg, uwb):
         try:
+            print(msg)
             uwb['tag_id'] = num
             uwb['id'] = [id for id in msg.id]
             uwb['x'] = [x for x in msg.x]
@@ -390,15 +288,11 @@ class Sensor_fusion:
         
     def uwb_init(self):
         try:
-            print("1", self.uwb0['dist'])
-            print("2", self.uwb1['dist'])
-            print("3", self.uwb2['dist'])
-            print("4", self.uwb3['dist'])
+            print("1", self.uwb0['x'])
+            print("2", self.uwb0['y'])
+            print("3", self.uwb0['z'])
+            print("4", self.uwb0['dist'])
             self.UWB['dist'] = np.array([self.uwb0['dist'], self.uwb1['dist'], self.uwb2['dist'], self.uwb3['dist']])
-            # print("1.", self.UWB['dist'])
-            # Copy the original distances to a new array
-            # Copy the original distances to a new array
-
 
             id = np.array(next((tag for tag in [self.uwb0['id'], self.uwb1['id'], self.uwb2['id'], self.uwb3['id']] if 'Nan' not in tag), None))
             x = np.array(next((tag for tag in [self.uwb0['x'], self.uwb1['x'], self.uwb2['x'], self.uwb3['x']] if 'Nan' not in tag), None))
@@ -416,27 +310,23 @@ class Sensor_fusion:
                 self.UWB['y'] = self.UWB['y']
                 self.UWB['z'] = self.UWB['z']
                 
-            # print(self.UWB['id'])
-            # print(self.UWB['x'])
-                
-            # Copy the original distances to a new array
-            original_dists = np.array([self.uwb0['dist'], self.uwb1['dist'], self.uwb2['dist'], self.uwb3['dist']])
+            # original_dists = np.array([self.uwb0['dist'], self.uwb1['dist'], self.uwb2['dist'], self.uwb3['dist']])
 
-            # Prepare an empty array for the corrected distances
-            corrected_dists = np.zeros_like(original_dists)
+            # # Prepare an empty array for the corrected distances
+            # corrected_dists = np.zeros_like(original_dists)
 
-            # Iterate over the original distances
-            for i in range(original_dists.shape[0]):
-                for j in range(original_dists.shape[1]):
-                    dist = original_dists[i, j]
-                    z = self.UWB['z'][j]
-                    if dist > z.all():
-                        corrected_dists[i, j] = np.sqrt(dist**2 - z**2)
-                    else:
-                        corrected_dists[i, j] = 0
+            # # Iterate over the original distances
+            # for i in range(original_dists.shape[0]):
+            #     for j in range(original_dists.shape[1]):
+            #         dist = original_dists[i, j]
+            #         z = self.UWB['z'][j]
+            #         if np.all(dist > z):
+            #             corrected_dists[i, j] = np.sqrt(dist**2 - z**2)
+            #         else:
+            #             corrected_dists[i, j] = 0
 
-            # Assign the corrected distances back to self.UWB['dist']
-            self.UWB['dist'] = corrected_dists.T
+            # # Assign the corrected distances back to self.UWB['dist']
+            # self.UWB['dist'] = corrected_dists.T
 
         except :
             self.statusUWB = False

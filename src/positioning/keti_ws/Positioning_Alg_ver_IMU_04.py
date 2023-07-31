@@ -16,7 +16,6 @@ from localizer_dwm1001.msg import Tag
 import numpy as np
 from numpy.linalg import inv
 
-from celluloid import Camera
 
 class IMUKalmanFilter(object):
     def __init__(self, x, A, z):
@@ -279,6 +278,10 @@ class Sensor_fusion:
         self.uwb2 = dict()
         self.uwb3 = dict()
         
+        self.x = dict()
+        self.y = dict()
+        self.z = dict()
+        
         self.IMU = dict()
         self.acc = dict()
         self.ang = dict()
@@ -327,9 +330,10 @@ class Sensor_fusion:
         
         self.heading_est_a = np.array([]).reshape(-1 ,1)
         self.centerest_a = np.array([]).reshape(-1, 2)
-        self.centerest_a_aver = np.array([]).reshape(-1, 2)
-
-        self.headingest_a_aver = np.array([]).reshape(-1 ,1)
+        
+        self.centerest_a_aver = None
+        self.headingest_a_aver = None
+        
         self.K_centerest_a_aver = np.array([]).reshape(-1, 2)
         self.K_headingest_a_aver = np.array([]).reshape(-1 ,1)
         
@@ -350,56 +354,129 @@ class Sensor_fusion:
     def create_id_order(self, ids):
         if self.id_order is None:
             self.id_order = ids
-        else:
+        
+        if self.id_order is not None:
             # Check if ids is not equal to self.id_order
             if set(ids) != set(self.id_order):
+                # if len(self.id_order) < 4:
                 # ids에서 self.id_order에 없는 요소를 찾습니다.
-                difference = [item for item in ids if item not in self.id_order]
+                if len(self.id_order) == 4:
+                    pass
+                
+                else:
+                    difference = [item for item in ids if item not in self.id_order]
 
-                # 이 요소들을 self.id_order에 추가합니다.
-                self.id_order.extend(difference)
+                    # 이 요소들을 self.id_order에 추가합니다.
+                    self.id_order.extend(difference)
+                    
+                    
+                    self.id_order_check = True
+                
                 
     def uwb_sort(self, num, msg, uwb):
-        self.create_id_order(msg.id)
-        try:
-            uwb['tag_id'] = num
-            uwb['id'] = [id for id in self.id_order]
+        x = []
+        y = []
+        z = []
+        dist = []
+        if len(msg.id) >= 3:
+            self.create_id_order(msg.id)
+            if self.statusUWB == False and self.id_order_check == True:
+                uwb['id'] = self.id_order
+                uwb['tag_id'] = num
+                fd = 0
+                try:
+                    for i, id in enumerate(self.id_order):
+                        try:
+                            order_indices = msg.id.index(id)
+                            x.append(msg.x[order_indices])
+                            y.append(msg.y[order_indices])
+                            z.append(msg.z[order_indices])
+                            dist.append(msg.distanceFromTag[order_indices])
+                            fd += msg.x[order_indices]
+                        except ValueError:
 
-            order_indices = [msg.id.index(id) for id in self.id_order]
+                            order_indices = i
+                            x.append(self.x[id])
+                            y.append(self.y[id])
+                            z.append(self.z[id])
+                            dist.append(0)
+                    
+                    uwb['x'] = x
+                    uwb['y'] = y
+                    uwb['z'] = z
+                    uwb['dist'] = dist
+                except TypeError:
+                    pass
+        
+        
+        
+        # self.create_id_order(msg.id)
+        # # if self.id_order is not None and len(self.id_order) == 4:
+        # if self.id_order is not None and len(self.id_order) == 4:
+        #     x = []
+        #     y = []
+        #     z = []
+        #     dist = []
+        #     if len(msg.id) >= 3:
+        #         uwb['id'] = self.id_order
+        #         uwb['tag_id'] = num
+        #         print(self.id_order)
+        #         for i, id in enumerate(self.id_order):    
+        #             try:
+        #                 order_indices = msg.id.index(id)                        
+        #                 x.append(msg.x[order_indices])
+        #                 y.append(msg.y[order_indices])
+        #                 z.append(msg.z[order_indices])
+        #                 dist.append(msg.distanceFromTag[order_indices])
 
-            # 이제 order_indices를 사용해서 msg의 나머지 속성을 재정렬하거나 'Nan'을 할당합니다:
-            uwb['x'] = [msg.x[i] for i in order_indices]
-            uwb['y'] = [msg.y[i] for i in order_indices]
-            uwb['z'] = [msg.z[i] for i in order_indices]
-            uwb['dist'] = [msg.distanceFromTag[i] for i in order_indices]
-        except ValueError:
-            pass
+        #             except ValueError:
+        #                 print(num, id)
+        #                 # print(f'ValueError: "{id}" is not in list')
+        #                 if len(msg.id) != 4:
+        #                     order_indices = i
+        #                     x.append(self.x[id])
+        #                     y.append(self.y[id])
+        #                     z.append(self.z[id])
+        #                     dist.append(25)
+                        
+        #         uwb['x'] = x
+        #         uwb['y'] = y
+        #         uwb['z'] = z
+        #         uwb['dist'] = dist
+                
+        #         print(uwb['x'])
+        #         print(uwb['y'])
+        #         print(uwb['z'])
+        #         print(uwb['dist'])
+                
+                    
+            # order_indices = [msg.id.index(id) for id in self.id_order]
+            # print(order_indices)
+
+            # # 이제 order_indices를 사용해서 msg의 나머지 속성을 재정렬하거나 'Nan'을 할당합니다:
+            # uwb['x'] = [msg.x[i] for i in order_indices]
+            # uwb['y'] = [msg.y[i] for i in order_indices]
+            # uwb['z'] = [msg.z[i] for i in order_indices]
+            # uwb['dist'] = [msg.distanceFromTag[i] for i in order_indices]
+        # else:
+        #     pass
         
     def uwb_init(self):
         try:
             self.UWB['dist'] = np.array([self.uwb0['dist'], self.uwb1['dist'], self.uwb2['dist'], self.uwb3['dist']])
+            self.UWB['id'] = np.array(self.uwb0['id'])
+            self.UWB['x'] = np.array(self.uwb0['x'])
+            self.UWB['y'] = np.array(self.uwb0['y'])
+            self.UWB['z'] = np.array(self.uwb0['z'])
+            
             self.UWB['dist'] = self.UWB['dist'].T
 
-            id = np.array(next((tag for tag in [self.uwb0['id'], self.uwb1['id'], self.uwb2['id'], self.uwb3['id']] if 'Nan' not in tag), None))
-            x = np.array(next((tag for tag in [self.uwb0['x'], self.uwb1['x'], self.uwb2['x'], self.uwb3['x']] if 'Nan' not in tag), None))
-            y = np.array(next((tag for tag in [self.uwb0['y'], self.uwb1['y'], self.uwb2['y'], self.uwb3['y']] if 'Nan' not in tag), None))
-            z = np.array(next((tag for tag in [self.uwb0['z'], self.uwb1['z'], self.uwb2['z'], self.uwb3['z']] if 'Nan' not in tag), None))
-
-            if x is not None and y is not None and z is not None:
-                self.UWB['id'] = id
-                self.UWB['x'] = x
-                self.UWB['y'] = y
-                self.UWB['z'] = z
-            else:
-                self.UWB['id'] = self.UWB['id']
-                self.UWB['x'] = self.UWB['x']
-                self.UWB['y'] = self.UWB['y']
-                self.UWB['z'] = self.UWB['z']
-                
-        except KeyError:
+        except:
             self.statusUWB = False
             
         else:
+            self.id_order_check = False
+            self.id_order = None
             self.statusUWB = True
 
     def ImuCallback(self, msg):
@@ -415,15 +492,31 @@ class Sensor_fusion:
 
 
     def Anchorcallback0(self, msg):
+        for i, id in enumerate(msg.id):
+            self.x[id] = msg.x[i]
+            self.y[id] = msg.y[i]
+            self.z[id] = msg.z[i]
         self.uwb_sort(0, msg, self.uwb0)
 
     def Anchorcallback1(self, msg):
+        for i, id in enumerate(msg.id):
+            self.x[id] = msg.x[i]
+            self.y[id] = msg.y[i]
+            self.z[id] = msg.z[i]
         self.uwb_sort(1, msg, self.uwb1)
 
     def Anchorcallback2(self, msg):
+        for i, id in enumerate(msg.id):
+            self.x[id] = msg.x[i]
+            self.y[id] = msg.y[i]
+            self.z[id] = msg.z[i]
         self.uwb_sort(2, msg, self.uwb2)
     
     def Anchorcallback3(self, msg):
+        for i, id in enumerate(msg.id):
+            self.x[id] = msg.x[i]
+            self.y[id] = msg.y[i]
+            self.z[id] = msg.z[i]
         self.uwb_sort(3, msg, self.uwb3)
         
 
@@ -646,7 +739,7 @@ class Sensor_fusion:
 
         return z
     
-    def IMU_Positioning(self, Position, Heading):
+    def IMU_Positioning(self):
         if (self.I > (self.average_len*2)):
             
             # accel_bias, gyro_bias = self.calibrate_imu(imu_data, self.average_len*2)
@@ -664,10 +757,9 @@ class Sensor_fusion:
             # print("gyro_st :", self.acc - gyro -self.gyro_st)
             self.accel = vel_t.reshape(1, -1) @ self.acc - gyro -self.gyro_st
             self.accel = self.accel.reshape(1, -1)
-            self.accel = np.array([self.accel[0][0], self.accel[0][1], self.accel[0][2]])
             gyro_gx, gyro_gy, gyro_gz = self.euler_gyro_update(self.ang[0]-self.gyro_bias[0], self.ang[1]-self.gyro_bias[1], self.ang[2]-self.gyro_bias[2], self.dt, self.ang[0], self.ang[1], self.ang[2])
             acc_gx, acc_gy = self.euler_acc(self.ang[0]-self.gyro_bias[0], self.ang[1]-self.gyro_bias[1], self.ang[2]-self.gyro_bias[2])
-            qua_acc = self.euler_to_quaternion(acc_gx, acc_gy, Heading)
+            qua_acc = self.euler_to_quaternion(acc_gx, acc_gy, self.UWB_Heading)
             qua_kf = self.euler_to_quaternion(gyro_gx, gyro_gy, gyro_gz)
             # print(self.qua_acc)
             # np.eye(4) + self.dt * 1/2 *
@@ -692,14 +784,19 @@ class Sensor_fusion:
             gyro_gy   = np.real(gyro_gy)
             gyro_gz   = np.real(gyro_gz)
             
+            gyro_gz_D = np.sqrt(gyro_gx**2 + gyro_gy**2 + gyro_gz**2)
+            
             if (self.I == self.average_len*2+1):
                 ax, ay, az = [sum(coord[i] for coord in self.pos) / len(self.pos) for i in range(3)]
-                Position = np.array([ax, ay, az])
+                self.IMU_Position = np.array([ax, ay, az])
             
             # self.IMU_Position = self.UWB_Position + self.velocity * self.dt
             self.velocity = self.velocity + self.accel  * self.dt
-            Position = Position + self.velocity * self.dt + self.accel * self.dt**2 / 2
-            Heading = Heading + gyro_gz
+            print(self.velocity)
+            self.velocity = np.array([self.velocity[0][0], self.velocity[0][1], self.velocity[0][2]])
+            self.IMU_Position = self.UWB_Position + self.velocity * self.dt + self.accel * self.dt**2 / 2
+            self.IMU_Position = np.array([self.IMU_Position[0][0], self.IMU_Position[0][1], self.IMU_Position[0][2]])
+            self.IMU_Heading = gyro_gz + self.UWB_Heading
             
             
     
@@ -715,14 +812,17 @@ class Sensor_fusion:
 
             self.pos.append(self.UWB_Position)
             
+            self.IMU_Position = self.UWB_Position
+            # self.IMU_Heading = 0
             
+            # Position = self.pos / self.I
             
         self.I += 1
         self.statusIMU = False
         
-        return Position, Heading
+        # return Position, Heading
     
-    def UWB_Positioning(self, Position, Heading):
+    def UWB_Positioning(self):
         anch_pos = np.array([x + 1j*y for x, y in zip(self.UWB['x'], self.UWB['y'])])
                 
         if self.U == 0:
@@ -730,8 +830,8 @@ class Sensor_fusion:
             tag_pos_est, heading_est = self.GetUWBPos_v1(self.UWB['x'], self.UWB['y'], self.UWB['dist'], self.angles_from_heading)
             # heading_est = self.IMU['ang']['z']
         else:
-            tag_pos_est = np.array([self.tag_pos_b * np.exp(1j*(Heading)) + Position[0] + 1j*Position[1]])
-            heading_est = Heading
+            tag_pos_est = np.array([self.tag_pos_b * np.exp(1j*(self.IMU_Heading)) + self.IMU_Position[0] + 1j*self.IMU_Position[1]])
+            heading_est = self.UWB_Heading
             
         Xt_e = np.real(tag_pos_est)
         Yt_e = np.imag(tag_pos_est)
@@ -813,52 +913,63 @@ class Sensor_fusion:
         dist_n[indi[0], :] += biasV
 
 
-        # tag_center_pos_est, heading_est, Xt_c_e, Yt_c_e = self.GetUWBPosUpdate_v1(self.UWB['x'], self.UWB['y'], Xt_c_e, Yt_c_e, heading_est, self.rl, dist_n, self.angles_from_heading)
+        
         tag_center_pos_est, heading_est, Xt_c_e, Yt_c_e = self.GetUWBPosUpdate_v1(self.UWB['x'], self.UWB['y'], Xt_c_e, Yt_c_e, heading_est, self.rl, dist_n, self.angles_from_heading)
         
         tag_pos_est = self.get_tag_pos(tag_center_pos_est, heading_est, self.tag_pos_b)
         # self.UWBpos = np.array([Xt_c_e, Yt_c_e, 0]).reshape(-1, 1)
 
-        self.heading_est_a = np.append(self.heading_est_a, [heading_est], axis=0)
+        # self.heading_est_a = np.append(self.heading_est_a, [heading_est], axis=0)
+        if self.heading_est_a.size != 0:
+            if (heading_est - self.heading_est_a[self.U-1]) > np.pi:
+                self.heading_est_a = np.append(self.heading_est_a, [heading_est - 2 * np.pi], axis=0)
+            elif (self.heading_est_a[self.U-1] - heading_est) > np.pi:
+                self.heading_est_a = np.append(self.heading_est_a, [heading_est + 2 * np.pi], axis=0)
+            else:
+                self.heading_est_a = np.append(self.heading_est_a, [heading_est], axis=0)
+        else:
+            self.heading_est_a = np.append(self.heading_est_a, [heading_est], axis=0)
+            
+            
+        # print("test0", self.centerest_a_aver)
         self.centerest_a = np.append(self.centerest_a, np.array([Xt_c_e, Yt_c_e]).T, axis=0)
         if (self.U > (self.average_len*2)):
             MeanA = np.mean(self.centerest_a[self.U-19:self.U-10, 0] + 1j*self.centerest_a[self.U-19:self.U-10, 1])
             MeanB = np.mean(self.centerest_a[self.U-9:self.U, 0] + 1j*self.centerest_a[self.U-9:self.U, 1])
             self.UWB_Velocity = (self.centerest_a[-1, :] - self.centerest_a[-10, :])/0.3
-            self.centerest_a_aver = np.append(self.centerest_a_aver, np.array([[np.real(MeanB + (MeanB-MeanA)/2), np.imag(MeanB + (MeanB-MeanA)/2)]]), axis=0)
+            self.centerest_a_aver = np.array([[np.real(MeanB + (MeanB-MeanA)/2), np.imag(MeanB + (MeanB-MeanA)/2)]])
             MeanA_head = np.mean(self.heading_est_a[self.U-self.average_len*2+1:self.U-self.average_len])
             MeanB_head = np.mean(self.heading_est_a[self.U-self.average_len+1:self.U])
-            self.headingest_a_aver = np.append(self.headingest_a_aver, np.array([[MeanB_head + (MeanB_head-MeanA_head)/2]]), axis=0)
-            print("uwb vel :", self.UWB_Velocity)
+            # self.headingest_a_aver = np.append(self.headingest_a_aver, np.array([[MeanB_head + (MeanB_head-MeanA_head)/2]]), axis=0)
+            self.headingest_a_aver = np.mod(MeanB_head + (MeanB_head - MeanA_head) / 2, 2 * np.pi)
+            # print("uwb vel :", self.UWB_Velocity)
         else:
-            self.centerest_a_aver = np.append(self.centerest_a_aver, np.array([Xt_c_e, Yt_c_e]).T, axis=0)
-            self.headingest_a_aver = np.append(self.headingest_a_aver, [heading_est], axis=0)
+            self.centerest_a_aver = np.array([Xt_c_e, Yt_c_e]).T
+            self.headingest_a_aver = heading_est
             
         # print(self.IMU['ang']['x']-self.gyro_bias[0],"  ", self.IMU['ang']['y']-self.gyro_bias[1],"  ", self.IMU['ang']['z']-self.gyro_bias[2])
-        tag_pos_est_aver = self.get_tag_pos(self.centerest_a_aver[self.U, 0] + 1j*self.centerest_a_aver[self.U, 1], self.headingest_a_aver[self.U], self.tag_pos_b)
+        
+        tag_pos_est_aver = self.get_tag_pos(self.centerest_a_aver[0][0] + 1j*self.centerest_a_aver[0][1], self.headingest_a_aver, self.tag_pos_b)
+
 
         Xt_e = np.real(tag_pos_est_aver)
         Yt_e = np.imag(tag_pos_est_aver)
         Xt_c_e = np.mean(Xt_e)
         Yt_c_e = np.mean(Yt_e)
         
-        K_Xt_c_e = self.centerest_a_aver[self.U, 0] 
-        K_Yt_c_e = self.centerest_a_aver[self.U, 1]
+        # K_Xt_c_e = self.centerest_a_aver[self.U][0, 0]
+        # K_Yt_c_e = self.centerest_a_aver[self.U][0, 1]
         
-        self.K_tag_pos_est = self.tag_pos_b * np.exp(1j*(self.headingest_a_aver[self.U])) + K_Xt_c_e + 1j*K_Yt_c_e
-        self.K_tag_pos_est = self.K_tag_pos_est.reshape(1, -1)
-        self.K_heading_est = self.headingest_a_aver[self.U]
+        # self.K_tag_pos_est = self.tag_pos_b * np.exp(1j*(self.headingest_a_aver[self.U])) + K_Xt_c_e + 1j*K_Yt_c_e
+        # self.K_tag_pos_est = self.K_tag_pos_est.reshape(1, -1)
+        # self.K_heading_est = self.headingest_a_aver[self.U]
 
-        Xt_e = np.real(self.K_tag_pos_est)
-        Yt_e = np.imag(self.K_tag_pos_est)
-        Xt_c_e = np.mean(Xt_e)
-        Yt_c_e = np.mean(Yt_e)
-        
-        Position = np.array([Xt_c_e, Yt_c_e, 0])
-        Heading = self.K_heading_est[0]
+               
+        self.UWB_Position = np.array([Xt_c_e, Yt_c_e, 0])
+        self.UWB_Heading = self.headingest_a_aver
         # if self.imukalma_state == True:
         try:
-            print('===================================================================================')
+            # print('===================================================================================')
             R = 1e-2 * np.eye(6)
             TEMP = self.acc.T - self.gyro_st
             TEMP_bias = self.gyro_bias
@@ -885,11 +996,10 @@ class Sensor_fusion:
             pos_kf.predict()
             result = pos_kf.update()
 
-            print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+            # print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee2eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 
-            Position[0] = result[0][0]
-            Position[1] = result[1][0]
-            Heading = self.K_heading_est[0]
+            self.UWB_Position[0] = result[0][0]
+            self.UWB_Position[1] = result[1][0]
             # Position[3] = result[2][0]
             self.velocity[0] = result[3][0]
             self.velocity[1] = result[4][0]
@@ -913,50 +1023,58 @@ class Sensor_fusion:
         
         self.statusUWB = False
         
-        return Position, Heading
+        # return Position, Heading
     
     def main(self):
         self.Ln = 4
         self.Lp = 4
         self.average_len = 10
         
+        plt.ion()
+        
         Position = np.array([0, 0, 0])
         Heading = 0
         self.pos =[]
         self.UWB_Position = np.array([0, 0, 0])
-        self.IMU_Position = np.array([0, 0, 0])
+        self.IMU_Position = self.UWB_Position
         self.UWB_Heading= 0
-        self.IMU_Heading = 0
+        self.IMU_Heading = self.UWB_Heading
         self.gyro_st = np.array([0, 0, 0])
+        self.imukalma_state = False
+        fig, ax = plt.subplots()
         
         while not rospy.is_shutdown():
             
             try:
                 if self.statusIMU == True:
-                    Position, Heading = self.IMU_Positioning(Position, Heading)
-                    
+                    self.IMU_Positioning()
+                    Position = self.IMU_Position
+                    Heading = self.IMU_Heading
                     # print("I", Position, Heading)
                 if self.statusUWB == True:
-                    Position, Heading = self.UWB_Positioning(Position, Heading)
-                    
+                    self.UWB_Positioning()
+                    Position = self.UWB_Position
+                    Heading = self.IMU_Heading
                     # print("U", Position, Heading)
                     
                 else:
                     self.uwb_init()
-                pos = Quaternion()
-                posp = rospy.Publisher('/fusion/positioning', Quaternion, queue_size=10)
-                pos.x = Position[0]
-                pos.y = Position[1]
-                pos.z = 0
-                pos.w = Heading
-                posp.publish(pos)
+                    
+                # pos = Quaternion()
+                # posp = rospy.Publisher('/fusion/positioning', Quaternion, queue_size=10)
+                # pos.x = Position[0]
+                # pos.y = Position[1]
+                # pos.z = 0
+                # pos.w = Heading
+                # posp.publish(pos)
                 
                 # print("re", Position)
                 tag_pos_est = np.array([self.tag_pos_b * np.exp(1j*(Heading)) + Position[0] + 1j*Position[1]])
                 tag_e = np.array([[np.real(tag), np.imag(tag)] for tag in tag_pos_est]).T
-                plt.figure(2)
+                # plt.figure(2)
                 plt.clf()  # Clear the figure
                 plt.axes().set_aspect('equal')
+                
                 plt.text(self.UWB['x'][0], self.UWB['y'][0], self.UWB['id'][0], fontsize=12, color='red')
                 plt.text(self.UWB['x'][1], self.UWB['y'][1], self.UWB['id'][1], fontsize=12, color='red')
                 plt.text(self.UWB['x'][2], self.UWB['y'][2], self.UWB['id'][2], fontsize=12, color='red')
@@ -970,7 +1088,6 @@ class Sensor_fusion:
                 
                 
                 plt.quiver(Position[0], Position[1], np.cos(Heading+np.pi/2), np.sin(Heading+np.pi/2), color='r', scale=1, scale_units='xy', angles='xy')
-                # plt.quiver(Position[0], Position[1], np.cos(self.K_heading_est+np.pi/2), np.sin(self.K_heading_est+np.pi/2), color='g', scale=1, scale_units='xy', angles='xy')
                 
                 
                 plt.pause(0.001)
