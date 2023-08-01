@@ -2,7 +2,7 @@
 ## Makefile generated for component 'TestTotal'. 
 ## 
 ## Makefile     : TestTotal_rtw.mk
-## Generated on : Tue Aug 01 15:24:56 2023
+## Generated on : Tue Aug 01 16:36:40 2023
 ## Final product: ./TestTotal.a
 ## Product type : static-library
 ## 
@@ -167,7 +167,7 @@ DEFINES = $(DEFINES_CUSTOM) $(DEFINES_STANDARD)
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = $(START_DIR)/codegen/lib/TestTotal/TestTotal_data.c $(START_DIR)/codegen/lib/TestTotal/rt_nonfinite.c $(START_DIR)/codegen/lib/TestTotal/rtGetNaN.c $(START_DIR)/codegen/lib/TestTotal/rtGetInf.c $(START_DIR)/codegen/lib/TestTotal/TestTotal_initialize.c $(START_DIR)/codegen/lib/TestTotal/TestTotal_terminate.c $(START_DIR)/codegen/lib/TestTotal/TestTotal.c $(START_DIR)/codegen/lib/TestTotal/randn.c $(START_DIR)/codegen/lib/TestTotal/rand.c $(START_DIR)/codegen/lib/TestTotal/sum.c $(START_DIR)/codegen/lib/TestTotal/find.c $(START_DIR)/codegen/lib/TestTotal/inv.c $(START_DIR)/codegen/lib/TestTotal/dec2bin.c $(START_DIR)/codegen/lib/TestTotal/minOrMax.c $(START_DIR)/codegen/lib/TestTotal/reverse.c $(START_DIR)/codegen/lib/TestTotal/mean.c $(START_DIR)/codegen/lib/TestTotal/mod.c $(START_DIR)/codegen/lib/TestTotal/eml_rand_mt19937ar_stateful.c $(START_DIR)/codegen/lib/TestTotal/UWBpos.c $(START_DIR)/codegen/lib/TestTotal/TwoAnchPos3.c $(START_DIR)/codegen/lib/TestTotal/exp.c $(START_DIR)/codegen/lib/TestTotal/eml_rand_mt19937ar.c $(START_DIR)/codegen/lib/TestTotal/GetPosRefine2.c $(START_DIR)/codegen/lib/TestTotal/TestTotal_rtwutil.c
+SRCS = $(START_DIR)/codegen/lib/TestTotal/TestTotal_data.c $(START_DIR)/codegen/lib/TestTotal/rt_nonfinite.c $(START_DIR)/codegen/lib/TestTotal/rtGetNaN.c $(START_DIR)/codegen/lib/TestTotal/rtGetInf.c $(START_DIR)/codegen/lib/TestTotal/TestTotal_initialize.c $(START_DIR)/codegen/lib/TestTotal/TestTotal_terminate.c $(START_DIR)/codegen/lib/TestTotal/TestTotal.c $(START_DIR)/codegen/lib/TestTotal/randn.c $(START_DIR)/codegen/lib/TestTotal/rand.c $(START_DIR)/codegen/lib/TestTotal/UWBpos.c $(START_DIR)/codegen/lib/TestTotal/find.c $(START_DIR)/codegen/lib/TestTotal/inv.c $(START_DIR)/codegen/lib/TestTotal/dec2bin.c $(START_DIR)/codegen/lib/TestTotal/mod.c $(START_DIR)/codegen/lib/TestTotal/eml_rand_mt19937ar_stateful.c $(START_DIR)/codegen/lib/TestTotal/TwoAnchPos3.c $(START_DIR)/codegen/lib/TestTotal/exp.c $(START_DIR)/codegen/lib/TestTotal/eml_rand_mt19937ar.c $(START_DIR)/codegen/lib/TestTotal/GetPosRefine2.c $(START_DIR)/codegen/lib/TestTotal/TestTotal_rtwutil.c
 
 ALL_SRCS = $(SRCS)
 
@@ -175,7 +175,7 @@ ALL_SRCS = $(SRCS)
 ## OBJECTS
 ###########################################################################
 
-OBJS = TestTotal_data.o rt_nonfinite.o rtGetNaN.o rtGetInf.o TestTotal_initialize.o TestTotal_terminate.o TestTotal.o randn.o rand.o sum.o find.o inv.o dec2bin.o minOrMax.o reverse.o mean.o mod.o eml_rand_mt19937ar_stateful.o UWBpos.o TwoAnchPos3.o exp.o eml_rand_mt19937ar.o GetPosRefine2.o TestTotal_rtwutil.o
+OBJS = TestTotal_data.o rt_nonfinite.o rtGetNaN.o rtGetInf.o TestTotal_initialize.o TestTotal_terminate.o TestTotal.o randn.o rand.o UWBpos.o find.o inv.o dec2bin.o mod.o eml_rand_mt19937ar_stateful.o TwoAnchPos3.o exp.o eml_rand_mt19937ar.o GetPosRefine2.o TestTotal_rtwutil.o
 
 ALL_OBJS = $(OBJS)
 
@@ -334,7 +334,7 @@ rand.o : $(START_DIR)/codegen/lib/TestTotal/rand.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-sum.o : $(START_DIR)/codegen/lib/TestTotal/sum.c
+UWBpos.o : $(START_DIR)/codegen/lib/TestTotal/UWBpos.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
@@ -350,27 +350,11 @@ dec2bin.o : $(START_DIR)/codegen/lib/TestTotal/dec2bin.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-minOrMax.o : $(START_DIR)/codegen/lib/TestTotal/minOrMax.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-reverse.o : $(START_DIR)/codegen/lib/TestTotal/reverse.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-mean.o : $(START_DIR)/codegen/lib/TestTotal/mean.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
 mod.o : $(START_DIR)/codegen/lib/TestTotal/mod.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
 eml_rand_mt19937ar_stateful.o : $(START_DIR)/codegen/lib/TestTotal/eml_rand_mt19937ar_stateful.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-UWBpos.o : $(START_DIR)/codegen/lib/TestTotal/UWBpos.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 

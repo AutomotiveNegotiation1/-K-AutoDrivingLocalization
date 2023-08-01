@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2023a">
-  <configuration build-checksum="2483259062" file="/home/bman/work/position/src/positioning/matlab/algorithm/TestTotal.prj" location="/home/bman/work/position/src/positioning/matlab/algorithm" name="TestTotal" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="317642279" file="/home/bman/work/position/src/positioning/matlab/algorithm/TestTotal.prj" location="/home/bman/work/position/src/positioning/matlab/algorithm" name="TestTotal" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
       <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
@@ -611,17 +611,17 @@
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
     <var.redirectedInputTypeData />
-    <var.DismissScreener>true</var.DismissScreener>
+    <var.DismissScreener>false</var.DismissScreener>
     <param.unifiedParamStorage />
     <param.hdlParamStorage />
     <var.gc.lastOutputRoot>codegen/lib/TestTotal</var.gc.lastOutputRoot>
     <var.gc.lastOutputType>C_CODE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>308384367</var.gc.preBuildChecksum>
+    <var.gc.preBuildChecksum>2492252926</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot>codegen/mex/TestTotal</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>704426364</var.cfi.preBuildChecksum>
+    <var.cfi.preBuildChecksum>3460877430</var.cfi.preBuildChecksum>
     <var.lastCfiTestSnippet>TestFunction</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetInitPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetMultiTagPosGen.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetPos2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetPosRefine2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/InterpPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/TestTotal.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/ThreeAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/TwoAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/UWBpos.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;4090514901&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetInitPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetMultiTagPosGen.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetPos2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetPosRefine2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/InterpPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/TestTotal.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/ThreeAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/TwoAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/UWBpos.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3991273460&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
     <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetInitPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetMultiTagPosGen.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetPos2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetPosRefine2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/InterpPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/TestTotal.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/ThreeAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/TwoAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/UWBpos.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.NoDefaultJIT>false</param.NoDefaultJIT>
@@ -759,6 +759,7 @@
       <var.MirrorOnOpen />
       <param.FixedPointEnabled />
       <var.redirectedInputTypeData />
+      <var.DismissScreener />
       <param.unifiedParamStorage />
       <param.hdlParamStorage />
       <var.outdatedOnRestore />

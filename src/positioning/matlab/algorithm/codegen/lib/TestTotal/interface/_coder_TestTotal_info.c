@@ -5,7 +5,7 @@
  * File: _coder_TestTotal_info.c
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 15:24:45
+ * C/C++ source code generated on  : 01-Aug-2023 16:36:28
  */
 
 /* Include Files */
@@ -88,7 +88,7 @@ mxArray *emlrtMexFcnProperties(void)
                 emlrtMxCreateString("/home/bman/work/position/src/positioning/"
                                     "matlab/algorithm/TestTotal.m"));
   emlrtSetField(xEntryPoints, 0, "TimeStamp",
-                emlrtMxCreateDoubleScalar(739099.6415393519));
+                emlrtMxCreateDoubleScalar(739099.69104166667));
   xResult =
       emlrtCreateStructMatrix(1, 1, 7, (const char_T **)&propFieldName[0]);
   emlrtSetField(xResult, 0, "Version",

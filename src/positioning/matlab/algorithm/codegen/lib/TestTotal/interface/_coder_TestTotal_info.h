@@ -5,7 +5,7 @@
  * File: _coder_TestTotal_info.h
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 15:24:45
+ * C/C++ source code generated on  : 01-Aug-2023 16:36:28
  */
 
 #ifndef _CODER_TESTTOTAL_INFO_H

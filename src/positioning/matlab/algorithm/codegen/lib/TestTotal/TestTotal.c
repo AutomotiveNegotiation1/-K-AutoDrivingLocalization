@@ -5,86 +5,23 @@
  * File: TestTotal.c
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 15:24:45
+ * C/C++ source code generated on  : 01-Aug-2023 16:36:28
  */
 
 /* Include Files */
 #include "TestTotal.h"
-#include "GetPosRefine2.h"
 #include "TestTotal_data.h"
 #include "TestTotal_initialize.h"
 #include "TestTotal_rtwutil.h"
-#include "TwoAnchPos3.h"
-#include "dec2bin.h"
-#include "exp.h"
-#include "find.h"
-#include "inv.h"
-#include "mean.h"
-#include "minOrMax.h"
-#include "mod.h"
+#include "UWBpos.h"
 #include "rand.h"
 #include "randn.h"
-#include "reverse.h"
-#include "rt_nonfinite.h"
-#include "sum.h"
 #include "rt_nonfinite.h"
 #include <math.h>
+#include <stdio.h>
 #include <string.h>
 
-/* Function Declarations */
-static double rt_powd_snf(double u0, double u1);
-
 /* Function Definitions */
-/*
- * Arguments    : double u0
- *                double u1
- * Return Type  : double
- */
-static double rt_powd_snf(double u0, double u1)
-{
-  double y;
-  if (rtIsNaN(u0) || rtIsNaN(u1)) {
-    y = rtNaN;
-  } else {
-    double d;
-    double d1;
-    d = fabs(u0);
-    d1 = fabs(u1);
-    if (rtIsInf(u1)) {
-      if (d == 1.0) {
-        y = 1.0;
-      } else if (d > 1.0) {
-        if (u1 > 0.0) {
-          y = rtInf;
-        } else {
-          y = 0.0;
-        }
-      } else if (u1 > 0.0) {
-        y = 0.0;
-      } else {
-        y = rtInf;
-      }
-    } else if (d1 == 0.0) {
-      y = 1.0;
-    } else if (d1 == 1.0) {
-      if (u1 > 0.0) {
-        y = u0;
-      } else {
-        y = 1.0 / u0;
-      }
-    } else if (u1 == 2.0) {
-      y = u0 * u0;
-    } else if ((u1 == 0.5) && (u0 >= 0.0)) {
-      y = sqrt(u0);
-    } else if ((u0 < 0.0) && (u1 > floor(u1))) {
-      y = rtNaN;
-    } else {
-      y = pow(u0, u1);
-    }
-  }
-  return y;
-}
-
 /*
  * clear all;
  *
@@ -1863,30 +1800,11 @@ void TestTotal(creal_T tag_pos_est[4], double *heading_est,
       72.0, 72.1, 72.2, 72.3, 72.4, 72.5, 72.6, 72.7, 72.8};
   static const signed char iv[6] = {10, 10, -10, -10, 20, -20};
   static const signed char iv1[6] = {10, -10, -10, 10, 15, -15};
-  creal_T Est_C[16];
-  creal_T Pos2C[8];
-  creal_T tmp_data[4];
-  creal_T CandPos;
-  creal_T Est_H_p;
-  creal_T MeanB;
   double RxID_data[4];
-  double RxDist[2];
-  int IndT_data[6];
   int RxID_size[2];
-  int tmp_size[2];
-  int xa_size[2];
-  int Est_F_tmp;
-  int L1;
-  int L2;
-  int a_tmp;
-  int b_a_tmp;
   int b_r;
   int i;
-  int i1;
-  int loop_ub;
-  int n;
-  char Va_data[64];
-  char b_tmp_data[64];
+  int y_re;
   if (!isInitialized_TestTotal) {
     TestTotal_initialize();
   }
@@ -1911,63 +1829,77 @@ void TestTotal(creal_T tag_pos_est[4], double *heading_est,
   /*  flag = 0; */
   RxID_size[0] = 1;
   for (b_r = 0; b_r < 729; b_r++) {
-    double DistT_data[24];
+    creal_T tag_pos_g[4];
+    double b[24];
     double dist_o[24];
     double RxDist_data[4];
     double Nanchor;
-    double Px_re_tmp;
-    double a_im_tmp;
     double a_re_tmp;
-    double b_re;
-    double d;
     double denom;
     double im;
     double numer;
     double pt;
     double re;
-    double s_time;
     double t;
     double u;
-    int c_r;
-    int loop_ub_tmp;
+    double xt_idx_0;
+    double xt_idx_1;
+    double xt_idx_2;
+    double yt_idx_0;
+    double yt_idx_1;
+    double yt_idx_2;
+    int a_tmp;
+    int b_a_tmp;
     /* %%%%%%%%% Create ground-truth Tag posigion & distance %%%%%%%%%% */
-    d = dv[b_r];
-    MeanB.re = cos(d);
-    MeanB.im = sin(d);
-    d = dv1[b_r];
-    Est_H_p.re = d * 0.0;
-    re = dv2[b_r];
-    denom = dcv[0].im * MeanB.im;
-    a_re_tmp = dcv[0].re * MeanB.re;
-    numer = dcv[0].im * MeanB.re;
-    a_im_tmp = dcv[0].re * MeanB.im;
-    b_re = ((numer - a_im_tmp) + re) + Est_H_p.re;
-    im = (denom + a_re_tmp) + d;
-    t = ((a_re_tmp - denom) + re) + Est_H_p.re;
-    Px_re_tmp = ((numer - denom) + re) + Est_H_p.re;
-    pt = ((a_re_tmp - a_im_tmp) + re) + Est_H_p.re;
-    u = (a_im_tmp + numer) + d;
-    denom = (denom + numer) + d;
-    d += a_im_tmp + a_re_tmp;
-    for (n = 0; n < 6; n++) {
-      a_tmp = iv[n];
-      a_im_tmp = (double)a_tmp - t;
-      b_a_tmp = iv1[n];
-      numer = (double)b_a_tmp - u;
-      dist_o[n] = sqrt(a_im_tmp * a_im_tmp + numer * numer);
-      a_im_tmp = (double)a_tmp - Px_re_tmp;
-      numer = (double)b_a_tmp - denom;
-      dist_o[n + 6] = sqrt(a_im_tmp * a_im_tmp + numer * numer);
-      a_im_tmp = (double)a_tmp - pt;
-      numer = (double)b_a_tmp - d;
-      dist_o[n + 12] = sqrt(a_im_tmp * a_im_tmp + numer * numer);
-      a_im_tmp = (double)a_tmp - b_re;
-      numer = (double)b_a_tmp - im;
-      dist_o[n + 18] = sqrt(a_im_tmp * a_im_tmp + numer * numer);
+    denom = dv[b_r];
+    numer = cos(denom);
+    denom = sin(denom);
+    t = dv1[b_r];
+    y_re = (int)(t * 0.0);
+    u = dv2[b_r];
+    Nanchor = dcv[0].im * denom;
+    a_re_tmp = dcv[0].re * numer;
+    pt = dcv[0].im * numer;
+    numer = dcv[0].re * denom;
+    re = ((a_re_tmp - Nanchor) + u) + (double)y_re;
+    im = (numer + pt) + t;
+    tag_pos_g[0].re = re;
+    tag_pos_g[0].im = im;
+    xt_idx_0 = re;
+    yt_idx_0 = im;
+    re = ((pt - Nanchor) + u) + (double)y_re;
+    im = (Nanchor + pt) + t;
+    tag_pos_g[1].re = re;
+    tag_pos_g[1].im = im;
+    xt_idx_1 = re;
+    yt_idx_1 = im;
+    re = ((a_re_tmp - numer) + u) + (double)y_re;
+    im = (numer + a_re_tmp) + t;
+    tag_pos_g[2].re = re;
+    tag_pos_g[2].im = im;
+    xt_idx_2 = re;
+    yt_idx_2 = im;
+    re = ((pt - numer) + u) + (double)y_re;
+    im = (Nanchor + a_re_tmp) + t;
+    for (y_re = 0; y_re < 6; y_re++) {
+      a_tmp = iv[y_re];
+      numer = (double)a_tmp - xt_idx_0;
+      b_a_tmp = iv1[y_re];
+      denom = (double)b_a_tmp - yt_idx_0;
+      dist_o[y_re] = sqrt(numer * numer + denom * denom);
+      numer = (double)a_tmp - xt_idx_1;
+      denom = (double)b_a_tmp - yt_idx_1;
+      dist_o[y_re + 6] = sqrt(numer * numer + denom * denom);
+      numer = (double)a_tmp - xt_idx_2;
+      denom = (double)b_a_tmp - yt_idx_2;
+      dist_o[y_re + 12] = sqrt(numer * numer + denom * denom);
+      numer = (double)a_tmp - re;
+      denom = (double)b_a_tmp - im;
+      dist_o[y_re + 18] = sqrt(numer * numer + denom * denom);
     }
     /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
     /* %%%%%%%%%%%%% Create simulation data by distance %%%%%%%%%%%%%% */
-    randn(DistT_data);
+    randn(b);
     /* if (r > InitLeng) */
     /* dist(1,1:Ln) = dist_a(1,1:Ln)+3; */
     /*          dist = dist_a; */
@@ -1979,15 +1911,15 @@ void TestTotal(creal_T tag_pos_est[4], double *heading_est,
     Nanchor = fmin((floor(numer * 8.0) + 1.0) + 1.0, 4.0);
     /*      Nanchor = randi(4); */
     /*      Nanchor = 4; */
-    loop_ub_tmp = (int)Nanchor;
+    y_re = (int)Nanchor;
     RxID_size[1] = (int)Nanchor;
-    if (loop_ub_tmp - 1 >= 0) {
-      memset(&RxID_data[0], 0, (unsigned int)loop_ub_tmp * sizeof(double));
+    if (y_re - 1 >= 0) {
+      memset(&RxID_data[0], 0, (unsigned int)y_re * sizeof(double));
     }
     t = 0.0;
     i = (int)((Nanchor - 1.0) + 1.0);
-    for (n = 0; n < i; n++) {
-      numer = Nanchor - (double)n;
+    for (y_re = 0; y_re < i; y_re++) {
+      numer = Nanchor - (double)y_re;
       denom = 6.0 - t;
       pt = numer / (6.0 - t);
       u = b_rand();
@@ -1997,1141 +1929,39 @@ void TestTotal(creal_T tag_pos_est[4], double *heading_est,
         pt += (1.0 - pt) * (numer / denom);
       }
       t++;
-      numer = b_rand() * ((double)n + 1.0);
+      numer = b_rand() * ((double)y_re + 1.0);
       numer = floor(numer);
-      RxID_data[n] = RxID_data[(int)(numer + 1.0) - 1];
+      RxID_data[y_re] = RxID_data[(int)(numer + 1.0) - 1];
       RxID_data[(int)(numer + 1.0) - 1] = t;
     }
     b_rand();
     if (b_r == 0) {
-      c_r = 0;
+      y_re = 0;
     } else {
-      c_r = (int)fmod(((double)b_r + 1.0) - 1.0, 4.0);
+      y_re = (int)fmod(((double)b_r + 1.0) - 1.0, 4.0);
     }
-    b_a_tmp = (int)Nanchor;
-    for (i = 0; i < b_a_tmp; i++) {
-      n = ((int)RxID_data[i] + 6 * c_r) - 1;
-      RxDist_data[i] = dist_o[n] + 0.1 * DistT_data[n];
+    a_tmp = (int)Nanchor;
+    for (i = 0; i < a_tmp; i++) {
+      b_a_tmp = ((int)RxID_data[i] + 6 * y_re) - 1;
+      RxDist_data[i] = dist_o[b_a_tmp] + 0.1 * b[b_a_tmp];
     }
-    s_time = dv3[b_r];
-    r++;
-    *heading_est = 0.0;
-    memset(&tag_pos_est[0], 0, 4U * sizeof(creal_T));
-    memset(&tag_pos_est_aver[0], 0, 4U * sizeof(creal_T));
-    *headingest_a_aver_v = 0.0;
-    if (r < 40.0) {
-      for (n = 0; n < loop_ub_tmp; n++) {
-        /*              for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
-        a_tmp = ((int)RxID_data[n] + 6 * c_r) - 1;
-        TagDistInitCount[a_tmp]++;
-        numer = TagDistInitCount[a_tmp];
-        TagDistInit[a_tmp] =
-            TagDistInit[a_tmp] * (numer - 1.0) / numer + RxDist_data[n] / numer;
-        /*              end */
-      }
-    } else if (r == 40.0) {
-      double b_DistT_data[6];
-      double Sel_C_im;
-      double Sel_C_re;
-      double Sel_F;
-      signed char xa_data[6];
-      signed char ya_data[6];
-      bool bv[6];
-      for (n = 0; n < loop_ub_tmp; n++) {
-        /*              for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
-        a_tmp = ((int)RxID_data[n] + 6 * c_r) - 1;
-        TagDistInitCount[a_tmp]++;
-        numer = TagDistInitCount[a_tmp];
-        TagDistInit[a_tmp] =
-            TagDistInit[a_tmp] * (numer - 1.0) / numer + RxDist_data[n] / numer;
-        /*              end */
-      }
-      for (n = 0; n < 24; n++) {
-        d = TagDistInit[n];
-        dist_o[n] = d;
-        if (d == 0.0) {
-          dist_o[n] = 1.0E+6;
-        }
-      }
-      sum(dist_o, b_DistT_data);
-      for (i = 0; i < 6; i++) {
-        bv[i] = (b_DistT_data[i] < 100000.0);
-      }
-      c_r = eml_find(bv, IndT_data);
-      for (i = 0; i < 4; i++) {
-        for (i1 = 0; i1 < c_r; i1++) {
-          DistT_data[i1 + c_r * i] = dist_o[(IndT_data[i1] + 6 * i) - 1];
-        }
-      }
-      for (i = 0; i < c_r; i++) {
-        i1 = IndT_data[i];
-        xa_data[i] = iv[i1 - 1];
-        ya_data[i] = iv1[i1 - 1];
-      }
-      Sel_F = 1.0E+7;
-      Sel_C_re = 0.0;
-      Sel_C_im = 0.0;
-      *heading_est = 0.0;
-      for (L1 = 0; L1 < c_r; L1++) {
-        i = c_r - L1;
-        if (i - 2 >= 0) {
-          loop_ub = c_r;
-        }
-        for (L2 = 0; L2 <= i - 2; L2++) {
-          double b_Est_F[16];
-          double b_Est_H[16];
-          n = (L1 + L2) + 1;
-          for (a_tmp = 0; a_tmp < 4; a_tmp++) {
-            creal_T b_xa_data[6];
-            double Est_F[2];
-            double Est_H[2];
-            Est_F[0] = xa_data[L1];
-            Est_F[1] = xa_data[n];
-            Est_H[0] = ya_data[L1];
-            Est_H[1] = ya_data[n];
-            RxDist[0] = dist_o[(IndT_data[L1] + 6 * a_tmp) - 1];
-            RxDist[1] = dist_o[(IndT_data[n] + 6 * a_tmp) - 1];
-            xa_size[0] = 1;
-            xa_size[1] = c_r;
-            for (i1 = 0; i1 < loop_ub; i1++) {
-              b_xa_data[i1].re = xa_data[i1];
-              b_xa_data[i1].im = ya_data[i1];
-              b_DistT_data[i1] = DistT_data[i1 + c_r * a_tmp];
-            }
-            double yt[4];
-            double Prob2[2];
-            TwoAnchPos3(Est_F, Est_H, RxDist, b_xa_data, xa_size, b_DistT_data,
-                        c_r, yt, Prob2);
-            Pos2C[a_tmp].re = yt[0];
-            Pos2C[a_tmp].im = yt[2];
-            Pos2C[a_tmp + 4].re = yt[1];
-            Pos2C[a_tmp + 4].im = yt[3];
-          }
-          for (a_tmp = 0; a_tmp < 16; a_tmp++) {
-            double ia_data[64];
-            double ai_tmp;
-            double ar_tmp;
-            double b_ai_tmp;
-            double b_ar_tmp;
-            double c_ai_tmp;
-            double c_ar_tmp;
-            int Va_size[2];
-            dec2bin(a_tmp, Va_data, Va_size);
-            b_a_tmp = Va_size[1];
-            for (n = 0; n < b_a_tmp; n++) {
-              if (Va_data[n] == '0') {
-                ia_data[n] = 1.0;
-              } else if (Va_data[n] == '1') {
-                ia_data[n] = 2.0;
-              } else {
-                ia_data[n] = 1.0;
-              }
-            }
-            /*  NB = length(tag_pos_b); */
-            n = ((int)ia_data[0] - 1) << 2;
-            a_im_tmp = Pos2C[n].re;
-            a_re_tmp = Pos2C[n].im;
-            if (a_re_tmp == 0.0) {
-              i1 = Va_size[1];
-              t = a_im_tmp / (double)Va_size[1];
-              numer = 0.0;
-            } else if (a_im_tmp == 0.0) {
-              t = 0.0;
-              i1 = Va_size[1];
-              numer = a_re_tmp / (double)Va_size[1];
-            } else {
-              i1 = Va_size[1];
-              t = a_im_tmp / (double)Va_size[1];
-              numer = a_re_tmp / (double)Va_size[1];
-            }
-            re = t;
-            im = numer;
-            n = (((int)ia_data[1] - 1) << 2) + 1;
-            ar_tmp = Pos2C[n].re;
-            ai_tmp = Pos2C[n].im;
-            if (ai_tmp == 0.0) {
-              t = ar_tmp / (double)i1;
-              numer = 0.0;
-            } else if (ar_tmp == 0.0) {
-              t = 0.0;
-              numer = ai_tmp / (double)i1;
-            } else {
-              t = ar_tmp / (double)i1;
-              numer = ai_tmp / (double)i1;
-            }
-            re += t;
-            im += numer;
-            n = (((int)ia_data[2] - 1) << 2) + 2;
-            b_ar_tmp = Pos2C[n].re;
-            b_ai_tmp = Pos2C[n].im;
-            if (b_ai_tmp == 0.0) {
-              t = b_ar_tmp / (double)i1;
-              numer = 0.0;
-            } else if (b_ar_tmp == 0.0) {
-              t = 0.0;
-              numer = b_ai_tmp / (double)i1;
-            } else {
-              t = b_ar_tmp / (double)i1;
-              numer = b_ai_tmp / (double)i1;
-            }
-            re += t;
-            im += numer;
-            n = (((int)ia_data[3] - 1) << 2) + 3;
-            c_ar_tmp = Pos2C[n].re;
-            c_ai_tmp = Pos2C[n].im;
-            if (c_ai_tmp == 0.0) {
-              t = c_ar_tmp / (double)i1;
-              numer = 0.0;
-            } else if (c_ar_tmp == 0.0) {
-              t = 0.0;
-              numer = c_ai_tmp / (double)i1;
-            } else {
-              t = c_ar_tmp / (double)i1;
-              numer = c_ai_tmp / (double)i1;
-            }
-            re += t;
-            im += numer;
-            Px_re_tmp = a_im_tmp - re;
-            u = a_re_tmp - im;
-            if (dcv[0].im == 0.0) {
-              if (u == 0.0) {
-                d = dcv[0].re;
-                t = Px_re_tmp / dcv[0].re;
-                numer = 0.0;
-              } else if (Px_re_tmp == 0.0) {
-                t = 0.0;
-                d = dcv[0].re;
-                numer = u / dcv[0].re;
-              } else {
-                d = dcv[0].re;
-                t = Px_re_tmp / dcv[0].re;
-                numer = u / dcv[0].re;
-              }
-            } else {
-              d = dcv[0].re;
-              if (dcv[0].re == 0.0) {
-                if (Px_re_tmp == 0.0) {
-                  t = u / dcv[0].im;
-                  numer = 0.0;
-                } else if (u == 0.0) {
-                  t = 0.0;
-                  numer = -(Px_re_tmp / dcv[0].im);
-                } else {
-                  t = u / dcv[0].im;
-                  numer = -(Px_re_tmp / dcv[0].im);
-                }
-              } else {
-                pt = fabs(dcv[0].re);
-                numer = fabs(dcv[0].im);
-                if (pt > numer) {
-                  numer = dcv[0].im / dcv[0].re;
-                  denom = dcv[0].re + numer * dcv[0].im;
-                  t = (Px_re_tmp + numer * u) / denom;
-                  numer = (u - numer * Px_re_tmp) / denom;
-                } else if (numer == pt) {
-                  if (dcv[0].re > 0.0) {
-                    numer = 0.5;
-                  } else {
-                    numer = -0.5;
-                  }
-                  if (dcv[0].im > 0.0) {
-                    denom = 0.5;
-                  } else {
-                    denom = -0.5;
-                  }
-                  t = (Px_re_tmp * numer + u * denom) / pt;
-                  numer = (u * numer - Px_re_tmp * denom) / pt;
-                } else {
-                  numer = dcv[0].re / dcv[0].im;
-                  denom = dcv[0].im + numer * dcv[0].re;
-                  t = (numer * Px_re_tmp + u) / denom;
-                  numer = (numer * u - Px_re_tmp) / denom;
-                }
-              }
-            }
-            Est_H_p.re = t;
-            Est_H_p.im = numer;
-            Px_re_tmp = ar_tmp - re;
-            u = ai_tmp - im;
-            if (dcv[0].im == 0.0) {
-              if (u == 0.0) {
-                t = Px_re_tmp / dcv[0].im;
-                numer = 0.0;
-              } else if (Px_re_tmp == 0.0) {
-                t = 0.0;
-                numer = u / dcv[0].im;
-              } else {
-                t = Px_re_tmp / dcv[0].im;
-                numer = u / dcv[0].im;
-              }
-            } else if (dcv[0].im == 0.0) {
-              if (Px_re_tmp == 0.0) {
-                t = u / dcv[0].im;
-                numer = 0.0;
-              } else if (u == 0.0) {
-                t = 0.0;
-                numer = -(Px_re_tmp / dcv[0].im);
-              } else {
-                t = u / dcv[0].im;
-                numer = -(Px_re_tmp / dcv[0].im);
-              }
-            } else {
-              pt = fabs(dcv[0].im);
-              if (dcv[0].im > 0.0) {
-                numer = 0.5;
-              } else {
-                numer = -0.5;
-              }
-              denom = u * numer;
-              numer *= Px_re_tmp;
-              t = (numer + denom) / pt;
-              numer = (denom - numer) / pt;
-            }
-            Est_H_p.re += t;
-            Est_H_p.im += numer;
-            Px_re_tmp = b_ar_tmp - re;
-            u = b_ai_tmp - im;
-            if (d == 0.0) {
-              if (u == 0.0) {
-                t = Px_re_tmp / d;
-                numer = 0.0;
-              } else if (Px_re_tmp == 0.0) {
-                t = 0.0;
-                numer = u / d;
-              } else {
-                t = Px_re_tmp / d;
-                numer = u / d;
-              }
-            } else if (d == 0.0) {
-              if (Px_re_tmp == 0.0) {
-                t = u / d;
-                numer = 0.0;
-              } else if (u == 0.0) {
-                t = 0.0;
-                numer = -(Px_re_tmp / d);
-              } else {
-                t = u / d;
-                numer = -(Px_re_tmp / d);
-              }
-            } else {
-              pt = fabs(d);
-              if (d > 0.0) {
-                numer = 0.5;
-              } else {
-                numer = -0.5;
-              }
-              denom = u * numer;
-              numer *= Px_re_tmp;
-              t = (numer + denom) / pt;
-              numer = (denom - numer) / pt;
-            }
-            Est_H_p.re += t;
-            Est_H_p.im += numer;
-            Px_re_tmp = c_ar_tmp - re;
-            u = c_ai_tmp - im;
-            if (d == 0.0) {
-              if (u == 0.0) {
-                t = Px_re_tmp / dcv[0].im;
-                numer = 0.0;
-              } else if (Px_re_tmp == 0.0) {
-                t = 0.0;
-                numer = u / dcv[0].im;
-              } else {
-                t = Px_re_tmp / dcv[0].im;
-                numer = u / dcv[0].im;
-              }
-            } else if (dcv[0].im == 0.0) {
-              if (Px_re_tmp == 0.0) {
-                t = u / d;
-                numer = 0.0;
-              } else if (u == 0.0) {
-                t = 0.0;
-                numer = -(Px_re_tmp / d);
-              } else {
-                t = u / d;
-                numer = -(Px_re_tmp / d);
-              }
-            } else {
-              pt = fabs(dcv[0].im);
-              numer = fabs(d);
-              if (pt > numer) {
-                numer = d / dcv[0].im;
-                denom = dcv[0].im + numer * d;
-                t = (Px_re_tmp + numer * u) / denom;
-                numer = (u - numer * Px_re_tmp) / denom;
-              } else if (numer == pt) {
-                if (dcv[0].im > 0.0) {
-                  numer = 0.5;
-                } else {
-                  numer = -0.5;
-                }
-                if (d > 0.0) {
-                  denom = 0.5;
-                } else {
-                  denom = -0.5;
-                }
-                t = (Px_re_tmp * numer + u * denom) / pt;
-                numer = (u * numer - Px_re_tmp * denom) / pt;
-              } else {
-                numer = dcv[0].im / d;
-                denom = d + numer * dcv[0].im;
-                t = (numer * Px_re_tmp + u) / denom;
-                numer = (numer * u - Px_re_tmp) / denom;
-              }
-            }
-            Est_H_p.re += t;
-            Est_H_p.im += numer;
-            pt = rt_atan2d_snf(Est_H_p.im, Est_H_p.re);
-            MeanB.re = pt * 0.0;
-            MeanB.im = pt;
-            b_exp(&MeanB);
-            b_re = d * MeanB.re - dcv[0].im * MeanB.im;
-            numer = d * MeanB.im + dcv[0].im * MeanB.re;
-            a_im_tmp =
-                rt_hypotd_snf((re + b_re) - a_im_tmp, (im + numer) - a_re_tmp);
-            d = a_im_tmp * a_im_tmp;
-            MeanB.re = pt * 0.0;
-            MeanB.im = pt;
-            b_exp(&MeanB);
-            numer = dcv[1].im * MeanB.im;
-            denom = dcv[1].re * MeanB.re;
-            a_im_tmp = rt_hypotd_snf((re + (denom - numer)) - ar_tmp,
-                                     (im + (numer + denom)) - ai_tmp);
-            d += a_im_tmp * a_im_tmp;
-            MeanB.re = pt * 0.0;
-            MeanB.im = pt;
-            b_exp(&MeanB);
-            numer = dcv[2].im * MeanB.im;
-            denom = dcv[2].re * MeanB.re;
-            a_im_tmp = rt_hypotd_snf((re + (denom - numer)) - b_ar_tmp,
-                                     (im + (numer + denom)) - b_ai_tmp);
-            d += a_im_tmp * a_im_tmp;
-            MeanB.re = pt * 0.0;
-            MeanB.im = pt;
-            b_exp(&MeanB);
-            b_re = dcv[3].re * MeanB.re - dcv[3].im * MeanB.im;
-            numer = dcv[3].re * MeanB.im + dcv[3].im * MeanB.re;
-            a_im_tmp =
-                rt_hypotd_snf((re + b_re) - c_ar_tmp, (im + numer) - c_ai_tmp);
-            d += a_im_tmp * a_im_tmp;
-            b_Est_F[a_tmp] = d;
-            Est_C[a_tmp].re = re;
-            Est_C[a_tmp].im = im;
-            b_Est_H[a_tmp] = pt;
-          }
-          numer = minimum(b_Est_F, &n);
-          if (Sel_F > numer) {
-            Sel_F = numer;
-            Sel_C_re = Est_C[n - 1].re;
-            Sel_C_im = Est_C[n - 1].im;
-            *heading_est = b_Est_H[n - 1];
-          }
-        }
-      }
-      Est_H_p.re = *heading_est * 0.0;
-      Est_H_p.im = *heading_est;
-      b_exp(&Est_H_p);
-      for (n = 0; n < 4; n++) {
-        denom = dcv[n].re;
-        a_re_tmp = dcv[n].im;
-        tag_pos_est[n].re =
-            Sel_C_re + (denom * Est_H_p.re - a_re_tmp * Est_H_p.im);
-        tag_pos_est[n].im =
-            Sel_C_im + (denom * Est_H_p.im + a_re_tmp * Est_H_p.re);
-        for (a_tmp = 0; a_tmp < 9; a_tmp++) {
-          i = a_tmp + 18 * n;
-          Tag_Pos_List[i].re = s_time + (((double)a_tmp + 1.0) - 9.0) * 0.1;
-          Tag_Pos_List[i].im = 0.0;
-          Tag_Pos_List[i + 9] = tag_pos_est[n];
-        }
-      }
-    } else {
-      creal_T b_dcv[10];
-      double xt[4];
-      double Sel_C_im;
-      double Sel_C_re;
-      double Sel_F;
-      /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
-      /* %%%%%%%%%%%%%%%%%  Next Position Prediction    %%%%%%%%%%%%%%%%%% */
-      for (b_a_tmp = 0; b_a_tmp < 4; b_a_tmp++) {
-        creal_T Pm[27];
-        creal_T b_Px[27];
-        creal_T Px[9];
-        creal_T b_Pm[9];
-        creal_T c_Px[3];
-        for (n = 0; n < 9; n++) {
-          a_tmp = n + 18 * b_a_tmp;
-          re = Tag_Pos_List[a_tmp].re - s_time;
-          im = Tag_Pos_List[a_tmp].im;
-          Pm[n].re = re * re - im * im;
-          d = re * im;
-          Pm[n].im = d + d;
-          Pm[n + 9].re = re;
-          Pm[n + 9].im = im;
-          Pm[n + 18].re = 1.0;
-          Pm[n + 18].im = 0.0;
-        }
-        for (i = 0; i < 3; i++) {
-          for (i1 = 0; i1 < 3; i1++) {
-            re = 0.0;
-            im = 0.0;
-            for (a_tmp = 0; a_tmp < 9; a_tmp++) {
-              n = a_tmp + 9 * i;
-              a_im_tmp = Pm[n].re;
-              a_re_tmp = -Pm[n].im;
-              n = a_tmp + 9 * i1;
-              numer = Pm[n].im;
-              denom = Pm[n].re;
-              re += a_im_tmp * denom - a_re_tmp * numer;
-              im += a_im_tmp * numer + a_re_tmp * denom;
-            }
-            a_tmp = i + 3 * i1;
-            b_Pm[a_tmp].re = re;
-            b_Pm[a_tmp].im = im;
-          }
-        }
-        b_inv(b_Pm, Px);
-        for (i = 0; i < 3; i++) {
-          numer = Px[i].re;
-          denom = Px[i].im;
-          pt = Px[i + 3].re;
-          u = Px[i + 3].im;
-          t = Px[i + 6].re;
-          Px_re_tmp = Px[i + 6].im;
-          for (i1 = 0; i1 < 9; i1++) {
-            a_im_tmp = Pm[i1].re;
-            a_re_tmp = -Pm[i1].im;
-            re = numer * a_im_tmp - denom * a_re_tmp;
-            im = numer * a_re_tmp + denom * a_im_tmp;
-            a_im_tmp = Pm[i1 + 9].re;
-            a_re_tmp = -Pm[i1 + 9].im;
-            re += pt * a_im_tmp - u * a_re_tmp;
-            im += pt * a_re_tmp + u * a_im_tmp;
-            a_im_tmp = Pm[i1 + 18].re;
-            a_re_tmp = -Pm[i1 + 18].im;
-            re += t * a_im_tmp - Px_re_tmp * a_re_tmp;
-            im += t * a_re_tmp + Px_re_tmp * a_im_tmp;
-            a_tmp = i + 3 * i1;
-            b_Px[a_tmp].re = re;
-            b_Px[a_tmp].im = im;
-          }
-        }
-        for (i = 0; i < 9; i++) {
-          Px[i].re = Tag_Pos_List[(i + 18 * b_a_tmp) + 9].re;
-          Px[i].im = 0.0;
-        }
-        for (i = 0; i < 3; i++) {
-          re = 0.0;
-          im = 0.0;
-          for (i1 = 0; i1 < 9; i1++) {
-            n = i + 3 * i1;
-            numer = b_Px[n].re;
-            denom = Px[i1].im;
-            pt = b_Px[n].im;
-            u = Px[i1].re;
-            re += numer * u - pt * denom;
-            im += numer * denom + pt * u;
-          }
-          c_Px[i].re = re;
-          c_Px[i].im = im;
-        }
-        InterpPosition[b_a_tmp] = c_Px[2];
-        /*  Py = pm x A */
-        /*  tr(pm)xPy = tr(Pm)pm x A */
-        /*  inv(tr(Pm)Pm) x tr(pm)xPy = A */
-        for (n = 0; n < 9; n++) {
-          a_tmp = n + 18 * b_a_tmp;
-          re = Tag_Pos_List[a_tmp].re - s_time;
-          im = Tag_Pos_List[a_tmp].im;
-          Pm[n].re = re * re - im * im;
-          d = re * im;
-          Pm[n].im = d + d;
-          Pm[n + 9].re = re;
-          Pm[n + 9].im = im;
-          Pm[n + 18].re = 1.0;
-          Pm[n + 18].im = 0.0;
-        }
-        for (i = 0; i < 3; i++) {
-          for (i1 = 0; i1 < 3; i1++) {
-            re = 0.0;
-            im = 0.0;
-            for (a_tmp = 0; a_tmp < 9; a_tmp++) {
-              n = a_tmp + 9 * i;
-              a_im_tmp = Pm[n].re;
-              a_re_tmp = -Pm[n].im;
-              n = a_tmp + 9 * i1;
-              numer = Pm[n].im;
-              denom = Pm[n].re;
-              re += a_im_tmp * denom - a_re_tmp * numer;
-              im += a_im_tmp * numer + a_re_tmp * denom;
-            }
-            a_tmp = i + 3 * i1;
-            b_Pm[a_tmp].re = re;
-            b_Pm[a_tmp].im = im;
-          }
-        }
-        b_inv(b_Pm, Px);
-        for (i = 0; i < 3; i++) {
-          numer = Px[i].re;
-          denom = Px[i].im;
-          pt = Px[i + 3].re;
-          u = Px[i + 3].im;
-          t = Px[i + 6].re;
-          Px_re_tmp = Px[i + 6].im;
-          for (i1 = 0; i1 < 9; i1++) {
-            a_im_tmp = Pm[i1].re;
-            a_re_tmp = -Pm[i1].im;
-            re = numer * a_im_tmp - denom * a_re_tmp;
-            im = numer * a_re_tmp + denom * a_im_tmp;
-            a_im_tmp = Pm[i1 + 9].re;
-            a_re_tmp = -Pm[i1 + 9].im;
-            re += pt * a_im_tmp - u * a_re_tmp;
-            im += pt * a_re_tmp + u * a_im_tmp;
-            a_im_tmp = Pm[i1 + 18].re;
-            a_re_tmp = -Pm[i1 + 18].im;
-            re += t * a_im_tmp - Px_re_tmp * a_re_tmp;
-            im += t * a_re_tmp + Px_re_tmp * a_im_tmp;
-            a_tmp = i + 3 * i1;
-            b_Px[a_tmp].re = re;
-            b_Px[a_tmp].im = im;
-          }
-        }
-        for (i = 0; i < 9; i++) {
-          Px[i].re = Tag_Pos_List[(i + 18 * b_a_tmp) + 9].im;
-          Px[i].im = 0.0;
-        }
-        for (i = 0; i < 3; i++) {
-          re = 0.0;
-          im = 0.0;
-          for (i1 = 0; i1 < 9; i1++) {
-            n = i + 3 * i1;
-            numer = b_Px[n].re;
-            denom = Px[i1].im;
-            pt = b_Px[n].im;
-            u = Px[i1].re;
-            re += numer * u - pt * denom;
-            im += numer * denom + pt * u;
-          }
-          c_Px[i].re = re;
-          c_Px[i].im = im;
-        }
-        InterpPosition[b_a_tmp + 4] = c_Px[2];
-        /*  Py = pm x A */
-        /*  tr(pm)xPy = tr(Pm)pm x A */
-        /*  inv(tr(Pm)Pm) x tr(pm)xPy = A */
-      }
-      /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
-      /* %%%%%%%%%%%%%%%% New Position Calc.   %%%%%%%%%%%%%%%%%%%%%%%%%%% */
-      /*          for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
-      memset(&Pos2C[0], 0, 8U * sizeof(creal_T));
-      Pos2C[0].re = InterpPosition[0].re +
-                    (0.0 * InterpPosition[4].re - InterpPosition[4].im);
-      Pos2C[0].im = InterpPosition[0].im +
-                    (0.0 * InterpPosition[4].im + InterpPosition[4].re);
-      xt[0] = 0.0;
-      Pos2C[1].re = InterpPosition[1].re +
-                    (0.0 * InterpPosition[5].re - InterpPosition[5].im);
-      Pos2C[1].im = InterpPosition[1].im +
-                    (0.0 * InterpPosition[5].im + InterpPosition[5].re);
-      xt[1] = 0.0;
-      Pos2C[2].re = InterpPosition[2].re +
-                    (0.0 * InterpPosition[6].re - InterpPosition[6].im);
-      Pos2C[2].im = InterpPosition[2].im +
-                    (0.0 * InterpPosition[6].im + InterpPosition[6].re);
-      xt[2] = 0.0;
-      Pos2C[3].re = InterpPosition[3].re +
-                    (0.0 * InterpPosition[7].re - InterpPosition[7].im);
-      Pos2C[3].im = InterpPosition[3].im +
-                    (0.0 * InterpPosition[7].im + InterpPosition[7].re);
-      xt[3] = 0.0;
-      Sel_F = 1.0E+7;
-      Sel_C_re = 0.0;
-      Sel_C_im = 0.0;
-      *heading_est = 0.0;
-      CandPos.re = 0.0;
-      CandPos.im = 0.0;
-      for (L1 = 0; L1 < loop_ub_tmp; L1++) {
-        i = (int)(Nanchor + (1.0 - (((double)L1 + 1.0) + 1.0)));
-        if (i - 1 >= 0) {
-          xt[c_r] = 1.0;
-          Est_F_tmp = (int)RxID_data[L1] - 1;
-          RxDist[0] = RxDist_data[L1];
-          b_a_tmp = (int)Nanchor;
-          tmp_size[0] = 1;
-          tmp_size[1] = (int)Nanchor;
-          for (i1 = 0; i1 < b_a_tmp; i1++) {
-            a_tmp = (int)RxID_data[i1] - 1;
-            tmp_data[i1].re = iv[a_tmp];
-            tmp_data[i1].im = iv1[a_tmp];
-          }
-        }
-        for (L2 = 0; L2 < i; L2++) {
-          creal_T b_Est_C[2];
-          double yt[4];
-          double Est_F[2];
-          double Est_H[2];
-          double Prob2[2];
-          numer = (((double)L1 + 1.0) + 1.0) + (double)L2;
-          Est_F[0] = iv[Est_F_tmp];
-          n = (int)RxID_data[(int)numer - 1] - 1;
-          Est_F[1] = iv[n];
-          Est_H[0] = iv1[Est_F_tmp];
-          Est_H[1] = iv1[n];
-          RxDist[1] = RxDist_data[(int)numer - 1];
-          TwoAnchPos3(Est_F, Est_H, RxDist, tmp_data, tmp_size, RxDist_data,
-                      (int)Nanchor, yt, Prob2);
-          Pos2C[c_r].re = yt[0];
-          Pos2C[c_r].im = yt[2];
-          Pos2C[c_r + 4].re = yt[1];
-          Pos2C[c_r + 4].im = yt[3];
-          for (a_tmp = 0; a_tmp < 2; a_tmp++) {
-            double ia_data[64];
-            double ai_tmp;
-            double ar_tmp;
-            double b_ai_tmp;
-            double b_ar_tmp;
-            double c_ai_tmp;
-            double c_ar_tmp;
-            int Va_size[2];
-            int b_tmp_size[2];
-            dec2bin(rt_powd_snf(2.0, (c_r + 1) * a_tmp) - 1.0, b_tmp_data,
-                    b_tmp_size);
-            reverse(b_tmp_data, b_tmp_size, Va_data, Va_size);
-            b_a_tmp = Va_size[1];
-            for (n = 0; n < b_a_tmp; n++) {
-              char c;
-              ia_data[n] = 0.0;
-              c = Va_data[n];
-              if ((c == '0') && (xt[n] != 0.0)) {
-                ia_data[n] = 1.0;
-              } else if ((c == '1') && (xt[n] != 0.0)) {
-                ia_data[n] = 2.0;
-              } else {
-                ia_data[n] = 1.0;
-              }
-            }
-            /*  NB = length(tag_pos_b); */
-            n = ((int)ia_data[0] - 1) << 2;
-            a_im_tmp = Pos2C[n].re;
-            a_re_tmp = Pos2C[n].im;
-            if (a_re_tmp == 0.0) {
-              i1 = Va_size[1];
-              t = a_im_tmp / (double)Va_size[1];
-              numer = 0.0;
-            } else if (a_im_tmp == 0.0) {
-              t = 0.0;
-              i1 = Va_size[1];
-              numer = a_re_tmp / (double)Va_size[1];
-            } else {
-              i1 = Va_size[1];
-              t = a_im_tmp / (double)Va_size[1];
-              numer = a_re_tmp / (double)Va_size[1];
-            }
-            re = t;
-            im = numer;
-            n = (((int)ia_data[1] - 1) << 2) + 1;
-            ar_tmp = Pos2C[n].re;
-            ai_tmp = Pos2C[n].im;
-            if (ai_tmp == 0.0) {
-              t = ar_tmp / (double)i1;
-              numer = 0.0;
-            } else if (ar_tmp == 0.0) {
-              t = 0.0;
-              numer = ai_tmp / (double)i1;
-            } else {
-              t = ar_tmp / (double)i1;
-              numer = ai_tmp / (double)i1;
-            }
-            re += t;
-            im += numer;
-            n = (((int)ia_data[2] - 1) << 2) + 2;
-            b_ar_tmp = Pos2C[n].re;
-            b_ai_tmp = Pos2C[n].im;
-            if (b_ai_tmp == 0.0) {
-              t = b_ar_tmp / (double)i1;
-              numer = 0.0;
-            } else if (b_ar_tmp == 0.0) {
-              t = 0.0;
-              numer = b_ai_tmp / (double)i1;
-            } else {
-              t = b_ar_tmp / (double)i1;
-              numer = b_ai_tmp / (double)i1;
-            }
-            re += t;
-            im += numer;
-            n = (((int)ia_data[3] - 1) << 2) + 3;
-            c_ar_tmp = Pos2C[n].re;
-            c_ai_tmp = Pos2C[n].im;
-            if (c_ai_tmp == 0.0) {
-              t = c_ar_tmp / (double)i1;
-              numer = 0.0;
-            } else if (c_ar_tmp == 0.0) {
-              t = 0.0;
-              numer = c_ai_tmp / (double)i1;
-            } else {
-              t = c_ar_tmp / (double)i1;
-              numer = c_ai_tmp / (double)i1;
-            }
-            re += t;
-            im += numer;
-            Px_re_tmp = a_im_tmp - re;
-            u = a_re_tmp - im;
-            if (dcv[0].im == 0.0) {
-              if (u == 0.0) {
-                d = dcv[0].re;
-                t = Px_re_tmp / dcv[0].re;
-                numer = 0.0;
-              } else if (Px_re_tmp == 0.0) {
-                t = 0.0;
-                d = dcv[0].re;
-                numer = u / dcv[0].re;
-              } else {
-                d = dcv[0].re;
-                t = Px_re_tmp / dcv[0].re;
-                numer = u / dcv[0].re;
-              }
-            } else {
-              d = dcv[0].re;
-              if (dcv[0].re == 0.0) {
-                if (Px_re_tmp == 0.0) {
-                  t = u / dcv[0].im;
-                  numer = 0.0;
-                } else if (u == 0.0) {
-                  t = 0.0;
-                  numer = -(Px_re_tmp / dcv[0].im);
-                } else {
-                  t = u / dcv[0].im;
-                  numer = -(Px_re_tmp / dcv[0].im);
-                }
-              } else {
-                pt = fabs(dcv[0].re);
-                numer = fabs(dcv[0].im);
-                if (pt > numer) {
-                  numer = dcv[0].im / dcv[0].re;
-                  denom = dcv[0].re + numer * dcv[0].im;
-                  t = (Px_re_tmp + numer * u) / denom;
-                  numer = (u - numer * Px_re_tmp) / denom;
-                } else if (numer == pt) {
-                  if (dcv[0].re > 0.0) {
-                    numer = 0.5;
-                  } else {
-                    numer = -0.5;
-                  }
-                  if (dcv[0].im > 0.0) {
-                    denom = 0.5;
-                  } else {
-                    denom = -0.5;
-                  }
-                  t = (Px_re_tmp * numer + u * denom) / pt;
-                  numer = (u * numer - Px_re_tmp * denom) / pt;
-                } else {
-                  numer = dcv[0].re / dcv[0].im;
-                  denom = dcv[0].im + numer * dcv[0].re;
-                  t = (numer * Px_re_tmp + u) / denom;
-                  numer = (numer * u - Px_re_tmp) / denom;
-                }
-              }
-            }
-            Est_H_p.re = t;
-            Est_H_p.im = numer;
-            Px_re_tmp = ar_tmp - re;
-            u = ai_tmp - im;
-            if (dcv[0].im == 0.0) {
-              if (u == 0.0) {
-                t = Px_re_tmp / dcv[0].im;
-                numer = 0.0;
-              } else if (Px_re_tmp == 0.0) {
-                t = 0.0;
-                numer = u / dcv[0].im;
-              } else {
-                t = Px_re_tmp / dcv[0].im;
-                numer = u / dcv[0].im;
-              }
-            } else if (dcv[0].im == 0.0) {
-              if (Px_re_tmp == 0.0) {
-                t = u / dcv[0].im;
-                numer = 0.0;
-              } else if (u == 0.0) {
-                t = 0.0;
-                numer = -(Px_re_tmp / dcv[0].im);
-              } else {
-                t = u / dcv[0].im;
-                numer = -(Px_re_tmp / dcv[0].im);
-              }
-            } else {
-              pt = fabs(dcv[0].im);
-              if (dcv[0].im > 0.0) {
-                numer = 0.5;
-              } else {
-                numer = -0.5;
-              }
-              denom = u * numer;
-              numer *= Px_re_tmp;
-              t = (numer + denom) / pt;
-              numer = (denom - numer) / pt;
-            }
-            Est_H_p.re += t;
-            Est_H_p.im += numer;
-            Px_re_tmp = b_ar_tmp - re;
-            u = b_ai_tmp - im;
-            if (d == 0.0) {
-              if (u == 0.0) {
-                t = Px_re_tmp / d;
-                numer = 0.0;
-              } else if (Px_re_tmp == 0.0) {
-                t = 0.0;
-                numer = u / d;
-              } else {
-                t = Px_re_tmp / d;
-                numer = u / d;
-              }
-            } else if (d == 0.0) {
-              if (Px_re_tmp == 0.0) {
-                t = u / d;
-                numer = 0.0;
-              } else if (u == 0.0) {
-                t = 0.0;
-                numer = -(Px_re_tmp / d);
-              } else {
-                t = u / d;
-                numer = -(Px_re_tmp / d);
-              }
-            } else {
-              pt = fabs(d);
-              if (d > 0.0) {
-                numer = 0.5;
-              } else {
-                numer = -0.5;
-              }
-              denom = u * numer;
-              numer *= Px_re_tmp;
-              t = (numer + denom) / pt;
-              numer = (denom - numer) / pt;
-            }
-            Est_H_p.re += t;
-            Est_H_p.im += numer;
-            Px_re_tmp = c_ar_tmp - re;
-            u = c_ai_tmp - im;
-            if (d == 0.0) {
-              if (u == 0.0) {
-                t = Px_re_tmp / dcv[0].im;
-                numer = 0.0;
-              } else if (Px_re_tmp == 0.0) {
-                t = 0.0;
-                numer = u / dcv[0].im;
-              } else {
-                t = Px_re_tmp / dcv[0].im;
-                numer = u / dcv[0].im;
-              }
-            } else if (dcv[0].im == 0.0) {
-              if (Px_re_tmp == 0.0) {
-                t = u / d;
-                numer = 0.0;
-              } else if (u == 0.0) {
-                t = 0.0;
-                numer = -(Px_re_tmp / d);
-              } else {
-                t = u / d;
-                numer = -(Px_re_tmp / d);
-              }
-            } else {
-              pt = fabs(dcv[0].im);
-              numer = fabs(d);
-              if (pt > numer) {
-                numer = d / dcv[0].im;
-                denom = dcv[0].im + numer * d;
-                t = (Px_re_tmp + numer * u) / denom;
-                numer = (u - numer * Px_re_tmp) / denom;
-              } else if (numer == pt) {
-                if (dcv[0].im > 0.0) {
-                  numer = 0.5;
-                } else {
-                  numer = -0.5;
-                }
-                if (d > 0.0) {
-                  denom = 0.5;
-                } else {
-                  denom = -0.5;
-                }
-                t = (Px_re_tmp * numer + u * denom) / pt;
-                numer = (u * numer - Px_re_tmp * denom) / pt;
-              } else {
-                numer = dcv[0].im / d;
-                denom = d + numer * dcv[0].im;
-                t = (numer * Px_re_tmp + u) / denom;
-                numer = (numer * u - Px_re_tmp) / denom;
-              }
-            }
-            Est_H_p.re += t;
-            Est_H_p.im += numer;
-            pt = rt_atan2d_snf(Est_H_p.im, Est_H_p.re);
-            MeanB.re = pt * 0.0;
-            MeanB.im = pt;
-            b_exp(&MeanB);
-            b_re = d * MeanB.re - dcv[0].im * MeanB.im;
-            numer = d * MeanB.im + dcv[0].im * MeanB.re;
-            a_im_tmp =
-                rt_hypotd_snf((re + b_re) - a_im_tmp, (im + numer) - a_re_tmp);
-            d = a_im_tmp * a_im_tmp;
-            MeanB.re = pt * 0.0;
-            MeanB.im = pt;
-            b_exp(&MeanB);
-            numer = dcv[1].im * MeanB.im;
-            denom = dcv[1].re * MeanB.re;
-            a_im_tmp = rt_hypotd_snf((re + (denom - numer)) - ar_tmp,
-                                     (im + (numer + denom)) - ai_tmp);
-            d += a_im_tmp * a_im_tmp;
-            MeanB.re = pt * 0.0;
-            MeanB.im = pt;
-            b_exp(&MeanB);
-            numer = dcv[2].im * MeanB.im;
-            denom = dcv[2].re * MeanB.re;
-            a_im_tmp = rt_hypotd_snf((re + (denom - numer)) - b_ar_tmp,
-                                     (im + (numer + denom)) - b_ai_tmp);
-            d += a_im_tmp * a_im_tmp;
-            MeanB.re = pt * 0.0;
-            MeanB.im = pt;
-            b_exp(&MeanB);
-            b_re = dcv[3].re * MeanB.re - dcv[3].im * MeanB.im;
-            numer = dcv[3].re * MeanB.im + dcv[3].im * MeanB.re;
-            a_im_tmp =
-                rt_hypotd_snf((re + b_re) - c_ar_tmp, (im + numer) - c_ai_tmp);
-            d += a_im_tmp * a_im_tmp;
-            Est_F[a_tmp] = d;
-            b_Est_C[a_tmp].re = re;
-            b_Est_C[a_tmp].im = im;
-            Est_H[a_tmp] = pt;
-          }
-          if ((Est_F[0] > Est_F[1]) ||
-              (rtIsNaN(Est_F[0]) && (!rtIsNaN(Est_F[1])))) {
-            numer = Est_F[1];
-            n = 1;
-          } else {
-            numer = Est_F[0];
-            n = 0;
-          }
-          if (Sel_F > numer) {
-            Sel_F = numer;
-            Sel_C_re = b_Est_C[n].re;
-            Sel_C_im = b_Est_C[n].im;
-            *heading_est = Est_H[n];
-            CandPos = Pos2C[c_r + (n << 2)];
-          }
-        }
-      }
-      Est_H_p.re = *heading_est * 0.0;
-      Est_H_p.im = *heading_est;
-      b_exp(&Est_H_p);
-      denom = dcv[0].im * Est_H_p.im;
-      a_re_tmp = dcv[0].re * Est_H_p.re;
-      numer = dcv[0].im * Est_H_p.re;
-      a_im_tmp = dcv[0].re * Est_H_p.im;
-      tag_pos_est[0].re = Sel_C_re + (a_re_tmp - denom);
-      tag_pos_est[0].im = Sel_C_im + (a_im_tmp + numer);
-      tag_pos_est[1].re = Sel_C_re + (numer - denom);
-      tag_pos_est[1].im = Sel_C_im + (denom + numer);
-      tag_pos_est[2].re = Sel_C_re + (a_re_tmp - a_im_tmp);
-      tag_pos_est[2].im = Sel_C_im + (a_im_tmp + a_re_tmp);
-      tag_pos_est[3].re = Sel_C_re + (numer - a_im_tmp);
-      tag_pos_est[3].im = Sel_C_im + (denom + a_re_tmp);
-      GetPosRefine2(RxDist_data, RxID_data, RxID_size, Nanchor,
-                    (double)c_r + 1.0, tag_pos_est, heading_est, &CandPos);
-      for (i = 0; i < 2; i++) {
-        memcpy(&Est_C[i * 8], &Tag_Pos_List[(i * 9 + c_r * 18) + 1],
-               8U * sizeof(creal_T));
-      }
-      for (i = 0; i < 2; i++) {
-        memcpy(&Tag_Pos_List[i * 9 + c_r * 18], &Est_C[i * 8],
-               8U * sizeof(creal_T));
-      }
-      i = 18 * c_r + 8;
-      Tag_Pos_List[i].re = dv3[b_r];
-      Tag_Pos_List[i].im = 0.0;
-      Tag_Pos_List[18 * c_r + 17] = CandPos;
-      /*              Tag_Pos_List(1:2,:,PP) = Tag_Pos_List(2:3,:,PP); */
-      /*              Tag_Pos_List(3,:,PP) = [s_time(r) tag_pos_est(PP)]; */
-      /*          end */
-      Est_H_p = mean(tag_pos_est);
-      for (i = 0; i < 19; i++) {
-        heading_est_a[i] = heading_est_a[i + 1];
-      }
-      if (*heading_est - heading_est_a[18] > 3.1415926535897931) {
-        heading_est_a[19] = *heading_est - 6.2831853071795862;
-      } else if (heading_est_a[18] - *heading_est > 3.1415926535897931) {
-        heading_est_a[19] = *heading_est + 6.2831853071795862;
-      } else {
-        heading_est_a[19] = *heading_est;
-      }
-      for (i = 0; i < 2; i++) {
-        for (i1 = 0; i1 < 19; i1++) {
-          n = i1 + 20 * i;
-          centerest_a[n] = centerest_a[n + 1];
-          centerest_a_aver[n] = centerest_a_aver[n + 1];
-        }
-      }
-      centerest_a[19] = Est_H_p.re;
-      centerest_a[39] = Est_H_p.im;
-      for (i = 0; i < 19; i++) {
-        headingest_a_aver[i] = headingest_a_aver[i + 1];
-      }
-      for (i = 0; i < 10; i++) {
-        d = centerest_a[i + 20];
-        b_dcv[i].re = centerest_a[i] + 0.0 * d;
-        b_dcv[i].im = d;
-      }
-      Est_H_p = b_mean(b_dcv);
-      for (i = 0; i < 10; i++) {
-        d = centerest_a[i + 30];
-        b_dcv[i].re = centerest_a[i + 10] + 0.0 * d;
-        b_dcv[i].im = d;
-      }
-      MeanB = b_mean(b_dcv);
-      a_im_tmp = MeanB.re - Est_H_p.re;
-      a_re_tmp = MeanB.im - Est_H_p.im;
-      if (a_re_tmp == 0.0) {
-        numer = a_im_tmp / 2.0;
-      } else if (a_im_tmp == 0.0) {
-        numer = 0.0;
-      } else {
-        numer = a_im_tmp / 2.0;
-      }
-      centerest_a_aver[19] = MeanB.re + numer;
-      if (a_re_tmp == 0.0) {
-        numer = 0.0;
-      } else {
-        numer = a_re_tmp / 2.0;
-      }
-      centerest_a_aver[39] = MeanB.im + numer;
-      numer = c_mean(&heading_est_a[10]);
-      headingest_a_aver[19] =
-          b_mod(numer + (numer - c_mean(&heading_est_a[0])) / 2.0);
-      /*      tag_pos_est_aver =
-       * get_tag_pos(centerest_a_aver(end,1)+j*centerest_a_aver(end,2),
-       * headingest_a_aver(end), tag_pos_b); */
-      Est_H_p.re = headingest_a_aver[19] * 0.0;
-      Est_H_p.im = headingest_a_aver[19];
-      b_exp(&Est_H_p);
-      MeanB.re = centerest_a_aver[39] * 0.0;
-      denom = dcv[0].im * Est_H_p.im;
-      a_re_tmp = dcv[0].re * Est_H_p.re;
-      numer = dcv[0].im * Est_H_p.re;
-      a_im_tmp = dcv[0].re * Est_H_p.im;
-      tag_pos_est_aver[0].re =
-          ((a_re_tmp - denom) + centerest_a_aver[19]) + MeanB.re;
-      tag_pos_est_aver[0].im = (a_im_tmp + numer) + centerest_a_aver[39];
-      tag_pos_est_aver[1].re =
-          ((numer - denom) + centerest_a_aver[19]) + MeanB.re;
-      tag_pos_est_aver[1].im = (denom + numer) + centerest_a_aver[39];
-      tag_pos_est_aver[2].re =
-          ((a_re_tmp - a_im_tmp) + centerest_a_aver[19]) + MeanB.re;
-      tag_pos_est_aver[2].im = (a_im_tmp + a_re_tmp) + centerest_a_aver[39];
-      tag_pos_est_aver[3].re =
-          ((numer - a_im_tmp) + centerest_a_aver[19]) + MeanB.re;
-      tag_pos_est_aver[3].im = (denom + a_re_tmp) + centerest_a_aver[39];
-      *headingest_a_aver_v = headingest_a_aver[19];
-      /*      K_heading_est = mod(headingest_a_aver(r),2*pi); */
-      /*      K_centerest_a_aver(r, :) = centerest_a_aver(r,:); */
-      /*      K_headingest_a_aver(r) = mod(headingest_a_aver(r),2*pi); */
+    *heading_est = UWBpos((double)y_re + 1.0, Nanchor, RxID_data, RxID_size,
+                          RxDist_data, (int)Nanchor, dv3[b_r], tag_pos_est,
+                          tag_pos_est_aver, headingest_a_aver_v);
+    if (fmod((double)b_r + 1.0, 100.0) == 0.0) {
+      numer = rt_hypotd_snf(tag_pos_est[0].re - tag_pos_g[0].re,
+                            tag_pos_est[0].im - tag_pos_g[0].im);
+      yt_idx_0 = numer * numer;
+      numer = rt_hypotd_snf(tag_pos_est[1].re - tag_pos_g[1].re,
+                            tag_pos_est[1].im - tag_pos_g[1].im);
+      yt_idx_1 = numer * numer;
+      numer = rt_hypotd_snf(tag_pos_est[2].re - tag_pos_g[2].re,
+                            tag_pos_est[2].im - tag_pos_g[2].im);
+      yt_idx_2 = numer * numer;
+      numer = rt_hypotd_snf(tag_pos_est[3].re - re, tag_pos_est[3].im - im);
+      printf("est_err:%.4f\r\n",
+             sqrt((((yt_idx_0 + yt_idx_1) + yt_idx_2) + numer * numer) / 4.0));
+      fflush(stdout);
     }
     /*      if r > 10*Lp */
     /*          figure(1); */

@@ -120,6 +120,11 @@ for r = 1 : length(x)
     centerest_a_aver(r,1) = real(mean(tag_pos_est_aver));
     centerest_a_aver(r,2) = imag(mean(tag_pos_est_aver));
     headingest_a_aver(r) = headingest_a_aver_v;
+    
+    if mod(r,100) == 0
+        est_err = sqrt(mean(abs(tag_pos_est-tag_pos_g).^2));
+        fprintf("est_err:%.4f\r\n", est_err);
+    end
 
 %     if r > 10*Lp
 %         figure(1);
