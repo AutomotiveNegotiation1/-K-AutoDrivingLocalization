@@ -51,7 +51,6 @@ TARGET_CFLAGS += -D_GNU_SOURCE=1
 TARGET_CFLAGS += -std=gnu99 -g
 TARGET_CFLAGS += -Wall -Wextra -Wstrict-prototypes -O3 -fomit-frame-pointer -pipe
 TARGET_CFLAGS += -std=c11
-TARGET_CFLAGS += -DCONFIG_GPS_XSENS
 TARGET_LDFLAGS ?= -L$(OUT_PATH) -luwbpos -lpthread
 
 #
@@ -105,7 +104,7 @@ main-clean:
 
 main-distclean:
 	$(MAKE) -C $(MAIN_PATH) distclean
-	rm -f ./main ./keti-app
+	rm -rf $(OUT_PATH)/*
 
 .PHONY: main main-clean main-distclean
 
@@ -120,7 +119,7 @@ all: uwbposlib main
 #
 
 keti-run: distclean uwbposlib main
-	./keti-app
+	$(OUT_PATH)/keti-app
 
 #
 # Clean

@@ -2,7 +2,7 @@
 ## Makefile generated for component 'UWBpos'. 
 ## 
 ## Makefile     : UWBpos_rtw.mk
-## Generated on : Tue Aug 01 14:00:28 2023
+## Generated on : Tue Aug 01 14:36:03 2023
 ## Final product: ./UWBpos.a
 ## Product type : static-library
 ## 
@@ -22,7 +22,7 @@ MAKEFILE                  = UWBpos_rtw.mk
 MATLAB_ROOT               = /usr/local/MATLAB/R2023a
 MATLAB_BIN                = /usr/local/MATLAB/R2023a/bin
 MATLAB_ARCH_BIN           = $(MATLAB_BIN)/glnxa64
-START_DIR                 = /home/bman/work/position/src/positioning/matlab/Position_Alg_20230801
+START_DIR                 = /home/bman/work/position/src/positioning/matlab/algorithm
 TGT_FCN_LIB               = ISO_C
 SOLVER_OBJ                = 
 CLASSIC_INTERFACE         = 0

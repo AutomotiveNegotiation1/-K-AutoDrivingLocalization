@@ -5,7 +5,7 @@
  * File: UWBpos.c
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:00:18
+ * C/C++ source code generated on  : 01-Aug-2023 14:35:53
  */
 
 /* Include Files */
@@ -106,6 +106,9 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
   int loop_ub;
   int *jj_data;
   bool *calc_dist_err_data;
+
+  printf("Lp[%lf]\r\n", Lp);
+
   if (!isInitialized_UWBpos) {
     UWBpos_initialize();
   }
@@ -132,6 +135,8 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
     emxEnsureCapacity_creal_T(Tag_Pos_List, i);
     Tag_Pos_List_data = Tag_Pos_List->data;
     loop_ub = 18 * (int)Lp;
+    printf("loop_ub[%d]\r\n", loop_ub);
+
     for (i = 0; i < loop_ub; i++) {
       Tag_Pos_List_data[i].re = 0.0;
       Tag_Pos_List_data[i].im = 0.0;
@@ -946,13 +951,18 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
         TempC.im =
             InterpPosition_data[(int)TagNum - 1].im + (0.0 * b_Est_H + q);
       }
+      printf("[%s][%d] loop_ub[%d], TagNum[%lf]\r\n", __FUNCTION__, __LINE__, loop_ub, TagNum);
       emxFree_creal_T(&InterpPosT);
       for (i = 0; i < 2; i++) {
         for (k = 0; k < 8; k++) {
           loop_ub = (k + 9 * i) + 18 * ((int)TagNum - 1);
+          printf("[%s][%d] loop_ub[%d]\r\n", __FUNCTION__, __LINE__, loop_ub);
+
           Tag_Pos_List_data[loop_ub] = Tag_Pos_List_data[loop_ub + 1];
         }
       }
+      printf("[%s][%d] test OK\r\n", __FUNCTION__, __LINE__);
+
       i = 18 * ((int)TagNum - 1);
       Tag_Pos_List_data[i + 8].re = s_time;
       Tag_Pos_List_data[i + 8].im = 0.0;

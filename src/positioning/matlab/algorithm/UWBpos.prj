@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2023a">
-  <configuration build-checksum="3219617485" file="/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/UWBpos.prj" location="/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801" name="UWBpos" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="2079835680" file="/home/bman/work/position/src/positioning/matlab/algorithm/UWBpos.prj" location="/home/bman/work/position/src/positioning/matlab/algorithm" name="UWBpos" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
       <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
@@ -40,7 +40,7 @@
       <param.CppStyleConst>true</param.CppStyleConst>
       <param.EnableDebugging>false</param.EnableDebugging>
       <param.Verbosity>option.Verbosity.Info</param.Verbosity>
-      <param.ReportPotentialDifferences>true</param.ReportPotentialDifferences>
+      <param.ReportPotentialDifferences>false</param.ReportPotentialDifferences>
       <param.GenerateReport>true</param.GenerateReport>
       <param.HighlightImplicitExpansionIssues>true</param.HighlightImplicitExpansionIssues>
       <param.HighlightLoopControlIssues>true</param.HighlightLoopControlIssues>
@@ -253,7 +253,7 @@
       <param.RuntimeChecks>false</param.RuntimeChecks>
       <param.Verbose>false</param.Verbose>
       <param.Verbosity>option.Verbosity.Info</param.Verbosity>
-      <param.ReportPotentialDifferences>true</param.ReportPotentialDifferences>
+      <param.ReportPotentialDifferences>false</param.ReportPotentialDifferences>
       <param.GenerateReport>true</param.GenerateReport>
       <param.GenerateCodeMetricsReport>false</param.GenerateCodeMetricsReport>
       <param.GenerateCodeReplacementReport>false</param.GenerateCodeReplacementReport>
@@ -288,7 +288,7 @@
       <param.CodeReplacementLibrary>None</param.CodeReplacementLibrary>
       <param.DeprecatedCRLFlag>false</param.DeprecatedCRLFlag>
       <param.SameHardware>true</param.SameHardware>
-      <param.Toolchain>Automatically locate an installed toolchain</param.Toolchain>
+      <param.Toolchain>GNU gcc/g++ | gmake (64-bit Linux)</param.Toolchain>
       <param.BuildConfiguration>Faster Runs</param.BuildConfiguration>
       <param.CustomToolchainOptions />
       <var.ToolchainSettingsVisible>true</var.ToolchainSettingsVisible>
@@ -502,7 +502,6 @@
         <param.CodeReplacementLibrary />
         <param.DeprecatedCRLFlag />
         <param.SameHardware />
-        <param.Toolchain />
         <param.BuildConfiguration />
         <param.CustomToolchainOptions />
         <var.ToolchainSettingsVisible />
@@ -585,7 +584,7 @@
       </unset>
     </profile>
     <param.objective>option.objective.c</param.objective>
-    <param.WorkflowStep>verifyCompatibility</param.WorkflowStep>
+    <param.WorkflowStep>workflowSummary</param.WorkflowStep>
     <param.TestSnippets>
       <item>Positioning_Alg_20230801_with_func</item>
     </param.TestSnippets>
@@ -606,23 +605,23 @@
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
     <param.EnableFixedPointStep>false</param.EnableFixedPointStep>
     <param.EnableScreener>true</param.EnableScreener>
-    <param.AnnotationChecksum>4130374249</param.AnnotationChecksum>
+    <param.AnnotationChecksum>3815994774</param.AnnotationChecksum>
     <var.LegacyTarget />
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
     <var.redirectedInputTypeData />
-    <var.DismissScreener>true</var.DismissScreener>
+    <var.DismissScreener>false</var.DismissScreener>
     <param.unifiedParamStorage />
     <param.hdlParamStorage />
     <var.gc.lastOutputRoot>codegen/lib/UWBpos</var.gc.lastOutputRoot>
     <var.gc.lastOutputType>C_CODE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>1266478877</var.gc.preBuildChecksum>
+    <var.gc.preBuildChecksum>2012749075</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot>codegen/mex/UWBpos</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>1816954356</var.cfi.preBuildChecksum>
+    <var.cfi.preBuildChecksum>1070410782</var.cfi.preBuildChecksum>
     <var.lastCfiTestSnippet>Positioning_Alg_20230801_with_func</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/GetInitPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/GetMultiTagPosGen.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/GetPos2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/GetPosRefine2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/InterpPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/ThreeAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/TwoAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/UWBpos.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;58559370&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
-    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/GetInitPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/GetMultiTagPosGen.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/GetPos2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/GetPosRefine2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/InterpPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/ThreeAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/TwoAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/UWBpos.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetInitPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetMultiTagPosGen.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetPos2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetPosRefine2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/InterpPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/ThreeAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/TwoAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/UWBpos.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;58559370&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetInitPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetMultiTagPosGen.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetPos2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/GetPosRefine2.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/InterpPos.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/ThreeAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/TwoAnchPos3.m&lt;/file&gt;&lt;file&gt;/home/bman/work/position/src/positioning/matlab/algorithm/UWBpos.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.NoDefaultJIT>false</param.NoDefaultJIT>
     <param.configImportActive>false</param.configImportActive>
@@ -654,7 +653,7 @@
     <param.gpu.StackLimitPerThread>1024</param.gpu.StackLimitPerThread>
     <param.gpu.MaximumBlocksPerKernel>0</param.gpu.MaximumBlocksPerKernel>
     <param.gpu.Benchmarking>false</param.gpu.Benchmarking>
-    <param.gpu.SafeBuild>true</param.gpu.SafeBuild>
+    <param.gpu.SafeBuild>false</param.gpu.SafeBuild>
     <param.gpu.KernelNamePrefix />
     <param.gpu.CompilerFlags />
     <param.gpu.EnableCUBLAS>true</param.gpu.EnableCUBLAS>
@@ -671,7 +670,7 @@
     <param.deeplearning.EnableDeepLearning>false</param.deeplearning.EnableDeepLearning>
     <param.deeplearning.DeepLearningCustomCallback />
     <param.deeplearning.TargetLib>option.deeplearning.targetlibrary.none</param.deeplearning.TargetLib>
-    <var.cfiTargetLibSuppression>true</var.cfiTargetLibSuppression>
+    <var.cfiTargetLibSuppression>false</var.cfiTargetLibSuppression>
     <var.hasMatlabDeepLearningSupportPackage>true</var.hasMatlabDeepLearningSupportPackage>
     <var.hasGpuDeepLearningSupportPackage>true</var.hasGpuDeepLearningSupportPackage>
     <param.tensorrt.DataType>option.tensorrt.datatype.fp32</param.tensorrt.DataType>
@@ -759,6 +758,7 @@
       <var.MirrorOnOpen />
       <param.FixedPointEnabled />
       <var.redirectedInputTypeData />
+      <var.DismissScreener />
       <param.unifiedParamStorage />
       <param.hdlParamStorage />
       <var.outdatedOnRestore />
@@ -807,6 +807,7 @@
       <param.deeplearning.EnableDeepLearning />
       <param.deeplearning.DeepLearningCustomCallback />
       <param.deeplearning.TargetLib />
+      <var.cfiTargetLibSuppression />
       <var.hasMatlabDeepLearningSupportPackage />
       <var.hasGpuDeepLearningSupportPackage />
       <param.tensorrt.DataType />
@@ -873,7 +874,7 @@
     </unset>
     <fileset.entrypoints>
       <file custom-data-expanded="false" value="${PROJECT_ROOT}/UWBpos.m">
-        <Marker>1690857826498</Marker>
+        <Marker>1690868017526</Marker>
       </file>
     </fileset.entrypoints>
     <fileset.testbench>
@@ -943,7 +944,7 @@
       </file>
     </fileset.inputtypes>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}/codegen/lib/UWBpos" name="UWBpos.a" optional="false">/home/bman/work/position/src/positioning/matlab/Position_Alg_20230801/codegen/lib/UWBpos/UWBpos.a</file>
+      <file location="${PROJECT_ROOT}/codegen/lib/UWBpos" name="UWBpos.a" optional="false">/home/bman/work/position/src/positioning/matlab/algorithm/codegen/lib/UWBpos/UWBpos.a</file>
     </build-deliverables>
     <workflow />
     <matlab>
