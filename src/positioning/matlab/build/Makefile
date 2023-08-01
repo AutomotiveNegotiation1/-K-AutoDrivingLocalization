@@ -40,19 +40,27 @@ SRC_DIR = $(CUR_DIR)/../algorithm/codegen/lib
 UWB_POS_LIB_PATH = $(SRC_DIR)/UWBpos
 MAIN_PATH = $(SRC_DIR)/UWBpos/examples
 
+TEST_LIB_PATH = $(SRC_DIR)/TestTotal
+TEST_MAIN_PATH = $(SRC_DIR)/TestTotal/examples
+
 # Include path
 OUT_PATH = $(TOP_DIR)/out
 
 # CFLAGS / LDFLAGS
 TARGET_CFLAGS =
-TARGET_CFLAGS += -I$(UWB_POS_LIB_PATH)
-TARGET_CFLAGS += -I$(MAIN_PATH)
+#TARGET_CFLAGS += -I$(UWB_POS_LIB_PATH)
+#TARGET_CFLAGS += -I$(MAIN_PATH)
+TARGET_CFLAGS += -I$(TEST_LIB_PATH)
+TARGET_CFLAGS += -I$(TEST_MAIN_PATH)
 TARGET_CFLAGS += -D_GNU_SOURCE=1
 TARGET_CFLAGS += -std=gnu99 -g
 TARGET_CFLAGS += -Wall -Wextra -Wstrict-prototypes -O3 -fomit-frame-pointer -pipe
 TARGET_CFLAGS += -std=c11
-TARGET_LDFLAGS ?= -L$(OUT_PATH) -luwbpos -lpthread
-
+TARGET_LDFLAGS ?=
+TARGET_LDFLAGS += -L$(OUT_PATH)
+#TARGET_LDFLAGS += -luwbpos
+TARGET_LDFLAGS += -ltest
+TARGET_LDFLAGS +=-lpthread
 #
 # Compiler
 #
@@ -88,10 +96,25 @@ uwbposlib-clean:
 
 uwbposlib-distclean:
 	$(MAKE) -C $(UWB_POS_LIB_PATH) distclean
-	rm -f ./lib/*.a
+	rm -f $(OUT_DIR)/*.a
 
 .PHONY: uwbposlib uwbposlib-clean uwbposlib-distclean
 
+#
+# TEST Positioning Library
+#
+
+testlib:
+	@$(MAKE) -C $(TEST_LIB_PATH) $(TARGET_CONFIGS) all
+
+testlib-clean:
+	$(MAKE) -C $(TEST_LIB_PATH) clean
+
+testlib-distclean:
+	$(MAKE) -C $(TEST_LIB_PATH) distclean
+	rm -f $(OUT_DIR)/*.a
+
+.PHONY: testlib testlib-clean testlib-distclean
 #
 # Main
 #
@@ -109,10 +132,27 @@ main-distclean:
 .PHONY: main main-clean main-distclean
 
 #
+# Test Main
+#
+
+test-main:
+	@$(MAKE) -C $(TEST_MAIN_PATH) $(TARGET_CONFIGS) all
+
+test-main-clean:
+	$(MAKE) -C $(TEST_MAIN_PATH) clean
+
+test-main-distclean:
+	$(MAKE) -C $(TEST_MAIN_PATH) distclean
+	rm -rf $(OUT_PATH)/*
+
+.PHONY: test-main test-main-clean test-main-distclean
+#
 # Build All
 #
 
 all: uwbposlib main
+
+test-all: testlib test-main
 
 #
 # Build and Run
@@ -127,5 +167,5 @@ keti-run: distclean uwbposlib main
 
 clean: distclean
 
-distclean: uwbposlib-distclean main-distclean
+distclean: uwbposlib-distclean main-distclean test-main-distclean testlib-distclean
 

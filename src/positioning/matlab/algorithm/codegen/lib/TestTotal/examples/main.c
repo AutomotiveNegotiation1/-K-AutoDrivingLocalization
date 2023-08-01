@@ -38,6 +38,23 @@
 #include "TestTotal.h"
 #include "TestTotal_terminate.h"
 #include "rt_nonfinite.h"
+#include "type.h"
+#include <sys/time.h>
+
+long long current_timestamp()
+{
+    struct timeval te;
+    gettimeofday(&te, NULL); // get current time
+
+#if defined(CONFIG_TIME_CHECK_MS)
+    long long llMilliSeconds = te.tv_sec*1000LL + te.tv_usec/1000; // calculate milliseconds
+    return llMilliSeconds;
+#else
+    // default us
+    long long llMicroSeconds = te.tv_sec*1000000LL + te.tv_usec; // calculate microseconds
+    return llMicroSeconds;
+#endif
+}
 
 /* Function Definitions */
 /*
@@ -70,8 +87,22 @@ void main_TestTotal(void)
   creal_T tag_pos_est_aver[4];
   double heading_est;
   double headingest_a_aver_v;
+  long long llStartTime;
+  long long llEndTime;
+  long long llDiffTime;
+
+  PrintEnter("Successfully Start");
+
+  llStartTime = current_timestamp();
+
   /* Call the entry-point 'TestTotal'. */
   TestTotal(tag_pos_est, &heading_est, tag_pos_est_aver, &headingest_a_aver_v);
+
+  llEndTime = current_timestamp();
+  llDiffTime = llEndTime-llStartTime;
+  PrintExit("Start-End time of UWBpos (%lld)us", llDiffTime);
+
+  PrintExit("Successfully End");
 }
 
 /*
