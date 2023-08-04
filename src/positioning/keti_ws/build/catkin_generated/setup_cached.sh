@@ -7,8 +7,9 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH='/opt/ros/noetic/lib:/usr/local/cuda-11.4/lib64'
-export PWD='/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/build'
-export ROSLISP_PACKAGE_DIRECTORIES='/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/share/common-lisp'
-export ROS_PACKAGE_PATH="/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel:$CMAKE_PREFIX_PATH"
+export LD_LIBRARY_PATH="/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PWD='/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/build'
+export ROSLISP_PACKAGE_DIRECTORIES='/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/share/common-lisp'
+export ROS_PACKAGE_PATH="/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src:$ROS_PACKAGE_PATH"

@@ -53,12 +53,81 @@ static double RxIDprevLen[4];
 
 /* Function Definitions */
 void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
-            const double RxID_data[], const int RxID_size[2],
-            const double RxDist_data[], const int RxDist_size[1], double s_time,
-            const creal_T tag_pos_b[4], const double xa[6], const double ya[6],
+            const double RxID_data[], const double RxID_size[2],
+            const double RxDist_data[], const double RxDist_size[1], double s_time,
+            const creal_T tag_pos_b[4], const double xa[], const double x_size, const double ya[], const double y_size,
             emxArray_creal_T *tag_pos_est, double *heading_est,
             emxArray_creal_T *tag_pos_est_aver, double *headingest_a_aver_v)
 {
+  printf("UWBpos.c : Ln-->[%f]\r\n", Ln);
+  printf("UWBpos.c : Lp-->[%f]\r\n", Lp);
+  printf("UWBpos.c : TagNum-->[%f]\r\n", TagNum);
+  printf("UWBpos.c : Nanchor-->[%f]\r\n", Nanchor);
+  int z;
+  printf("UWBpos.c :RxID_data-->[");
+  for (z=0;z<RxID_size[0];z++){
+    printf("%f ", RxID_data[z]);
+  }
+  printf("]\r\n");
+  printf("UWBpos.c : RxID_size[0]-->[%f]\r\n", RxID_size[0]);
+  
+  int a;
+  printf("UWBpos.c :RxDist_data-->[");
+  for (a=0;a<RxDist_size[0];a++){
+    printf("%f ", RxDist_data[a]);
+  }
+  printf("]\r\n");
+  
+  printf("UWBpos.c :RxDist_size-->[%f]\r\n", RxDist_size[0]);
+
+  printf("UWBpos.c :s_time-->[%f]\r\n", s_time);
+  printf("UWBpos.c :xa_size-->[%f]\r\n", x_size);
+  int b;
+  printf("tag_pos_b-->[");
+  for (b=0;b<4;b++){
+    printf("%f ", tag_pos_b[b]);
+  }
+  int c;
+  printf("UWBpos.c :xa-->[");
+  for (c=0;c<x_size;c++){
+    printf("%f ", xa[c]);
+  }
+  printf("]\r\n");
+
+  printf("UWBpos.c :ya_size-->[%f]\r\n", y_size);
+  int d;
+  printf("UWBpos.c :ya-->[");
+  for (d=0;d<x_size;d++){
+    printf("%f ", ya[d]);
+  }
+  printf("]\r\n");
+
+  int f;
+  printf("UWBpos.c :tag_pos_est-->[");
+  for (f=0;f<4;f++){
+    printf("%f ", tag_pos_est[f]);
+  }
+  printf("]\r\n");
+  printf("UWBpos.c :heading_est-->[%f]\r\n", heading_est);
+  int e;
+  printf("UWBpos.c :tag_pos_est-->[");
+  for (e=0;e<4;e++){
+    printf("%f ", tag_pos_est_aver[e]);
+  }
+  printf("]\r\n");
+  printf("UWBpos.c :headingest_a_aver_v-->[%f]\r\n", headingest_a_aver_v);
+  // printf("tag_pos_b-->[%f]\r\n", Ln);
+  // printf("tag_pos_b-->[%f]\r\n", Ln);
+  // printf("tag_pos_b-->[%f]\r\n", Ln);
+  // printf("tag_pos_b-->[%f]\r\n", Ln);
+  // printf("tag_pos_b-->[%f]\r\n", Ln);
+  // printf("tag_pos_b-->[%f]\r\n", Ln);
+  // int z;
+  // printf("tag_pos_b-->[");
+  // for (z=0;z<6;z++){
+  //   printf("%f ", Lp[z]);
+  // }
+  // printf("]\r\n");
   emxArray_boolean_T *x;
   emxArray_creal_T *InterpPosT;
   emxArray_int32_T *i;

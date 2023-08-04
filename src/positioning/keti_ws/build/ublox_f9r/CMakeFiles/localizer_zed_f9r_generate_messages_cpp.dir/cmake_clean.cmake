@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include/localizer_zed_f9r/Acc.h"
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include/localizer_zed_f9r/GNSS.h"
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include/localizer_zed_f9r/Gyro.h"
   "CMakeFiles/localizer_zed_f9r_generate_messages_cpp"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include/localizer_zed_f9r/GNSS.h"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include/localizer_zed_f9r/Acc.h"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include/localizer_zed_f9r/Gyro.h"
 )
 
 # Per-language clean rules from dependency scanning.

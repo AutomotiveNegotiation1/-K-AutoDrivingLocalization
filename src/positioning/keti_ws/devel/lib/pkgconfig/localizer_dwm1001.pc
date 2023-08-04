@@ -1,8 +1,8 @@
-prefix=/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel
+prefix=/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel
 
 Name: localizer_dwm1001
 Description: Description of localizer_dwm1001
 Version: 1.0.0
-Cflags: -I/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include
+Cflags: -I/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include
 Libs: -L${prefix}/lib 
 Requires: 

@@ -67,14 +67,14 @@ set(localizer_zed_f9r_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(localizer_zed_f9r_SOURCE_PREFIX /media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r)
-  set(localizer_zed_f9r_DEVEL_PREFIX /media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel)
+  set(localizer_zed_f9r_SOURCE_PREFIX /home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r)
+  set(localizer_zed_f9r_DEVEL_PREFIX /home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel)
   set(localizer_zed_f9r_INSTALL_PREFIX "")
   set(localizer_zed_f9r_PREFIX ${localizer_zed_f9r_DEVEL_PREFIX})
 else()
   set(localizer_zed_f9r_SOURCE_PREFIX "")
   set(localizer_zed_f9r_DEVEL_PREFIX "")
-  set(localizer_zed_f9r_INSTALL_PREFIX /media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/install)
+  set(localizer_zed_f9r_INSTALL_PREFIX /home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/install)
   set(localizer_zed_f9r_PREFIX ${localizer_zed_f9r_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/install/lib;/opt/ros/noetic/lib)
+    foreach(path /home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/install/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
@@ -211,7 +211,7 @@ foreach(depend ${depends})
   _unpack_libraries_with_build_configuration(localizer_zed_f9r_LIBRARIES ${localizer_zed_f9r_LIBRARIES})
 
   _list_append_unique(localizer_zed_f9r_LIBRARY_DIRS ${${localizer_zed_f9r_dep}_LIBRARY_DIRS})
-  _list_append_deduplicate(localizer_zed_f9r_EXPORTED_TARGETS ${${localizer_zed_f9r_dep}_EXPORTED_TARGETS})
+  list(APPEND localizer_zed_f9r_EXPORTED_TARGETS ${${localizer_zed_f9r_dep}_EXPORTED_TARGETS})
 endforeach()
 
 set(pkg_cfg_extras "localizer_zed_f9r-msg-extras.cmake")

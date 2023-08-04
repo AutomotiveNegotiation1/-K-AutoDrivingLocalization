@@ -2,7 +2,7 @@
 
 message(STATUS "localizer_zed_f9r: 1 messages, 2 services")
 
-set(MSG_I_FLAGS "-Ilocalizer_zed_f9r:/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg;-Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg")
+set(MSG_I_FLAGS "-Ilocalizer_zed_f9r:/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg;-Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg")
 
 # Find all generators
 find_package(gencpp REQUIRED)
@@ -17,19 +17,19 @@ add_custom_target(localizer_zed_f9r_generate_messages ALL)
 
 
 
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
 add_custom_target(_localizer_zed_f9r_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "localizer_zed_f9r" "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" "std_msgs/Header"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "localizer_zed_f9r" "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" "std_msgs/Header"
 )
 
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
 add_custom_target(_localizer_zed_f9r_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "localizer_zed_f9r" "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" ""
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "localizer_zed_f9r" "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" ""
 )
 
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
 add_custom_target(_localizer_zed_f9r_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "localizer_zed_f9r" "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" ""
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "localizer_zed_f9r" "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" ""
 )
 
 #
@@ -39,21 +39,21 @@ add_custom_target(_localizer_zed_f9r_generate_messages_check_deps_${_filename}
 ### Section generating for lang: gencpp
 ### Generating Messages
 _generate_msg_cpp(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg"
+  "/opt/ros/melodic/share/std_msgs/cmake/../msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/localizer_zed_f9r
 )
 
 ### Generating Services
 _generate_srv_cpp(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/localizer_zed_f9r
 )
 _generate_srv_cpp(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/localizer_zed_f9r
@@ -71,11 +71,11 @@ add_custom_target(localizer_zed_f9r_generate_messages_cpp
 add_dependencies(localizer_zed_f9r_generate_messages localizer_zed_f9r_generate_messages_cpp)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_cpp _localizer_zed_f9r_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_cpp _localizer_zed_f9r_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_cpp _localizer_zed_f9r_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -88,21 +88,21 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS localizer_zed_f9r_generate_messages
 ### Section generating for lang: geneus
 ### Generating Messages
 _generate_msg_eus(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg"
+  "/opt/ros/melodic/share/std_msgs/cmake/../msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/localizer_zed_f9r
 )
 
 ### Generating Services
 _generate_srv_eus(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/localizer_zed_f9r
 )
 _generate_srv_eus(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/localizer_zed_f9r
@@ -120,11 +120,11 @@ add_custom_target(localizer_zed_f9r_generate_messages_eus
 add_dependencies(localizer_zed_f9r_generate_messages localizer_zed_f9r_generate_messages_eus)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_eus _localizer_zed_f9r_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_eus _localizer_zed_f9r_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_eus _localizer_zed_f9r_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -137,21 +137,21 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS localizer_zed_f9r_generate_messages
 ### Section generating for lang: genlisp
 ### Generating Messages
 _generate_msg_lisp(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg"
+  "/opt/ros/melodic/share/std_msgs/cmake/../msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/localizer_zed_f9r
 )
 
 ### Generating Services
 _generate_srv_lisp(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/localizer_zed_f9r
 )
 _generate_srv_lisp(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/localizer_zed_f9r
@@ -169,11 +169,11 @@ add_custom_target(localizer_zed_f9r_generate_messages_lisp
 add_dependencies(localizer_zed_f9r_generate_messages localizer_zed_f9r_generate_messages_lisp)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_lisp _localizer_zed_f9r_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_lisp _localizer_zed_f9r_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_lisp _localizer_zed_f9r_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -186,21 +186,21 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS localizer_zed_f9r_generate_messages
 ### Section generating for lang: gennodejs
 ### Generating Messages
 _generate_msg_nodejs(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg"
+  "/opt/ros/melodic/share/std_msgs/cmake/../msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/localizer_zed_f9r
 )
 
 ### Generating Services
 _generate_srv_nodejs(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/localizer_zed_f9r
 )
 _generate_srv_nodejs(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/localizer_zed_f9r
@@ -218,11 +218,11 @@ add_custom_target(localizer_zed_f9r_generate_messages_nodejs
 add_dependencies(localizer_zed_f9r_generate_messages localizer_zed_f9r_generate_messages_nodejs)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_nodejs _localizer_zed_f9r_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_nodejs _localizer_zed_f9r_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_nodejs _localizer_zed_f9r_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -235,21 +235,21 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS localizer_zed_f9r_generate_messages
 ### Section generating for lang: genpy
 ### Generating Messages
 _generate_msg_py(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg"
+  "/opt/ros/melodic/share/std_msgs/cmake/../msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/localizer_zed_f9r
 )
 
 ### Generating Services
 _generate_srv_py(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/localizer_zed_f9r
 )
 _generate_srv_py(localizer_zed_f9r
-  "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
+  "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/localizer_zed_f9r
@@ -267,11 +267,11 @@ add_custom_target(localizer_zed_f9r_generate_messages_py
 add_dependencies(localizer_zed_f9r_generate_messages localizer_zed_f9r_generate_messages_py)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_py _localizer_zed_f9r_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_py _localizer_zed_f9r_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
+get_filename_component(_filename "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv" NAME_WE)
 add_dependencies(localizer_zed_f9r_generate_messages_py _localizer_zed_f9r_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -328,7 +328,7 @@ if(TARGET std_msgs_generate_messages_nodejs)
 endif()
 
 if(genpy_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/localizer_zed_f9r)
-  install(CODE "execute_process(COMMAND \"/usr/bin/python3\" -m compileall \"${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/localizer_zed_f9r\")")
+  install(CODE "execute_process(COMMAND \"/usr/bin/python3.6\" -m compileall \"${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/localizer_zed_f9r\")")
   # install generated code
   install(
     DIRECTORY ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/localizer_zed_f9r

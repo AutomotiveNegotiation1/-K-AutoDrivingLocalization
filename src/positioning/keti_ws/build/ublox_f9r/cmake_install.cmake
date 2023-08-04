@@ -1,8 +1,8 @@
-# Install script for directory: /media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r
+# Install script for directory: /home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,76 +38,76 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/localizer_zed_f9r/msg" TYPE FILE FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/localizer_zed_f9r/msg" TYPE FILE FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/msg/GNSS.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/localizer_zed_f9r/srv" TYPE FILE FILES
-    "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
-    "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
+    "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Acc.srv"
+    "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/srv/Gyro.srv"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/localizer_zed_f9r/cmake" TYPE FILE FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/build/ublox_f9r/catkin_generated/installspace/localizer_zed_f9r-msg-paths.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/localizer_zed_f9r/cmake" TYPE FILE FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/build/ublox_f9r/catkin_generated/installspace/localizer_zed_f9r-msg-paths.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include/localizer_zed_f9r")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include/localizer_zed_f9r")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/share/roseus/ros/localizer_zed_f9r")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/share/roseus/ros/localizer_zed_f9r")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/share/common-lisp/ros/localizer_zed_f9r")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/share/common-lisp/ros/localizer_zed_f9r")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/share/gennodejs/ros/localizer_zed_f9r")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/share/gennodejs/ros/localizer_zed_f9r")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python3" -m compileall "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages/localizer_zed_f9r")
+  execute_process(COMMAND "/usr/bin/python3.6" -m compileall "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages/localizer_zed_f9r")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages" TYPE DIRECTORY FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages/localizer_zed_f9r")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages" TYPE DIRECTORY FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages/localizer_zed_f9r")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/localizer_zed_f9r" TYPE FILE FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include/localizer_zed_f9r/ZED_F9R_Tune_SerialConfig.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/localizer_zed_f9r" TYPE FILE FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/include/localizer_zed_f9r/ZED_F9R_Tune_SerialConfig.h")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages/localizer_zed_f9r" TYPE FILE FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages/localizer_zed_f9r/__init__.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages/localizer_zed_f9r" TYPE FILE FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages/localizer_zed_f9r/__init__.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python3" -m compileall "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages/localizer_zed_f9r/cfg")
+  execute_process(COMMAND "/usr/bin/python3.6" -m compileall "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages/localizer_zed_f9r/cfg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages/localizer_zed_f9r" TYPE DIRECTORY FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages/localizer_zed_f9r/cfg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages/localizer_zed_f9r" TYPE DIRECTORY FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel/lib/python3/dist-packages/localizer_zed_f9r/cfg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/build/ublox_f9r/catkin_generated/installspace/localizer_zed_f9r.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/build/ublox_f9r/catkin_generated/installspace/localizer_zed_f9r.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/localizer_zed_f9r/cmake" TYPE FILE FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/build/ublox_f9r/catkin_generated/installspace/localizer_zed_f9r-msg-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/localizer_zed_f9r/cmake" TYPE FILE FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/build/ublox_f9r/catkin_generated/installspace/localizer_zed_f9r-msg-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/localizer_zed_f9r/cmake" TYPE FILE FILES
-    "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/build/ublox_f9r/catkin_generated/installspace/localizer_zed_f9rConfig.cmake"
-    "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/build/ublox_f9r/catkin_generated/installspace/localizer_zed_f9rConfig-version.cmake"
+    "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/build/ublox_f9r/catkin_generated/installspace/localizer_zed_f9rConfig.cmake"
+    "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/build/ublox_f9r/catkin_generated/installspace/localizer_zed_f9rConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/localizer_zed_f9r" TYPE FILE FILES "/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/localizer_zed_f9r" TYPE FILE FILES "/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/ublox_f9r/package.xml")
 endif()
 

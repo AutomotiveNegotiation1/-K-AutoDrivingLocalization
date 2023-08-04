@@ -106,7 +106,7 @@ class Anchor {
     let length = 0;
     length += std_msgs.msg.Header.getMessageSize(object.header);
     object.id.forEach((val) => {
-      length += 4 + _getByteLength(val);
+      length += 4 + val.length;
     });
     length += 8 * object.x.length;
     length += 8 * object.y.length;

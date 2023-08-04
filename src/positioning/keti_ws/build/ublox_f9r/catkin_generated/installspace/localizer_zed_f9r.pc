@@ -1,4 +1,4 @@
-prefix=/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/install
+prefix=/home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/install
 
 Name: localizer_zed_f9r
 Description: Description of localizer_zed_f9r

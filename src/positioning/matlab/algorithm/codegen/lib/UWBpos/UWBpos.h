@@ -20,10 +20,10 @@ extern "C" {
 
 /* Function Declarations */
 extern void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
-                   const double RxID_data[], const int RxID_size[2],
-                   const double RxDist_data[], const int RxDist_size[1],
+                   const double RxID_data[], const double RxID_size[2],
+                   const double RxDist_data[], const double RxDist_size[1],
                    double s_time, const creal_T tag_pos_b[4],
-                   const double xa[6], const double ya[6],
+                   const double xa[], const double x_size, const double ya[], const double y_size,
                    emxArray_creal_T *tag_pos_est, double *heading_est,
                    emxArray_creal_T *tag_pos_est_aver,
                    double *headingest_a_aver_v);

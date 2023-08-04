@@ -67,14 +67,14 @@ set(keti_ros_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(keti_ros_SOURCE_PREFIX /media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/keti_ros)
-  set(keti_ros_DEVEL_PREFIX /media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel)
+  set(keti_ros_SOURCE_PREFIX /home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/keti_ros)
+  set(keti_ros_DEVEL_PREFIX /home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel)
   set(keti_ros_INSTALL_PREFIX "")
   set(keti_ros_PREFIX ${keti_ros_DEVEL_PREFIX})
 else()
   set(keti_ros_SOURCE_PREFIX "")
   set(keti_ros_DEVEL_PREFIX "")
-  set(keti_ros_INSTALL_PREFIX /media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/install)
+  set(keti_ros_INSTALL_PREFIX /home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/install)
   set(keti_ros_PREFIX ${keti_ros_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/install/lib;/opt/ros/noetic/lib)
+    foreach(path /home/keti/0802/-K-AutoDrivingLocalization/src/positioning/keti_ws/install/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
@@ -211,7 +211,7 @@ foreach(depend ${depends})
   _unpack_libraries_with_build_configuration(keti_ros_LIBRARIES ${keti_ros_LIBRARIES})
 
   _list_append_unique(keti_ros_LIBRARY_DIRS ${${keti_ros_dep}_LIBRARY_DIRS})
-  _list_append_deduplicate(keti_ros_EXPORTED_TARGETS ${${keti_ros_dep}_EXPORTED_TARGETS})
+  list(APPEND keti_ros_EXPORTED_TARGETS ${${keti_ros_dep}_EXPORTED_TARGETS})
 endforeach()
 
 set(pkg_cfg_extras "")

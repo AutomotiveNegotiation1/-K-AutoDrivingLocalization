@@ -33,27 +33,29 @@
 
 TARGET = uwbpos
 SRCS = $(wildcard *.c)
-TARGET_AR = ar
 OBJS = ${SRCS:.c=.o}
-OUT_DIR = ../../../../build/out
+OUT_DIR = ../../../../../keti_ws/
+
+# Update these lines
+CC = gcc
+CFLAGS = -c
+LDFLAGS = -shared
+DLL_TARGET = $(OUT_DIR)/libuwb.a
 
 %.o:%.c
 	@echo "Compiling..."
-	$(CC) $(CFLAGS) -c $^ -pthread $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $^ 
 
-$(TARGET):$(OBJS)
+$(DLL_TARGET):$(OBJS)
 	@echo "Linking..."
-	@$(TARGET_AR) rcs libuwbpos.a $(OBJS)
-	@echo "Make and copy the common library..."
-	@mv libuwbpos.a $(OUT_DIR)
+	$(CC) $(LDFLAGS) -o $(DLL_TARGET) $(OBJS)
 
-all: $(TARGET)
+all: $(DLL_TARGET)
 
 clean:
-	@$(RM) $(TARGET)
+	@$(RM) $(DLL_TARGET)
 
 distclean:
-	@$(RM) $(OBJS) $(TARGET)
+	@$(RM) $(OBJS) $(DLL_TARGET)
 
 .PHONY: clean distclean
-
