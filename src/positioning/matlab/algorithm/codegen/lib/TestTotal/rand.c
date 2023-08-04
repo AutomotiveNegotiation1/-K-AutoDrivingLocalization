@@ -1,27 +1,21 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: rand.c
+ * rand.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'rand'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "rand.h"
 #include "TestTotal_data.h"
 #include "eml_rand_mt19937ar.h"
 #include "rt_nonfinite.h"
 
 /* Function Definitions */
-/*
- * Arguments    : void
- * Return Type  : double
- */
 double b_rand(void)
 {
   double b_r;
+  unsigned int u[2];
   /* ========================= COPYRIGHT NOTICE ============================ */
   /*  This is a uniform (0,1) pseudorandom number generator based on:        */
   /*                                                                         */
@@ -60,7 +54,6 @@ double b_rand(void)
   /*  OF THIS  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  */
   /*                                                                         */
   /* =============================   END   ================================= */
-  unsigned int u[2];
   do {
     genrand_uint32_vector(state, u);
     u[0] >>= 5U;
@@ -70,8 +63,4 @@ double b_rand(void)
   return b_r;
 }
 
-/*
- * File trailer for rand.c
- *
- * [EOF]
- */
+/* End of code generation (rand.c) */

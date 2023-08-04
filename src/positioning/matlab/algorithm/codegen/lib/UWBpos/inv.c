@@ -1,14 +1,11 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: inv.c
+ * inv.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'inv'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "inv.h"
 #include "UWBpos_data.h"
 #include "UWBpos_rtwutil.h"
@@ -17,11 +14,6 @@
 #include <string.h>
 
 /* Function Definitions */
-/*
- * Arguments    : const creal_T x[9]
- *                creal_T y[9]
- * Return Type  : void
- */
 void b_inv(const creal_T x[9], creal_T y[9])
 {
   creal_T b_x[9];
@@ -36,6 +28,7 @@ void b_inv(const creal_T x[9], creal_T y[9])
   double t1_re;
   double t2_im;
   double t2_re;
+  int itmp;
   int p1;
   int p2;
   int p3;
@@ -179,7 +172,6 @@ void b_inv(const creal_T x[9], creal_T y[9])
   b_x[8].im -= absx21 * b_x[6].im + absx11 * b_x[6].re;
   if (rt_hypotd_snf(b_x[5].re, b_x[5].im) >
       rt_hypotd_snf(b_x[4].re, b_x[4].im)) {
-    int itmp;
     itmp = p2;
     p2 = p3;
     p3 = itmp;
@@ -717,16 +709,11 @@ void b_inv(const creal_T x[9], creal_T y[9])
   y[p3 + 2].im = t1_im;
 }
 
-/*
- * Arguments    : const double x[4]
- *                double y[4]
- * Return Type  : void
- */
 void inv(const double x[4], double y[4])
 {
+  double b_r;
+  double t;
   if (fabs(x[1]) > fabs(x[0])) {
-    double b_r;
-    double t;
     b_r = x[0] / x[1];
     t = 1.0 / (b_r * x[3] - x[2]);
     y[0] = x[3] / x[1] * t;
@@ -734,8 +721,6 @@ void inv(const double x[4], double y[4])
     y[2] = -x[2] / x[1] * t;
     y[3] = b_r * t;
   } else {
-    double b_r;
-    double t;
     b_r = x[1] / x[0];
     t = 1.0 / (x[3] - b_r * x[2]);
     y[0] = x[3] / x[0] * t;
@@ -745,8 +730,4 @@ void inv(const double x[4], double y[4])
   }
 }
 
-/*
- * File trailer for inv.c
- *
- * [EOF]
- */
+/* End of code generation (inv.c) */

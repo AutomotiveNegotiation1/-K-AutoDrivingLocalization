@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: UWBpos_emxAPI.h
+ * UWBpos_emxAPI.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'UWBpos_emxAPI'
+ *
  */
 
 #ifndef UWBPOS_EMXAPI_H
 #define UWBPOS_EMXAPI_H
 
-/* Include Files */
+/* Include files */
 #include "UWBpos_types.h"
 #include "rtwtypes.h"
 #include <stddef.h>
@@ -43,8 +40,4 @@ extern void emxInitArray_creal_T(emxArray_creal_T **pEmxArray,
 #endif
 
 #endif
-/*
- * File trailer for UWBpos_emxAPI.h
- *
- * [EOF]
- */
+/* End of code generation (UWBpos_emxAPI.h) */

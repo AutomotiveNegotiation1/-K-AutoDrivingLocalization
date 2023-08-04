@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: rt_defines.h
+ * rt_defines.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'UWBpos'
+ *
  */
 
 #ifndef RT_DEFINES_H
 #define RT_DEFINES_H
 
-/* Include Files */
+/* Include files */
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,8 +27,4 @@ extern "C" {
 }
 #endif
 #endif
-/*
- * File trailer for rt_defines.h
- *
- * [EOF]
- */
+/* End of code generation (rt_defines.h) */

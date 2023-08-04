@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: UWBpos_rtwutil.h
+ * UWBpos_rtwutil.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'UWBpos_rtwutil'
+ *
  */
 
 #ifndef UWBPOS_RTWUTIL_H
 #define UWBPOS_RTWUTIL_H
 
-/* Include Files */
+/* Include files */
 #include "rtwtypes.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -32,8 +29,4 @@ extern double rt_powd_snf(double u0, double u1);
 #endif
 
 #endif
-/*
- * File trailer for UWBpos_rtwutil.h
- *
- * [EOF]
- */
+/* End of code generation (UWBpos_rtwutil.h) */

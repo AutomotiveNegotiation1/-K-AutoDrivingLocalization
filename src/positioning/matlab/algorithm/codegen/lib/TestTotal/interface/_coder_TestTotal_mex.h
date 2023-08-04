@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: _coder_TestTotal_mex.h
+ * _coder_TestTotal_mex.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'TestTotal'
+ *
  */
 
 #ifndef _CODER_TESTTOTAL_MEX_H
 #define _CODER_TESTTOTAL_MEX_H
 
-/* Include Files */
+/* Include files */
 #include "emlrt.h"
 #include "mex.h"
 #include "tmwtypes.h"
@@ -33,8 +30,4 @@ void unsafe_TestTotal_mexFunction(int32_T nlhs, mxArray *plhs[4], int32_T nrhs);
 #endif
 
 #endif
-/*
- * File trailer for _coder_TestTotal_mex.h
- *
- * [EOF]
- */
+/* End of code generation (_coder_TestTotal_mex.h) */

@@ -1,14 +1,11 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: _coder_TestTotal_info.c
+ * _coder_TestTotal_info.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'TestTotal'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "_coder_TestTotal_info.h"
 #include "emlrt.h"
 #include "tmwtypes.h"
@@ -17,53 +14,51 @@
 static const mxArray *emlrtMexFcnResolvedFunctionsInfo(void);
 
 /* Function Definitions */
-/*
- * Arguments    : void
- * Return Type  : const mxArray *
- */
 static const mxArray *emlrtMexFcnResolvedFunctionsInfo(void)
 {
   const mxArray *nameCaptureInfo;
-  const char_T *data[9] = {
-      "789ced59cd72d250184d9d6a5b9d5aaa6337ae74e9680314d12e5c941628589042fa87e3"
-      "0c21b990db2637901f0a75c657e8b8551fc0a52fe0c285a32fe3caa5"
-      "d3198170816426d236f4d6a4f936976f0ee41cbe4b4e6e4fa989546682a2a8db9451b967"
-      "c63adbeb03bdf51a652e2b3ed15b6f5a7a5cd7a949d3e7307edc5b39",
-      "1969a0a9190d6225d0ff242f4b10b148635a3540294095c506e0bb48058a808112280c37"
-      "d94e272586a07ed3813aaf5705c01d147489520475a0501c6efaf3f8"
-      "6cf37d274f398f759b79042cf8ebf81b5a902540972516d187b27240d764156a5046b4aa"
-      "70fd06a22a2db19ac8966956acca0ad404896680aa31b2c68a8b12d6",
-      "5d72a8fb86ad6e03d9da89b5250de674d17cbcac974530be7d89dbf2997147fb620c6951"
-      "a246cf69ee94baadebe0fdd3ddf581feb37b7390e2fbf8fec323927c"
-      "b82e8baf6973bdd3feee166cf802167c73ed7923166a6e090a9f5e4d6c3723519e692586"
-      "7c7a04cf281d944d4feafa6ebd7f6b0e75db3d1f03163c09b414825a",
-      "4eee3d942ecb67bf38e44bd9f2997147fb34185677af3a45ca1f0a0a59bf5da77f4d91e4"
-      "c3e575bf8d44ea95427e2f988f8ac5b4de3c5ae6931bcb31eff8addb"
-      "ef63a7be7b6b847e8c3387f20ae284b68425137fc9213f69df4ddbf29971677f770c8685"
-      "378c944f3c6c90f5ddbb27dfe749f2e1f2baef72cd3d9e4f0735191d",
-      "d60050b38db85ecfc47ddffd5f7cd7e9ef607e847e8cb725647451830c5b6dcb480264d1"
-      "5172a883b4ffe62c3d65791fc69dee9b7968a3f39f71f9c50bc2e7de"
-      "29fded7d927cb8bceebf47aff46c7d892972bb494d155e66b6a375b8b1e61dffbdaa39c3"
-      "cc08dd184f210d28b57ecce0da3c9748cede1f16399f7d77f28da8cf",
-      "e2ba2a7ca47cb61ac935c2adac94db87628c13e17eabb2195cf57df6b27db6e450f794ad"
-      "6e03691fd1da7e1176adaf266cf9ccb8d3736c67489d8d21e503d32a"
-      "d9f3ebc28f9939927cb8bceeabeb8895cb3ca884986ce8290a878ae9dd959c87725bb7de"
-      "bf7e5e7b363e3faf1d2f9f9fd71ae5e7b567bbbe5bfdd6cf69cfc7e7",
-      "e7b4e3e5f3735aa3fc9cf66cd7776b7ee0f49c3b6be9adba316e587e1e54200261cabd7e"
-      "bb61cb67c6c7f07cec0dcb38e992f2874fc764fdf6f1efc413927cb8"
-      "dceab7f76cf802163cb6c73712e9e2111b8c44e04e311386db204979c76fdd7e1f93f25d"
-      "465000184a187cdffd57be303c2cb2be7be7cf57ffff6417c847ea9c",
-      "5b8b421456403e9a4c842a3c27256b8216f140bef017a47d651d",
+  const char_T *data[10] = {
+      "789ced5a4d6c1b45147e41015268615ba995e0048843107ffeab9d70b3637b6b8383eb6c"
+      "92c69862c73baed7d99df5cfda4e0287de101c5a2e481c3800474e45"
+      "54824bab542a4d0f55d5031c907aa890b823ce1c18db33b1b36814579b8eebc5ef90cf2f"
+      "6f77bf997dbbdf8c3f19a612a92900780e7a919febe1319a4b149f80",
+      "fd61af4f517cc696b37812a6f79dc7ea9729164d6ca14dab97e08281f6ce544d43c3056c"
+      "295b550475d430f51652bb9592a6234533d0d260b2d8c98cf840692f"
+      "e9943a9f17caa8b8b1d434a05e6ef447a80f267bf7e367ce7ca787bc1faf73eec7718a2b"
+      "143f80187c0832bc0339b87ae525b87ff5939facdda3d773f0c5eeec",
+      "ee3fb73ffb6de6d6cebd8fc00b73372e5ecb811f66ef447fb8f9630e5ebe3bbd9b030510"
+      "34c0226892bf05d0e12d3006e69177388fa738f3906865793552351b"
+      "e2f854b3b9aea33edf15877cb31c3ed6a73445a77d5a865588409574a9d1edd041f7ebf9"
+      "21c76fc7fef1335dd46ffdde2d89e2f36cdfd345f2b11815df26e77a",
+      "c33e7fa7387c92adae9f0d55948ab1818c5a50cb64cdb677c35c8df5c7c19e531ecf41e3"
+      "004e2eeafae3fe1e571d8e9fb77e4ab6ba8cac04d6acb44917ad51e9"
+      "aed3f5f10d0e1febd7398a4efb2593f5d1820460d008a685ebef2b37c5ea2ffca15c12ca"
+      "47c3edfa1b08d44a4b99354f26a86793cdcded79557e6f3ee21efd75",
+      "cbfbec54879fe5cc43b2d595b619c6c532d1617f371f950eef38e47b93c3c7fa96a5e8fc"
+      "7b4a9bf42a4cfa568432ed9b9f7e57e98428fd7855b41e7f7fe257a1"
+      "7c34dcaec7c5cd35554d7a2c13b7ab0835165bb1662de5a2fdb05bf4d8e9f370dc9683ed"
+      "385627fbe25453b734a5708168b28c30fdffa874f9b6433e3f878fcd",
+      "b744f170fa978226e80435a2d305b840fbd8a9e121fda4c3d293a3bf88d5e7fcd7deef44"
+      "f2b170bb3e63d91356d697ced4420befceafd75a66ab1e50e3eed1e7"
+      "ffbb5f7184337ec9564f600bd5ab7b76c5d8fa15a2fcfcce4a6a11ddad930ef55753717a"
+      "8104fbc50f3efe744e241f0bb7eb6fc87bae196dc763ef975ae1ade0",
+      "d905a31056a213fd7d6cf437ef70fc4f73c62fd10ad90f77bd8971d5dbd7387cac3f198a"
+      "87b3ff1d9d1f5111acb77f7d8bff16c9c7c2ed7aeb8f35b642dbebcb"
+      "15d5588ea663feb06f2eb428bb476fddf23e4ffce187e39bf8c38f966fe20ff762e20f3f"
+      "dcf5dda2c74e9f87139c7948b6fa7ffc61dffe71e41d8e43b43f1ce0",
+      "f0b1fe95293e7a7fd827f4f7149f8bf62736ae63917c2cdcaecf2b95e4e9682669f95a6a"
+      "33118ba493055fad31f1271e1b7fc2e93ef9982d07db71acdef32932"
+      "a8a461d491e471dd27bfcde163fd3a4ff130d7d30cf95c229a8c09fa04fbc47ec1fbe46f"
+      "5e7ce1bc483e16e3aac327397c92ad1e59535bf16476bbe00904b4d5",
+      "6ccaa7ad2019dca3c33b9cf3c7f5bd16a5cb4ab98ed0808331d1e583fc8b32d449bf10c7"
+      "c310a5237f5e13ec5f7c39f395503e1ae3aacbc3ee8fab410dfbea28"
+      "1394e3de925a34e46ad90ab8c0bff817ce159522",
       ""};
   nameCaptureInfo = NULL;
-  emlrtNameCaptureMxArrayR2016a(&data[0], 14184U, &nameCaptureInfo);
+  emlrtNameCaptureMxArrayR2016a(&data[0], 14456U, &nameCaptureInfo);
   return nameCaptureInfo;
 }
 
-/*
- * Arguments    : void
- * Return Type  : mxArray *
- */
 mxArray *emlrtMexFcnProperties(void)
 {
   mxArray *xEntryPoints;
@@ -84,25 +79,28 @@ mxArray *emlrtMexFcnProperties(void)
   emlrtSetField(xEntryPoints, 0, "NumberOfOutputs",
                 emlrtMxCreateDoubleScalar(4.0));
   emlrtSetField(xEntryPoints, 0, "ConstantInputs", xInputs);
-  emlrtSetField(xEntryPoints, 0, "FullPath",
-                emlrtMxCreateString("/home/bman/work/position/src/positioning/"
-                                    "matlab/algorithm/TestTotal.m"));
+  emlrtSetField(
+      xEntryPoints, 0, "FullPath",
+      emlrtMxCreateString(
+          "G:\\\xeb\x82\xb4 "
+          "\xeb\x93\x9c\xeb\x9d\xbc\xec\x9d\xb4\xeb\xb8\x8c\\\xec\x9e\x90\xec"
+          "\x9c\xa8\xec\xa3\xbc\xed\x96\x89\xec\x98\x88\xed"
+          "\x83\x80_"
+          "1\xec\x84\xb8\xeb\xb6\x80\\"
+          "3\xec\xb0\xa8\xeb\x85\x84\xeb\x8f\x84\\\xec\xb8\xa1\xec\x9c\x84\\T"
+          "estTotal.m"));
   emlrtSetField(xEntryPoints, 0, "TimeStamp",
-                emlrtMxCreateDoubleScalar(739099.69104166667));
+                emlrtMxCreateDoubleScalar(739102.55375));
   xResult =
       emlrtCreateStructMatrix(1, 1, 7, (const char_T **)&propFieldName[0]);
   emlrtSetField(xResult, 0, "Version",
-                emlrtMxCreateString("9.14.0.2206163 (R2023a)"));
+                emlrtMxCreateString("9.13.0.2166757 (R2022b) Update 4"));
   emlrtSetField(xResult, 0, "ResolvedFunctions",
                 (mxArray *)emlrtMexFcnResolvedFunctionsInfo());
   emlrtSetField(xResult, 0, "Checksum",
-                emlrtMxCreateString("CM2MJtcNYfM7UeZrdPWy6D"));
+                emlrtMxCreateString("uf5NOF4DwKQKraZFQCT89B"));
   emlrtSetField(xResult, 0, "EntryPoints", xEntryPoints);
   return xResult;
 }
 
-/*
- * File trailer for _coder_TestTotal_info.c
- *
- * [EOF]
- */
+/* End of code generation (_coder_TestTotal_info.c) */

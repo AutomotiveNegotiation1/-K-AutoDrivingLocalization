@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: find.h
+ * find.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'find'
+ *
  */
 
 #ifndef FIND_H
 #define FIND_H
 
-/* Include Files */
+/* Include files */
 #include "rtwtypes.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -21,15 +18,13 @@ extern "C" {
 #endif
 
 /* Function Declarations */
-int eml_find(const bool x[6], int i_data[]);
+void b_eml_find(const boolean_T x[12], int i_data[], int *i_size);
+
+void eml_find(const boolean_T x[6], int i_data[], int *i_size);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-/*
- * File trailer for find.h
- *
- * [EOF]
- */
+/* End of code generation (find.h) */

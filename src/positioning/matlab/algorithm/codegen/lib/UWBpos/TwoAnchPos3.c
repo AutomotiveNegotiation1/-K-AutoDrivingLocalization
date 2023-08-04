@@ -1,14 +1,11 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: TwoAnchPos3.c
+ * TwoAnchPos3.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'TwoAnchPos3'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "TwoAnchPos3.h"
 #include "UWBpos_emxutil.h"
 #include "UWBpos_rtwutil.h"
@@ -23,12 +20,6 @@ static void binary_expand_op(emxArray_real_T *in1, const emxArray_real_T *in2,
                              const emxArray_real_T *in3);
 
 /* Function Definitions */
-/*
- * Arguments    : emxArray_real_T *in1
- *                const emxArray_real_T *in2
- *                const emxArray_real_T *in3
- * Return Type  : void
- */
 static void binary_expand_op(emxArray_real_T *in1, const emxArray_real_T *in2,
                              const emxArray_real_T *in3)
 {
@@ -43,37 +34,25 @@ static void binary_expand_op(emxArray_real_T *in1, const emxArray_real_T *in2,
   in2_data = in2->data;
   i = in1->size[0] * in1->size[1];
   in1->size[0] = 1;
+  if (in3->size[0] == 1) {
+    in1->size[1] = in2->size[1];
+  } else {
+    in1->size[1] = in3->size[0];
+  }
   emxEnsureCapacity_real_T(in1, i);
+  in1_data = in1->data;
+  stride_0_1 = (in2->size[1] != 1);
+  stride_1_1 = (in3->size[0] != 1);
   if (in3->size[0] == 1) {
     loop_ub = in2->size[1];
   } else {
     loop_ub = in3->size[0];
   }
-  i = in1->size[0] * in1->size[1];
-  in1->size[1] = loop_ub;
-  emxEnsureCapacity_real_T(in1, i);
-  in1_data = in1->data;
-  stride_0_1 = (in2->size[1] != 1);
-  stride_1_1 = (in3->size[0] != 1);
   for (i = 0; i < loop_ub; i++) {
     in1_data[i] = in2_data[i * stride_0_1] - in3_data[i * stride_1_1];
   }
 }
 
-/*
- * Xa = [0 1];
- *  Ya = [0 0];
- *  dist = [1 1];
- *
- * Arguments    : const double Xa[2]
- *                const double Ya[2]
- *                const double dist[2]
- *                const emxArray_creal_T *anch_pos
- *                const emxArray_real_T *dist_a
- *                double Pos[4]
- *                double Prob[2]
- * Return Type  : void
- */
 void TwoAnchPos3(const double Xa[2], const double Ya[2], const double dist[2],
                  const emxArray_creal_T *anch_pos,
                  const emxArray_real_T *dist_a, double Pos[4], double Prob[2])
@@ -90,16 +69,16 @@ void TwoAnchPos3(const double Xa[2], const double Ya[2], const double dist[2],
   double X2[2];
   const double *dist_a_data;
   double AA;
-  double b_d;
+  double X1S;
   double b_d_idx_0_tmp;
-  double b_d_tmp_tmp;
   double c_d_idx_0_tmp;
   double d;
+  double d1;
+  double d2;
+  double d3;
   double d_idx_0;
   double d_idx_0_tmp;
   double d_idx_1_tmp;
-  double d_tmp;
-  double d_tmp_tmp;
   double s;
   double *b_x_data;
   double *y_data;
@@ -107,74 +86,71 @@ void TwoAnchPos3(const double Xa[2], const double Ya[2], const double dist[2],
   int nx;
   dist_a_data = dist_a->data;
   anch_pos_data = anch_pos->data;
+  /*  Xa = [0 1]; */
+  /*  Ya = [0 0]; */
+  /*  dist = [1 1]; */
   AA = Xa[0] - Xa[1];
   s = Ya[0] - Ya[1];
   AA = sqrt(AA * AA + s * s);
   /*  AA = 2;B=1;C=0.9 */
   s = ((AA + dist[0]) + dist[1]) / 2.0;
-  d = s - AA;
-  d_tmp_tmp = s - dist[0];
-  b_d_tmp_tmp = s - dist[1];
-  d_tmp = s * d * d_tmp_tmp * b_d_tmp_tmp;
-  if (d_tmp > 0.0) {
-    b_d = sqrt(d_tmp);
+  if (s * (s - AA) * (s - dist[0]) * (s - dist[1]) > 0.0) {
+    d = sqrt(s * (s - AA) * (s - dist[0]) * (s - dist[1]));
   } else {
-    b_d = sqrt(-s * d * d_tmp_tmp * b_d_tmp_tmp);
+    d = sqrt(-s * (s - AA) * (s - dist[0]) * (s - dist[1]));
   }
-  d = 2.0 * b_d / AA;
+  AA = 2.0 * d / AA;
   /*  if (B^2-((B^2-C^2+AA^2)/(2*AA))^2) > 0 */
   /*      d = sqrt(B^2-((B^2-C^2+AA^2)/(2*AA))^2); */
   /*  else */
   /*      d = 0; */
   /*  end */
-  AA = Ya[1] - Ya[0];
-  s = Xa[1] - Xa[0];
-  A[1] = 2.0 * s;
-  A[3] = 2.0 * AA;
+  s = Ya[1] - Ya[0];
+  X1S = Xa[1] - Xa[0];
+  A[1] = 2.0 * X1S;
+  A[3] = 2.0 * s;
   /*  Y1 =
    * [d*sqrt((Ya(2)-Ya(1))^2+(Xa(2)-Xa(1))^2)+Xa(1)*Ya(2)-Xa(2)*Ya(1);(C^2-B^2-Xa(1)^2+Xa(2)^2-Ya(1)^2+Ya(2)^2)];
    */
   /*  Y2 =
    * [-d*sqrt((Ya(2)-Ya(1))^2+(Xa(2)-Xa(1))^2)+Xa(1)*Ya(2)-Xa(2)*Ya(1);(C^2-B^2-Xa(1)^2+Xa(2)^2-Ya(1)^2+Ya(2)^2)];
    */
-  y_tmp[0] = AA;
-  y_tmp[1] = -s;
+  y_tmp[0] = s;
+  y_tmp[1] = -X1S;
   y_tmp[2] = A[1];
   y_tmp[3] = A[3];
-  b_d = A[1];
-  d_tmp_tmp = A[3];
+  d = A[1];
+  d1 = A[3];
   for (k = 0; k < 2; k++) {
-    b_d_tmp_tmp = y_tmp[k + 2];
-    d_tmp = y_tmp[k];
-    b_y_tmp[k] = d_tmp * AA + b_d_tmp_tmp * b_d;
-    b_y_tmp[k + 2] = d_tmp * -s + b_d_tmp_tmp * d_tmp_tmp;
+    d2 = y_tmp[k + 2];
+    d3 = y_tmp[k];
+    b_y_tmp[k] = d3 * s + d2 * d;
+    b_y_tmp[k + 2] = d3 * -X1S + d2 * d1;
   }
   inv(b_y_tmp, A);
-  d_idx_0_tmp = sqrt(AA * AA + s * s);
-  b_d_idx_0_tmp = Xa[0] * Ya[1];
-  c_d_idx_0_tmp = Ya[0] * Xa[1];
-  d_idx_0 = (d * d_idx_0_tmp + b_d_idx_0_tmp) - c_d_idx_0_tmp;
+  d_idx_0_tmp = Xa[0] * Ya[1];
+  b_d_idx_0_tmp = Ya[0] * Xa[1];
+  c_d_idx_0_tmp = sqrt(s * s + X1S * X1S);
+  d_idx_0 = (AA * c_d_idx_0_tmp + d_idx_0_tmp) - b_d_idx_0_tmp;
   d_idx_1_tmp = ((((-(dist[1] * dist[1]) + dist[0] * dist[0]) - Xa[0] * Xa[0]) +
                   Xa[1] * Xa[1]) -
                  Ya[0] * Ya[0]) +
                 Ya[1] * Ya[1];
-  b_d = y_tmp[2];
-  d_tmp_tmp = y_tmp[3];
+  d = y_tmp[2];
+  d1 = y_tmp[3];
   for (k = 0; k < 2; k++) {
-    b_d_tmp_tmp = A[k + 2];
-    d_tmp = A[k];
-    X1[k] = (d_tmp * AA + b_d_tmp_tmp * -s) * d_idx_0 +
-            (d_tmp * b_d + b_d_tmp_tmp * d_tmp_tmp) * d_idx_1_tmp;
+    d2 = A[k + 2];
+    d3 = A[k];
+    X1[k] = (d3 * s + d2 * -X1S) * d_idx_0 + (d3 * d + d2 * d1) * d_idx_1_tmp;
   }
   inv(b_y_tmp, A);
-  d_idx_0 = (-d * d_idx_0_tmp + b_d_idx_0_tmp) - c_d_idx_0_tmp;
-  b_d = y_tmp[2];
-  d_tmp_tmp = y_tmp[3];
+  d_idx_0 = (-AA * c_d_idx_0_tmp + d_idx_0_tmp) - b_d_idx_0_tmp;
+  d = y_tmp[2];
+  d1 = y_tmp[3];
   for (k = 0; k < 2; k++) {
-    b_d_tmp_tmp = A[k + 2];
-    d_tmp = A[k];
-    X2[k] = (d_tmp * AA + b_d_tmp_tmp * -s) * d_idx_0 +
-            (d_tmp * b_d + b_d_tmp_tmp * d_tmp_tmp) * d_idx_1_tmp;
+    d2 = A[k + 2];
+    d3 = A[k];
+    X2[k] = (d3 * s + d2 * -X1S) * d_idx_0 + (d3 * d + d2 * d1) * d_idx_1_tmp;
   }
   emxInit_creal_T(&x, 2);
   k = x->size[0] * x->size[1];
@@ -223,7 +199,7 @@ void TwoAnchPos3(const double Xa[2], const double Ya[2], const double dist[2],
   for (k = 0; k < nx; k++) {
     y_data[k] = fabs(b_x_data[k]);
   }
-  d = combineVectorElements(y);
+  X1S = combineVectorElements(y);
   k = x->size[0] * x->size[1];
   x->size[0] = 1;
   x->size[1] = anch_pos->size[1];
@@ -270,23 +246,23 @@ void TwoAnchPos3(const double Xa[2], const double Ya[2], const double dist[2],
     y_data[k] = fabs(b_x_data[k]);
   }
   emxFree_real_T(&b_x);
-  b_d = combineVectorElements(y) + (X2[0] * X2[0] + X2[1] * X2[1]);
+  d = X1S + (X1[0] * X1[0] + X1[1] * X1[1]);
+  d1 = combineVectorElements(y) + (X2[0] * X2[0] + X2[1] * X2[1]);
   emxFree_real_T(&y);
-  d_tmp_tmp = d + (X1[0] * X1[0] + X1[1] * X1[1]);
-  if (d_tmp_tmp > b_d) {
+  if (d > d1) {
     Pos[0] = X2[0];
     Pos[1] = X1[0];
     Pos[2] = X2[1];
     Pos[3] = X1[1];
-    Prob[0] = b_d;
-    Prob[1] = d_tmp_tmp;
+    Prob[0] = d1;
+    Prob[1] = d;
   } else {
     Pos[0] = X1[0];
     Pos[1] = X2[0];
     Pos[2] = X1[1];
     Pos[3] = X2[1];
-    Prob[0] = d_tmp_tmp;
-    Prob[1] = b_d;
+    Prob[0] = d;
+    Prob[1] = d1;
   }
   /*  if (X1S+Y1S)-(X2S+Y2S)>0.1 */
   /*      Pos = [X2']; */
@@ -304,8 +280,4 @@ void TwoAnchPos3(const double Xa[2], const double Ya[2], const double dist[2],
   /*  end */
 }
 
-/*
- * File trailer for TwoAnchPos3.c
- *
- * [EOF]
- */
+/* End of code generation (TwoAnchPos3.c) */

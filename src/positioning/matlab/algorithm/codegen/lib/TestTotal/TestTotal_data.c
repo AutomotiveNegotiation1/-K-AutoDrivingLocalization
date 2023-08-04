@@ -1,19 +1,44 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: TestTotal_data.c
+ * TestTotal_data.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'TestTotal_data'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "TestTotal_data.h"
 #include "rt_nonfinite.h"
 
 /* Variable Definitions */
 unsigned int state[625];
+
+double freq;
+
+boolean_T freq_not_empty;
+
+double r;
+
+creal_T InterpPosition[8];
+
+creal_T Tag_Pos_List[96];
+
+double TagDistInitCount[24];
+
+double TagDistInit[24];
+
+double heading_est_a[20];
+
+double centerest_a[40];
+
+double centerest_a_aver[40];
+
+double headingest_a_aver[20];
+
+double RxIDprev[24];
+
+double PPprev[4];
+
+double RxIDprevLen[4];
 
 const creal_T dcv[4] = {{
                             -0.5, /* re */
@@ -32,10 +57,6 @@ const creal_T dcv[4] = {{
                             -0.5 /* im */
                         }};
 
-bool isInitialized_TestTotal = false;
+boolean_T isInitialized_TestTotal = false;
 
-/*
- * File trailer for TestTotal_data.c
- *
- * [EOF]
- */
+/* End of code generation (TestTotal_data.c) */

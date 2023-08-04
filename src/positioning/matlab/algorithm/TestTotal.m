@@ -66,11 +66,12 @@ TagDistInitCount = zeros(Ln,Lp);
 heading_est_a = [];
 NumRxID = zeros(1,length(x));
 dist_o = zeros(Ln,Lp);
-    centerest_a = zeros(800,2);
-    heading_est_a = zeros(1,800);
-    centerest_a_aver = zeros(800,2);
-    headingest_a_aver = zeros(1,800);;
+    centerest_a = zeros(1000,2);
+    heading_est_a = zeros(1,1000);
+    centerest_a_aver = zeros(1000,2);
+    headingest_a_aver = zeros(1,1000);
 
+    
 for r = 1 : length(x)
 
     %%%%%%%%%% Create ground-truth Tag posigion & distance %%%%%%%%%%
@@ -91,18 +92,18 @@ for r = 1 : length(x)
     %%%%%%%%%%%%%% Create simulation data by distance %%%%%%%%%%%%%%
     dist_a = awgn(dist_o,20);
 
-    %if (r > InitLeng)
+    if (r > InitLeng)
         dist = dist_a;
-        %dist(1,1:Ln) = dist_a(1,1:Ln)+3;
+                dist(1,1:3) = dist_a(1,1:3)+1;
         %         dist = dist_a;
-    %else
-     %   dist = dist_a;
-        %         dist(2,1:Ln) = dist_a(2,1:Ln)+3;
-    %end
+    else
+        dist = dist_a;
+                dist(2,1:2) = dist_a(2,1:2)+1;
+    end
 
-    Nanchor = min(randi(8)+1,4);
-    %     Nanchor = randi(4);
-    %     Nanchor = 4;
+    Nanchor = min(randi(20)+1,4);
+%         Nanchor = randi(4);
+%         Nanchor = 3;
     RxID = randperm(Ln,Nanchor);
     RxTag = randi(Lp);
     RxTag = mod(r-1,Lp)+1;
@@ -111,8 +112,10 @@ for r = 1 : length(x)
     RxDist = dist(RxID,PP);
     NumRxID(r) = Nanchor;
 
+    tic
     [tag_pos_est, heading_est,tag_pos_est_aver,headingest_a_aver_v] = UWBpos(Ln, Lp, PP, Nanchor, RxID, RxDist, s_time(r), tag_pos_b, xa, ya);
 
+    toc
     tag_center_pos_est = mean(tag_pos_est);
     centerest_a(r,1) = real(tag_center_pos_est);
     centerest_a(r,2) = imag(tag_center_pos_est);
@@ -120,11 +123,10 @@ for r = 1 : length(x)
     centerest_a_aver(r,1) = real(mean(tag_pos_est_aver));
     centerest_a_aver(r,2) = imag(mean(tag_pos_est_aver));
     headingest_a_aver(r) = headingest_a_aver_v;
-    
-    if mod(r,100) == 0
-        est_err = sqrt(mean(abs(tag_pos_est-tag_pos_g).^2));
-        fprintf("est_err:%.4f\r\n", est_err);
-    end
+
+%     if mod(r,100) == 0
+        est_err = sqrt(mean(abs(tag_pos_est-tag_pos_g).^2))
+%     end
 
 %     if r > 10*Lp
 %         figure(1);
@@ -160,8 +162,8 @@ plot(centerest_a(InitLeng+1:r,1), centerest_a(InitLeng+1:r,2), 'ko')
 plot(centerest_a_aver(InitLeng+1:r,1), centerest_a_aver(InitLeng+1:r,2), 'bo')
 
 
-%centerpos_error = sqrt(mean((centerest_a(InitLeng+1:end,1)-x(1,InitLeng+1:end,1)').^2+(centerest_a(InitLeng+1:end,2)-y(1,InitLeng+1:end,1)').^2))
-%heading_error = mean(abs(heading(InitLeng+1:end)-heading_est_a(InitLeng+1:end)))*180/pi
+centerpos_error = sqrt(mean((centerest_a(InitLeng+1:length(x),1)-x(1,InitLeng+1:end,1)').^2+(centerest_a(InitLeng+1:length(x),2)-y(1,InitLeng+1:end,1)').^2))
+heading_error = mean(mod(abs(heading(InitLeng+1:end)-heading_est_a(InitLeng+1:length(x))),2*pi))*180/pi
 
 % K_centerpos_error = sqrt(mean((K_centerest_a_aver(InitLeng+1:end,1)-x(1,InitLeng+1:end,1)').^2+(K_centerest_a_aver(InitLeng+1:end,2)-y(1,InitLeng+1:end,1)').^2))
 % K_heading_error = mean(abs(mod(heading(InitLeng+1:end),2*pi)-K_headingest_a_aver(InitLeng+1:end)))*1

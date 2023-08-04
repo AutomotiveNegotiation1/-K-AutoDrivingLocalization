@@ -1,4 +1,4 @@
-function [Est_F,Est_C,Est_H] = GetMultiTagPosGen(Pos2C,Va,tag_pos_b,Va_ind)
+function [Est_F,Est_C,Est_H] = GetMultiTagPosGen2(Pos2C,Va,tag_pos_b,Va_ind,PrevDist,PrevAnchors)
 
 ia=zeros(length(Va),1);
 Est_P  = zeros(size(Pos2C,1),1)+0j;

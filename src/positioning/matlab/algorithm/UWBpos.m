@@ -1,8 +1,8 @@
 function [tag_pos_est, heading_est,tag_pos_est_aver,headingest_a_aver_v] = UWBpos(Ln, Lp, TagNum, Nanchor, RxID, RxDist, s_time, tag_pos_b, xa, ya)
 
 average_len = 10;
-NumInterpPoint = 9;
-persistent r InterpPosition Tag_Pos_List TagDistInitCount TagDistInit heading_est_a centerest_a centerest_a_aver headingest_a_aver
+NumInterpPoint = 12;
+persistent r InterpPosition Tag_Pos_List TagDistInitCount TagDistInit heading_est_a centerest_a centerest_a_aver headingest_a_aver RxIDprev PPprev RxIDprevLen
 
 if isempty (r)
     r = 0;
@@ -14,6 +14,9 @@ if isempty (r)
     centerest_a = zeros(average_len*2,2);
     centerest_a_aver = zeros(average_len*2,2);
     headingest_a_aver = zeros(average_len*2,1);
+    RxIDprev = zeros(4,Ln);
+    RxIDprevLen = zeros(1,4);
+    PPprev = zeros(1,4);
 end
 r = r + 1;
 
@@ -67,6 +70,23 @@ else
         [InterpPosition(PPC,2)] = InterpPos(Tag_Pos_List(:,1,PPC),imag(Tag_Pos_List(:,2,PPC)),s_time);
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TagDistInitPrev = TagDistInit;
+    TagDistInit(RxID,PP) = RxDist(:); 
+
+%     NP = size(TagDistInit,1);
+%     AnchIDList = [1:NP];
+%     for kk = 1 : 4
+%         if kk == 1
+%             A = RxIDprev{kk};
+%         else
+%             for ll = 1 : length(RxIDprev{kk})
+%                 if length(find(RxIDprev{kk}(ll)==A))==0
+%                     A = [A RxIDprev{kk}(ll)];
+%                 end
+%             end
+%         end
+%     end
 
     Xt_c_e = mean(InterpPosition(:,1));
     Yt_c_e = mean(InterpPosition(:,2));
@@ -80,10 +100,14 @@ else
 
     %         for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1
     if length(RxID)>1
-        [tag_pos_est, heading_est, CandPos] = GetPos2(xa,ya,RxDist,RxID,tag_pos_b,Nanchor,PP,InterpPosition(:,1)+j*InterpPosition(:,2));
-
+%         [tag_pos_est, heading_est, CandPos] = GetPos2(xa,ya,RxDist,RxID,tag_pos_b,Nanchor,PP,InterpPosition(:,1)+j*InterpPosition(:,2));
+%         [tag_pos_est, heading_est, CandPos] = GetPos3(xa,ya,RxDist,RxID,tag_pos_b,Nanchor,PP,InterpPosition(:,1)+j*InterpPosition(:,2),TagDistInitPrev,RxIDprev);
+        [tag_pos_est, heading_est, CandPos] = GetPos3(xa,ya,RxDist,RxID,tag_pos_b,Nanchor,PP,InterpPosition(:,1)+j*InterpPosition(:,2),TagDistInit,RxIDprev, RxIDprevLen, PPprev);
+% 
         [tag_pos_est, heading_est, CandPos] = GetPosRefine2(xa,ya,RxDist,RxID,tag_pos_b,Nanchor,PP,tag_pos_est, heading_est, CandPos);
 
+%         [tag_pos_est, heading_est] = GetInitPos(xa(A),ya(A),TagDistInit,anch_pos(A),tag_pos_b,length(A),Lp);
+%         CandPos = tag_pos_est(PP);
     else
         InterpPosT = InterpPosition(:,1)+j*InterpPosition(:,2);
         TempC = mean(InterpPosT);
@@ -101,8 +125,19 @@ else
 
         CandPos = InterpPosition(PP,1)+j*InterpPosition(PP,2);
     end
+    
+    %%%%%%%%%%%%%%  Original %%%%%%%%%%%%%
     Tag_Pos_List(1:NumInterpPoint-1,:,PP) = Tag_Pos_List(2:NumInterpPoint,:,PP);
     Tag_Pos_List(NumInterpPoint,:,PP) = [s_time CandPos];
+    
+    %%%%%%%%%%%%%%  Test %%%%%%%%%%%%%
+%     Tag_Pos_List(1:NumInterpPoint-1,:,:) = Tag_Pos_List(2:NumInterpPoint,:,:);
+%     Tag_Pos_List(NumInterpPoint,1,:) = s_time;
+%     Tag_Pos_List(NumInterpPoint,2,:) = tag_pos_est;
+%     Tag_Pos_List(NumInterpPoint,:,PP) = [s_time CandPos];
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
     %             Tag_Pos_List(1:2,:,PP) = Tag_Pos_List(2:3,:,PP);
     %             Tag_Pos_List(3,:,PP) = [s_time(r) tag_pos_est(PP)];
     Xt_c_e = real(mean(tag_pos_est));
@@ -148,3 +183,15 @@ else
 %     K_headingest_a_aver(r) = mod(headingest_a_aver(r),2*pi);
 
 end
+
+% RxIDprev{1} = RxIDprev{2};
+% RxIDprev{2} = RxID;
+RxIDprevLen(1:3) = RxIDprevLen(2:end);
+RxIDprevLen(end) = length(RxID);
+
+RxIDprev(1:3,:) = RxIDprev(2:end,:);
+RxIDprev(end,1:RxIDprevLen(end)) = RxID;
+PPprev(1:3) = PPprev(2:4);
+PPprev(4) = PP;
+
+

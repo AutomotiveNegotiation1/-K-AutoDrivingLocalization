@@ -1,34 +1,26 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: dec2bin.c
+ * dec2bin.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'dec2bin'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "dec2bin.h"
 #include "rt_nonfinite.h"
 #include <math.h>
 
 /* Function Definitions */
-/*
- * Arguments    : double d
- *                char s_data[]
- *                int s_size[2]
- * Return Type  : void
- */
 void dec2bin(double d, char s_data[], int s_size[2])
 {
   double b_d;
+  double olddi;
   int idx;
   int k;
   int nb;
   int npad;
   char sfull[64];
-  bool exitg1;
+  boolean_T exitg1;
   b_d = d;
   for (idx = 0; idx < 64; idx++) {
     sfull[idx] = '0';
@@ -36,7 +28,6 @@ void dec2bin(double d, char s_data[], int s_size[2])
   idx = 64;
   exitg1 = false;
   while ((!exitg1) && (idx > 0)) {
-    double olddi;
     olddi = b_d;
     b_d /= 2.0;
     b_d = floor(b_d);
@@ -84,8 +75,4 @@ void dec2bin(double d, char s_data[], int s_size[2])
   }
 }
 
-/*
- * File trailer for dec2bin.c
- *
- * [EOF]
- */
+/* End of code generation (dec2bin.c) */

@@ -1,30 +1,22 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: eml_rand_mt19937ar.c
+ * eml_rand_mt19937ar.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'eml_rand_mt19937ar'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "eml_rand_mt19937ar.h"
 #include "rt_nonfinite.h"
 
 /* Function Definitions */
-/*
- * Arguments    : unsigned int mt[625]
- *                unsigned int u[2]
- * Return Type  : void
- */
 void genrand_uint32_vector(unsigned int mt[625], unsigned int u[2])
 {
   int j;
   int kk;
+  unsigned int mti;
+  unsigned int y;
   for (j = 0; j < 2; j++) {
-    unsigned int mti;
-    unsigned int y;
     mti = mt[624] + 1U;
     if (mti >= 625U) {
       for (kk = 0; kk < 227; kk++) {
@@ -63,8 +55,4 @@ void genrand_uint32_vector(unsigned int mt[625], unsigned int u[2])
   }
 }
 
-/*
- * File trailer for eml_rand_mt19937ar.c
- *
- * [EOF]
- */
+/* End of code generation (eml_rand_mt19937ar.c) */

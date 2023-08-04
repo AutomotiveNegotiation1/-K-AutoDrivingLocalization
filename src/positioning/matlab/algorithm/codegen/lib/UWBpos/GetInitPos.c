@@ -1,14 +1,11 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: GetInitPos.c
+ * GetInitPos.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'GetInitPos'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "GetInitPos.h"
 #include "TwoAnchPos3.h"
 #include "UWBpos_data.h"
@@ -27,17 +24,6 @@ static void b_binary_expand_op(const emxArray_real_T *in1, int in2, double in3,
                                double in8[4], double in9[2]);
 
 /* Function Definitions */
-/*
- * Arguments    : const emxArray_real_T *in1
- *                int in2
- *                double in3
- *                const emxArray_real_T *in4
- *                const emxArray_real_T *in5
- *                int in6
- *                double in8[4]
- *                double in9[2]
- * Return Type  : void
- */
 static void b_binary_expand_op(const emxArray_real_T *in1, int in2, double in3,
                                const emxArray_real_T *in4,
                                const emxArray_real_T *in5, int in6,
@@ -52,6 +38,7 @@ static void b_binary_expand_op(const emxArray_real_T *in1, int in2, double in3,
   const double *in1_data;
   const double *in4_data;
   const double *in5_data;
+  double d;
   double *b_in5_data;
   int i;
   int loop_ub;
@@ -70,17 +57,20 @@ static void b_binary_expand_op(const emxArray_real_T *in1, int in2, double in3,
   i = c_in1->size[0] * c_in1->size[1];
   c_in1->size[0] = 1;
   if (in4->size[1] == 1) {
-    loop_ub = in1->size[1];
+    c_in1->size[1] = in1->size[1];
   } else {
-    loop_ub = in4->size[1];
+    c_in1->size[1] = in4->size[1];
   }
-  c_in1->size[1] = loop_ub;
   emxEnsureCapacity_creal_T(c_in1, i);
   b_in1_data = c_in1->data;
   stride_0_1 = (in1->size[1] != 1);
   stride_1_1 = (in4->size[1] != 1);
+  if (in4->size[1] == 1) {
+    loop_ub = in1->size[1];
+  } else {
+    loop_ub = in4->size[1];
+  }
   for (i = 0; i < loop_ub; i++) {
-    double d;
     d = in4_data[i * stride_1_1];
     b_in1_data[i].re = in1_data[i * stride_0_1] + 0.0 * d;
     b_in1_data[i].im = d;
@@ -99,19 +89,10 @@ static void b_binary_expand_op(const emxArray_real_T *in1, int in2, double in3,
   emxFree_creal_T(&c_in1);
 }
 
-/*
- * Arguments    : const emxArray_real_T *xa
- *                const emxArray_real_T *ya
- *                const emxArray_real_T *dist
- *                const creal_T tag_pos_b[4]
- *                double Ln
- *                double Lp
- *                creal_T tag_pos_est[4]
- * Return Type  : double
- */
-double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
-                  const emxArray_real_T *dist, const creal_T tag_pos_b[4],
-                  double Ln, double Lp, creal_T tag_pos_est[4])
+void GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
+                const emxArray_real_T *dist, const creal_T tag_pos_b[4],
+                double Ln, double Lp, creal_T tag_pos_est[4],
+                double *heading_est)
 {
   emxArray_char_T *Va;
   emxArray_creal_T *Est_C;
@@ -123,16 +104,29 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
   creal_T *Est_C_data;
   creal_T *Pos2C_data;
   creal_T *b_xa_data;
+  double Pos2[4];
+  double Prob2[2];
+  double b_dist[2];
+  double b_ya[2];
+  double c_xa[2];
   const double *dist_data;
   const double *xa_data;
   const double *ya_data;
   double Est_H_p_im;
   double Est_H_p_re;
+  double Pos2C_re;
   double Sel_C_im;
   double Sel_C_re;
   double Sel_F;
+  double ai;
+  double ar;
+  double b_r;
+  double bi;
+  double br;
+  double brm;
   double c_tmp;
-  double heading_est;
+  double im;
+  double re;
   double *Est_F_data;
   double *Est_H_data;
   double *ia_data;
@@ -143,9 +137,12 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
   int Qn;
   int i;
   int i1;
+  int i2;
   int i3;
   int last;
+  char c;
   char *Va_data;
+  boolean_T exitg1;
   dist_data = dist->data;
   ya_data = ya->data;
   xa_data = xa->data;
@@ -191,30 +188,23 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
   }
   Sel_C_re = 0.0;
   Sel_C_im = 0.0;
-  heading_est = 0.0;
+  *heading_est = 0.0;
   i1 = (int)Ln;
   emxInit_char_T(&Va);
   emxInit_real_T(&ia, 1);
   emxInit_creal_T(&b_xa, 2);
   for (L1 = 0; L1 < i1; L1++) {
-    int i2;
     i2 = (int)(Ln + (1.0 - (((double)L1 + 1.0) + 1.0)));
     for (L2 = 0; L2 < i2; L2++) {
-      double Pos2C_re;
-      double b_L2;
-      b_L2 = (((double)L1 + 1.0) + 1.0) + (double)L2;
+      b_r = (((double)L1 + 1.0) + 1.0) + (double)L2;
       for (Pn = 0; Pn < i; Pn++) {
-        double Pos2[4];
         if (xa->size[1] == ya->size[1]) {
-          double b_dist[2];
-          double b_ya[2];
-          double c_xa[2];
           c_xa[0] = xa_data[L1];
-          c_xa[1] = xa_data[(int)b_L2 - 1];
+          c_xa[1] = xa_data[(int)b_r - 1];
           b_ya[0] = ya_data[L1];
-          b_ya[1] = ya_data[(int)b_L2 - 1];
+          b_ya[1] = ya_data[(int)b_r - 1];
           b_dist[0] = dist_data[L1 + dist->size[0] * Pn];
-          b_dist[1] = dist_data[((int)b_L2 + dist->size[0] * Pn) - 1];
+          b_dist[1] = dist_data[((int)b_r + dist->size[0] * Pn) - 1];
           i3 = b_xa->size[0] * b_xa->size[1];
           b_xa->size[0] = 1;
           b_xa->size[1] = xa->size[1];
@@ -233,11 +223,9 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
           for (i3 = 0; i3 < last; i3++) {
             ia_data[i3] = dist_data[i3 + dist->size[0] * Pn];
           }
-          double Prob2[2];
           TwoAnchPos3(c_xa, b_ya, b_dist, b_xa, ia, Pos2, Prob2);
         } else {
-          double Prob2[2];
-          b_binary_expand_op(xa, L1, b_L2, ya, dist, Pn, Pos2, Prob2);
+          b_binary_expand_op(xa, L1, b_r, ya, dist, Pn, Pos2, Prob2);
         }
         Pos2C_data[Pn].re = Pos2[0];
         Pos2C_data[Pn].im = Pos2[2];
@@ -247,13 +235,6 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
       i3 = (int)((c_tmp - 1.0) + 1.0);
       Pn = Pos2C->size[0];
       for (Qn = 0; Qn < i3; Qn++) {
-        double ai;
-        double ar;
-        double bi;
-        double br;
-        double brm;
-        double im;
-        double re;
         dec2bin(Qn, Lp, Va);
         Va_data = Va->data;
         P = ia->size[0];
@@ -266,9 +247,10 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
         }
         P = Va->size[1];
         for (last = 0; last < P; last++) {
-          if (Va_data[last] == '0') {
+          c = Va_data[last];
+          if (c == '0') {
             ia_data[last] = 1.0;
-          } else if (Va_data[last] == '1') {
+          } else if (c == '1') {
             ia_data[last] = 2.0;
           } else {
             ia_data[last] = 1.0;
@@ -283,16 +265,16 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
           ai = Pos2C_data[P + Pos2C->size[0] * last].im;
           if (ai == 0.0) {
             Pos2C_re = ar / (double)Va->size[1];
-            b_L2 = 0.0;
+            b_r = 0.0;
           } else if (ar == 0.0) {
             Pos2C_re = 0.0;
-            b_L2 = ai / (double)Va->size[1];
+            b_r = ai / (double)Va->size[1];
           } else {
             Pos2C_re = ar / (double)Va->size[1];
-            b_L2 = ai / (double)Va->size[1];
+            b_r = ai / (double)Va->size[1];
           }
           re += Pos2C_re;
-          im += b_L2;
+          im += b_r;
         }
         Est_H_p_re = 0.0;
         Est_H_p_im = 0.0;
@@ -305,78 +287,77 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
           if (bi == 0.0) {
             if (ai == 0.0) {
               Pos2C_re = ar / br;
-              b_L2 = 0.0;
+              b_r = 0.0;
             } else if (ar == 0.0) {
               Pos2C_re = 0.0;
-              b_L2 = ai / br;
+              b_r = ai / br;
             } else {
               Pos2C_re = ar / br;
-              b_L2 = ai / br;
+              b_r = ai / br;
             }
           } else if (br == 0.0) {
             if (ar == 0.0) {
               Pos2C_re = ai / bi;
-              b_L2 = 0.0;
+              b_r = 0.0;
             } else if (ai == 0.0) {
               Pos2C_re = 0.0;
-              b_L2 = -(ar / bi);
+              b_r = -(ar / bi);
             } else {
               Pos2C_re = ai / bi;
-              b_L2 = -(ar / bi);
+              b_r = -(ar / bi);
             }
           } else {
             brm = fabs(br);
-            b_L2 = fabs(bi);
-            if (brm > b_L2) {
+            b_r = fabs(bi);
+            if (brm > b_r) {
               brm = bi / br;
-              b_L2 = br + brm * bi;
-              Pos2C_re = (ar + brm * ai) / b_L2;
-              b_L2 = (ai - brm * ar) / b_L2;
-            } else if (b_L2 == brm) {
+              b_r = br + brm * bi;
+              Pos2C_re = (ar + brm * ai) / b_r;
+              b_r = (ai - brm * ar) / b_r;
+            } else if (b_r == brm) {
               if (br > 0.0) {
                 br = 0.5;
               } else {
                 br = -0.5;
               }
               if (bi > 0.0) {
-                b_L2 = 0.5;
+                b_r = 0.5;
               } else {
-                b_L2 = -0.5;
+                b_r = -0.5;
               }
-              Pos2C_re = (ar * br + ai * b_L2) / brm;
-              b_L2 = (ai * br - ar * b_L2) / brm;
+              Pos2C_re = (ar * br + ai * b_r) / brm;
+              b_r = (ai * br - ar * b_r) / brm;
             } else {
               brm = br / bi;
-              b_L2 = bi + brm * br;
-              Pos2C_re = (brm * ar + ai) / b_L2;
-              b_L2 = (brm * ai - ar) / b_L2;
+              b_r = bi + brm * br;
+              Pos2C_re = (brm * ar + ai) / b_r;
+              b_r = (brm * ai - ar) / b_r;
             }
           }
           Est_H_p_re += Pos2C_re;
-          Est_H_p_im += b_L2;
+          Est_H_p_im += b_r;
         }
         bi = rt_atan2d_snf(Est_H_p_im, Est_H_p_re);
         Pos2C_re = 0.0;
         for (P = 0; P < Pn; P++) {
-          if (bi * 0.0 == 0.0) {
-            Est_H_p_re = cos(bi);
-            Est_H_p_im = sin(bi);
-          } else if (bi == 0.0) {
-            Est_H_p_re = rtNaN;
+          Est_H_p_re = bi * 0.0;
+          if (bi == 0.0) {
+            Est_H_p_re = exp(Est_H_p_re);
             Est_H_p_im = 0.0;
           } else {
-            Est_H_p_re = rtNaN;
-            Est_H_p_im = rtNaN;
+            b_r = exp(Est_H_p_re / 2.0);
+            Est_H_p_re = b_r * (b_r * cos(bi));
+            Est_H_p_im = b_r * (b_r * sin(bi));
           }
-          b_L2 = tag_pos_b[P].re;
+          b_r = tag_pos_b[P].re;
           brm = tag_pos_b[P].im;
-          br = b_L2 * Est_H_p_re - brm * Est_H_p_im;
-          b_L2 = b_L2 * Est_H_p_im + brm * Est_H_p_re;
+          br = b_r * Est_H_p_re - brm * Est_H_p_im;
+          b_r = b_r * Est_H_p_im + brm * Est_H_p_re;
           last = (int)ia_data[P] - 1;
-          b_L2 = rt_hypotd_snf(
+          b_r = rt_hypotd_snf(
               (re + br) - Pos2C_data[P + Pos2C->size[0] * last].re,
-              (im + b_L2) - Pos2C_data[P + Pos2C->size[0] * last].im);
-          Pos2C_re += b_L2 * b_L2;
+              (im + b_r) - Pos2C_data[P + Pos2C->size[0] * last].im);
+          Pos2C_re += b_r * b_r;
         }
         Est_F_data[Qn] = Pos2C_re;
         Est_C_data[Qn].re = re;
@@ -386,23 +367,21 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
       last = Est_F->size[0];
       if (Est_F->size[0] <= 2) {
         if (Est_F->size[0] == 1) {
-          b_L2 = Est_F_data[0];
+          b_r = Est_F_data[0];
           Pn = 1;
+        } else if ((Est_F_data[0] > Est_F_data[Est_F->size[0] - 1]) ||
+                   (rtIsNaN(Est_F_data[0]) &&
+                    (!rtIsNaN(Est_F_data[Est_F->size[0] - 1])))) {
+          b_r = Est_F_data[Est_F->size[0] - 1];
+          Pn = Est_F->size[0];
         } else {
-          b_L2 = Est_F_data[Est_F->size[0] - 1];
-          if ((Est_F_data[0] > b_L2) ||
-              (rtIsNaN(Est_F_data[0]) && (!rtIsNaN(b_L2)))) {
-            Pn = Est_F->size[0];
-          } else {
-            b_L2 = Est_F_data[0];
-            Pn = 1;
-          }
+          b_r = Est_F_data[0];
+          Pn = 1;
         }
       } else {
         if (!rtIsNaN(Est_F_data[0])) {
           Pn = 1;
         } else {
-          bool exitg1;
           Pn = 0;
           P = 2;
           exitg1 = false;
@@ -416,25 +395,25 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
           }
         }
         if (Pn == 0) {
-          b_L2 = Est_F_data[0];
+          b_r = Est_F_data[0];
           Pn = 1;
         } else {
-          b_L2 = Est_F_data[Pn - 1];
+          b_r = Est_F_data[Pn - 1];
           i3 = Pn + 1;
           for (P = i3; P <= last; P++) {
             Pos2C_re = Est_F_data[P - 1];
-            if (b_L2 > Pos2C_re) {
-              b_L2 = Pos2C_re;
+            if (b_r > Pos2C_re) {
+              b_r = Pos2C_re;
               Pn = P;
             }
           }
         }
       }
-      if (Sel_F > b_L2) {
-        Sel_F = b_L2;
+      if (Sel_F > b_r) {
+        Sel_F = b_r;
         Sel_C_re = Est_C_data[Pn - 1].re;
         Sel_C_im = Est_C_data[Pn - 1].im;
-        heading_est = Est_H_data[Pn - 1];
+        *heading_est = Est_H_data[Pn - 1];
       }
     }
   }
@@ -445,15 +424,14 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
   emxFree_creal_T(&Est_C);
   emxFree_real_T(&Est_F);
   emxFree_creal_T(&Pos2C);
-  if (heading_est * 0.0 == 0.0) {
-    Est_H_p_re = cos(heading_est);
-    Est_H_p_im = sin(heading_est);
-  } else if (heading_est == 0.0) {
-    Est_H_p_re = rtNaN;
+  Est_H_p_re = *heading_est * 0.0;
+  if (*heading_est == 0.0) {
+    Est_H_p_re = exp(Est_H_p_re);
     Est_H_p_im = 0.0;
   } else {
-    Est_H_p_re = rtNaN;
-    Est_H_p_im = rtNaN;
+    b_r = exp(Est_H_p_re / 2.0);
+    Est_H_p_re = b_r * (b_r * cos(*heading_est));
+    Est_H_p_im = b_r * (b_r * sin(*heading_est));
   }
   tag_pos_est[0].re =
       Sel_C_re + (tag_pos_b[0].re * Est_H_p_re - tag_pos_b[0].im * Est_H_p_im);
@@ -471,11 +449,6 @@ double GetInitPos(const emxArray_real_T *xa, const emxArray_real_T *ya,
       Sel_C_re + (tag_pos_b[3].re * Est_H_p_re - tag_pos_b[3].im * Est_H_p_im);
   tag_pos_est[3].im =
       Sel_C_im + (tag_pos_b[3].re * Est_H_p_im + tag_pos_b[3].im * Est_H_p_re);
-  return heading_est;
 }
 
-/*
- * File trailer for GetInitPos.c
- *
- * [EOF]
- */
+/* End of code generation (GetInitPos.c) */

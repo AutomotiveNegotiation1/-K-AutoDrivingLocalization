@@ -1,36 +1,28 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: find.c
+ * find.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'find'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "find.h"
 #include "rt_nonfinite.h"
 
 /* Function Definitions */
-/*
- * Arguments    : const bool x[6]
- *                int i_data[]
- * Return Type  : int
- */
-int eml_find(const bool x[6], int i_data[])
+void b_eml_find(const boolean_T x[12], int i_data[], int *i_size)
 {
-  int i_size;
+  int idx;
   int ii;
-  bool exitg1;
-  i_size = 0;
+  boolean_T exitg1;
+  idx = 0;
   ii = 0;
   exitg1 = false;
-  while ((!exitg1) && (ii < 6)) {
+  while ((!exitg1) && (ii < 12)) {
     if (x[ii]) {
-      i_size++;
-      i_data[i_size - 1] = ii + 1;
-      if (i_size >= 6) {
+      idx++;
+      i_data[idx - 1] = ii + 1;
+      if (idx >= 12) {
         exitg1 = true;
       } else {
         ii++;
@@ -39,14 +31,39 @@ int eml_find(const bool x[6], int i_data[])
       ii++;
     }
   }
-  if (i_size < 1) {
-    i_size = 0;
+  if (idx < 1) {
+    *i_size = 0;
+  } else {
+    *i_size = idx;
   }
-  return i_size;
 }
 
-/*
- * File trailer for find.c
- *
- * [EOF]
- */
+void eml_find(const boolean_T x[6], int i_data[], int *i_size)
+{
+  int idx;
+  int ii;
+  boolean_T exitg1;
+  idx = 0;
+  ii = 0;
+  exitg1 = false;
+  while ((!exitg1) && (ii < 6)) {
+    if (x[ii]) {
+      idx++;
+      i_data[idx - 1] = ii + 1;
+      if (idx >= 6) {
+        exitg1 = true;
+      } else {
+        ii++;
+      }
+    } else {
+      ii++;
+    }
+  }
+  if (idx < 1) {
+    *i_size = 0;
+  } else {
+    *i_size = idx;
+  }
+}
+
+/* End of code generation (find.c) */

@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: UWBpos_types.h
+ * UWBpos_types.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'UWBpos'
+ *
  */
 
 #ifndef UWBPOS_TYPES_H
 #define UWBPOS_TYPES_H
 
-/* Include Files */
+/* Include files */
 #include "rtwtypes.h"
 
 /* Type Definitions */
@@ -22,7 +19,7 @@ typedef struct {
   int *size;
   int allocatedSize;
   int numDimensions;
-  bool canFreeData;
+  boolean_T canFreeData;
 } emxArray_creal_T;
 #endif /* typedef_emxArray_creal_T */
 
@@ -33,7 +30,7 @@ struct emxArray_real_T {
   int *size;
   int allocatedSize;
   int numDimensions;
-  bool canFreeData;
+  boolean_T canFreeData;
 };
 #endif /* struct_emxArray_real_T */
 #ifndef typedef_emxArray_real_T
@@ -48,7 +45,7 @@ struct emxArray_int32_T {
   int *size;
   int allocatedSize;
   int numDimensions;
-  bool canFreeData;
+  boolean_T canFreeData;
 };
 #endif /* struct_emxArray_int32_T */
 #ifndef typedef_emxArray_int32_T
@@ -59,11 +56,11 @@ typedef struct emxArray_int32_T emxArray_int32_T;
 #ifndef struct_emxArray_boolean_T
 #define struct_emxArray_boolean_T
 struct emxArray_boolean_T {
-  bool *data;
+  boolean_T *data;
   int *size;
   int allocatedSize;
   int numDimensions;
-  bool canFreeData;
+  boolean_T canFreeData;
 };
 #endif /* struct_emxArray_boolean_T */
 #ifndef typedef_emxArray_boolean_T
@@ -78,7 +75,7 @@ struct emxArray_char_T {
   int *size;
   int allocatedSize;
   int numDimensions;
-  bool canFreeData;
+  boolean_T canFreeData;
 };
 #endif /* struct_emxArray_char_T */
 #ifndef typedef_emxArray_char_T
@@ -93,7 +90,7 @@ struct emxArray_int8_T {
   int *size;
   int allocatedSize;
   int numDimensions;
-  bool canFreeData;
+  boolean_T canFreeData;
 };
 #endif /* struct_emxArray_int8_T */
 #ifndef typedef_emxArray_int8_T
@@ -102,8 +99,4 @@ typedef struct emxArray_int8_T emxArray_int8_T;
 #endif /* typedef_emxArray_int8_T */
 
 #endif
-/*
- * File trailer for UWBpos_types.h
- *
- * [EOF]
- */
+/* End of code generation (UWBpos_types.h) */

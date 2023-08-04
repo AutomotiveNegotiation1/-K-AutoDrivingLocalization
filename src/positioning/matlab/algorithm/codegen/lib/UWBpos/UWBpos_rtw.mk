@@ -2,8 +2,8 @@
 ## Makefile generated for component 'UWBpos'. 
 ## 
 ## Makefile     : UWBpos_rtw.mk
-## Generated on : Tue Aug 01 14:36:03 2023
-## Final product: ./UWBpos.a
+## Generated on : Fri Aug 04 13:43:01 2023
+## Final product: ./UWBpos.lib
 ## Product type : static-library
 ## 
 ###########################################################################
@@ -15,47 +15,46 @@
 # Macro Descriptions:
 # PRODUCT_NAME            Name of the system to build
 # MAKEFILE                Name of this makefile
+# CMD_FILE                Command file
 # MODELLIB                Static library target
 
 PRODUCT_NAME              = UWBpos
 MAKEFILE                  = UWBpos_rtw.mk
-MATLAB_ROOT               = /usr/local/MATLAB/R2023a
-MATLAB_BIN                = /usr/local/MATLAB/R2023a/bin
-MATLAB_ARCH_BIN           = $(MATLAB_BIN)/glnxa64
-START_DIR                 = /home/bman/work/position/src/positioning/matlab/algorithm
-TGT_FCN_LIB               = ISO_C
+MATLAB_ROOT               = C:/PROGRA~1/MATLAB/R2022b
+MATLAB_BIN                = C:/PROGRA~1/MATLAB/R2022b/bin
+MATLAB_ARCH_BIN           = $(MATLAB_BIN)/win64
+START_DIR                 = E:/MATLAB
+TGT_FCN_LIB               = None
 SOLVER_OBJ                = 
 CLASSIC_INTERFACE         = 0
 MODEL_HAS_DYNAMICALLY_LOADED_SFCNS = 
 RELATIVE_PATH_TO_ANCHOR   = ../../..
-C_STANDARD_OPTS           = -fwrapv
-CPP_STANDARD_OPTS         = -fwrapv
-MODELLIB                  = UWBpos.a
+CMD_FILE                  = UWBpos_rtw.rsp
+C_STANDARD_OPTS           = 
+CPP_STANDARD_OPTS         = 
+MODELLIB                  = UWBpos.lib
 
 ###########################################################################
 ## TOOLCHAIN SPECIFICATIONS
 ###########################################################################
 
-# Toolchain Name:          GNU gcc/g++ | gmake (64-bit Linux)
-# Supported Version(s):    
-# ToolchainInfo Version:   2023a
+# Toolchain Name:          LCC-win64 v2.4.1 | gmake (64-bit Windows)
+# Supported Version(s):    2.4.1
+# ToolchainInfo Version:   2022b
 # Specification Revision:  1.0
 # 
-#-------------------------------------------
-# Macros assumed to be defined elsewhere
-#-------------------------------------------
-
-# C_STANDARD_OPTS
-# CPP_STANDARD_OPTS
 
 #-----------
 # MACROS
 #-----------
 
-WARN_FLAGS         = -Wall -W -Wwrite-strings -Winline -Wstrict-prototypes -Wnested-externs -Wpointer-arith -Wcast-align
-WARN_FLAGS_MAX     = $(WARN_FLAGS) -Wcast-qual -Wshadow
-CPP_WARN_FLAGS     = -Wall -W -Wwrite-strings -Winline -Wpointer-arith -Wcast-align
-CPP_WARN_FLAGS_MAX = $(CPP_WARN_FLAGS) -Wcast-qual -Wshadow
+SHELL              = cmd
+LCC_ROOT           = $(MATLAB_ROOT)/sys/lcc64/lcc64
+LCC_BUILDLIB       = $(LCC_ROOT)/bin/buildlib
+LCC_LIB            = $(LCC_ROOT)/lib64
+MW_EXTERNLIB_DIR   = $(MATLAB_ROOT)/extern/lib/win64/microsoft
+MW_LIB_DIR         = $(MATLAB_ROOT)/lib/win64
+TOOLCHAIN_INCLUDES = -I$(LCC_ROOT)/include64
 
 TOOLCHAIN_SRCS = 
 TOOLCHAIN_INCS = 
@@ -65,20 +64,17 @@ TOOLCHAIN_LIBS =
 # BUILD TOOL COMMANDS
 #------------------------
 
-# C Compiler: GNU C Compiler
-CC = gcc
+# C Compiler: Lcc-win64 C Compiler
+CC_PATH = $(LCC_ROOT)/bin
+CC = "$(CC_PATH)/lcc64"
 
-# Linker: GNU Linker
-LD = g++
+# Linker: Lcc-win64 Linker
+LD_PATH = $(LCC_ROOT)/bin
+LD = "$(LD_PATH)/lcclnk64"
 
-# C++ Compiler: GNU C++ Compiler
-CPP = g++
-
-# C++ Linker: GNU C++ Linker
-CPP_LD = g++
-
-# Archiver: GNU Archiver
-AR = ar
+# Archiver: Lcc-win64 Archiver
+AR_PATH = $(LCC_ROOT)/bin
+AR = "$(AR_PATH)/lcclib64"
 
 # MEX Tool: MEX Tool
 MEX_PATH = $(MATLAB_ARCH_BIN)
@@ -91,7 +87,7 @@ DOWNLOAD =
 EXECUTE = $(PRODUCT)
 
 # Builder: GMAKE Utility
-MAKE_PATH = %MATLAB%/bin/glnxa64
+MAKE_PATH = %MATLAB%\bin\win64
 MAKE = "$(MAKE_PATH)/gmake"
 
 
@@ -100,41 +96,32 @@ MAKE = "$(MAKE_PATH)/gmake"
 #-------------------------
 
 CDEBUG              = -g
-C_OUTPUT_FLAG       = -o
-LDDEBUG             = -g
-OUTPUT_FLAG         = -o
-CPPDEBUG            = -g
-CPP_OUTPUT_FLAG     = -o
-CPPLDDEBUG          = -g
+C_OUTPUT_FLAG       = -Fo
+LDDEBUG             =
 OUTPUT_FLAG         = -o
 ARDEBUG             =
-STATICLIB_OUTPUT_FLAG =
+STATICLIB_OUTPUT_FLAG = /out:
 MEX_DEBUG           = -g
-RM                  = @rm -f
+RM                  = @del /F
 ECHO                = @echo
-MV                  = @mv
+MV                  = @move
 RUN                 =
 
 #--------------------------------------
 # "Faster Runs" Build Configuration
 #--------------------------------------
 
-ARFLAGS              = ruvs
-CFLAGS               = -c $(C_STANDARD_OPTS) -fPIC \
-                       -O3 -fno-loop-optimize -fno-aggressive-loop-optimizations
-CPPFLAGS             = -c $(CPP_STANDARD_OPTS) -fPIC \
-                       -O3 -fno-loop-optimize -fno-aggressive-loop-optimizations
-CPP_LDFLAGS          =
-CPP_SHAREDLIB_LDFLAGS  = -shared -Wl,--no-undefined
+ARFLAGS              =
+CFLAGS               = -c -w -noregistrylookup -nodeclspec -I$(LCC_ROOT)/include64
 DOWNLOAD_FLAGS       =
 EXECUTE_FLAGS        =
-LDFLAGS              =
+LDFLAGS              = -s -L$(LCC_LIB) $(LDFLAGS_ADDITIONAL)
 MEX_CPPFLAGS         =
 MEX_CPPLDFLAGS       =
 MEX_CFLAGS           =
 MEX_LDFLAGS          =
 MAKE_FLAGS           = -f $(MAKEFILE)
-SHAREDLIB_LDFLAGS    = -shared -Wl,--no-undefined
+SHAREDLIB_LDFLAGS    = -dll -entry LibMain -s -L$(LCC_LIB) $(LDFLAGS_ADDITIONAL) $(DEF_FILE)
 
 
 
@@ -142,7 +129,7 @@ SHAREDLIB_LDFLAGS    = -shared -Wl,--no-undefined
 ## OUTPUT INFO
 ###########################################################################
 
-PRODUCT = ./UWBpos.a
+PRODUCT = ./UWBpos.lib
 PRODUCT_TYPE = "static-library"
 BUILD_TYPE = "Static Library"
 
@@ -167,7 +154,7 @@ DEFINES = $(DEFINES_CUSTOM) $(DEFINES_STANDARD)
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = $(START_DIR)/codegen/lib/UWBpos/UWBpos_data.c $(START_DIR)/codegen/lib/UWBpos/rt_nonfinite.c $(START_DIR)/codegen/lib/UWBpos/rtGetNaN.c $(START_DIR)/codegen/lib/UWBpos/rtGetInf.c $(START_DIR)/codegen/lib/UWBpos/UWBpos_initialize.c $(START_DIR)/codegen/lib/UWBpos/UWBpos_terminate.c $(START_DIR)/codegen/lib/UWBpos/UWBpos.c $(START_DIR)/codegen/lib/UWBpos/sum.c $(START_DIR)/codegen/lib/UWBpos/find.c $(START_DIR)/codegen/lib/UWBpos/GetInitPos.c $(START_DIR)/codegen/lib/UWBpos/inv.c $(START_DIR)/codegen/lib/UWBpos/combineVectorElements.c $(START_DIR)/codegen/lib/UWBpos/dec2bin.c $(START_DIR)/codegen/lib/UWBpos/mean.c $(START_DIR)/codegen/lib/UWBpos/GetPos2.c $(START_DIR)/codegen/lib/UWBpos/TwoAnchPos3.c $(START_DIR)/codegen/lib/UWBpos/UWBpos_emxutil.c $(START_DIR)/codegen/lib/UWBpos/UWBpos_emxAPI.c $(START_DIR)/codegen/lib/UWBpos/UWBpos_rtwutil.c
+SRCS = $(START_DIR)/codegen/lib/UWBpos/UWBpos_data.c $(START_DIR)/codegen/lib/UWBpos/rt_nonfinite.c $(START_DIR)/codegen/lib/UWBpos/rtGetNaN.c $(START_DIR)/codegen/lib/UWBpos/rtGetInf.c $(START_DIR)/codegen/lib/UWBpos/UWBpos_initialize.c $(START_DIR)/codegen/lib/UWBpos/UWBpos_terminate.c $(START_DIR)/codegen/lib/UWBpos/UWBpos.c $(START_DIR)/codegen/lib/UWBpos/sum.c $(START_DIR)/codegen/lib/UWBpos/GetInitPos.c $(START_DIR)/codegen/lib/UWBpos/inv.c $(START_DIR)/codegen/lib/UWBpos/combineVectorElements.c $(START_DIR)/codegen/lib/UWBpos/dec2bin.c $(START_DIR)/codegen/lib/UWBpos/find.c $(START_DIR)/codegen/lib/UWBpos/GetPos3.c $(START_DIR)/codegen/lib/UWBpos/mean.c $(START_DIR)/codegen/lib/UWBpos/TwoAnchPos3.c $(START_DIR)/codegen/lib/UWBpos/sort.c $(START_DIR)/codegen/lib/UWBpos/sortIdx.c $(START_DIR)/codegen/lib/UWBpos/GetPosRefine2.c $(START_DIR)/codegen/lib/UWBpos/UWBpos_emxutil.c $(START_DIR)/codegen/lib/UWBpos/UWBpos_emxAPI.c $(START_DIR)/codegen/lib/UWBpos/GetMultiTagPosGen2.c $(START_DIR)/codegen/lib/UWBpos/UWBpos_rtwutil.c
 
 ALL_SRCS = $(SRCS)
 
@@ -175,7 +162,7 @@ ALL_SRCS = $(SRCS)
 ## OBJECTS
 ###########################################################################
 
-OBJS = UWBpos_data.o rt_nonfinite.o rtGetNaN.o rtGetInf.o UWBpos_initialize.o UWBpos_terminate.o UWBpos.o sum.o find.o GetInitPos.o inv.o combineVectorElements.o dec2bin.o mean.o GetPos2.o TwoAnchPos3.o UWBpos_emxutil.o UWBpos_emxAPI.o UWBpos_rtwutil.o
+OBJS = UWBpos_data.obj rt_nonfinite.obj rtGetNaN.obj rtGetInf.obj UWBpos_initialize.obj UWBpos_terminate.obj UWBpos.obj sum.obj GetInitPos.obj inv.obj combineVectorElements.obj dec2bin.obj find.obj GetPos3.obj mean.obj TwoAnchPos3.obj sort.obj sortIdx.obj GetPosRefine2.obj UWBpos_emxutil.obj UWBpos_emxAPI.obj GetMultiTagPosGen2.obj UWBpos_rtwutil.obj
 
 ALL_OBJS = $(OBJS)
 
@@ -195,7 +182,7 @@ LIBS =
 ## SYSTEM LIBRARIES
 ###########################################################################
 
-SYSTEM_LIBS =  -lm
+SYSTEM_LIBS = 
 
 ###########################################################################
 ## ADDITIONAL TOOLCHAIN FLAGS
@@ -208,14 +195,6 @@ SYSTEM_LIBS =  -lm
 CFLAGS_BASIC = $(DEFINES) $(INCLUDES)
 
 CFLAGS += $(CFLAGS_BASIC)
-
-#-----------------
-# C++ Compiler
-#-----------------
-
-CPPFLAGS_BASIC = $(DEFINES) $(INCLUDES)
-
-CPPFLAGS += $(CPPFLAGS_BASIC)
 
 ###########################################################################
 ## INLINED COMMANDS
@@ -254,7 +233,7 @@ execute : download
 
 $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
 	@echo "### Creating static library "$(PRODUCT)" ..."
-	$(AR) $(ARFLAGS)  $(PRODUCT) $(OBJS)
+	$(AR) $(ARFLAGS) /out:$(PRODUCT) @$(CMD_FILE)
 	@echo "### Created: $(PRODUCT)"
 
 
@@ -266,112 +245,112 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
 # SOURCE-TO-OBJECT
 #---------------------
 
-%.o : %.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+%.obj : %.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : %.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(RELATIVE_PATH_TO_ANCHOR)/%.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+%.obj : $(START_DIR)/codegen/lib/UWBpos/%.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(RELATIVE_PATH_TO_ANCHOR)/%.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+%.obj : $(START_DIR)/%.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(START_DIR)/codegen/lib/UWBpos/%.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+UWBpos_data.obj : $(START_DIR)/codegen/lib/UWBpos/UWBpos_data.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(START_DIR)/codegen/lib/UWBpos/%.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+rt_nonfinite.obj : $(START_DIR)/codegen/lib/UWBpos/rt_nonfinite.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(START_DIR)/%.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+rtGetNaN.obj : $(START_DIR)/codegen/lib/UWBpos/rtGetNaN.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-%.o : $(START_DIR)/%.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+rtGetInf.obj : $(START_DIR)/codegen/lib/UWBpos/rtGetInf.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-UWBpos_data.o : $(START_DIR)/codegen/lib/UWBpos/UWBpos_data.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+UWBpos_initialize.obj : $(START_DIR)/codegen/lib/UWBpos/UWBpos_initialize.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-rt_nonfinite.o : $(START_DIR)/codegen/lib/UWBpos/rt_nonfinite.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+UWBpos_terminate.obj : $(START_DIR)/codegen/lib/UWBpos/UWBpos_terminate.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-rtGetNaN.o : $(START_DIR)/codegen/lib/UWBpos/rtGetNaN.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+UWBpos.obj : $(START_DIR)/codegen/lib/UWBpos/UWBpos.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-rtGetInf.o : $(START_DIR)/codegen/lib/UWBpos/rtGetInf.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+sum.obj : $(START_DIR)/codegen/lib/UWBpos/sum.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-UWBpos_initialize.o : $(START_DIR)/codegen/lib/UWBpos/UWBpos_initialize.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+GetInitPos.obj : $(START_DIR)/codegen/lib/UWBpos/GetInitPos.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-UWBpos_terminate.o : $(START_DIR)/codegen/lib/UWBpos/UWBpos_terminate.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+inv.obj : $(START_DIR)/codegen/lib/UWBpos/inv.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-UWBpos.o : $(START_DIR)/codegen/lib/UWBpos/UWBpos.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+combineVectorElements.obj : $(START_DIR)/codegen/lib/UWBpos/combineVectorElements.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-sum.o : $(START_DIR)/codegen/lib/UWBpos/sum.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+dec2bin.obj : $(START_DIR)/codegen/lib/UWBpos/dec2bin.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-find.o : $(START_DIR)/codegen/lib/UWBpos/find.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+find.obj : $(START_DIR)/codegen/lib/UWBpos/find.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-GetInitPos.o : $(START_DIR)/codegen/lib/UWBpos/GetInitPos.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+GetPos3.obj : $(START_DIR)/codegen/lib/UWBpos/GetPos3.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-inv.o : $(START_DIR)/codegen/lib/UWBpos/inv.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+mean.obj : $(START_DIR)/codegen/lib/UWBpos/mean.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-combineVectorElements.o : $(START_DIR)/codegen/lib/UWBpos/combineVectorElements.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+TwoAnchPos3.obj : $(START_DIR)/codegen/lib/UWBpos/TwoAnchPos3.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-dec2bin.o : $(START_DIR)/codegen/lib/UWBpos/dec2bin.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+sort.obj : $(START_DIR)/codegen/lib/UWBpos/sort.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-mean.o : $(START_DIR)/codegen/lib/UWBpos/mean.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+sortIdx.obj : $(START_DIR)/codegen/lib/UWBpos/sortIdx.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-GetPos2.o : $(START_DIR)/codegen/lib/UWBpos/GetPos2.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+GetPosRefine2.obj : $(START_DIR)/codegen/lib/UWBpos/GetPosRefine2.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-TwoAnchPos3.o : $(START_DIR)/codegen/lib/UWBpos/TwoAnchPos3.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+UWBpos_emxutil.obj : $(START_DIR)/codegen/lib/UWBpos/UWBpos_emxutil.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-UWBpos_emxutil.o : $(START_DIR)/codegen/lib/UWBpos/UWBpos_emxutil.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+UWBpos_emxAPI.obj : $(START_DIR)/codegen/lib/UWBpos/UWBpos_emxAPI.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-UWBpos_emxAPI.o : $(START_DIR)/codegen/lib/UWBpos/UWBpos_emxAPI.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+GetMultiTagPosGen2.obj : $(START_DIR)/codegen/lib/UWBpos/GetMultiTagPosGen2.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
-UWBpos_rtwutil.o : $(START_DIR)/codegen/lib/UWBpos/UWBpos_rtwutil.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+UWBpos_rtwutil.obj : $(START_DIR)/codegen/lib/UWBpos/UWBpos_rtwutil.c
+	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
 
 
 ###########################################################################
@@ -400,9 +379,6 @@ info :
 	@echo "### CFLAGS = $(CFLAGS)"
 	@echo "### LDFLAGS = $(LDFLAGS)"
 	@echo "### SHAREDLIB_LDFLAGS = $(SHAREDLIB_LDFLAGS)"
-	@echo "### CPPFLAGS = $(CPPFLAGS)"
-	@echo "### CPP_LDFLAGS = $(CPP_LDFLAGS)"
-	@echo "### CPP_SHAREDLIB_LDFLAGS = $(CPP_SHAREDLIB_LDFLAGS)"
 	@echo "### ARFLAGS = $(ARFLAGS)"
 	@echo "### MEX_CFLAGS = $(MEX_CFLAGS)"
 	@echo "### MEX_CPPFLAGS = $(MEX_CPPFLAGS)"
@@ -414,9 +390,9 @@ info :
 
 
 clean : 
-	$(ECHO) "### Deleting all derived files ..."
-	$(RM) $(PRODUCT)
-	$(RM) $(ALL_OBJS)
+	$(ECHO) "### Deleting all derived files..."
+	$(RM) $(subst /,\,$(PRODUCT))
+	$(RM) $(subst /,\,$(ALL_OBJS))
 	$(ECHO) "### Deleted all derived files."
 
 

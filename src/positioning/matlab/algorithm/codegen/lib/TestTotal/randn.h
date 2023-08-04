@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: randn.h
+ * randn.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'randn'
+ *
  */
 
 #ifndef RANDN_H
 #define RANDN_H
 
-/* Include Files */
+/* Include files */
 #include "rtwtypes.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -28,8 +25,4 @@ void randn(double b_r[24]);
 #endif
 
 #endif
-/*
- * File trailer for randn.h
- *
- * [EOF]
- */
+/* End of code generation (randn.h) */

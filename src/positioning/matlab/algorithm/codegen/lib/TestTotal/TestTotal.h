@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: TestTotal.h
+ * TestTotal.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'TestTotal'
+ *
  */
 
 #ifndef TESTTOTAL_H
 #define TESTTOTAL_H
 
-/* Include Files */
+/* Include files */
 #include "rtwtypes.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -29,8 +26,4 @@ extern void TestTotal(creal_T tag_pos_est[4], double *heading_est,
 #endif
 
 #endif
-/*
- * File trailer for TestTotal.h
- *
- * [EOF]
- */
+/* End of code generation (TestTotal.h) */

@@ -1,14 +1,11 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: _coder_UWBpos_info.c
+ * _coder_UWBpos_info.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'UWBpos'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "_coder_UWBpos_info.h"
 #include "emlrt.h"
 #include "tmwtypes.h"
@@ -17,51 +14,44 @@
 static const mxArray *emlrtMexFcnResolvedFunctionsInfo(void);
 
 /* Function Definitions */
-/*
- * Arguments    : void
- * Return Type  : const mxArray *
- */
 static const mxArray *emlrtMexFcnResolvedFunctionsInfo(void)
 {
   const mxArray *nameCaptureInfo;
   const char_T *data[8] = {
-      "789ced59cb6ed340147551a12da83405d10d3bd650276988d4058ba6246e42134262fa08"
-      "428a634fe269edb1e3479a16895fe80ff0012cf901162c10fc0c2b36"
-      "48a812499d496c4b262d53a675eabb995c1d7bcec9bdf6c9e88699ca17a71886b9cb38f1"
-      "2be1acf3833c36586f30def0e3538375ce97e3b8c94c7beec3f8f160",
-      "15356481aee5244850c1f04e4953211290c51fea803180a9291d209d224da8001eaaa0ea"
-      "4e4afd4ccdb9a061d287fa9fd76520ee576d95316473a4507127c37a"
-      "7c0cf8bed367ac4736a01e311ffe26fb96953515b00d5540ec8166ecb3ba66420b6a8835"
-      "0d719840d46255c15284062b282dcd8096acb2afb7333d7c5975e9d6",
-      "0975df1ea31be31cb0f2085a656d503ccc5f27e4bf15c8ef209266371430e2fb44c8970f"
-      "e4f3e2447d1a15ebb457fd1857af8533eaf7afa3eb674fd7aaf15da2"
-      "c9b7c1fe98a1c987e3b2f8ba01fb9df5f95b0ae08bf9f054aaddac5676e395b4522bd8dd"
-      "a35589db5ccd8c7494c7f08cd3c104e4b4f60ffb7b4ceabb77c6e8c7",
-      "387fa0ad2151ee4958f1f0d709f969fb6e2190cf8b13f5cb552cdc305a3ef1a843d777ef"
-      "9f7c5da4c98763d27d57ecee4a52216e69e84007c02c75b276bb988d"
-      "7cf7aaf82ee973b038463fc67b128ab662415e68f5647000f974d40975d0f6dfb22f677c"
-      "d7619cb46fdea22dabb4fce219e573ef8cfdee214d3e1c93eebf472f",
-      "ed527b85af893b9c65ca2f8a5be936dc7c3e39fe7b5de70c41f3a2980fcf230b18fa70cc"
-      "70697e4bdaa78d403e2f4ed4a761b1e8f9ecfb932f547d16c775e1a3"
-      "e5b3ad54b9933c2ca9e53da8644405ee1d365fc5d7239fbd6c9fad13ea9e09d4ed20bd23"
-      "5acf2f92a1f5d55c209f17273dc7f68bd46f0c2d1f9835e99e5f97be",
-      "cd2dd0e4c331e9beba8104ad218166822f259ea264a256d8592b4fd0dc36acef6f34af3d"
-      "1f5f34afbd58be685eeb4434af3ddffe61f5db684efb6f7cd19cf662"
-      "f9a239ad13d19cf67cfb87757e407ace9df7e57edd18772cbf029a108124135ebfdd0ce4"
-      "f3e217f0fb38289673d2a5e50f1f8ee9faede39fb92734f97084d56f",
-      "1f04f0c57c786657eae40ab523219e4ac1ed5a3109b700c74c8edf86fd3da6e5bbbc6c00"
-      "e09a3044befbb7f982bb58747df7deefcfd1ff64ff918fd639574f43"
-      "94344025cde5124d4954395db65213305ff803cb19161a",
+      "789ced594b73d250140e4ed5faa86267746cc7853aae3b3420b4ee4209112c15217d5a1d"
+      "1eb9485af2009294d64d773a2e74e58c0b17d5a5ff4157ea2f70e3ce"
+      "71c6bde32f10482e90e86de8a45e4accd9dc9e7e0ddf774f7abede734bf812291f4110e7"
+      "083df6a6f475ccc8fdc67a8c308715f719eb294b0ee33831627a0ee2",
+      "2f8cb528890a68287a22e605d0799293045ecc8b0abb2d03a206ea5245035c1b29f115c0"
+      "f202c8f6260bad4c88f7409da405b5be9e2b83e2665615885ab9de55"
+      "58e94d3af56820f63bd2673d2e22eae1b7e0f7e907f4adf514c5ce53d1f5c5e5a82cd5a7"
+      "841e1db2431da76d74409c014a42e495b4641403f2e71cf29f40f2eb",
+      "0827a9850ae8f2ed3ae49b40f2997153ddbb9b6fd7be1576fb3fdfa71eebdafdf9d1f67a"
+      "fde3571f4e3ee23bfb1c2b9f1183e273dac797107c7e0b1e0a554bd9"
+      "cc6a2013aeac25d5c6ce2cc7cccf46bb3ad2363c763a08448eebf37711cf0faa2f9dfae2"
+      "191b3d1067b7244a2c969b128226fe9c437edcbe3889e433e3a6faf7",
+      "6c1ebe005c7d7c03b72fbe1bff8295cf08b7fb62b1b1ca71c98022895b3200f5058d56ab"
+      "29daf3c57fe58b4edfeb051b3d106f4a48a9158567f38f9a3218205a"
+      "74e41ceac0ed8f57917c66dcfa1ecc45981270f5f3d94f78fd31f77afa2d4e3e186ef747"
+      "9109506c217bbb1a99bb335ba86a92560b7171f7f8a35be668d4fd86",
+      "df82274405d4e4ce183d303f745af7cb483e336eaa7b67f3f87c107cc6eb83df1e3f99c1"
+      "c907c3ed3e18995e51635b71fa6e49a3b6c3f7e6843cc5c63c1f3c74"
+      "1fcc39d47112a943479a47a2f6ac3cacbed7efefabf51c0867645c7dba81d9f77ebe117f"
+      "e1e483e176df0bd2f5edc84e617183131663693a4891339105c6f3bd",
+      "c3ee47efbef0607cde7de1fe7cde7da11ede7de1c13effa8f8a1531de3363a20fec71519"
+      "a97f7f50bef8d421df35249f19dfff9e90c4fe7fe667b8e7e4cd0f22"
+      "4e3e186ef7c7a58de4cd5826a9901aa726e8683a9927ab756f4e3e72f7856396dcaa03e2"
+      "ba356740891701490cef79f10a92cf8cffe5ef92b179dd1271f56f10",
+      "f379716f72e2214e3e18c3ea87fdf6717495d3e2c9b59d7c2014e297d75224bf0418c23d"
+      "7eb88b787e507d89cb17d9720d809e49fabff245d3e6f1fae28ff798"
+      "e7e897a3afb0f21931acbed8ef39510ef32259039930139f2e71458191cb4ac80573f46f"
+      "52afb284",
       ""};
   nameCaptureInfo = NULL;
-  emlrtNameCaptureMxArrayR2016a(&data[0], 12816U, &nameCaptureInfo);
+  emlrtNameCaptureMxArrayR2016a(&data[0], 11960U, &nameCaptureInfo);
   return nameCaptureInfo;
 }
 
-/*
- * Arguments    : void
- * Return Type  : mxArray *
- */
 mxArray *emlrtMexFcnProperties(void)
 {
   mxArray *xEntryPoints;
@@ -83,24 +73,19 @@ mxArray *emlrtMexFcnProperties(void)
                 emlrtMxCreateDoubleScalar(4.0));
   emlrtSetField(xEntryPoints, 0, "ConstantInputs", xInputs);
   emlrtSetField(xEntryPoints, 0, "FullPath",
-                emlrtMxCreateString("/home/bman/work/position/src/positioning/"
-                                    "matlab/algorithm/UWBpos.m"));
+                emlrtMxCreateString("E:\\MATLAB\\UWBpos.m"));
   emlrtSetField(xEntryPoints, 0, "TimeStamp",
-                emlrtMxCreateDoubleScalar(739099.4998263889));
+                emlrtMxCreateDoubleScalar(739102.40388888889));
   xResult =
       emlrtCreateStructMatrix(1, 1, 7, (const char_T **)&propFieldName[0]);
   emlrtSetField(xResult, 0, "Version",
-                emlrtMxCreateString("9.14.0.2206163 (R2023a)"));
+                emlrtMxCreateString("9.13.0.2166757 (R2022b) Update 4"));
   emlrtSetField(xResult, 0, "ResolvedFunctions",
                 (mxArray *)emlrtMexFcnResolvedFunctionsInfo());
   emlrtSetField(xResult, 0, "Checksum",
-                emlrtMxCreateString("T7UvfNeqRgIpqM4Qo4GI0G"));
+                emlrtMxCreateString("OK3DczXoYESHfpZJPJA9OB"));
   emlrtSetField(xResult, 0, "EntryPoints", xEntryPoints);
   return xResult;
 }
 
-/*
- * File trailer for _coder_UWBpos_info.c
- *
- * [EOF]
- */
+/* End of code generation (_coder_UWBpos_info.c) */

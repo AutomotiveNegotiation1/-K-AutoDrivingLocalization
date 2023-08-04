@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: _coder_TestTotal_api.h
+ * _coder_TestTotal_api.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'TestTotal'
+ *
  */
 
 #ifndef _CODER_TESTTOTAL_API_H
 #define _CODER_TESTTOTAL_API_H
 
-/* Include Files */
+/* Include files */
 #include "emlrt.h"
 #include "tmwtypes.h"
 #include <string.h>
@@ -45,8 +42,4 @@ void TestTotal_xil_terminate(void);
 #endif
 
 #endif
-/*
- * File trailer for _coder_TestTotal_api.h
- *
- * [EOF]
- */
+/* End of code generation (_coder_TestTotal_api.h) */

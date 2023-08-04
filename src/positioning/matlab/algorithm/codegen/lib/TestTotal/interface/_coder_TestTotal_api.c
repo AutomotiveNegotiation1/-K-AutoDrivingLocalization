@@ -1,14 +1,11 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: _coder_TestTotal_api.c
+ * _coder_TestTotal_api.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'TestTotal'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "_coder_TestTotal_api.h"
 #include "_coder_TestTotal_mex.h"
 
@@ -18,7 +15,7 @@ emlrtCTX emlrtRootTLSGlobal = NULL;
 emlrtContext emlrtContextGlobal = {
     true,                                                 /* bFirstTime */
     false,                                                /* bInitialized */
-    131642U,                                              /* fVersionInfo */
+    131627U,                                              /* fVersionInfo */
     NULL,                                                 /* fErrorFunction */
     "TestTotal",                                          /* fFunctionName */
     NULL,                                                 /* fRTCallStack */
@@ -34,10 +31,6 @@ static const mxArray *emlrt_marshallOut(const emlrtStack *sp,
                                         const creal_T u[4]);
 
 /* Function Definitions */
-/*
- * Arguments    : const real_T u
- * Return Type  : const mxArray *
- */
 static const mxArray *b_emlrt_marshallOut(const real_T u)
 {
   const mxArray *m;
@@ -48,11 +41,6 @@ static const mxArray *b_emlrt_marshallOut(const real_T u)
   return y;
 }
 
-/*
- * Arguments    : const emlrtStack *sp
- *                const creal_T u[4]
- * Return Type  : const mxArray *
- */
 static const mxArray *emlrt_marshallOut(const emlrtStack *sp,
                                         const creal_T u[4])
 {
@@ -67,11 +55,6 @@ static const mxArray *emlrt_marshallOut(const emlrtStack *sp,
   return y;
 }
 
-/*
- * Arguments    : int32_T nlhs
- *                const mxArray *plhs[4]
- * Return Type  : void
- */
 void TestTotal_api(int32_T nlhs, const mxArray *plhs[4])
 {
   emlrtStack st = {
@@ -99,10 +82,6 @@ void TestTotal_api(int32_T nlhs, const mxArray *plhs[4])
   }
 }
 
-/*
- * Arguments    : void
- * Return Type  : void
- */
 void TestTotal_atexit(void)
 {
   emlrtStack st = {
@@ -119,10 +98,6 @@ void TestTotal_atexit(void)
   emlrtExitTimeCleanup(&emlrtContextGlobal);
 }
 
-/*
- * Arguments    : void
- * Return Type  : void
- */
 void TestTotal_initialize(void)
 {
   emlrtStack st = {
@@ -137,17 +112,9 @@ void TestTotal_initialize(void)
   emlrtFirstTimeR2012b(emlrtRootTLSGlobal);
 }
 
-/*
- * Arguments    : void
- * Return Type  : void
- */
 void TestTotal_terminate(void)
 {
   emlrtDestroyRootTLS(&emlrtRootTLSGlobal);
 }
 
-/*
- * File trailer for _coder_TestTotal_api.c
- *
- * [EOF]
- */
+/* End of code generation (_coder_TestTotal_api.c) */

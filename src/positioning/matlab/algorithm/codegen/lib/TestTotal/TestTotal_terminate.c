@@ -1,30 +1,19 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: TestTotal_terminate.c
+ * TestTotal_terminate.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'TestTotal_terminate'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "TestTotal_terminate.h"
 #include "TestTotal_data.h"
 #include "rt_nonfinite.h"
 
 /* Function Definitions */
-/*
- * Arguments    : void
- * Return Type  : void
- */
 void TestTotal_terminate(void)
 {
   isInitialized_TestTotal = false;
 }
 
-/*
- * File trailer for TestTotal_terminate.c
- *
- * [EOF]
- */
+/* End of code generation (TestTotal_terminate.c) */

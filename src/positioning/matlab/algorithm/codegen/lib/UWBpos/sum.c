@@ -1,38 +1,35 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: sum.c
+ * sum.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'sum'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "sum.h"
 #include "UWBpos_emxutil.h"
 #include "UWBpos_types.h"
 #include "rt_nonfinite.h"
 
 /* Function Definitions */
-/*
- * Arguments    : const emxArray_real_T *x
- *                emxArray_real_T *y
- * Return Type  : void
- */
 void sum(const emxArray_real_T *x, emxArray_real_T *y)
 {
   emxArray_real_T *bsum;
   const double *x_data;
   double *bsum_data;
   double *y_data;
+  int bvstride;
+  int firstBlockLength;
   int hi;
   int ib;
   int k;
+  int lastBlockLength;
+  int nblocks;
+  int vstride;
   int xj;
+  int xoffset;
   x_data = x->data;
   if ((x->size[0] == 0) || (x->size[1] == 0)) {
-    int firstBlockLength;
     hi = y->size[0];
     y->size[0] = x->size[0];
     emxEnsureCapacity_real_T(y, hi);
@@ -42,12 +39,6 @@ void sum(const emxArray_real_T *x, emxArray_real_T *y)
       y_data[hi] = 0.0;
     }
   } else {
-    int bvstride;
-    int firstBlockLength;
-    int lastBlockLength;
-    int nblocks;
-    int vstride;
-    int xoffset;
     vstride = x->size[0] - 1;
     bvstride = x->size[0] << 10;
     hi = y->size[0];
@@ -107,8 +98,4 @@ void sum(const emxArray_real_T *x, emxArray_real_T *y)
   }
 }
 
-/*
- * File trailer for sum.c
- *
- * [EOF]
- */
+/* End of code generation (sum.c) */

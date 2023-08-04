@@ -1,25 +1,15 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: _coder_TestTotal_mex.c
+ * _coder_TestTotal_mex.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'TestTotal'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "_coder_TestTotal_mex.h"
 #include "_coder_TestTotal_api.h"
 
 /* Function Definitions */
-/*
- * Arguments    : int32_T nlhs
- *                mxArray *plhs[]
- *                int32_T nrhs
- *                const mxArray *prhs[]
- * Return Type  : void
- */
 void mexFunction(int32_T nlhs, mxArray *plhs[], int32_T nrhs,
                  const mxArray *prhs[])
 {
@@ -33,23 +23,13 @@ void mexFunction(int32_T nlhs, mxArray *plhs[], int32_T nrhs,
   TestTotal_terminate();
 }
 
-/*
- * Arguments    : void
- * Return Type  : emlrtCTX
- */
 emlrtCTX mexFunctionCreateRootTLS(void)
 {
   emlrtCreateRootTLSR2022a(&emlrtRootTLSGlobal, &emlrtContextGlobal, NULL, 1,
-                           NULL, "UTF-8", true);
+                           NULL, "windows-949", true);
   return emlrtRootTLSGlobal;
 }
 
-/*
- * Arguments    : int32_T nlhs
- *                mxArray *plhs[4]
- *                int32_T nrhs
- * Return Type  : void
- */
 void unsafe_TestTotal_mexFunction(int32_T nlhs, mxArray *plhs[4], int32_T nrhs)
 {
   emlrtStack st = {
@@ -80,8 +60,4 @@ void unsafe_TestTotal_mexFunction(int32_T nlhs, mxArray *plhs[4], int32_T nrhs)
   emlrtReturnArrays(i, &plhs[0], &outputs[0]);
 }
 
-/*
- * File trailer for _coder_TestTotal_mex.c
- *
- * [EOF]
- */
+/* End of code generation (_coder_TestTotal_mex.c) */

@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: inv.h
+ * inv.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'inv'
+ *
  */
 
 #ifndef INV_H
 #define INV_H
 
-/* Include Files */
+/* Include files */
 #include "rtwtypes.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -30,8 +27,4 @@ void inv(const double x[4], double y[4]);
 #endif
 
 #endif
-/*
- * File trailer for inv.h
- *
- * [EOF]
- */
+/* End of code generation (inv.h) */

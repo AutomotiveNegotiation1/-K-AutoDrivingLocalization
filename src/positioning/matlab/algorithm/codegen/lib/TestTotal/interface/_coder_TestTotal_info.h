@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: _coder_TestTotal_info.h
+ * _coder_TestTotal_info.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'TestTotal'
+ *
  */
 
 #ifndef _CODER_TESTTOTAL_INFO_H
 #define _CODER_TESTTOTAL_INFO_H
 
-/* Include Files */
+/* Include files */
 #include "mex.h"
 
 #ifdef __cplusplus
@@ -26,8 +23,4 @@ MEXFUNCTION_LINKAGE mxArray *emlrtMexFcnProperties(void);
 #endif
 
 #endif
-/*
- * File trailer for _coder_TestTotal_info.h
- *
- * [EOF]
- */
+/* End of code generation (_coder_TestTotal_info.h) */

@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: TwoAnchPos3.h
+ * TwoAnchPos3.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'TwoAnchPos3'
+ *
  */
 
 #ifndef TWOANCHPOS3_H
 #define TWOANCHPOS3_H
 
-/* Include Files */
+/* Include files */
 #include "UWBpos_types.h"
 #include "rtwtypes.h"
 #include <stddef.h>
@@ -31,8 +28,4 @@ void TwoAnchPos3(const double Xa[2], const double Ya[2], const double dist[2],
 #endif
 
 #endif
-/*
- * File trailer for TwoAnchPos3.h
- *
- * [EOF]
- */
+/* End of code generation (TwoAnchPos3.h) */

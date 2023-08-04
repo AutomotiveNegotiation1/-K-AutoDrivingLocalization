@@ -1,14 +1,11 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: UWBpos_emxutil.c
+ * UWBpos_emxutil.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'UWBpos_emxutil'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "UWBpos_emxutil.h"
 #include "UWBpos_types.h"
 #include "rt_nonfinite.h"
@@ -16,11 +13,6 @@
 #include <string.h>
 
 /* Function Definitions */
-/*
- * Arguments    : emxArray_boolean_T *emxArray
- *                int oldNumel
- * Return Type  : void
- */
 void emxEnsureCapacity_boolean_T(emxArray_boolean_T *emxArray, int oldNumel)
 {
   int i;
@@ -45,24 +37,20 @@ void emxEnsureCapacity_boolean_T(emxArray_boolean_T *emxArray, int oldNumel)
         i *= 2;
       }
     }
-    newData = calloc((unsigned int)i, sizeof(bool));
+    newData = calloc((unsigned int)i, sizeof(boolean_T));
     if (emxArray->data != NULL) {
-      memcpy(newData, emxArray->data, sizeof(bool) * (unsigned int)oldNumel);
+      memcpy(newData, emxArray->data,
+             sizeof(boolean_T) * (unsigned int)oldNumel);
       if (emxArray->canFreeData) {
         free(emxArray->data);
       }
     }
-    emxArray->data = (bool *)newData;
+    emxArray->data = (boolean_T *)newData;
     emxArray->allocatedSize = i;
     emxArray->canFreeData = true;
   }
 }
 
-/*
- * Arguments    : emxArray_char_T *emxArray
- *                int oldNumel
- * Return Type  : void
- */
 void emxEnsureCapacity_char_T(emxArray_char_T *emxArray, int oldNumel)
 {
   int i;
@@ -100,11 +88,6 @@ void emxEnsureCapacity_char_T(emxArray_char_T *emxArray, int oldNumel)
   }
 }
 
-/*
- * Arguments    : emxArray_creal_T *emxArray
- *                int oldNumel
- * Return Type  : void
- */
 void emxEnsureCapacity_creal_T(emxArray_creal_T *emxArray, int oldNumel)
 {
   int i;
@@ -142,11 +125,6 @@ void emxEnsureCapacity_creal_T(emxArray_creal_T *emxArray, int oldNumel)
   }
 }
 
-/*
- * Arguments    : emxArray_int32_T *emxArray
- *                int oldNumel
- * Return Type  : void
- */
 void emxEnsureCapacity_int32_T(emxArray_int32_T *emxArray, int oldNumel)
 {
   int i;
@@ -184,11 +162,6 @@ void emxEnsureCapacity_int32_T(emxArray_int32_T *emxArray, int oldNumel)
   }
 }
 
-/*
- * Arguments    : emxArray_int8_T *emxArray
- *                int oldNumel
- * Return Type  : void
- */
 void emxEnsureCapacity_int8_T(emxArray_int8_T *emxArray, int oldNumel)
 {
   int i;
@@ -227,11 +200,6 @@ void emxEnsureCapacity_int8_T(emxArray_int8_T *emxArray, int oldNumel)
   }
 }
 
-/*
- * Arguments    : emxArray_real_T *emxArray
- *                int oldNumel
- * Return Type  : void
- */
 void emxEnsureCapacity_real_T(emxArray_real_T *emxArray, int oldNumel)
 {
   int i;
@@ -269,14 +237,11 @@ void emxEnsureCapacity_real_T(emxArray_real_T *emxArray, int oldNumel)
   }
 }
 
-/*
- * Arguments    : emxArray_boolean_T **pEmxArray
- * Return Type  : void
- */
 void emxFree_boolean_T(emxArray_boolean_T **pEmxArray)
 {
   if (*pEmxArray != (emxArray_boolean_T *)NULL) {
-    if (((*pEmxArray)->data != (bool *)NULL) && (*pEmxArray)->canFreeData) {
+    if (((*pEmxArray)->data != (boolean_T *)NULL) &&
+        (*pEmxArray)->canFreeData) {
       free((*pEmxArray)->data);
     }
     free((*pEmxArray)->size);
@@ -285,10 +250,6 @@ void emxFree_boolean_T(emxArray_boolean_T **pEmxArray)
   }
 }
 
-/*
- * Arguments    : emxArray_char_T **pEmxArray
- * Return Type  : void
- */
 void emxFree_char_T(emxArray_char_T **pEmxArray)
 {
   if (*pEmxArray != (emxArray_char_T *)NULL) {
@@ -301,10 +262,6 @@ void emxFree_char_T(emxArray_char_T **pEmxArray)
   }
 }
 
-/*
- * Arguments    : emxArray_creal_T **pEmxArray
- * Return Type  : void
- */
 void emxFree_creal_T(emxArray_creal_T **pEmxArray)
 {
   if (*pEmxArray != (emxArray_creal_T *)NULL) {
@@ -317,10 +274,6 @@ void emxFree_creal_T(emxArray_creal_T **pEmxArray)
   }
 }
 
-/*
- * Arguments    : emxArray_int32_T **pEmxArray
- * Return Type  : void
- */
 void emxFree_int32_T(emxArray_int32_T **pEmxArray)
 {
   if (*pEmxArray != (emxArray_int32_T *)NULL) {
@@ -333,10 +286,6 @@ void emxFree_int32_T(emxArray_int32_T **pEmxArray)
   }
 }
 
-/*
- * Arguments    : emxArray_int8_T **pEmxArray
- * Return Type  : void
- */
 void emxFree_int8_T(emxArray_int8_T **pEmxArray)
 {
   if (*pEmxArray != (emxArray_int8_T *)NULL) {
@@ -350,10 +299,6 @@ void emxFree_int8_T(emxArray_int8_T **pEmxArray)
   }
 }
 
-/*
- * Arguments    : emxArray_real_T **pEmxArray
- * Return Type  : void
- */
 void emxFree_real_T(emxArray_real_T **pEmxArray)
 {
   if (*pEmxArray != (emxArray_real_T *)NULL) {
@@ -366,18 +311,13 @@ void emxFree_real_T(emxArray_real_T **pEmxArray)
   }
 }
 
-/*
- * Arguments    : emxArray_boolean_T **pEmxArray
- *                int numDimensions
- * Return Type  : void
- */
 void emxInit_boolean_T(emxArray_boolean_T **pEmxArray, int numDimensions)
 {
   emxArray_boolean_T *emxArray;
   int i;
   *pEmxArray = (emxArray_boolean_T *)malloc(sizeof(emxArray_boolean_T));
   emxArray = *pEmxArray;
-  emxArray->data = (bool *)NULL;
+  emxArray->data = (boolean_T *)NULL;
   emxArray->numDimensions = numDimensions;
   emxArray->size = (int *)malloc(sizeof(int) * (unsigned int)numDimensions);
   emxArray->allocatedSize = 0;
@@ -387,10 +327,6 @@ void emxInit_boolean_T(emxArray_boolean_T **pEmxArray, int numDimensions)
   }
 }
 
-/*
- * Arguments    : emxArray_char_T **pEmxArray
- * Return Type  : void
- */
 void emxInit_char_T(emxArray_char_T **pEmxArray)
 {
   emxArray_char_T *emxArray;
@@ -407,11 +343,6 @@ void emxInit_char_T(emxArray_char_T **pEmxArray)
   }
 }
 
-/*
- * Arguments    : emxArray_creal_T **pEmxArray
- *                int numDimensions
- * Return Type  : void
- */
 void emxInit_creal_T(emxArray_creal_T **pEmxArray, int numDimensions)
 {
   emxArray_creal_T *emxArray;
@@ -428,11 +359,6 @@ void emxInit_creal_T(emxArray_creal_T **pEmxArray, int numDimensions)
   }
 }
 
-/*
- * Arguments    : emxArray_int32_T **pEmxArray
- *                int numDimensions
- * Return Type  : void
- */
 void emxInit_int32_T(emxArray_int32_T **pEmxArray, int numDimensions)
 {
   emxArray_int32_T *emxArray;
@@ -449,10 +375,6 @@ void emxInit_int32_T(emxArray_int32_T **pEmxArray, int numDimensions)
   }
 }
 
-/*
- * Arguments    : emxArray_int8_T **pEmxArray
- * Return Type  : void
- */
 void emxInit_int8_T(emxArray_int8_T **pEmxArray)
 {
   emxArray_int8_T *emxArray;
@@ -469,11 +391,6 @@ void emxInit_int8_T(emxArray_int8_T **pEmxArray)
   }
 }
 
-/*
- * Arguments    : emxArray_real_T **pEmxArray
- *                int numDimensions
- * Return Type  : void
- */
 void emxInit_real_T(emxArray_real_T **pEmxArray, int numDimensions)
 {
   emxArray_real_T *emxArray;
@@ -490,8 +407,4 @@ void emxInit_real_T(emxArray_real_T **pEmxArray, int numDimensions)
   }
 }
 
-/*
- * File trailer for UWBpos_emxutil.c
- *
- * [EOF]
- */
+/* End of code generation (UWBpos_emxutil.c) */

@@ -1,25 +1,15 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: _coder_UWBpos_mex.c
+ * _coder_UWBpos_mex.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'UWBpos'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "_coder_UWBpos_mex.h"
 #include "_coder_UWBpos_api.h"
 
 /* Function Definitions */
-/*
- * Arguments    : int32_T nlhs
- *                mxArray *plhs[]
- *                int32_T nrhs
- *                const mxArray *prhs[]
- * Return Type  : void
- */
 void mexFunction(int32_T nlhs, mxArray *plhs[], int32_T nrhs,
                  const mxArray *prhs[])
 {
@@ -32,24 +22,13 @@ void mexFunction(int32_T nlhs, mxArray *plhs[], int32_T nrhs,
   UWBpos_terminate();
 }
 
-/*
- * Arguments    : void
- * Return Type  : emlrtCTX
- */
 emlrtCTX mexFunctionCreateRootTLS(void)
 {
   emlrtCreateRootTLSR2022a(&emlrtRootTLSGlobal, &emlrtContextGlobal, NULL, 1,
-                           NULL, "UTF-8", true);
+                           NULL, "windows-949", true);
   return emlrtRootTLSGlobal;
 }
 
-/*
- * Arguments    : int32_T nlhs
- *                mxArray *plhs[4]
- *                int32_T nrhs
- *                const mxArray *prhs[10]
- * Return Type  : void
- */
 void unsafe_UWBpos_mexFunction(int32_T nlhs, mxArray *plhs[4], int32_T nrhs,
                                const mxArray *prhs[10])
 {
@@ -58,10 +37,8 @@ void unsafe_UWBpos_mexFunction(int32_T nlhs, mxArray *plhs[4], int32_T nrhs,
       NULL, /* tls */
       NULL  /* prev */
   };
-  const mxArray *b_prhs[10];
   const mxArray *outputs[4];
   int32_T i;
-  int32_T i1;
   st.tls = emlrtRootTLSGlobal;
   /* Check for proper number of arguments. */
   if (nrhs != 10) {
@@ -73,21 +50,14 @@ void unsafe_UWBpos_mexFunction(int32_T nlhs, mxArray *plhs[4], int32_T nrhs,
                         "UWBpos");
   }
   /* Call the function. */
-  for (i = 0; i < 10; i++) {
-    b_prhs[i] = prhs[i];
-  }
-  UWBpos_api(b_prhs, nlhs, outputs);
+  UWBpos_api(prhs, nlhs, outputs);
   /* Copy over outputs to the caller. */
   if (nlhs < 1) {
-    i1 = 1;
+    i = 1;
   } else {
-    i1 = nlhs;
+    i = nlhs;
   }
-  emlrtReturnArrays(i1, &plhs[0], &outputs[0]);
+  emlrtReturnArrays(i, &plhs[0], &outputs[0]);
 }
 
-/*
- * File trailer for _coder_UWBpos_mex.c
- *
- * [EOF]
- */
+/* End of code generation (_coder_UWBpos_mex.c) */

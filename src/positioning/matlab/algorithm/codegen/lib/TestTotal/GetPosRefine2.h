@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: GetPosRefine2.h
+ * GetPosRefine2.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'GetPosRefine2'
+ *
  */
 
 #ifndef GETPOSREFINE2_H
 #define GETPOSREFINE2_H
 
-/* Include Files */
+/* Include files */
 #include "rtwtypes.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -31,8 +28,4 @@ void GetPosRefine2(const double dist_data[], const double RxID_data[],
 #endif
 
 #endif
-/*
- * File trailer for GetPosRefine2.h
- *
- * [EOF]
- */
+/* End of code generation (GetPosRefine2.h) */

@@ -1,14 +1,11 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: UWBpos_rtwutil.c
+ * UWBpos_rtwutil.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'UWBpos_rtwutil'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "UWBpos_rtwutil.h"
 #include "rt_nonfinite.h"
 #include "rt_defines.h"
@@ -16,19 +13,14 @@
 #include <math.h>
 
 /* Function Definitions */
-/*
- * Arguments    : double u0
- *                double u1
- * Return Type  : double
- */
 double rt_atan2d_snf(double u0, double u1)
 {
   double y;
+  int i;
+  int i1;
   if (rtIsNaN(u0) || rtIsNaN(u1)) {
     y = rtNaN;
   } else if (rtIsInf(u0) && rtIsInf(u1)) {
-    int i;
-    int i1;
     if (u0 > 0.0) {
       i = 1;
     } else {
@@ -54,11 +46,6 @@ double rt_atan2d_snf(double u0, double u1)
   return y;
 }
 
-/*
- * Arguments    : double u0
- *                double u1
- * Return Type  : double
- */
 double rt_hypotd_snf(double u0, double u1)
 {
   double a;
@@ -80,19 +67,14 @@ double rt_hypotd_snf(double u0, double u1)
   return y;
 }
 
-/*
- * Arguments    : double u0
- *                double u1
- * Return Type  : double
- */
 double rt_powd_snf(double u0, double u1)
 {
+  double d;
+  double d1;
   double y;
   if (rtIsNaN(u0) || rtIsNaN(u1)) {
     y = rtNaN;
   } else {
-    double d;
-    double d1;
     d = fabs(u0);
     d1 = fabs(u1);
     if (rtIsInf(u1)) {
@@ -130,8 +112,4 @@ double rt_powd_snf(double u0, double u1)
   return y;
 }
 
-/*
- * File trailer for UWBpos_rtwutil.c
- *
- * [EOF]
- */
+/* End of code generation (UWBpos_rtwutil.c) */

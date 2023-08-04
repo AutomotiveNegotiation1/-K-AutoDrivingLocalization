@@ -1,14 +1,11 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: TestTotal_rtwutil.c
+ * TestTotal_rtwutil.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'TestTotal_rtwutil'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "TestTotal_rtwutil.h"
 #include "rt_nonfinite.h"
 #include "rt_defines.h"
@@ -16,19 +13,14 @@
 #include <math.h>
 
 /* Function Definitions */
-/*
- * Arguments    : double u0
- *                double u1
- * Return Type  : double
- */
 double rt_atan2d_snf(double u0, double u1)
 {
   double y;
+  int i;
+  int i1;
   if (rtIsNaN(u0) || rtIsNaN(u1)) {
     y = rtNaN;
   } else if (rtIsInf(u0) && rtIsInf(u1)) {
-    int i;
-    int i1;
     if (u0 > 0.0) {
       i = 1;
     } else {
@@ -54,11 +46,6 @@ double rt_atan2d_snf(double u0, double u1)
   return y;
 }
 
-/*
- * Arguments    : double u0
- *                double u1
- * Return Type  : double
- */
 double rt_hypotd_snf(double u0, double u1)
 {
   double a;
@@ -80,8 +67,4 @@ double rt_hypotd_snf(double u0, double u1)
   return y;
 }
 
-/*
- * File trailer for TestTotal_rtwutil.c
- *
- * [EOF]
- */
+/* End of code generation (TestTotal_rtwutil.c) */

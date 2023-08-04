@@ -1,17 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: eml_rand_mt19937ar.h
+ * eml_rand_mt19937ar.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'eml_rand_mt19937ar'
+ *
  */
 
 #ifndef EML_RAND_MT19937AR_H
 #define EML_RAND_MT19937AR_H
 
-/* Include Files */
+/* Include files */
 #include "rtwtypes.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -28,8 +25,4 @@ void genrand_uint32_vector(unsigned int mt[625], unsigned int u[2]);
 #endif
 
 #endif
-/*
- * File trailer for eml_rand_mt19937ar.h
- *
- * [EOF]
- */
+/* End of code generation (eml_rand_mt19937ar.h) */

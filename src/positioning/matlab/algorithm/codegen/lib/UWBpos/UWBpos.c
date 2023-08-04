@@ -1,23 +1,20 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: UWBpos.c
+ * UWBpos.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'UWBpos'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "UWBpos.h"
 #include "GetInitPos.h"
-#include "GetPos2.h"
+#include "GetPos3.h"
+#include "GetPosRefine2.h"
 #include "UWBpos_data.h"
 #include "UWBpos_emxutil.h"
 #include "UWBpos_initialize.h"
 #include "UWBpos_rtwutil.h"
 #include "UWBpos_types.h"
-#include "combineVectorElements.h"
 #include "find.h"
 #include "inv.h"
 #include "mean.h"
@@ -30,7 +27,7 @@
 /* Variable Definitions */
 static double r;
 
-static bool r_not_empty;
+static boolean_T r_not_empty;
 
 static emxArray_creal_T *InterpPosition;
 
@@ -48,26 +45,13 @@ static double centerest_a_aver[40];
 
 static double headingest_a_aver[20];
 
+static emxArray_real_T *RxIDprev;
+
+static double PPprev[4];
+
+static double RxIDprevLen[4];
+
 /* Function Definitions */
-/*
- * Arguments    : double Ln
- *                double Lp
- *                double TagNum
- *                double Nanchor
- *                const double RxID_data[]
- *                const int RxID_size[2]
- *                const double RxDist_data[]
- *                const int RxDist_size[1]
- *                double s_time
- *                const creal_T tag_pos_b[4]
- *                const double xa[6]
- *                const double ya[6]
- *                emxArray_creal_T *tag_pos_est
- *                double *heading_est
- *                emxArray_creal_T *tag_pos_est_aver
- *                double *headingest_a_aver_v
- * Return Type  : void
- */
 void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
             const double RxID_data[], const int RxID_size[2],
             const double RxDist_data[], const int RxDist_size[1], double s_time,
@@ -75,1086 +59,976 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
             emxArray_creal_T *tag_pos_est, double *heading_est,
             emxArray_creal_T *tag_pos_est_aver, double *headingest_a_aver_v)
 {
-  emxArray_boolean_T *b_calc_dist_err;
+  emxArray_boolean_T *x;
   emxArray_creal_T *InterpPosT;
-  emxArray_int32_T *ii;
-  emxArray_int32_T *jj;
-  emxArray_real_T *A;
-  emxArray_real_T *b_C;
+  emxArray_int32_T *i;
+  emxArray_real_T *DistT;
+  emxArray_real_T *IndT;
+  emxArray_real_T *b_DistT;
+  emxArray_real_T *b_r;
   emxArray_real_T *b_xa;
   emxArray_real_T *b_ya;
-  emxArray_real_T *calc_dist_err;
-  emxArray_real_T *y;
-  creal_T TempC;
+  creal_T Pm[36];
+  creal_T dcv1[36];
+  creal_T Px[12];
+  creal_T b_x[10];
+  creal_T b_Pm[9];
+  creal_T dcv[9];
+  creal_T b_tag_pos_est[4];
+  creal_T dcv2[3];
+  creal_T bsum;
+  creal_T bsum_tmp;
   creal_T *InterpPosition_data;
   creal_T *Tag_Pos_List_data;
   creal_T *tag_pos_est_aver_data;
   creal_T *tag_pos_est_data;
+  double Py[12];
   double Est_H;
-  double x_im;
-  double x_re;
-  double *A_data;
+  double MeanA_im;
+  double MeanA_re;
+  double Pm_im;
+  double Pm_re;
+  double TempC_im;
+  double TempC_re;
+  double c_r;
+  double im;
+  double re;
   double *DistT_data;
+  double *RxIDprev_data;
   double *TagDistInitCount_data;
   double *TagDistInit_data;
-  double *y_data;
-  int M;
-  int PPC;
-  int coffset;
-  int i;
+  int b_tmp_data[12];
+  int tmp_data[4];
+  int firstBlockLength;
+  int hi;
+  int ib;
+  int idx;
   int k;
-  int loop_ub;
-  int *jj_data;
-  bool *calc_dist_err_data;
-
-  printf("Lp[%lf]\r\n", Lp);
-
+  int lastBlockLength;
+  int nblocks;
+  int *i_data;
+  boolean_T b_Px[12];
+  boolean_T exitg1;
+  boolean_T rEQ0;
+  boolean_T *x_data;
   if (!isInitialized_UWBpos) {
     UWBpos_initialize();
   }
+  RxIDprev_data = RxIDprev->data;
   TagDistInit_data = TagDistInit->data;
   TagDistInitCount_data = TagDistInitCount->data;
   Tag_Pos_List_data = Tag_Pos_List->data;
   InterpPosition_data = InterpPosition->data;
   if (!r_not_empty) {
     r_not_empty = true;
-    i = InterpPosition->size[0] * InterpPosition->size[1];
+    ib = InterpPosition->size[0] * InterpPosition->size[1];
     InterpPosition->size[0] = (int)Lp;
     InterpPosition->size[1] = 2;
-    emxEnsureCapacity_creal_T(InterpPosition, i);
+    emxEnsureCapacity_creal_T(InterpPosition, ib);
     InterpPosition_data = InterpPosition->data;
-    loop_ub = (int)Lp << 1;
-    for (i = 0; i < loop_ub; i++) {
-      InterpPosition_data[i].re = 0.0;
-      InterpPosition_data[i].im = 0.0;
+    nblocks = (int)Lp << 1;
+    for (ib = 0; ib < nblocks; ib++) {
+      InterpPosition_data[ib].re = 0.0;
+      InterpPosition_data[ib].im = 0.0;
     }
-    i = Tag_Pos_List->size[0] * Tag_Pos_List->size[1] * Tag_Pos_List->size[2];
-    Tag_Pos_List->size[0] = 9;
+    ib = Tag_Pos_List->size[0] * Tag_Pos_List->size[1] * Tag_Pos_List->size[2];
+    Tag_Pos_List->size[0] = 12;
     Tag_Pos_List->size[1] = 2;
     Tag_Pos_List->size[2] = (int)Lp;
-    emxEnsureCapacity_creal_T(Tag_Pos_List, i);
+    emxEnsureCapacity_creal_T(Tag_Pos_List, ib);
     Tag_Pos_List_data = Tag_Pos_List->data;
-    loop_ub = 18 * (int)Lp;
-    printf("loop_ub[%d]\r\n", loop_ub);
-
-    for (i = 0; i < loop_ub; i++) {
-      Tag_Pos_List_data[i].re = 0.0;
-      Tag_Pos_List_data[i].im = 0.0;
+    nblocks = 24 * (int)Lp;
+    for (ib = 0; ib < nblocks; ib++) {
+      Tag_Pos_List_data[ib].re = 0.0;
+      Tag_Pos_List_data[ib].im = 0.0;
     }
-    i = TagDistInitCount->size[0] * TagDistInitCount->size[1];
+    ib = TagDistInitCount->size[0] * TagDistInitCount->size[1];
     TagDistInitCount->size[0] = (int)Ln;
     TagDistInitCount->size[1] = (int)Lp;
-    emxEnsureCapacity_real_T(TagDistInitCount, i);
+    emxEnsureCapacity_real_T(TagDistInitCount, ib);
     TagDistInitCount_data = TagDistInitCount->data;
-    coffset = (int)Ln * (int)Lp;
-    for (i = 0; i < coffset; i++) {
-      TagDistInitCount_data[i] = 0.0;
+    firstBlockLength = (int)Ln * (int)Lp;
+    for (ib = 0; ib < firstBlockLength; ib++) {
+      TagDistInitCount_data[ib] = 0.0;
     }
-    i = TagDistInit->size[0] * TagDistInit->size[1];
+    ib = TagDistInit->size[0] * TagDistInit->size[1];
     TagDistInit->size[0] = (int)Ln;
     TagDistInit->size[1] = (int)Lp;
-    emxEnsureCapacity_real_T(TagDistInit, i);
+    emxEnsureCapacity_real_T(TagDistInit, ib);
     TagDistInit_data = TagDistInit->data;
-    for (i = 0; i < coffset; i++) {
-      TagDistInit_data[i] = 0.0;
+    for (ib = 0; ib < firstBlockLength; ib++) {
+      TagDistInit_data[ib] = 0.0;
+    }
+    ib = RxIDprev->size[0] * RxIDprev->size[1];
+    RxIDprev->size[0] = 4;
+    RxIDprev->size[1] = (int)Ln;
+    emxEnsureCapacity_real_T(RxIDprev, ib);
+    RxIDprev_data = RxIDprev->data;
+    nblocks = (int)Ln << 2;
+    for (ib = 0; ib < nblocks; ib++) {
+      RxIDprev_data[ib] = 0.0;
     }
   }
   r++;
-  i = tag_pos_est->size[0] * tag_pos_est->size[1];
+  ib = tag_pos_est->size[0] * tag_pos_est->size[1];
   tag_pos_est->size[0] = 1;
-  coffset = (int)Lp;
+  nblocks = (int)Lp;
   tag_pos_est->size[1] = (int)Lp;
-  emxEnsureCapacity_creal_T(tag_pos_est, i);
+  emxEnsureCapacity_creal_T(tag_pos_est, ib);
   tag_pos_est_data = tag_pos_est->data;
-  for (i = 0; i < coffset; i++) {
-    tag_pos_est_data[i].re = 0.0;
-    tag_pos_est_data[i].im = 0.0;
+  for (ib = 0; ib < nblocks; ib++) {
+    tag_pos_est_data[ib].re = 0.0;
+    tag_pos_est_data[ib].im = 0.0;
   }
-  Est_H = 0.0;
-  i = tag_pos_est_aver->size[0] * tag_pos_est_aver->size[1];
+  *heading_est = 0.0;
+  ib = tag_pos_est_aver->size[0] * tag_pos_est_aver->size[1];
   tag_pos_est_aver->size[0] = 1;
   tag_pos_est_aver->size[1] = (int)Lp;
-  emxEnsureCapacity_creal_T(tag_pos_est_aver, i);
+  emxEnsureCapacity_creal_T(tag_pos_est_aver, ib);
   tag_pos_est_aver_data = tag_pos_est_aver->data;
-  for (i = 0; i < coffset; i++) {
-    tag_pos_est_aver_data[i].re = 0.0;
-    tag_pos_est_aver_data[i].im = 0.0;
+  for (ib = 0; ib < nblocks; ib++) {
+    tag_pos_est_aver_data[ib].re = 0.0;
+    tag_pos_est_aver_data[ib].im = 0.0;
   }
   *headingest_a_aver_v = 0.0;
   if (r < 10.0 * Lp) {
-    i = (int)Nanchor;
-    for (M = 0; M < i; M++) {
-      double b_div;
-      double q;
+    ib = (int)Nanchor;
+    for (firstBlockLength = 0; firstBlockLength < ib; firstBlockLength++) {
       /*              for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
-      q = RxID_data[M];
-      TagDistInitCount_data[((int)q +
+      TempC_im = RxID_data[firstBlockLength];
+      TagDistInitCount_data[((int)TempC_im +
                              TagDistInitCount->size[0] * ((int)TagNum - 1)) -
                             1]++;
-      b_div = TagDistInitCount_data[((int)q + TagDistInitCount->size[0] *
-                                                  ((int)TagNum - 1)) -
-                                    1];
-      TagDistInit_data[((int)q + TagDistInit->size[0] * ((int)TagNum - 1)) -
+      TempC_re = TagDistInitCount_data
+          [((int)TempC_im + TagDistInitCount->size[0] * ((int)TagNum - 1)) - 1];
+      TagDistInit_data[((int)TempC_im +
+                        TagDistInit->size[0] * ((int)TagNum - 1)) -
                        1] =
-          TagDistInit_data[((int)q + TagDistInit->size[0] * ((int)TagNum - 1)) -
+          TagDistInit_data[((int)TempC_im +
+                            TagDistInit->size[0] * ((int)TagNum - 1)) -
                            1] *
-              (b_div - 1.0) / b_div +
-          RxDist_data[M] / b_div;
+              (TempC_re - 1.0) / TempC_re +
+          RxDist_data[firstBlockLength] / TempC_re;
       /*              end */
     }
-  } else {
-    emxInit_real_T(&b_xa, 2);
-    emxInit_real_T(&b_ya, 2);
-    emxInit_real_T(&y, 1);
-    if (r == 10.0 * Lp) {
-      creal_T Est_P[4];
-      i = (int)Nanchor;
-      for (M = 0; M < i; M++) {
-        double b_div;
-        double q;
-        /*              for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
-        q = RxID_data[M];
-        TagDistInitCount_data[((int)q +
-                               TagDistInitCount->size[0] * ((int)TagNum - 1)) -
-                              1]++;
-        b_div = TagDistInitCount_data[((int)q + TagDistInitCount->size[0] *
-                                                    ((int)TagNum - 1)) -
-                                      1];
-        TagDistInit_data[((int)q + TagDistInit->size[0] * ((int)TagNum - 1)) -
-                         1] =
-            TagDistInit_data[((int)q +
-                              TagDistInit->size[0] * ((int)TagNum - 1)) -
-                             1] *
-                (b_div - 1.0) / b_div +
-            RxDist_data[M] / b_div;
-        /*              end */
+  } else if (r == 10.0 * Lp) {
+    ib = (int)Nanchor;
+    for (firstBlockLength = 0; firstBlockLength < ib; firstBlockLength++) {
+      /*              for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
+      TempC_im = RxID_data[firstBlockLength];
+      TagDistInitCount_data[((int)TempC_im +
+                             TagDistInitCount->size[0] * ((int)TagNum - 1)) -
+                            1]++;
+      TempC_re = TagDistInitCount_data
+          [((int)TempC_im + TagDistInitCount->size[0] * ((int)TagNum - 1)) - 1];
+      TagDistInit_data[((int)TempC_im +
+                        TagDistInit->size[0] * ((int)TagNum - 1)) -
+                       1] =
+          TagDistInit_data[((int)TempC_im +
+                            TagDistInit->size[0] * ((int)TagNum - 1)) -
+                           1] *
+              (TempC_re - 1.0) / TempC_re +
+          RxDist_data[firstBlockLength] / TempC_re;
+      /*              end */
+    }
+    emxInit_real_T(&DistT, 2);
+    ib = DistT->size[0] * DistT->size[1];
+    DistT->size[0] = TagDistInit->size[0];
+    DistT->size[1] = TagDistInit->size[1];
+    emxEnsureCapacity_real_T(DistT, ib);
+    DistT_data = DistT->data;
+    firstBlockLength = TagDistInit->size[0] * TagDistInit->size[1];
+    for (ib = 0; ib < firstBlockLength; ib++) {
+      DistT_data[ib] = TagDistInit_data[ib];
+    }
+    hi = TagDistInit->size[0] * TagDistInit->size[1] - 1;
+    firstBlockLength = 0;
+    for (idx = 0; idx <= hi; idx++) {
+      if (TagDistInit_data[idx] == 0.0) {
+        firstBlockLength++;
       }
-      emxInit_real_T(&calc_dist_err, 2);
-      i = calc_dist_err->size[0] * calc_dist_err->size[1];
-      calc_dist_err->size[0] = TagDistInit->size[0];
-      calc_dist_err->size[1] = TagDistInit->size[1];
-      emxEnsureCapacity_real_T(calc_dist_err, i);
-      DistT_data = calc_dist_err->data;
-      M = TagDistInit->size[0] * TagDistInit->size[1];
-      for (i = 0; i < M; i++) {
-        DistT_data[i] = TagDistInit_data[i];
+    }
+    emxInit_int32_T(&i, 1);
+    ib = i->size[0];
+    i->size[0] = firstBlockLength;
+    emxEnsureCapacity_int32_T(i, ib);
+    i_data = i->data;
+    firstBlockLength = 0;
+    for (idx = 0; idx <= hi; idx++) {
+      if (TagDistInit_data[idx] == 0.0) {
+        i_data[firstBlockLength] = idx + 1;
+        firstBlockLength++;
       }
-      M--;
-      for (loop_ub = 0; loop_ub <= M; loop_ub++) {
-        if (TagDistInit_data[loop_ub] == 0.0) {
-          DistT_data[loop_ub] = 1.0E+6;
+    }
+    firstBlockLength = i->size[0];
+    for (ib = 0; ib < firstBlockLength; ib++) {
+      DistT_data[i_data[ib] - 1] = 1.0E+6;
+    }
+    emxInit_real_T(&IndT, 1);
+    sum(DistT, IndT);
+    TagDistInit_data = IndT->data;
+    emxInit_boolean_T(&x, 1);
+    ib = x->size[0];
+    x->size[0] = IndT->size[0];
+    emxEnsureCapacity_boolean_T(x, ib);
+    x_data = x->data;
+    firstBlockLength = IndT->size[0];
+    for (ib = 0; ib < firstBlockLength; ib++) {
+      x_data[ib] = (TagDistInit_data[ib] < 100000.0);
+    }
+    hi = x->size[0];
+    idx = 0;
+    ib = i->size[0];
+    i->size[0] = x->size[0];
+    emxEnsureCapacity_int32_T(i, ib);
+    i_data = i->data;
+    firstBlockLength = 0;
+    exitg1 = false;
+    while ((!exitg1) && (firstBlockLength <= hi - 1)) {
+      if (x_data[firstBlockLength]) {
+        idx++;
+        i_data[idx - 1] = firstBlockLength + 1;
+        if (idx >= hi) {
+          exitg1 = true;
+        } else {
+          firstBlockLength++;
         }
+      } else {
+        firstBlockLength++;
       }
-      sum(calc_dist_err, y);
-      y_data = y->data;
-      emxInit_boolean_T(&b_calc_dist_err, 1);
-      i = b_calc_dist_err->size[0];
-      b_calc_dist_err->size[0] = y->size[0];
-      emxEnsureCapacity_boolean_T(b_calc_dist_err, i);
-      calc_dist_err_data = b_calc_dist_err->data;
-      loop_ub = y->size[0];
-      for (i = 0; i < loop_ub; i++) {
-        calc_dist_err_data[i] = (y_data[i] < 100000.0);
-      }
-      emxInit_int32_T(&jj, 1);
-      eml_find(b_calc_dist_err, jj);
-      jj_data = jj->data;
-      emxFree_boolean_T(&b_calc_dist_err);
-      i = y->size[0];
-      y->size[0] = jj->size[0];
-      emxEnsureCapacity_real_T(y, i);
-      y_data = y->data;
-      loop_ub = jj->size[0];
-      for (i = 0; i < loop_ub; i++) {
-        y_data[i] = jj_data[i];
-      }
-      emxFree_int32_T(&jj);
-      M = calc_dist_err->size[1];
-      emxInit_real_T(&A, 2);
-      i = A->size[0] * A->size[1];
-      A->size[0] = y->size[0];
-      A->size[1] = calc_dist_err->size[1];
-      emxEnsureCapacity_real_T(A, i);
-      TagDistInitCount_data = A->data;
-      for (i = 0; i < M; i++) {
-        loop_ub = y->size[0];
-        for (k = 0; k < loop_ub; k++) {
-          TagDistInitCount_data[k + A->size[0] * i] =
-              DistT_data[((int)y_data[k] + calc_dist_err->size[0] * i) - 1];
-        }
-      }
-      i = calc_dist_err->size[0] * calc_dist_err->size[1];
-      calc_dist_err->size[0] = A->size[0];
-      calc_dist_err->size[1] = A->size[1];
-      emxEnsureCapacity_real_T(calc_dist_err, i);
-      DistT_data = calc_dist_err->data;
-      loop_ub = A->size[0] * A->size[1];
-      for (i = 0; i < loop_ub; i++) {
-        DistT_data[i] = TagDistInitCount_data[i];
-      }
-      emxFree_real_T(&A);
-      i = b_xa->size[0] * b_xa->size[1];
-      b_xa->size[0] = 1;
-      b_xa->size[1] = y->size[0];
-      emxEnsureCapacity_real_T(b_xa, i);
-      TagDistInit_data = b_xa->data;
-      loop_ub = y->size[0];
-      i = b_ya->size[0] * b_ya->size[1];
-      b_ya->size[0] = 1;
-      b_ya->size[1] = y->size[0];
-      emxEnsureCapacity_real_T(b_ya, i);
-      DistT_data = b_ya->data;
-      for (i = 0; i < loop_ub; i++) {
-        M = (int)y_data[i] - 1;
-        TagDistInit_data[i] = xa[M];
-        DistT_data[i] = ya[M];
-      }
-      Est_H = GetInitPos(b_xa, b_ya, calc_dist_err, tag_pos_b, y->size[0], Lp,
-                         Est_P);
-      emxFree_real_T(&calc_dist_err);
-      i = tag_pos_est->size[0] * tag_pos_est->size[1];
-      tag_pos_est->size[0] = 1;
-      tag_pos_est->size[1] = 4;
-      emxEnsureCapacity_creal_T(tag_pos_est, i);
-      tag_pos_est_data = tag_pos_est->data;
-      tag_pos_est_data[0] = Est_P[0];
-      tag_pos_est_data[1] = Est_P[1];
-      tag_pos_est_data[2] = Est_P[2];
-      tag_pos_est_data[3] = Est_P[3];
-      for (M = 0; M < coffset; M++) {
-        for (loop_ub = 0; loop_ub < 9; loop_ub++) {
-          i = loop_ub + 18 * M;
-          Tag_Pos_List_data[i].re =
-              s_time + (((double)loop_ub + 1.0) - 9.0) * 0.1;
-          Tag_Pos_List_data[i].im = 0.0;
-          Tag_Pos_List_data[i + 9] = Est_P[M];
-        }
+    }
+    if (x->size[0] == 1) {
+      if (idx == 0) {
+        i->size[0] = 0;
       }
     } else {
-      creal_T TempC_tmp;
-      double Est_C_im;
-      double Est_C_re;
-      double Est_H_p_im;
-      double Est_H_p_re;
-      double Pm_re;
-      double Px_re_tmp;
-      double b_Est_H;
-      double b_Px_re_tmp;
-      double b_div;
-      double q;
-      /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
-      /* %%%%%%%%%%%%%%%%%  Next Position Prediction    %%%%%%%%%%%%%%%%%% */
-      for (PPC = 0; PPC < coffset; PPC++) {
-        creal_T Pm[27];
-        creal_T b_Px[27];
-        creal_T Px[9];
-        creal_T b_Pm[9];
-        creal_T c_Px[3];
-        for (k = 0; k < 9; k++) {
-          M = k + 18 * PPC;
-          Est_H_p_re = Tag_Pos_List_data[M].re - s_time;
-          Est_H_p_im = Tag_Pos_List_data[M].im;
-          Pm[k].re = Est_H_p_re * Est_H_p_re - Est_H_p_im * Est_H_p_im;
-          q = Est_H_p_re * Est_H_p_im;
-          Pm[k].im = q + q;
-          Pm[k + 9].re = Est_H_p_re;
-          Pm[k + 9].im = Est_H_p_im;
-          Pm[k + 18].re = 1.0;
-          Pm[k + 18].im = 0.0;
-        }
-        for (i = 0; i < 3; i++) {
-          for (k = 0; k < 3; k++) {
-            Est_H_p_re = 0.0;
-            Est_H_p_im = 0.0;
-            for (loop_ub = 0; loop_ub < 9; loop_ub++) {
-              M = loop_ub + 9 * i;
-              Pm_re = Pm[M].re;
-              Est_C_im = -Pm[M].im;
-              M = loop_ub + 9 * k;
-              b_Est_H = Pm[M].im;
-              q = Pm[M].re;
-              Est_H_p_re += Pm_re * q - Est_C_im * b_Est_H;
-              Est_H_p_im += Pm_re * b_Est_H + Est_C_im * q;
-            }
-            loop_ub = i + 3 * k;
-            b_Pm[loop_ub].re = Est_H_p_re;
-            b_Pm[loop_ub].im = Est_H_p_im;
-          }
-        }
-        b_inv(b_Pm, Px);
-        for (i = 0; i < 3; i++) {
-          b_Est_H = Px[i].re;
-          q = Px[i].im;
-          b_div = Px[i + 3].re;
-          Est_C_re = Px[i + 3].im;
-          Px_re_tmp = Px[i + 6].re;
-          b_Px_re_tmp = Px[i + 6].im;
-          for (k = 0; k < 9; k++) {
-            Pm_re = Pm[k].re;
-            Est_C_im = -Pm[k].im;
-            Est_H_p_re = b_Est_H * Pm_re - q * Est_C_im;
-            Est_H_p_im = b_Est_H * Est_C_im + q * Pm_re;
-            Pm_re = Pm[k + 9].re;
-            Est_C_im = -Pm[k + 9].im;
-            Est_H_p_re += b_div * Pm_re - Est_C_re * Est_C_im;
-            Est_H_p_im += b_div * Est_C_im + Est_C_re * Pm_re;
-            Pm_re = Pm[k + 18].re;
-            Est_C_im = -Pm[k + 18].im;
-            Est_H_p_re += Px_re_tmp * Pm_re - b_Px_re_tmp * Est_C_im;
-            Est_H_p_im += Px_re_tmp * Est_C_im + b_Px_re_tmp * Pm_re;
-            loop_ub = i + 3 * k;
-            b_Px[loop_ub].re = Est_H_p_re;
-            b_Px[loop_ub].im = Est_H_p_im;
-          }
-        }
-        for (i = 0; i < 9; i++) {
-          Px[i].re = Tag_Pos_List_data[(i + 18 * PPC) + 9].re;
-          Px[i].im = 0.0;
-        }
-        for (i = 0; i < 3; i++) {
-          Est_H_p_re = 0.0;
-          Est_H_p_im = 0.0;
-          for (k = 0; k < 9; k++) {
-            M = i + 3 * k;
-            b_Est_H = b_Px[M].re;
-            q = Px[k].im;
-            b_div = b_Px[M].im;
-            Est_C_re = Px[k].re;
-            Est_H_p_re += b_Est_H * Est_C_re - b_div * q;
-            Est_H_p_im += b_Est_H * q + b_div * Est_C_re;
-          }
-          c_Px[i].re = Est_H_p_re;
-          c_Px[i].im = Est_H_p_im;
-        }
-        InterpPosition_data[PPC] = c_Px[2];
-        /*  Py = pm x A */
-        /*  tr(pm)xPy = tr(Pm)pm x A */
-        /*  inv(tr(Pm)Pm) x tr(pm)xPy = A */
-        for (k = 0; k < 9; k++) {
-          M = k + 18 * PPC;
-          Est_H_p_re = Tag_Pos_List_data[M].re - s_time;
-          Est_H_p_im = Tag_Pos_List_data[M].im;
-          Pm[k].re = Est_H_p_re * Est_H_p_re - Est_H_p_im * Est_H_p_im;
-          q = Est_H_p_re * Est_H_p_im;
-          Pm[k].im = q + q;
-          Pm[k + 9].re = Est_H_p_re;
-          Pm[k + 9].im = Est_H_p_im;
-          Pm[k + 18].re = 1.0;
-          Pm[k + 18].im = 0.0;
-        }
-        for (i = 0; i < 3; i++) {
-          for (k = 0; k < 3; k++) {
-            Est_H_p_re = 0.0;
-            Est_H_p_im = 0.0;
-            for (loop_ub = 0; loop_ub < 9; loop_ub++) {
-              M = loop_ub + 9 * i;
-              Pm_re = Pm[M].re;
-              Est_C_im = -Pm[M].im;
-              M = loop_ub + 9 * k;
-              b_Est_H = Pm[M].im;
-              q = Pm[M].re;
-              Est_H_p_re += Pm_re * q - Est_C_im * b_Est_H;
-              Est_H_p_im += Pm_re * b_Est_H + Est_C_im * q;
-            }
-            loop_ub = i + 3 * k;
-            b_Pm[loop_ub].re = Est_H_p_re;
-            b_Pm[loop_ub].im = Est_H_p_im;
-          }
-        }
-        b_inv(b_Pm, Px);
-        for (i = 0; i < 3; i++) {
-          b_Est_H = Px[i].re;
-          q = Px[i].im;
-          b_div = Px[i + 3].re;
-          Est_C_re = Px[i + 3].im;
-          Px_re_tmp = Px[i + 6].re;
-          b_Px_re_tmp = Px[i + 6].im;
-          for (k = 0; k < 9; k++) {
-            Pm_re = Pm[k].re;
-            Est_C_im = -Pm[k].im;
-            Est_H_p_re = b_Est_H * Pm_re - q * Est_C_im;
-            Est_H_p_im = b_Est_H * Est_C_im + q * Pm_re;
-            Pm_re = Pm[k + 9].re;
-            Est_C_im = -Pm[k + 9].im;
-            Est_H_p_re += b_div * Pm_re - Est_C_re * Est_C_im;
-            Est_H_p_im += b_div * Est_C_im + Est_C_re * Pm_re;
-            Pm_re = Pm[k + 18].re;
-            Est_C_im = -Pm[k + 18].im;
-            Est_H_p_re += Px_re_tmp * Pm_re - b_Px_re_tmp * Est_C_im;
-            Est_H_p_im += Px_re_tmp * Est_C_im + b_Px_re_tmp * Pm_re;
-            loop_ub = i + 3 * k;
-            b_Px[loop_ub].re = Est_H_p_re;
-            b_Px[loop_ub].im = Est_H_p_im;
-          }
-        }
-        for (i = 0; i < 9; i++) {
-          Px[i].re = Tag_Pos_List_data[(i + 18 * PPC) + 9].im;
-          Px[i].im = 0.0;
-        }
-        for (i = 0; i < 3; i++) {
-          Est_H_p_re = 0.0;
-          Est_H_p_im = 0.0;
-          for (k = 0; k < 9; k++) {
-            M = i + 3 * k;
-            b_Est_H = b_Px[M].re;
-            q = Px[k].im;
-            b_div = b_Px[M].im;
-            Est_C_re = Px[k].re;
-            Est_H_p_re += b_Est_H * Est_C_re - b_div * q;
-            Est_H_p_im += b_Est_H * q + b_div * Est_C_re;
-          }
-          c_Px[i].re = Est_H_p_re;
-          c_Px[i].im = Est_H_p_im;
-        }
-        InterpPosition_data[PPC + InterpPosition->size[0]] = c_Px[2];
-        /*  Py = pm x A */
-        /*  tr(pm)xPy = tr(Pm)pm x A */
-        /*  inv(tr(Pm)Pm) x tr(pm)xPy = A */
-      }
-      /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
-      /* %%%%%%%%%%%%%%%% New Position Calc.   %%%%%%%%%%%%%%%%%%%%%%%%%%% */
-      /*          for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
-      emxInit_creal_T(&InterpPosT, 1);
-      if (RxID_size[1] > 1) {
-        creal_T Est_P[4];
-        creal_T anch_pos_data[4];
-        i = InterpPosT->size[0];
-        InterpPosT->size[0] = InterpPosition->size[0];
-        emxEnsureCapacity_creal_T(InterpPosT, i);
-        tag_pos_est_aver_data = InterpPosT->data;
-        loop_ub = InterpPosition->size[0];
-        for (i = 0; i < loop_ub; i++) {
-          b_Est_H = InterpPosition_data[i + InterpPosition->size[0]].im;
-          q = InterpPosition_data[i + InterpPosition->size[0]].re;
-          tag_pos_est_aver_data[i].re =
-              InterpPosition_data[i].re + (0.0 * q - b_Est_H);
-          tag_pos_est_aver_data[i].im =
-              InterpPosition_data[i].im + (0.0 * b_Est_H + q);
-        }
-        Est_H =
-            GetPos2(xa, ya, RxDist_data, RxDist_size[0], RxID_data, RxID_size,
-                    tag_pos_b, Nanchor, TagNum, InterpPosT, Est_P, &TempC);
-        loop_ub = RxID_size[1];
-        for (i = 0; i < loop_ub; i++) {
-          q = RxID_data[i];
-          b_Est_H = ya[(int)q - 1];
-          anch_pos_data[i].re = xa[(int)q - 1] + 0.0 * b_Est_H;
-          anch_pos_data[i].im = b_Est_H;
-        }
-        if (!(Nanchor == 1.0)) {
-          i = (int)Nanchor;
-          emxInit_real_T(&calc_dist_err, 2);
-          k = calc_dist_err->size[0] * calc_dist_err->size[1];
-          calc_dist_err->size[0] = 1;
-          calc_dist_err->size[1] = (int)Nanchor;
-          emxEnsureCapacity_real_T(calc_dist_err, k);
-          TagDistInitCount_data = calc_dist_err->data;
-          for (M = 0; M < i; M++) {
-            b_div = fabs(
-                rt_hypotd_snf(anch_pos_data[M].re - Est_P[(int)TagNum - 1].re,
-                              anch_pos_data[M].im - Est_P[(int)TagNum - 1].im) -
-                RxDist_data[M]);
-            TagDistInitCount_data[M] = b_div * b_div;
-          }
-          b_Est_H = fmax(sqrt(combineVectorElements(calc_dist_err) /
-                              (double)calc_dist_err->size[1]) *
-                             0.3,
-                         0.2);
-          emxInit_boolean_T(&b_calc_dist_err, 2);
-          i = b_calc_dist_err->size[0] * b_calc_dist_err->size[1];
-          b_calc_dist_err->size[0] = 1;
-          b_calc_dist_err->size[1] = calc_dist_err->size[1];
-          emxEnsureCapacity_boolean_T(b_calc_dist_err, i);
-          calc_dist_err_data = b_calc_dist_err->data;
-          loop_ub = calc_dist_err->size[1];
-          for (i = 0; i < loop_ub; i++) {
-            calc_dist_err_data[i] = (TagDistInitCount_data[i] < b_Est_H);
-          }
-          emxInit_int32_T(&ii, 2);
-          emxInit_int32_T(&jj, 2);
-          b_eml_find(b_calc_dist_err, ii, jj);
-          jj_data = jj->data;
-          emxFree_boolean_T(&b_calc_dist_err);
-          emxFree_int32_T(&ii);
-          i = calc_dist_err->size[0] * calc_dist_err->size[1];
-          calc_dist_err->size[0] = 1;
-          calc_dist_err->size[1] = jj->size[1];
-          emxEnsureCapacity_real_T(calc_dist_err, i);
-          TagDistInitCount_data = calc_dist_err->data;
-          loop_ub = jj->size[1];
-          for (i = 0; i < loop_ub; i++) {
-            TagDistInitCount_data[i] = jj_data[i];
-          }
-          emxFree_int32_T(&jj);
-          if (calc_dist_err->size[1] >= 3) {
-            double C[4];
-            double b_A[4];
-            i = b_xa->size[0] * b_xa->size[1];
-            b_xa->size[0] = 1;
-            b_xa->size[1] = calc_dist_err->size[1];
-            emxEnsureCapacity_real_T(b_xa, i);
-            TagDistInit_data = b_xa->data;
-            loop_ub = calc_dist_err->size[1];
-            i = b_ya->size[0] * b_ya->size[1];
-            b_ya->size[0] = 1;
-            b_ya->size[1] = calc_dist_err->size[1];
-            emxEnsureCapacity_real_T(b_ya, i);
-            DistT_data = b_ya->data;
-            for (i = 0; i < loop_ub; i++) {
-              q = TagDistInitCount_data[i];
-              TagDistInit_data[i] = anch_pos_data[(int)q - 1].re;
-              DistT_data[i] = anch_pos_data[(int)q - 1].im;
-            }
-            M = b_xa->size[1] - 1;
-            emxInit_real_T(&A, 2);
-            i = A->size[0] * A->size[1];
-            A->size[0] = b_xa->size[1] - 1;
-            A->size[1] = 2;
-            emxEnsureCapacity_real_T(A, i);
-            A_data = A->data;
-            coffset = (b_xa->size[1] - 1) << 1;
-            for (i = 0; i < coffset; i++) {
-              A_data[i] = 0.0;
-            }
-            i = y->size[0];
-            y->size[0] = b_xa->size[1] - 1;
-            emxEnsureCapacity_real_T(y, i);
-            y_data = y->data;
-            loop_ub = b_xa->size[1];
-            b_div =
-                RxDist_data[(int)TagDistInitCount_data[b_xa->size[1] - 1] - 1];
-            for (k = 0; k <= loop_ub - 2; k++) {
-              A_data[k] = -2.0 * (TagDistInit_data[k] - TagDistInit_data[M]);
-              A_data[k + A->size[0]] = -2.0 * (DistT_data[k] - DistT_data[M]);
-              b_Est_H = RxDist_data[(int)TagDistInitCount_data[k] - 1];
-              y_data[k] = ((b_Est_H * b_Est_H - b_div * b_div) -
-                           (TagDistInit_data[k] * TagDistInit_data[k] -
-                            TagDistInit_data[M] * TagDistInit_data[M])) -
-                          (DistT_data[k] * DistT_data[k] -
-                           DistT_data[M] * DistT_data[M]);
-            }
-            loop_ub = A->size[0];
-            for (PPC = 0; PPC < 2; PPC++) {
-              coffset = PPC << 1;
-              M = PPC * A->size[0];
-              C[coffset] = 0.0;
-              C[coffset + 1] = 0.0;
-              for (k = 0; k < loop_ub; k++) {
-                b_Est_H = A_data[M + k];
-                C[coffset] += A_data[k] * b_Est_H;
-                C[coffset + 1] += A_data[A->size[0] + k] * b_Est_H;
-              }
-            }
-            inv(C, b_A);
-            M = A->size[0];
-            emxInit_real_T(&b_C, 2);
-            i = b_C->size[0] * b_C->size[1];
-            b_C->size[0] = 2;
-            b_C->size[1] = A->size[0];
-            emxEnsureCapacity_real_T(b_C, i);
-            TagDistInitCount_data = b_C->data;
-            for (PPC = 0; PPC < M; PPC++) {
-              coffset = PPC << 1;
-              b_Est_H = A_data[A->size[0] + PPC];
-              TagDistInitCount_data[coffset] =
-                  b_A[0] * A_data[PPC] + b_A[2] * b_Est_H;
-              TagDistInitCount_data[coffset + 1] =
-                  b_A[1] * A_data[PPC] + b_A[3] * b_Est_H;
-            }
-            emxFree_real_T(&A);
-            loop_ub = b_C->size[1];
-            b_Est_H = 0.0;
-            b_div = 0.0;
-            for (k = 0; k < loop_ub; k++) {
-              M = k << 1;
-              b_Est_H += TagDistInitCount_data[M] * y_data[k];
-              b_div += TagDistInitCount_data[M + 1] * y_data[k];
-            }
-            emxFree_real_T(&b_C);
-            TempC.re = b_div * 0.0;
-            TempC.im = b_div;
-            q = b_Est_H + TempC.re;
-            Est_P[(int)TagNum - 1].re = q;
-            Est_P[(int)TagNum - 1].im = b_div;
-            TempC.re = q;
-            if (Est_P[0].im == 0.0) {
-              b_div = Est_P[0].re / 4.0;
-              b_Est_H = 0.0;
-            } else if (Est_P[0].re == 0.0) {
-              b_div = 0.0;
-              b_Est_H = Est_P[0].im / 4.0;
-            } else {
-              b_div = Est_P[0].re / 4.0;
-              b_Est_H = Est_P[0].im / 4.0;
-            }
-            Est_C_re = b_div;
-            Est_C_im = b_Est_H;
-            if (Est_P[1].im == 0.0) {
-              b_div = Est_P[1].re / 4.0;
-              b_Est_H = 0.0;
-            } else if (Est_P[1].re == 0.0) {
-              b_div = 0.0;
-              b_Est_H = Est_P[1].im / 4.0;
-            } else {
-              b_div = Est_P[1].re / 4.0;
-              b_Est_H = Est_P[1].im / 4.0;
-            }
-            Est_C_re += b_div;
-            Est_C_im += b_Est_H;
-            if (Est_P[2].im == 0.0) {
-              b_div = Est_P[2].re / 4.0;
-              b_Est_H = 0.0;
-            } else if (Est_P[2].re == 0.0) {
-              b_div = 0.0;
-              b_Est_H = Est_P[2].im / 4.0;
-            } else {
-              b_div = Est_P[2].re / 4.0;
-              b_Est_H = Est_P[2].im / 4.0;
-            }
-            Est_C_re += b_div;
-            Est_C_im += b_Est_H;
-            if (Est_P[3].im == 0.0) {
-              b_div = Est_P[3].re / 4.0;
-              b_Est_H = 0.0;
-            } else if (Est_P[3].re == 0.0) {
-              b_div = 0.0;
-              b_Est_H = Est_P[3].im / 4.0;
-            } else {
-              b_div = Est_P[3].re / 4.0;
-              b_Est_H = Est_P[3].im / 4.0;
-            }
-            Est_C_re += b_div;
-            Est_C_im += b_Est_H;
-            b_Px_re_tmp = Est_P[3].re - Est_C_re;
-            Pm_re = Est_P[3].im - Est_C_im;
-            if (tag_pos_b[3].im == 0.0) {
-              if (Pm_re == 0.0) {
-                Est_H_p_re = b_Px_re_tmp / tag_pos_b[3].re;
-                Est_H_p_im = 0.0;
-              } else if (b_Px_re_tmp == 0.0) {
-                Est_H_p_re = 0.0;
-                Est_H_p_im = Pm_re / tag_pos_b[3].re;
-              } else {
-                Est_H_p_re = b_Px_re_tmp / tag_pos_b[3].re;
-                Est_H_p_im = Pm_re / tag_pos_b[3].re;
-              }
-            } else if (tag_pos_b[3].re == 0.0) {
-              if (b_Px_re_tmp == 0.0) {
-                Est_H_p_re = Pm_re / tag_pos_b[3].im;
-                Est_H_p_im = 0.0;
-              } else if (Pm_re == 0.0) {
-                Est_H_p_re = 0.0;
-                Est_H_p_im = -(b_Px_re_tmp / tag_pos_b[3].im);
-              } else {
-                Est_H_p_re = Pm_re / tag_pos_b[3].im;
-                Est_H_p_im = -(b_Px_re_tmp / tag_pos_b[3].im);
-              }
-            } else {
-              Px_re_tmp = fabs(tag_pos_b[3].re);
-              q = fabs(tag_pos_b[3].im);
-              if (Px_re_tmp > q) {
-                q = tag_pos_b[3].im / tag_pos_b[3].re;
-                b_Est_H = tag_pos_b[3].re + q * tag_pos_b[3].im;
-                Est_H_p_re = (b_Px_re_tmp + q * Pm_re) / b_Est_H;
-                Est_H_p_im = (Pm_re - q * b_Px_re_tmp) / b_Est_H;
-              } else if (q == Px_re_tmp) {
-                if (tag_pos_b[3].re > 0.0) {
-                  q = 0.5;
-                } else {
-                  q = -0.5;
-                }
-                if (tag_pos_b[3].im > 0.0) {
-                  b_Est_H = 0.5;
-                } else {
-                  b_Est_H = -0.5;
-                }
-                Est_H_p_re = (b_Px_re_tmp * q + Pm_re * b_Est_H) / Px_re_tmp;
-                Est_H_p_im = (Pm_re * q - b_Px_re_tmp * b_Est_H) / Px_re_tmp;
-              } else {
-                q = tag_pos_b[3].re / tag_pos_b[3].im;
-                b_Est_H = tag_pos_b[3].im + q * tag_pos_b[3].re;
-                Est_H_p_re = (q * b_Px_re_tmp + Pm_re) / b_Est_H;
-                Est_H_p_im = (q * Pm_re - b_Px_re_tmp) / b_Est_H;
-              }
-            }
-            Est_H = rt_atan2d_snf(Est_H_p_im, Est_H_p_re);
-            b_Est_H = Est_H * 0.0;
-            if (b_Est_H == 0.0) {
-              x_re = cos(Est_H);
-              x_im = sin(Est_H);
-            } else if (Est_H == 0.0) {
-              x_re = rtNaN;
-              x_im = 0.0;
-            } else {
-              x_re = rtNaN;
-              x_im = rtNaN;
-            }
-            Est_P[0].re =
-                Est_C_re + (tag_pos_b[0].re * x_re - tag_pos_b[0].im * x_im);
-            Est_P[0].im =
-                Est_C_im + (tag_pos_b[0].re * x_im + tag_pos_b[0].im * x_re);
-            if (b_Est_H == 0.0) {
-              x_re = cos(Est_H);
-              x_im = sin(Est_H);
-            } else if (Est_H == 0.0) {
-              x_re = rtNaN;
-              x_im = 0.0;
-            } else {
-              x_re = rtNaN;
-              x_im = rtNaN;
-            }
-            Est_P[1].re =
-                Est_C_re + (tag_pos_b[1].re * x_re - tag_pos_b[1].im * x_im);
-            Est_P[1].im =
-                Est_C_im + (tag_pos_b[1].re * x_im + tag_pos_b[1].im * x_re);
-            if (b_Est_H == 0.0) {
-              x_re = cos(Est_H);
-              x_im = sin(Est_H);
-            } else if (Est_H == 0.0) {
-              x_re = rtNaN;
-              x_im = 0.0;
-            } else {
-              x_re = rtNaN;
-              x_im = rtNaN;
-            }
-            Est_P[2].re =
-                Est_C_re + (tag_pos_b[2].re * x_re - tag_pos_b[2].im * x_im);
-            Est_P[2].im =
-                Est_C_im + (tag_pos_b[2].re * x_im + tag_pos_b[2].im * x_re);
-            if (b_Est_H == 0.0) {
-              x_re = cos(Est_H);
-              x_im = sin(Est_H);
-            } else if (Est_H == 0.0) {
-              x_re = rtNaN;
-              x_im = 0.0;
-            } else {
-              x_re = rtNaN;
-              x_im = rtNaN;
-            }
-            Est_P[3].re =
-                Est_C_re + (tag_pos_b[3].re * x_re - tag_pos_b[3].im * x_im);
-            Est_P[3].im =
-                Est_C_im + (tag_pos_b[3].re * x_im + tag_pos_b[3].im * x_re);
-          }
-          emxFree_real_T(&calc_dist_err);
-        }
-        i = tag_pos_est->size[0] * tag_pos_est->size[1];
-        tag_pos_est->size[0] = 1;
-        tag_pos_est->size[1] = 4;
-        emxEnsureCapacity_creal_T(tag_pos_est, i);
-        tag_pos_est_data = tag_pos_est->data;
-        tag_pos_est_data[0] = Est_P[0];
-        tag_pos_est_data[1] = Est_P[1];
-        tag_pos_est_data[2] = Est_P[2];
-        tag_pos_est_data[3] = Est_P[3];
+      ib = i->size[0];
+      if (idx < 1) {
+        i->size[0] = 0;
       } else {
-        i = InterpPosT->size[0];
-        InterpPosT->size[0] = InterpPosition->size[0];
-        emxEnsureCapacity_creal_T(InterpPosT, i);
-        tag_pos_est_aver_data = InterpPosT->data;
-        loop_ub = InterpPosition->size[0];
-        for (i = 0; i < loop_ub; i++) {
-          b_Est_H = InterpPosition_data[i + InterpPosition->size[0]].im;
-          q = InterpPosition_data[i + InterpPosition->size[0]].re;
-          tag_pos_est_aver_data[i].re =
-              InterpPosition_data[i].re + (0.0 * q - b_Est_H);
-          tag_pos_est_aver_data[i].im =
-              InterpPosition_data[i].im + (0.0 * b_Est_H + q);
-        }
-        TempC = mean(InterpPosT);
-        Est_H_p_re = 0.0;
-        Est_H_p_im = 0.0;
-        i = InterpPosT->size[0];
-        for (M = 0; M < i; M++) {
-          b_Px_re_tmp = tag_pos_est_aver_data[M].re - TempC.re;
-          Pm_re = tag_pos_est_aver_data[M].im - TempC.im;
-          b_Est_H = tag_pos_b[M].re;
-          b_div = tag_pos_b[M].im;
-          if (b_div == 0.0) {
-            if (Pm_re == 0.0) {
-              Est_C_re = b_Px_re_tmp / b_Est_H;
-              b_Est_H = 0.0;
-            } else if (b_Px_re_tmp == 0.0) {
-              Est_C_re = 0.0;
-              b_Est_H = Pm_re / b_Est_H;
-            } else {
-              Est_C_re = b_Px_re_tmp / b_Est_H;
-              b_Est_H = Pm_re / b_Est_H;
-            }
-          } else if (b_Est_H == 0.0) {
-            if (b_Px_re_tmp == 0.0) {
-              Est_C_re = Pm_re / b_div;
-              b_Est_H = 0.0;
-            } else if (Pm_re == 0.0) {
-              Est_C_re = 0.0;
-              b_Est_H = -(b_Px_re_tmp / b_div);
-            } else {
-              Est_C_re = Pm_re / b_div;
-              b_Est_H = -(b_Px_re_tmp / b_div);
-            }
-          } else {
-            Px_re_tmp = fabs(b_Est_H);
-            q = fabs(b_div);
-            if (Px_re_tmp > q) {
-              q = b_div / b_Est_H;
-              b_Est_H += q * b_div;
-              Est_C_re = (b_Px_re_tmp + q * Pm_re) / b_Est_H;
-              b_Est_H = (Pm_re - q * b_Px_re_tmp) / b_Est_H;
-            } else if (q == Px_re_tmp) {
-              if (b_Est_H > 0.0) {
-                q = 0.5;
-              } else {
-                q = -0.5;
-              }
-              if (b_div > 0.0) {
-                b_Est_H = 0.5;
-              } else {
-                b_Est_H = -0.5;
-              }
-              Est_C_re = (b_Px_re_tmp * q + Pm_re * b_Est_H) / Px_re_tmp;
-              b_Est_H = (Pm_re * q - b_Px_re_tmp * b_Est_H) / Px_re_tmp;
-            } else {
-              q = b_Est_H / b_div;
-              b_Est_H = b_div + q * b_Est_H;
-              Est_C_re = (q * b_Px_re_tmp + Pm_re) / b_Est_H;
-              b_Est_H = (q * Pm_re - b_Px_re_tmp) / b_Est_H;
-            }
-          }
-          Est_H_p_re += Est_C_re;
-          Est_H_p_im += b_Est_H;
-        }
-        b_Est_H = rt_atan2d_snf(Est_H_p_im, Est_H_p_re);
-        i = InterpPosT->size[0];
-        if (i - 1 >= 0) {
-          if (b_Est_H * 0.0 == 0.0) {
-            x_re = cos(b_Est_H);
-            x_im = sin(b_Est_H);
-          } else if (b_Est_H == 0.0) {
-            x_re = rtNaN;
-            x_im = 0.0;
-          } else {
-            x_re = rtNaN;
-            x_im = rtNaN;
-          }
-        }
-        for (M = 0; M < i; M++) {
-          b_Est_H = tag_pos_b[M].re;
-          q = tag_pos_b[M].im;
-          tag_pos_est_data[M].re = TempC.re + (b_Est_H * x_re - q * x_im);
-          tag_pos_est_data[M].im = TempC.im + (b_Est_H * x_im + q * x_re);
-        }
-        b_Est_H =
-            InterpPosition_data[((int)TagNum + InterpPosition->size[0]) - 1].im;
-        q = InterpPosition_data[((int)TagNum + InterpPosition->size[0]) - 1].re;
-        TempC.re =
-            InterpPosition_data[(int)TagNum - 1].re + (0.0 * q - b_Est_H);
-        TempC.im =
-            InterpPosition_data[(int)TagNum - 1].im + (0.0 * b_Est_H + q);
+        i->size[0] = idx;
       }
-      printf("[%s][%d] loop_ub[%d], TagNum[%lf]\r\n", __FUNCTION__, __LINE__, loop_ub, TagNum);
-      emxFree_creal_T(&InterpPosT);
-      for (i = 0; i < 2; i++) {
-        for (k = 0; k < 8; k++) {
-          loop_ub = (k + 9 * i) + 18 * ((int)TagNum - 1);
-          printf("[%s][%d] loop_ub[%d]\r\n", __FUNCTION__, __LINE__, loop_ub);
-
-          Tag_Pos_List_data[loop_ub] = Tag_Pos_List_data[loop_ub + 1];
-        }
-      }
-      printf("[%s][%d] test OK\r\n", __FUNCTION__, __LINE__);
-
-      i = 18 * ((int)TagNum - 1);
-      Tag_Pos_List_data[i + 8].re = s_time;
-      Tag_Pos_List_data[i + 8].im = 0.0;
-      Tag_Pos_List_data[i + 17] = TempC;
-      /*              Tag_Pos_List(1:2,:,PP) = Tag_Pos_List(2:3,:,PP); */
-      /*              Tag_Pos_List(3,:,PP) = [s_time(r) tag_pos_est(PP)]; */
-      /*          end */
-      TempC_tmp = b_mean(tag_pos_est);
-      for (i = 0; i < 19; i++) {
-        heading_est_a[i] = heading_est_a[i + 1];
-        centerest_a[i] = centerest_a[i + 1];
-        centerest_a_aver[i] = centerest_a_aver[i + 1];
-        centerest_a[i + 20] = centerest_a[i + 21];
-        centerest_a_aver[i + 20] = centerest_a_aver[i + 21];
-        headingest_a_aver[i] = headingest_a_aver[i + 1];
-      }
-      if (Est_H - heading_est_a[18] > 3.1415926535897931) {
-        heading_est_a[19] = Est_H - 6.2831853071795862;
-      } else if (heading_est_a[18] - Est_H > 3.1415926535897931) {
-        heading_est_a[19] = Est_H + 6.2831853071795862;
-      } else {
-        heading_est_a[19] = Est_H;
-      }
-      centerest_a[19] = TempC_tmp.re;
-      centerest_a[39] = TempC_tmp.im;
-      if (r > 20.0) {
-        creal_T x[10];
-        for (i = 0; i < 10; i++) {
-          q = centerest_a[i + 20];
-          x[i].re = centerest_a[i] + 0.0 * q;
-          x[i].im = q;
-        }
-        x_re = x[0].re;
-        x_im = x[0].im;
-        for (k = 0; k < 9; k++) {
-          x_re += x[k + 1].re;
-          x_im += x[k + 1].im;
-        }
-        if (x_im == 0.0) {
-          Est_H_p_re = x_re / 10.0;
-          Est_H_p_im = 0.0;
-        } else if (x_re == 0.0) {
-          Est_H_p_re = 0.0;
-          Est_H_p_im = x_im / 10.0;
-        } else {
-          Est_H_p_re = x_re / 10.0;
-          Est_H_p_im = x_im / 10.0;
-        }
-        for (i = 0; i < 10; i++) {
-          q = centerest_a[i + 30];
-          x[i].re = centerest_a[i + 10] + 0.0 * q;
-          x[i].im = q;
-        }
-        x_re = x[0].re;
-        x_im = x[0].im;
-        Px_re_tmp = heading_est_a[0];
-        Est_C_re = heading_est_a[10];
-        for (k = 0; k < 9; k++) {
-          x_re += x[k + 1].re;
-          x_im += x[k + 1].im;
-          Px_re_tmp += heading_est_a[k + 1];
-          Est_C_re += heading_est_a[k + 11];
-        }
-        if (x_im == 0.0) {
-          TempC.re = x_re / 10.0;
-          TempC.im = 0.0;
-        } else if (x_re == 0.0) {
-          TempC.re = 0.0;
-          TempC.im = x_im / 10.0;
-        } else {
-          TempC.re = x_re / 10.0;
-          TempC.im = x_im / 10.0;
-        }
-        b_Est_H = TempC.re - Est_H_p_re;
-        q = TempC.im - Est_H_p_im;
-        if (q == 0.0) {
-          b_Est_H /= 2.0;
-        } else if (b_Est_H == 0.0) {
-          b_Est_H = 0.0;
-        } else {
-          b_Est_H /= 2.0;
-        }
-        centerest_a_aver[19] = TempC.re + b_Est_H;
-        if (q == 0.0) {
-          b_div = 0.0;
-        } else {
-          b_div = q / 2.0;
-        }
-        centerest_a_aver[39] = TempC.im + b_div;
-        b_Est_H = Est_C_re / 10.0;
-        b_div = b_Est_H + (b_Est_H - Px_re_tmp / 10.0) / 2.0;
-        if (rtIsNaN(b_div) || rtIsInf(b_div)) {
-          b_Est_H = rtNaN;
-        } else if (b_div == 0.0) {
-          b_Est_H = 0.0;
-        } else {
-          bool rEQ0;
-          b_Est_H = fmod(b_div, 6.2831853071795862);
-          rEQ0 = (b_Est_H == 0.0);
-          if (!rEQ0) {
-            q = fabs(b_div / 6.2831853071795862);
-            rEQ0 = !(fabs(q - floor(q + 0.5)) > 2.2204460492503131E-16 * q);
-          }
-          if (rEQ0) {
-            b_Est_H = 0.0;
-          } else if (b_div < 0.0) {
-            b_Est_H += 6.2831853071795862;
-          }
-        }
-        headingest_a_aver[19] = b_Est_H;
-      } else {
-        centerest_a_aver[19] = TempC_tmp.re;
-        centerest_a_aver[39] = TempC_tmp.im;
-        headingest_a_aver[19] = heading_est_a[19];
-      }
-      /*      tag_pos_est_aver =
-       * get_tag_pos(centerest_a_aver(end,1)+j*centerest_a_aver(end,2),
-       * headingest_a_aver(end), tag_pos_b); */
-      if (headingest_a_aver[19] * 0.0 == 0.0) {
-        TempC.re = cos(headingest_a_aver[19]);
-        TempC.im = sin(headingest_a_aver[19]);
-      } else if (headingest_a_aver[19] == 0.0) {
-        TempC.re = rtNaN;
-        TempC.im = 0.0;
-      } else {
-        TempC.re = rtNaN;
-        TempC.im = rtNaN;
-      }
-      Est_H_p_re = centerest_a_aver[39] * 0.0;
-      i = tag_pos_est_aver->size[0] * tag_pos_est_aver->size[1];
-      tag_pos_est_aver->size[0] = 1;
-      tag_pos_est_aver->size[1] = 4;
-      emxEnsureCapacity_creal_T(tag_pos_est_aver, i);
-      tag_pos_est_aver_data = tag_pos_est_aver->data;
-      tag_pos_est_aver_data[0].re =
-          ((tag_pos_b[0].re * TempC.re - tag_pos_b[0].im * TempC.im) +
-           centerest_a_aver[19]) +
-          Est_H_p_re;
-      tag_pos_est_aver_data[0].im =
-          (tag_pos_b[0].re * TempC.im + tag_pos_b[0].im * TempC.re) +
-          centerest_a_aver[39];
-      tag_pos_est_aver_data[1].re =
-          ((tag_pos_b[1].re * TempC.re - tag_pos_b[1].im * TempC.im) +
-           centerest_a_aver[19]) +
-          Est_H_p_re;
-      tag_pos_est_aver_data[1].im =
-          (tag_pos_b[1].re * TempC.im + tag_pos_b[1].im * TempC.re) +
-          centerest_a_aver[39];
-      tag_pos_est_aver_data[2].re =
-          ((tag_pos_b[2].re * TempC.re - tag_pos_b[2].im * TempC.im) +
-           centerest_a_aver[19]) +
-          Est_H_p_re;
-      tag_pos_est_aver_data[2].im =
-          (tag_pos_b[2].re * TempC.im + tag_pos_b[2].im * TempC.re) +
-          centerest_a_aver[39];
-      tag_pos_est_aver_data[3].re =
-          ((tag_pos_b[3].re * TempC.re - tag_pos_b[3].im * TempC.im) +
-           centerest_a_aver[19]) +
-          Est_H_p_re;
-      tag_pos_est_aver_data[3].im =
-          (tag_pos_b[3].re * TempC.im + tag_pos_b[3].im * TempC.re) +
-          centerest_a_aver[39];
-      *headingest_a_aver_v = headingest_a_aver[19];
-      /*      K_heading_est = mod(headingest_a_aver(r),2*pi); */
-      /*      K_centerest_a_aver(r, :) = centerest_a_aver(r,:); */
-      /*      K_headingest_a_aver(r) = mod(headingest_a_aver(r),2*pi); */
+      emxEnsureCapacity_int32_T(i, ib);
+      i_data = i->data;
     }
-    emxFree_real_T(&y);
+    emxFree_boolean_T(&x);
+    ib = IndT->size[0];
+    IndT->size[0] = i->size[0];
+    emxEnsureCapacity_real_T(IndT, ib);
+    TagDistInit_data = IndT->data;
+    firstBlockLength = i->size[0];
+    for (ib = 0; ib < firstBlockLength; ib++) {
+      TagDistInit_data[ib] = i_data[ib];
+    }
+    emxFree_int32_T(&i);
+    hi = DistT->size[1];
+    emxInit_real_T(&b_DistT, 2);
+    ib = b_DistT->size[0] * b_DistT->size[1];
+    b_DistT->size[0] = IndT->size[0];
+    b_DistT->size[1] = DistT->size[1];
+    emxEnsureCapacity_real_T(b_DistT, ib);
+    TagDistInitCount_data = b_DistT->data;
+    for (ib = 0; ib < hi; ib++) {
+      firstBlockLength = IndT->size[0];
+      for (lastBlockLength = 0; lastBlockLength < firstBlockLength;
+           lastBlockLength++) {
+        TagDistInitCount_data[lastBlockLength + b_DistT->size[0] * ib] =
+            DistT_data[((int)TagDistInit_data[lastBlockLength] +
+                        DistT->size[0] * ib) -
+                       1];
+      }
+    }
+    ib = DistT->size[0] * DistT->size[1];
+    DistT->size[0] = b_DistT->size[0];
+    DistT->size[1] = b_DistT->size[1];
+    emxEnsureCapacity_real_T(DistT, ib);
+    DistT_data = DistT->data;
+    firstBlockLength = b_DistT->size[0] * b_DistT->size[1];
+    for (ib = 0; ib < firstBlockLength; ib++) {
+      DistT_data[ib] = TagDistInitCount_data[ib];
+    }
+    emxFree_real_T(&b_DistT);
+    emxInit_real_T(&b_xa, 2);
+    ib = b_xa->size[0] * b_xa->size[1];
+    b_xa->size[0] = 1;
+    b_xa->size[1] = IndT->size[0];
+    emxEnsureCapacity_real_T(b_xa, ib);
+    TagDistInitCount_data = b_xa->data;
+    firstBlockLength = IndT->size[0];
+    for (ib = 0; ib < firstBlockLength; ib++) {
+      TagDistInitCount_data[ib] = xa[(int)TagDistInit_data[ib] - 1];
+    }
+    emxInit_real_T(&b_ya, 2);
+    ib = b_ya->size[0] * b_ya->size[1];
+    b_ya->size[0] = 1;
+    b_ya->size[1] = IndT->size[0];
+    emxEnsureCapacity_real_T(b_ya, ib);
+    TagDistInitCount_data = b_ya->data;
+    firstBlockLength = IndT->size[0];
+    for (ib = 0; ib < firstBlockLength; ib++) {
+      TagDistInitCount_data[ib] = ya[(int)TagDistInit_data[ib] - 1];
+    }
+    GetInitPos(b_xa, b_ya, DistT, tag_pos_b, IndT->size[0], Lp, b_tag_pos_est,
+               heading_est);
     emxFree_real_T(&b_ya);
     emxFree_real_T(&b_xa);
+    emxFree_real_T(&IndT);
+    emxFree_real_T(&DistT);
+    ib = tag_pos_est->size[0] * tag_pos_est->size[1];
+    tag_pos_est->size[0] = 1;
+    tag_pos_est->size[1] = 4;
+    emxEnsureCapacity_creal_T(tag_pos_est, ib);
+    tag_pos_est_data = tag_pos_est->data;
+    tag_pos_est_data[0] = b_tag_pos_est[0];
+    tag_pos_est_data[1] = b_tag_pos_est[1];
+    tag_pos_est_data[2] = b_tag_pos_est[2];
+    tag_pos_est_data[3] = b_tag_pos_est[3];
+    for (firstBlockLength = 0; firstBlockLength < nblocks; firstBlockLength++) {
+      for (idx = 0; idx < 12; idx++) {
+        ib = idx + 24 * firstBlockLength;
+        Tag_Pos_List_data[ib].re = s_time + (((double)idx + 1.0) - 12.0) * 0.1;
+        Tag_Pos_List_data[ib].im = 0.0;
+        Tag_Pos_List_data[ib + 12] = b_tag_pos_est[firstBlockLength];
+      }
+    }
+  } else {
+    /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+    /* %%%%%%%%%%%%%%%%%  Next Position Prediction    %%%%%%%%%%%%%%%%%% */
+    for (hi = 0; hi < nblocks; hi++) {
+      for (ib = 0; ib < 12; ib++) {
+        firstBlockLength = ib + 24 * hi;
+        Py[ib] = Tag_Pos_List_data[firstBlockLength + 12].re;
+        re = Tag_Pos_List_data[firstBlockLength].re - s_time;
+        im = Tag_Pos_List_data[firstBlockLength].im;
+        Px[ib].re = re;
+        Px[ib].im = im;
+        b_Px[ib] = ((re == 0.0) && (im == 0.0));
+      }
+      eml_find(b_Px, b_tmp_data, &firstBlockLength);
+      if (firstBlockLength == 0) {
+        for (k = 0; k < 12; k++) {
+          TempC_im = Px[k].re;
+          TempC_re = Px[k].im;
+          Pm[k].re = TempC_im * TempC_im - TempC_re * TempC_re;
+          TempC_im *= TempC_re;
+          Pm[k].im = TempC_im + TempC_im;
+          Pm[k + 12] = Px[k];
+          Pm[k + 24].re = 1.0;
+          Pm[k + 24].im = 0.0;
+        }
+        for (ib = 0; ib < 3; ib++) {
+          for (lastBlockLength = 0; lastBlockLength < 3; lastBlockLength++) {
+            re = 0.0;
+            im = 0.0;
+            for (idx = 0; idx < 12; idx++) {
+              firstBlockLength = idx + 12 * ib;
+              Pm_re = Pm[firstBlockLength].re;
+              Pm_im = -Pm[firstBlockLength].im;
+              firstBlockLength = idx + 12 * lastBlockLength;
+              TempC_re = Pm[firstBlockLength].im;
+              TempC_im = Pm[firstBlockLength].re;
+              re += Pm_re * TempC_im - Pm_im * TempC_re;
+              im += Pm_re * TempC_re + Pm_im * TempC_im;
+            }
+            idx = ib + 3 * lastBlockLength;
+            b_Pm[idx].re = re;
+            b_Pm[idx].im = im;
+          }
+        }
+        b_inv(b_Pm, dcv);
+        for (ib = 0; ib < 3; ib++) {
+          TempC_re = dcv[ib].re;
+          TempC_im = dcv[ib].im;
+          c_r = dcv[ib + 3].re;
+          Est_H = dcv[ib + 3].im;
+          MeanA_re = dcv[ib + 6].re;
+          MeanA_im = dcv[ib + 6].im;
+          for (lastBlockLength = 0; lastBlockLength < 12; lastBlockLength++) {
+            Pm_re = Pm[lastBlockLength].re;
+            Pm_im = -Pm[lastBlockLength].im;
+            re = TempC_re * Pm_re - TempC_im * Pm_im;
+            im = TempC_re * Pm_im + TempC_im * Pm_re;
+            Pm_re = Pm[lastBlockLength + 12].re;
+            Pm_im = -Pm[lastBlockLength + 12].im;
+            re += c_r * Pm_re - Est_H * Pm_im;
+            im += c_r * Pm_im + Est_H * Pm_re;
+            Pm_re = Pm[lastBlockLength + 24].re;
+            Pm_im = -Pm[lastBlockLength + 24].im;
+            re += MeanA_re * Pm_re - MeanA_im * Pm_im;
+            im += MeanA_re * Pm_im + MeanA_im * Pm_re;
+            idx = ib + 3 * lastBlockLength;
+            dcv1[idx].re = re;
+            dcv1[idx].im = im;
+          }
+        }
+        for (ib = 0; ib < 12; ib++) {
+          Px[ib].re = Py[ib];
+          Px[ib].im = 0.0;
+        }
+        for (ib = 0; ib < 3; ib++) {
+          re = 0.0;
+          im = 0.0;
+          for (lastBlockLength = 0; lastBlockLength < 12; lastBlockLength++) {
+            firstBlockLength = ib + 3 * lastBlockLength;
+            TempC_re = dcv1[firstBlockLength].re;
+            TempC_im = Px[lastBlockLength].im;
+            c_r = dcv1[firstBlockLength].im;
+            Est_H = Px[lastBlockLength].re;
+            re += TempC_re * Est_H - c_r * TempC_im;
+            im += TempC_re * TempC_im + c_r * Est_H;
+          }
+          dcv2[ib].re = re;
+          dcv2[ib].im = im;
+        }
+        InterpPosition_data[hi] = dcv2[2];
+      } else {
+        InterpPosition_data[hi].re = Py[2];
+        InterpPosition_data[hi].im = 0.0;
+      }
+      /*  Py = pm x A */
+      /*  tr(pm)xPy = tr(Pm)pm x A */
+      /*  inv(tr(Pm)Pm) x tr(pm)xPy = A */
+      for (ib = 0; ib < 12; ib++) {
+        firstBlockLength = ib + 24 * hi;
+        Py[ib] = Tag_Pos_List_data[firstBlockLength + 12].im;
+        re = Tag_Pos_List_data[firstBlockLength].re - s_time;
+        im = Tag_Pos_List_data[firstBlockLength].im;
+        Px[ib].re = re;
+        Px[ib].im = im;
+        b_Px[ib] = ((re == 0.0) && (im == 0.0));
+      }
+      eml_find(b_Px, b_tmp_data, &firstBlockLength);
+      if (firstBlockLength == 0) {
+        for (k = 0; k < 12; k++) {
+          TempC_im = Px[k].re;
+          TempC_re = Px[k].im;
+          Pm[k].re = TempC_im * TempC_im - TempC_re * TempC_re;
+          TempC_im *= TempC_re;
+          Pm[k].im = TempC_im + TempC_im;
+          Pm[k + 12] = Px[k];
+          Pm[k + 24].re = 1.0;
+          Pm[k + 24].im = 0.0;
+        }
+        for (ib = 0; ib < 3; ib++) {
+          for (lastBlockLength = 0; lastBlockLength < 3; lastBlockLength++) {
+            re = 0.0;
+            im = 0.0;
+            for (idx = 0; idx < 12; idx++) {
+              firstBlockLength = idx + 12 * ib;
+              Pm_re = Pm[firstBlockLength].re;
+              Pm_im = -Pm[firstBlockLength].im;
+              firstBlockLength = idx + 12 * lastBlockLength;
+              TempC_re = Pm[firstBlockLength].im;
+              TempC_im = Pm[firstBlockLength].re;
+              re += Pm_re * TempC_im - Pm_im * TempC_re;
+              im += Pm_re * TempC_re + Pm_im * TempC_im;
+            }
+            idx = ib + 3 * lastBlockLength;
+            b_Pm[idx].re = re;
+            b_Pm[idx].im = im;
+          }
+        }
+        b_inv(b_Pm, dcv);
+        for (ib = 0; ib < 3; ib++) {
+          TempC_re = dcv[ib].re;
+          TempC_im = dcv[ib].im;
+          c_r = dcv[ib + 3].re;
+          Est_H = dcv[ib + 3].im;
+          MeanA_re = dcv[ib + 6].re;
+          MeanA_im = dcv[ib + 6].im;
+          for (lastBlockLength = 0; lastBlockLength < 12; lastBlockLength++) {
+            Pm_re = Pm[lastBlockLength].re;
+            Pm_im = -Pm[lastBlockLength].im;
+            re = TempC_re * Pm_re - TempC_im * Pm_im;
+            im = TempC_re * Pm_im + TempC_im * Pm_re;
+            Pm_re = Pm[lastBlockLength + 12].re;
+            Pm_im = -Pm[lastBlockLength + 12].im;
+            re += c_r * Pm_re - Est_H * Pm_im;
+            im += c_r * Pm_im + Est_H * Pm_re;
+            Pm_re = Pm[lastBlockLength + 24].re;
+            Pm_im = -Pm[lastBlockLength + 24].im;
+            re += MeanA_re * Pm_re - MeanA_im * Pm_im;
+            im += MeanA_re * Pm_im + MeanA_im * Pm_re;
+            idx = ib + 3 * lastBlockLength;
+            dcv1[idx].re = re;
+            dcv1[idx].im = im;
+          }
+        }
+        for (ib = 0; ib < 12; ib++) {
+          Px[ib].re = Py[ib];
+          Px[ib].im = 0.0;
+        }
+        for (ib = 0; ib < 3; ib++) {
+          re = 0.0;
+          im = 0.0;
+          for (lastBlockLength = 0; lastBlockLength < 12; lastBlockLength++) {
+            firstBlockLength = ib + 3 * lastBlockLength;
+            TempC_re = dcv1[firstBlockLength].re;
+            TempC_im = Px[lastBlockLength].im;
+            c_r = dcv1[firstBlockLength].im;
+            Est_H = Px[lastBlockLength].re;
+            re += TempC_re * Est_H - c_r * TempC_im;
+            im += TempC_re * TempC_im + c_r * Est_H;
+          }
+          dcv2[ib].re = re;
+          dcv2[ib].im = im;
+        }
+        InterpPosition_data[hi + InterpPosition->size[0]] = dcv2[2];
+      } else {
+        InterpPosition_data[hi + InterpPosition->size[0]].re = Py[2];
+        InterpPosition_data[hi + InterpPosition->size[0]].im = 0.0;
+      }
+      /*  Py = pm x A */
+      /*  tr(pm)xPy = tr(Pm)pm x A */
+      /*  inv(tr(Pm)Pm) x tr(pm)xPy = A */
+    }
+    /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+    nblocks = RxID_size[1];
+    for (ib = 0; ib < nblocks; ib++) {
+      tmp_data[ib] = (int)RxID_data[ib] - 1;
+    }
+    nblocks = RxDist_size[0];
+    for (ib = 0; ib < nblocks; ib++) {
+      TagDistInit_data[tmp_data[ib] + TagDistInit->size[0] *
+                                          ((int)TagNum - 1)] = RxDist_data[ib];
+    }
+    /*      NP = size(TagDistInit,1); */
+    /*      AnchIDList = [1:NP]; */
+    /*      for kk = 1 : 4 */
+    /*          if kk == 1 */
+    /*              A = RxIDprev{kk}; */
+    /*          else */
+    /*              for ll = 1 : length(RxIDprev{kk}) */
+    /*                  if length(find(RxIDprev{kk}(ll)==A))==0 */
+    /*                      A = [A RxIDprev{kk}(ll)]; */
+    /*                  end */
+    /*              end */
+    /*          end */
+    /*      end */
+    /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+    /* %%%%%%%%%%%%%%%% New Position Calc.   %%%%%%%%%%%%%%%%%%%%%%%%%%% */
+    /*          for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
+    emxInit_creal_T(&InterpPosT, 1);
+    if (RxID_size[1] > 1) {
+      /*          [tag_pos_est, heading_est, CandPos] =
+       * GetPos2(xa,ya,RxDist,RxID,tag_pos_b,Nanchor,PP,InterpPosition(:,1)+j*InterpPosition(:,2));
+       */
+      /*          [tag_pos_est, heading_est, CandPos] =
+       * GetPos3(xa,ya,RxDist,RxID,tag_pos_b,Nanchor,PP,InterpPosition(:,1)+j*InterpPosition(:,2),TagDistInitPrev,RxIDprev);
+       */
+      ib = InterpPosT->size[0];
+      InterpPosT->size[0] = InterpPosition->size[0];
+      emxEnsureCapacity_creal_T(InterpPosT, ib);
+      tag_pos_est_aver_data = InterpPosT->data;
+      nblocks = InterpPosition->size[0];
+      for (ib = 0; ib < nblocks; ib++) {
+        TempC_re = InterpPosition_data[ib + InterpPosition->size[0]].im;
+        TempC_im = InterpPosition_data[ib + InterpPosition->size[0]].re;
+        tag_pos_est_aver_data[ib].re =
+            InterpPosition_data[ib].re + (0.0 * TempC_im - TempC_re);
+        tag_pos_est_aver_data[ib].im =
+            InterpPosition_data[ib].im + (0.0 * TempC_re + TempC_im);
+      }
+      GetPos3(xa, ya, RxDist_data, RxDist_size[0], RxID_data, RxID_size,
+              tag_pos_b, Nanchor, TagNum, InterpPosT, TagDistInit, RxIDprev,
+              RxIDprevLen, PPprev, b_tag_pos_est, heading_est, &bsum);
+      /*   */
+      GetPosRefine2(xa, ya, RxDist_data, RxID_data, RxID_size, tag_pos_b,
+                    Nanchor, TagNum, b_tag_pos_est, heading_est, &bsum);
+      ib = tag_pos_est->size[0] * tag_pos_est->size[1];
+      tag_pos_est->size[0] = 1;
+      tag_pos_est->size[1] = 4;
+      emxEnsureCapacity_creal_T(tag_pos_est, ib);
+      tag_pos_est_data = tag_pos_est->data;
+      tag_pos_est_data[0] = b_tag_pos_est[0];
+      tag_pos_est_data[1] = b_tag_pos_est[1];
+      tag_pos_est_data[2] = b_tag_pos_est[2];
+      tag_pos_est_data[3] = b_tag_pos_est[3];
+      /*          [tag_pos_est, heading_est] =
+       * GetInitPos(xa(A),ya(A),TagDistInit,anch_pos(A),tag_pos_b,length(A),Lp);
+       */
+      /*          CandPos = tag_pos_est(PP); */
+    } else {
+      ib = InterpPosT->size[0];
+      InterpPosT->size[0] = InterpPosition->size[0];
+      emxEnsureCapacity_creal_T(InterpPosT, ib);
+      tag_pos_est_aver_data = InterpPosT->data;
+      nblocks = InterpPosition->size[0];
+      for (ib = 0; ib < nblocks; ib++) {
+        TempC_re = InterpPosition_data[ib + InterpPosition->size[0]].im;
+        TempC_im = InterpPosition_data[ib + InterpPosition->size[0]].re;
+        tag_pos_est_aver_data[ib].re =
+            InterpPosition_data[ib].re + (0.0 * TempC_im - TempC_re);
+        tag_pos_est_aver_data[ib].im =
+            InterpPosition_data[ib].im + (0.0 * TempC_re + TempC_im);
+      }
+      if (InterpPosT->size[0] == 0) {
+        TempC_re = 0.0;
+        TempC_im = 0.0;
+      } else {
+        if (InterpPosT->size[0] <= 1024) {
+          firstBlockLength = InterpPosT->size[0];
+          lastBlockLength = 0;
+          nblocks = 1;
+        } else {
+          firstBlockLength = 1024;
+          nblocks = (int)((unsigned int)InterpPosT->size[0] >> 10);
+          lastBlockLength = InterpPosT->size[0] - (nblocks << 10);
+          if (lastBlockLength > 0) {
+            nblocks++;
+          } else {
+            lastBlockLength = 1024;
+          }
+        }
+        TempC_re = tag_pos_est_aver_data[0].re;
+        TempC_im = tag_pos_est_aver_data[0].im;
+        for (k = 2; k <= firstBlockLength; k++) {
+          TempC_re += tag_pos_est_aver_data[k - 1].re;
+          TempC_im += tag_pos_est_aver_data[k - 1].im;
+        }
+        for (ib = 2; ib <= nblocks; ib++) {
+          firstBlockLength = (ib - 1) << 10;
+          bsum = tag_pos_est_aver_data[firstBlockLength];
+          if (ib == nblocks) {
+            hi = lastBlockLength;
+          } else {
+            hi = 1024;
+          }
+          for (k = 2; k <= hi; k++) {
+            idx = (firstBlockLength + k) - 1;
+            bsum.re += tag_pos_est_aver_data[idx].re;
+            bsum.im += tag_pos_est_aver_data[idx].im;
+          }
+          TempC_re += bsum.re;
+          TempC_im += bsum.im;
+        }
+      }
+      if (TempC_im == 0.0) {
+        re = TempC_re / (double)InterpPosT->size[0];
+        im = 0.0;
+      } else if (TempC_re == 0.0) {
+        re = 0.0;
+        im = TempC_im / (double)InterpPosT->size[0];
+      } else {
+        re = TempC_re / (double)InterpPosT->size[0];
+        im = TempC_im / (double)InterpPosT->size[0];
+      }
+      bsum.re = 0.0;
+      bsum.im = 0.0;
+      ib = InterpPosT->size[0];
+      for (firstBlockLength = 0; firstBlockLength < ib; firstBlockLength++) {
+        Pm_re = tag_pos_est_aver_data[firstBlockLength].re - re;
+        Pm_im = tag_pos_est_aver_data[firstBlockLength].im - im;
+        c_r = tag_pos_b[firstBlockLength].re;
+        Est_H = tag_pos_b[firstBlockLength].im;
+        if (Est_H == 0.0) {
+          if (Pm_im == 0.0) {
+            MeanA_im = Pm_re / c_r;
+            TempC_re = 0.0;
+          } else if (Pm_re == 0.0) {
+            MeanA_im = 0.0;
+            TempC_re = Pm_im / c_r;
+          } else {
+            MeanA_im = Pm_re / c_r;
+            TempC_re = Pm_im / c_r;
+          }
+        } else if (c_r == 0.0) {
+          if (Pm_re == 0.0) {
+            MeanA_im = Pm_im / Est_H;
+            TempC_re = 0.0;
+          } else if (Pm_im == 0.0) {
+            MeanA_im = 0.0;
+            TempC_re = -(Pm_re / Est_H);
+          } else {
+            MeanA_im = Pm_im / Est_H;
+            TempC_re = -(Pm_re / Est_H);
+          }
+        } else {
+          MeanA_re = fabs(c_r);
+          TempC_re = fabs(Est_H);
+          if (MeanA_re > TempC_re) {
+            TempC_im = Est_H / c_r;
+            TempC_re = c_r + TempC_im * Est_H;
+            MeanA_im = (Pm_re + TempC_im * Pm_im) / TempC_re;
+            TempC_re = (Pm_im - TempC_im * Pm_re) / TempC_re;
+          } else if (TempC_re == MeanA_re) {
+            if (c_r > 0.0) {
+              TempC_im = 0.5;
+            } else {
+              TempC_im = -0.5;
+            }
+            if (Est_H > 0.0) {
+              TempC_re = 0.5;
+            } else {
+              TempC_re = -0.5;
+            }
+            MeanA_im = (Pm_re * TempC_im + Pm_im * TempC_re) / MeanA_re;
+            TempC_re = (Pm_im * TempC_im - Pm_re * TempC_re) / MeanA_re;
+          } else {
+            TempC_im = c_r / Est_H;
+            TempC_re = Est_H + TempC_im * c_r;
+            MeanA_im = (TempC_im * Pm_re + Pm_im) / TempC_re;
+            TempC_re = (TempC_im * Pm_im - Pm_re) / TempC_re;
+          }
+        }
+        bsum.re += MeanA_im;
+        bsum.im += TempC_re;
+      }
+      Est_H = rt_atan2d_snf(bsum.im, bsum.re);
+      ib = InterpPosT->size[0];
+      for (firstBlockLength = 0; firstBlockLength < ib; firstBlockLength++) {
+        MeanA_re = Est_H * 0.0;
+        if (Est_H == 0.0) {
+          MeanA_re = exp(MeanA_re);
+          MeanA_im = 0.0;
+        } else {
+          c_r = exp(MeanA_re / 2.0);
+          MeanA_re = c_r * (c_r * cos(Est_H));
+          MeanA_im = c_r * (c_r * sin(Est_H));
+        }
+        TempC_re = tag_pos_b[firstBlockLength].re;
+        TempC_im = tag_pos_b[firstBlockLength].im;
+        tag_pos_est_data[firstBlockLength].re =
+            re + (TempC_re * MeanA_re - TempC_im * MeanA_im);
+        tag_pos_est_data[firstBlockLength].im =
+            im + (TempC_re * MeanA_im + TempC_im * MeanA_re);
+      }
+      TempC_re =
+          InterpPosition_data[((int)TagNum + InterpPosition->size[0]) - 1].im;
+      TempC_im =
+          InterpPosition_data[((int)TagNum + InterpPosition->size[0]) - 1].re;
+      bsum.re =
+          InterpPosition_data[(int)TagNum - 1].re + (0.0 * TempC_im - TempC_re);
+      bsum.im =
+          InterpPosition_data[(int)TagNum - 1].im + (0.0 * TempC_re + TempC_im);
+    }
+    emxFree_creal_T(&InterpPosT);
+    /* %%%%%%%%%%%%%  Original %%%%%%%%%%%%% */
+    for (ib = 0; ib < 2; ib++) {
+      for (lastBlockLength = 0; lastBlockLength < 11; lastBlockLength++) {
+        idx = (lastBlockLength + 12 * ib) + 24 * ((int)TagNum - 1);
+        Tag_Pos_List_data[idx] = Tag_Pos_List_data[idx + 1];
+      }
+    }
+    ib = 24 * ((int)TagNum - 1);
+    Tag_Pos_List_data[ib + 11].re = s_time;
+    Tag_Pos_List_data[ib + 11].im = 0.0;
+    Tag_Pos_List_data[ib + 23] = bsum;
+    /* %%%%%%%%%%%%%  Test %%%%%%%%%%%%% */
+    /*      Tag_Pos_List(1:NumInterpPoint-1,:,:) =
+     * Tag_Pos_List(2:NumInterpPoint,:,:); */
+    /*      Tag_Pos_List(NumInterpPoint,1,:) = s_time; */
+    /*      Tag_Pos_List(NumInterpPoint,2,:) = tag_pos_est; */
+    /*      Tag_Pos_List(NumInterpPoint,:,PP) = [s_time CandPos]; */
+    /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+    /*              Tag_Pos_List(1:2,:,PP) = Tag_Pos_List(2:3,:,PP); */
+    /*              Tag_Pos_List(3,:,PP) = [s_time(r) tag_pos_est(PP)]; */
+    /*          end */
+    bsum_tmp = mean(tag_pos_est);
+    for (ib = 0; ib < 19; ib++) {
+      heading_est_a[ib] = heading_est_a[ib + 1];
+      centerest_a[ib] = centerest_a[ib + 1];
+      centerest_a_aver[ib] = centerest_a_aver[ib + 1];
+      centerest_a[ib + 20] = centerest_a[ib + 21];
+      centerest_a_aver[ib + 20] = centerest_a_aver[ib + 21];
+      headingest_a_aver[ib] = headingest_a_aver[ib + 1];
+    }
+    if (*heading_est - heading_est_a[18] > 3.1415926535897931) {
+      heading_est_a[19] = *heading_est - 6.2831853071795862;
+    } else if (heading_est_a[18] - *heading_est > 3.1415926535897931) {
+      heading_est_a[19] = *heading_est + 6.2831853071795862;
+    } else {
+      heading_est_a[19] = *heading_est;
+    }
+    centerest_a[19] = bsum_tmp.re;
+    centerest_a[39] = bsum_tmp.im;
+    if (r > 20.0) {
+      for (ib = 0; ib < 10; ib++) {
+        TempC_im = centerest_a[ib + 20];
+        b_x[ib].re = centerest_a[ib] + 0.0 * TempC_im;
+        b_x[ib].im = TempC_im;
+      }
+      TempC_re = b_x[0].re;
+      TempC_im = b_x[0].im;
+      for (k = 0; k < 9; k++) {
+        TempC_re += b_x[k + 1].re;
+        TempC_im += b_x[k + 1].im;
+      }
+      if (TempC_im == 0.0) {
+        MeanA_re = TempC_re / 10.0;
+        MeanA_im = 0.0;
+      } else if (TempC_re == 0.0) {
+        MeanA_re = 0.0;
+        MeanA_im = TempC_im / 10.0;
+      } else {
+        MeanA_re = TempC_re / 10.0;
+        MeanA_im = TempC_im / 10.0;
+      }
+      for (ib = 0; ib < 10; ib++) {
+        TempC_im = centerest_a[ib + 30];
+        b_x[ib].re = centerest_a[ib + 10] + 0.0 * TempC_im;
+        b_x[ib].im = TempC_im;
+      }
+      TempC_re = b_x[0].re;
+      TempC_im = b_x[0].im;
+      Est_H = heading_est_a[0];
+      c_r = heading_est_a[10];
+      for (k = 0; k < 9; k++) {
+        TempC_re += b_x[k + 1].re;
+        TempC_im += b_x[k + 1].im;
+        Est_H += heading_est_a[k + 1];
+        c_r += heading_est_a[k + 11];
+      }
+      if (TempC_im == 0.0) {
+        bsum.re = TempC_re / 10.0;
+        bsum.im = 0.0;
+      } else if (TempC_re == 0.0) {
+        bsum.re = 0.0;
+        bsum.im = TempC_im / 10.0;
+      } else {
+        bsum.re = TempC_re / 10.0;
+        bsum.im = TempC_im / 10.0;
+      }
+      TempC_re = bsum.re - MeanA_re;
+      TempC_im = bsum.im - MeanA_im;
+      if (TempC_im == 0.0) {
+        TempC_re /= 2.0;
+      } else if (TempC_re == 0.0) {
+        TempC_re = 0.0;
+      } else {
+        TempC_re /= 2.0;
+      }
+      centerest_a_aver[19] = bsum.re + TempC_re;
+      if (TempC_im == 0.0) {
+        TempC_re = 0.0;
+      } else {
+        TempC_re = TempC_im / 2.0;
+      }
+      centerest_a_aver[39] = bsum.im + TempC_re;
+      TempC_re = c_r / 10.0;
+      TempC_re += (TempC_re - Est_H / 10.0) / 2.0;
+      if (rtIsNaN(TempC_re) || rtIsInf(TempC_re)) {
+        c_r = rtNaN;
+      } else if (TempC_re == 0.0) {
+        c_r = 0.0;
+      } else {
+        c_r = fmod(TempC_re, 6.2831853071795862);
+        rEQ0 = (c_r == 0.0);
+        if (!rEQ0) {
+          TempC_im = fabs(TempC_re / 6.2831853071795862);
+          rEQ0 = !(fabs(TempC_im - floor(TempC_im + 0.5)) >
+                   2.2204460492503131E-16 * TempC_im);
+        }
+        if (rEQ0) {
+          c_r = 0.0;
+        } else if (TempC_re < 0.0) {
+          c_r += 6.2831853071795862;
+        }
+      }
+      headingest_a_aver[19] = c_r;
+    } else {
+      centerest_a_aver[19] = bsum_tmp.re;
+      centerest_a_aver[39] = bsum_tmp.im;
+      headingest_a_aver[19] = heading_est_a[19];
+    }
+    /*      tag_pos_est_aver =
+     * get_tag_pos(centerest_a_aver(end,1)+j*centerest_a_aver(end,2),
+     * headingest_a_aver(end), tag_pos_b); */
+    MeanA_re = headingest_a_aver[19] * 0.0;
+    if (headingest_a_aver[19] == 0.0) {
+      MeanA_re = exp(MeanA_re);
+      MeanA_im = 0.0;
+    } else {
+      c_r = exp(MeanA_re / 2.0);
+      MeanA_re = c_r * (c_r * cos(headingest_a_aver[19]));
+      MeanA_im = c_r * (c_r * sin(headingest_a_aver[19]));
+    }
+    bsum.re = centerest_a_aver[39] * 0.0;
+    ib = tag_pos_est_aver->size[0] * tag_pos_est_aver->size[1];
+    tag_pos_est_aver->size[0] = 1;
+    tag_pos_est_aver->size[1] = 4;
+    emxEnsureCapacity_creal_T(tag_pos_est_aver, ib);
+    tag_pos_est_aver_data = tag_pos_est_aver->data;
+    tag_pos_est_aver_data[0].re =
+        ((tag_pos_b[0].re * MeanA_re - tag_pos_b[0].im * MeanA_im) +
+         centerest_a_aver[19]) +
+        bsum.re;
+    tag_pos_est_aver_data[0].im =
+        (tag_pos_b[0].re * MeanA_im + tag_pos_b[0].im * MeanA_re) +
+        centerest_a_aver[39];
+    tag_pos_est_aver_data[1].re =
+        ((tag_pos_b[1].re * MeanA_re - tag_pos_b[1].im * MeanA_im) +
+         centerest_a_aver[19]) +
+        bsum.re;
+    tag_pos_est_aver_data[1].im =
+        (tag_pos_b[1].re * MeanA_im + tag_pos_b[1].im * MeanA_re) +
+        centerest_a_aver[39];
+    tag_pos_est_aver_data[2].re =
+        ((tag_pos_b[2].re * MeanA_re - tag_pos_b[2].im * MeanA_im) +
+         centerest_a_aver[19]) +
+        bsum.re;
+    tag_pos_est_aver_data[2].im =
+        (tag_pos_b[2].re * MeanA_im + tag_pos_b[2].im * MeanA_re) +
+        centerest_a_aver[39];
+    tag_pos_est_aver_data[3].re =
+        ((tag_pos_b[3].re * MeanA_re - tag_pos_b[3].im * MeanA_im) +
+         centerest_a_aver[19]) +
+        bsum.re;
+    tag_pos_est_aver_data[3].im =
+        (tag_pos_b[3].re * MeanA_im + tag_pos_b[3].im * MeanA_re) +
+        centerest_a_aver[39];
+    *headingest_a_aver_v = headingest_a_aver[19];
+    /*      K_heading_est = mod(headingest_a_aver(r),2*pi); */
+    /*      K_centerest_a_aver(r, :) = centerest_a_aver(r,:); */
+    /*      K_headingest_a_aver(r) = mod(headingest_a_aver(r),2*pi); */
   }
-  *heading_est = Est_H;
+  /*  RxIDprev{1} = RxIDprev{2}; */
+  /*  RxIDprev{2} = RxID; */
+  RxIDprevLen[0] = RxIDprevLen[1];
+  RxIDprevLen[1] = RxIDprevLen[2];
+  RxIDprevLen[2] = RxIDprevLen[3];
+  RxIDprevLen[3] = RxID_size[1];
+  emxInit_real_T(&b_r, 2);
+  ib = b_r->size[0] * b_r->size[1];
+  b_r->size[0] = 3;
+  b_r->size[1] = RxIDprev->size[1];
+  emxEnsureCapacity_real_T(b_r, ib);
+  TagDistInitCount_data = b_r->data;
+  nblocks = RxIDprev->size[1];
+  for (ib = 0; ib < nblocks; ib++) {
+    TagDistInitCount_data[3 * ib] = RxIDprev_data[4 * ib + 1];
+    TagDistInitCount_data[3 * ib + 1] = RxIDprev_data[4 * ib + 2];
+    TagDistInitCount_data[3 * ib + 2] = RxIDprev_data[4 * ib + 3];
+  }
+  nblocks = b_r->size[1];
+  for (ib = 0; ib < nblocks; ib++) {
+    RxIDprev_data[4 * ib] = TagDistInitCount_data[3 * ib];
+    RxIDprev_data[4 * ib + 1] = TagDistInitCount_data[3 * ib + 1];
+    RxIDprev_data[4 * ib + 2] = TagDistInitCount_data[3 * ib + 2];
+  }
+  emxFree_real_T(&b_r);
+  nblocks = RxID_size[1];
+  for (ib = 0; ib < nblocks; ib++) {
+    RxIDprev_data[4 * ib + 3] = RxID_data[ib];
+  }
+  PPprev[0] = PPprev[1];
+  PPprev[1] = PPprev[2];
+  PPprev[2] = PPprev[3];
+  PPprev[3] = TagNum;
 }
 
-/*
- * Arguments    : void
- * Return Type  : void
- */
 void UWBpos_free(void)
 {
   emxFree_creal_T(&InterpPosition);
   emxFree_creal_T(&Tag_Pos_List);
   emxFree_real_T(&TagDistInitCount);
   emxFree_real_T(&TagDistInit);
+  emxFree_real_T(&RxIDprev);
 }
 
-/*
- * Arguments    : void
- * Return Type  : void
- */
 void UWBpos_init(void)
 {
+  emxInit_real_T(&RxIDprev, 2);
   emxInit_real_T(&TagDistInit, 2);
   emxInit_real_T(&TagDistInitCount, 2);
   emxInit_creal_T(&Tag_Pos_List, 3);
@@ -1164,19 +1038,19 @@ void UWBpos_init(void)
   memset(&centerest_a[0], 0, 40U * sizeof(double));
   memset(&centerest_a_aver[0], 0, 40U * sizeof(double));
   memset(&headingest_a_aver[0], 0, 20U * sizeof(double));
+  RxIDprevLen[0] = 0.0;
+  PPprev[0] = 0.0;
+  RxIDprevLen[1] = 0.0;
+  PPprev[1] = 0.0;
+  RxIDprevLen[2] = 0.0;
+  PPprev[2] = 0.0;
+  RxIDprevLen[3] = 0.0;
+  PPprev[3] = 0.0;
 }
 
-/*
- * Arguments    : void
- * Return Type  : void
- */
 void r_not_empty_init(void)
 {
   r_not_empty = false;
 }
 
-/*
- * File trailer for UWBpos.c
- *
- * [EOF]
- */
+/* End of code generation (UWBpos.c) */

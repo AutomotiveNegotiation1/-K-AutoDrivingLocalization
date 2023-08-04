@@ -1,14 +1,11 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: randn.c
+ * randn.c
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 16:36:28
+ * Code generation for function 'randn'
+ *
  */
 
-/* Include Files */
+/* Include files */
 #include "randn.h"
 #include "TestTotal_data.h"
 #include "eml_rand_mt19937ar.h"
@@ -16,10 +13,6 @@
 #include <math.h>
 
 /* Function Definitions */
-/*
- * Arguments    : double b_r[24]
- * Return Type  : void
- */
 void randn(double b_r[24])
 {
   static const double dv[257] = {0.0,
@@ -536,12 +529,14 @@ void randn(double b_r[24])
                                   0.00260907274610216,
                                   0.0012602859304986,
                                   0.000477467764609386};
+  double b_u;
+  double c_r;
+  double x;
+  unsigned int u[2];
+  int exitg1;
+  int i;
   int k;
   for (k = 0; k < 24; k++) {
-    double c_r;
-    unsigned int u[2];
-    int exitg1;
-    int i;
     do {
       exitg1 = 0;
       genrand_uint32_vector(state, u);
@@ -554,7 +549,6 @@ void randn(double b_r[24])
       if (fabs(c_r) <= dv[i - 1]) {
         exitg1 = 1;
       } else if (i < 256) {
-        double b_u;
         /* ========================= COPYRIGHT NOTICE
          * ============================ */
         /*  This is a uniform (0,1) pseudorandom number generator based on: */
@@ -608,8 +602,8 @@ void randn(double b_r[24])
         /*  OF THIS  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
          * DAMAGE.  */
         /*                                                                         */
-        /* =============================   END =================================
-         */
+        /* =============================   END
+         * ================================= */
         do {
           genrand_uint32_vector(state, u);
           u[0] >>= 5U;
@@ -621,8 +615,6 @@ void randn(double b_r[24])
           exitg1 = 1;
         }
       } else {
-        double b_u;
-        double x;
         do {
           /* ========================= COPYRIGHT NOTICE
            * ============================ */
@@ -776,8 +768,4 @@ void randn(double b_r[24])
   }
 }
 
-/*
- * File trailer for randn.c
- *
- * [EOF]
- */
+/* End of code generation (randn.c) */

@@ -1,21 +1,14 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: rtwtypes.h
+ * rtwtypes.h
  *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 01-Aug-2023 14:35:53
+ * Code generation for function 'UWBpos'
+ *
  */
 
 #ifndef RTWTYPES_H
 #define RTWTYPES_H
 
-/* Include Files */
-
-#ifndef __cplusplus
-#include <stdbool.h>
-#endif
+/* Include files */
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,7 +49,7 @@ typedef double real64_T;
 
 typedef double real_T;
 typedef double time_T;
-typedef bool boolean_T;
+typedef unsigned char boolean_T;
 typedef int int_T;
 typedef unsigned int uint_T;
 typedef unsigned long ulong_T;
@@ -160,8 +153,4 @@ typedef struct {
 }
 #endif
 #endif
-/*
- * File trailer for rtwtypes.h
- *
- * [EOF]
- */
+/* End of code generation (rtwtypes.h) */
