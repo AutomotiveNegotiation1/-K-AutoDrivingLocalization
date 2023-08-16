@@ -24,7 +24,7 @@ def GetPos2(xa, ya, dist, RxID, tag_pos_b, Ln, PP, PredPos):
         for L2 in range(L1+1, Ln):
             for Pn in range(PP):
                 Pos2, Prob2 = TwoAnchPos3([xa[RxID[L1]], xa[RxID[L2]]], [ya[RxID[L1]], ya[RxID[L2]]], 
-                                          [dist[L1], dist[L2]], [0, 0], [0, 0], xa[RxID]+1j*ya[RxID], dist)
+                                          [dist[L1], dist[L2]], np.array([0, 0]), np.array([0, 0]), xa[RxID]+1j*ya[RxID], dist)
                 Pos2C[Pn, 0] = Pos2[0, 0] + 1j*Pos2[0, 1]
                 Pos2C[Pn, 1] = Pos2[1, 0] + 1j*Pos2[1, 1]
             for Qn in range(2):

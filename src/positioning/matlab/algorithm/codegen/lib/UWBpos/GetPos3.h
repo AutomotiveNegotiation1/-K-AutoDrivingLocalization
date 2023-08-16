@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 /* Function Declarations */
-void GetPos3(const double xa[6], const double ya[6], const double dist_data[],
+void GetPos3(const double xa[], const double x_size, const double ya[], const double y_size, const double dist_data[],
              int dist_size, const double RxID_data[], const int RxID_size[2],
              const creal_T tag_pos_b[4], double Ln, double PP,
              const emxArray_creal_T *PredPos, const emxArray_real_T *DistPrev,

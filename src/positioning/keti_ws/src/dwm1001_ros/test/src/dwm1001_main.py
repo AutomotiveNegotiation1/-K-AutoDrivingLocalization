@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python
 """ For more info on the documentation go to https://www.decawave.com/sites/default/files/dwm1001-api-guide.pdf
 """
 
@@ -20,35 +20,42 @@ from localizer_dwm1001.msg          import Tag
 from localizer_dwm1001.srv         import Anchor_0
 
 
-
-# initialize the node
-rospy.init_node('Localizer_DWM1001', anonymous=False)
-
-# allow serial port to be detected by user
-os.popen("sudo chmod 777 /dev/ttyACM0", "w")
-
-# initialize ros rate 10hz
-rate = rospy.Rate(1)
-
-serialReadLine = ""
-# For dynamic configuration
-dynamicConfig_OPEN_PORT = {"open_port": False}
-dynamicConfig_CLOSE_PORT = {"close_port": False}
-dynamicConfig_SERIAL_PORT = {"serial_port": ""}
-
-# initialize serial port connections
-serialPortDWM1001 = serial.Serial(
-
-    port       = str(rospy.get_param('~serial_port_name')),
-    baudrate   = int(rospy.get_param('~serial_baud_rate')),
-    parity=SYS_DEFS.parity,
-    stopbits=SYS_DEFS.stopbits,
-    bytesize=SYS_DEFS.bytesize
-)
-
-
 class dwm1001_localizer:
+    
+    def __init__(self):
+        # initialize the node
+        rospy.init_node('Localizer_DWM1001', anonymous=True)
 
+        # allow serial port to be detected by user
+        # os.popen("sudo chmod 777 /dev/ttyACM1", "w")
+
+        # initialize ros rate 10hz
+        self.rate = rospy.Rate(10)
+
+        self.serialReadLine = ""
+        # For dynamic configuration
+        self.dynamicConfig_OPEN_PORT = {"open_port": False}
+        self.dynamicConfig_CLOSE_PORT = {"close_port": False}
+        self.dynamicConfig_SERIAL_PORT = {"serial_port": ""}
+
+        # initialize serial port connections
+        self.serialPortDWM1001 = serial.Serial(
+
+            port       = str('/dev/' + rospy.get_param('~port')),
+            baudrate   = int(rospy.get_param('~baud_rate')),
+            parity     = SYS_DEFS.parity,
+            stopbits   = SYS_DEFS.stopbits,
+            bytesize   = SYS_DEFS.bytesize
+        )
+        self.id = str(rospy.get_param('~frame_id'))
+        
+        self.node_flag  = None
+        self.verbose    = None
+        self.pub_anchor = None
+        self.pub_tag    = None
+        
+        # Empty dictionary to store topics being published
+        self.topics = {}
 
 
     def main(self):
@@ -66,31 +73,31 @@ class dwm1001_localizer:
         #TODO implemnt functionality dynamic configuration
         #updateDynamicConfiguration_SERIALPORT()
         # close the serial port in case the previous run didn't closed it properly
-        serialPortDWM1001.close()
+        self.serialPortDWM1001.close()
         # sleep for one sec
         time.sleep(1)
         # open serial port
-        serialPortDWM1001.open()
+        self.serialPortDWM1001.open()
 
         # check if the serial port is opened
-        if(serialPortDWM1001.isOpen()):
-            rospy.loginfo("Port opened: "+ str(serialPortDWM1001.name) )
+        if(self.serialPortDWM1001.isOpen()):
+            rospy.loginfo("Port opened: "+ str(self.serialPortDWM1001.name) )
             # start sending commands to the board so we can initialize the board
             self.initializeDWM1001API()
             # give some time to DWM1001 to wake up
             time.sleep(2)
             # send command lec, so we can get positions is CSV format
-            serialPortDWM1001.write(DWM1001_API_COMMANDS.LEC)
-            serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.LEC)
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
             rospy.loginfo("Reading DWM1001 coordinates")
         else:
-            rospy.loginfo("Can't open port: "+ str(serialPortDWM1001.name))
+            rospy.loginfo("Can't open port: "+ str(self.serialPortDWM1001.name))
 
         try:
 
             while not rospy.is_shutdown():
                 # just read everything from serial port
-                serialReadLine = serialPortDWM1001.read_until().decode('utf-8')
+                serialReadLine = self.serialPortDWM1001.read_until().decode('utf-8')
 
                 try:
                     self.pubblishCoordinatesIntoTopics(self.splitByComma(serialReadLine))
@@ -102,18 +109,18 @@ class dwm1001_localizer:
 
         except KeyboardInterrupt:
             rospy.loginfo("Quitting DWM1001 Shell Mode and closing port, allow 1 second for UWB recovery")
-            serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
-            serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
 
         finally:
             rospy.loginfo("Quitting, and sending reset command to dev board")
             # serialPortDWM1001.reset_input_buffer()
-            serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
-            serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
-            rate.sleep()
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
+            self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+            self.rate.sleep()
             if "reset" in serialReadLine:
                 rospy.loginfo("succesfully closed ")
-                serialPortDWM1001.close()
+                self.serialPortDWM1001.close()
 
     def splitByComma(self, dataFromUSB):
         """
@@ -138,57 +145,85 @@ class dwm1001_localizer:
         :returns: none
 
         """
-
+        
+        
+        anchor = Anchor()
+        tag    = Tag()
+        Tag_frame_id = str(rospy.get_param('~port'))
+        
+        # anchor 객체의 배열을 초기화
+        anchor.id = []
+        anchor.x = []
+        anchor.y = []
+        anchor.z = []
+        anchor.distanceFromTag = []
+        
         # loop trough the array given by the serial port
         for network in networkDataArray:
+            # print(network)
 
             # check if there is any entry starting with AN, which means there is an anchor
             if 'AN' in network:
                 # get the number after'AN' which we will use to pubblish topics, example /dwm1001/anchor1
                 temp_anchor_number = networkDataArray[networkDataArray.index(network)]
-                # construct the object for anchor(s)
-                anchor = Anchor(  str(networkDataArray[networkDataArray.index(network) + 1]),
-                                float(networkDataArray[networkDataArray.index(network) + 2]),
-                                float(networkDataArray[networkDataArray.index(network) + 3]),
-                                float(networkDataArray[networkDataArray.index(network) + 4]),
-                                float(networkDataArray[networkDataArray.index(network) + 5]))
-
                 # publish each anchor, add anchor number to the topic, so we can pubblish multiple anchors
                 # example /dwm1001/anchor0, the last digit is taken from AN0 and so on
-                pub_anchor = rospy.Publisher('/dwm1001/anchor'+str(temp_anchor_number[-1]), Anchor, queue_size=1)
-                pub_anchor.publish(anchor)
-                rospy.loginfo("Anchor: "
-                              + str(anchor.id)
-                              + " x: "
-                              + str(anchor.x)
-                              + " y: "
-                              + str(anchor.y)
-                              + " z: "
-                              + str(anchor.z))
+                
+                # construct the object for anchor(s)
+                anchor.header.stamp    = rospy.Time.now()
+                anchor.header.frame_id = Tag_frame_id
+                anchor.id.append(str(networkDataArray[networkDataArray.index(network) + 1]))
+                anchor.x.append(float(networkDataArray[networkDataArray.index(network) + 2]))
+                anchor.y.append(float(networkDataArray[networkDataArray.index(network) + 3]))
+                anchor.z .append(float(networkDataArray[networkDataArray.index(network) + 4]))
+                anchor.distanceFromTag.append(float(networkDataArray[networkDataArray.index(network) + 5]))
+                
+                if self.verbose == None:
+                    rospy.loginfo("Anchor: "
+                                    + str(anchor.header.frame_id)
+                                    + " ID: "
+                                    + str(anchor.id)
+                                    + " x: "
+                                    + str(anchor.x)
+                                    + " y: "
+                                    + str(anchor.y)
+                                    + " z: "
+                                    + str(anchor.z)
+                                    + " dist: "
+                                    + str(anchor.distanceFromTag))
+
 
             elif 'POS' in network:
-
-                # construct the object for the tag
-                tag = Tag(float(networkDataArray[networkDataArray.index(network) + 1]),
-                          float(networkDataArray[networkDataArray.index(network) + 2]),
-                          float(networkDataArray[networkDataArray.index(network) + 3]),)
-
                 # publish tag
-                pub_anchor = rospy.Publisher('/dwm1001/tag', Tag, queue_size=1)
-                pub_anchor.publish(tag)
+                # construct the object for the tag
 
-                rospy.loginfo("Tag: "
-                              + " x: "
-                              + str(tag.x)
-                              + " y: "
-                              + str(tag.y)
-                              + " z: "
-                              + str(tag.z))
+                tag.header.stamp    = rospy.Time.now()
+                tag.header.frame_id = Tag_frame_id
+                tag.x               = float(networkDataArray[networkDataArray.index(network) + 1])
+                tag.y               = float(networkDataArray[networkDataArray.index(network) + 2])
+                tag.z               = float(networkDataArray[networkDataArray.index(network) + 3])
+                
+                if self.verbose == None:
+                    rospy.loginfo("Tag: "
+                                    + str(tag.header.frame_id)
+                                    + " x: "
+                                    + str(tag.x)
+                                    + " y: "
+                                    + str(tag.y)
+                                    + " z: "
+                                    + str(tag.z))
+                    self.verbose = True
+                    
+        if 'Anchor' not in self.topics:
+            self.topics['Anchor'] = rospy.Publisher('/dwm1001/anchor/{}'.format(Tag_frame_id), Anchor, queue_size=10)
 
+        if 'Tag' not in self.topics:
+            self.topics['Tag'] = rospy.Publisher('/dwm1001/{}'.format(Tag_frame_id), Tag, queue_size=1)
 
-
-
-
+        self.topics['Anchor'].publish(anchor)  # 모든 AN 데이터 처리 후 한 번만 발행
+        self.topics['Tag'].publish(tag)
+            
+            
     def updateDynamicConfiguration_SERIALPORT(self):
 
         """
@@ -205,23 +240,23 @@ class dwm1001_localizer:
         # intialize dynamic configuration
         dynamicConfigServer = Server(DWM1001_Tune_SerialConfig, self.callbackDynamicConfig)
         # set close port to true
-        dynamicConfig_CLOSE_PORT.update({"close_port": True})
+        self.dynamicConfig_CLOSE_PORT.update({"close_port": True})
         # set the open port to false
-        dynamicConfig_OPEN_PORT.update({"open_port" : False})
+        self.dynamicConfig_OPEN_PORT.update({"open_port" : False})
         # update the server
-        dynamicConfigServer.update_configuration(dynamicConfig_OPEN_PORT)
-        dynamicConfigServer.update_configuration(dynamicConfig_CLOSE_PORT)
+        dynamicConfigServer.update_configuration(self.dynamicConfig_OPEN_PORT)
+        dynamicConfigServer.update_configuration(self.dynamicConfig_CLOSE_PORT)
         # update the server with opened port
-        dynamicConfig_CLOSE_PORT.update({"close_port": False})
+        self.dynamicConfig_CLOSE_PORT.update({"close_port": False})
         # update the server with close port
-        dynamicConfig_OPEN_PORT.update({"open_port": True})
+        self.dynamicConfig_OPEN_PORT.update({"open_port": True})
         # update name of serial port in dynamic configuration
-        dynamicConfig_SERIAL_PORT = {"serial_port": str(serialPortDWM1001.name)}
+        dynamicConfig_SERIAL_PORT = {"serial_port": str(self.serialPortDWM1001.name)}
         # now update server configuration
-        dynamicConfigServer.update_configuration(dynamicConfig_OPEN_PORT)
-        dynamicConfigServer.update_configuration(dynamicConfig_OPEN_PORT)
-        dynamicConfigServer.update_configuration(dynamicConfig_CLOSE_PORT)
-        dynamicConfigServer.update_configuration(dynamicConfig_SERIAL_PORT)
+        dynamicConfigServer.update_configuration(self.dynamicConfig_OPEN_PORT)
+        dynamicConfigServer.update_configuration(self.dynamicConfig_OPEN_PORT)
+        dynamicConfigServer.update_configuration(self.dynamicConfig_CLOSE_PORT)
+        dynamicConfigServer.update_configuration(self.dynamicConfig_SERIAL_PORT)
 
     def initializeDWM1001API(self):
         """
@@ -233,16 +268,16 @@ class dwm1001_localizer:
 
         """
         # reset incase previuos run didn't close properly
-        serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
+        self.serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
         # send ENTER two times in order to access api
-        serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+        self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
         # sleep for half a second
         time.sleep(0.5)
-        serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+        self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
         # sleep for half second
         time.sleep(0.5)
         # send a third one - just in case
-        serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
+        self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
 
 
     def callbackDynamicConfig(self, config, level):
@@ -283,5 +318,4 @@ if __name__ == '__main__':
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
-
 

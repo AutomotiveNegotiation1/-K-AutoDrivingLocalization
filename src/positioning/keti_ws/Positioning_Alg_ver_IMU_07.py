@@ -178,10 +178,7 @@ class Sensor_fusion:
         
         # 절대 경로로 DLL 파일 지정
         dll_path = os.path.abspath("./libuwb.a")
-        print(dll_path)
         self.c_func = CDLL(dll_path)
-        self.creal_T = creal_T * 4
-        self.emxCreate_creal_T = emxCreate_creal_T
         self.tag_pos_est = None
         self.tag_pos_est_aver = None
         
@@ -212,10 +209,8 @@ class Sensor_fusion:
         self.Lp = 4
         self.Ln = 4
         
-        heading_est = 0
-        self.heading_est = ctypes.c_double(heading_est)
-        heading_a_aver_v = 0
-        self.heading_a_aver_v = ctypes.c_double(heading_a_aver_v)
+        self.heading_est = 0
+        self.heading_a_aver_v = 0
         
         # ROS 노드 구독
         # rospy.Subscriber("/zed_f9r/imu", Imu, self.ImuCallback)
@@ -256,7 +251,6 @@ class Sensor_fusion:
 
     def uwb_sort(self, num, msg):
         if self.statusUWB is None:
-            print('Ok')
             self.statusUWB = False
             
         if len(msg.id) > 1 and self.statusUWB == False:
@@ -277,9 +271,9 @@ class Sensor_fusion:
                     
             self.UWB['RxID'] = RxID
             
-            print("num:",self.UWB['TaID'])
-            print("id:", len(np.array(msg.id)))
-            print("RxID:", RxID)
+            # print("num:",self.UWB['TaID'])
+            # print("id:", len(np.array(msg.id)))
+            # print("RxID:", RxID)
             
             self.statusUWB = True
         else:
@@ -316,83 +310,74 @@ class Sensor_fusion:
     
 
     def UWB_Positioning(self):
-        # print("total RxID_data", self.RxID_data_list)
-        # print("RxID", self.UWB['RxID'])
-        # print("RxID_data", self.UWB['AnID'])
-        
         xa = self.UWB['x']
         ya = self.UWB['y']
+        # Define the return type of emxCreate_creal_T
+        self.c_func.emxCreate_creal_T.restype = ctypes.POINTER(emxArray_creal_T)
+
+        # Create emxArray_creal_T using emxCreate_creal_T
         
-        tag_pos_est = self.c_func.emxCreate_creal_T(4,1)
-        tag_pos_est_aver = self.c_func.emxCreate_creal_T(4,1)
+        tag_pos_est = self.c_func.emxCreate_creal_T(1, 4)
+        tag_pos_est_aver = self.c_func.emxCreate_creal_T(1, 4)
+        
+        # print("333",tag_pos_est)
+        
         
         if len(xa) < len(ya):
             xa = np.concatenate((xa, np.zeros(len(ya) - len(xa))))
         else:
             ya = np.concatenate((ya, np.zeros(len(xa) - len(ya))))
-            
-        anch_pos = xa + 1j*ya
-        
+
         xt_b = np.array([-0.5, 0.5, -0.5, 0.5])
         yt_b = np.array([0.5, 0.5, -0.5, -0.5])
-        tag_pos_b = creal_T * 4
-        # tag_pos_b.re = xt_b
-        # tag_pos_b.im = 1j*yt_b
-        # tag_pos_b = xt_b + 1j*yt_b
-        
-        RxID_data = np.array(self.UWB['RxID']).reshape(-1, 1)
-        RxDist_data = np.array(self.UWB['dist']).reshape(-1, 1)
-        # RxID_size = len(self.UWB['RxID'])
-        # RxDist_size = len(self.UWB['dist'])
-        RxID_size = [len(self.UWB['RxID']), 0]
-        RxDist_size = [len(self.UWB['dist'])]
-        
-
-        Nanchor = len(self.UWB['AnID'])
-        TagNum = self.UWB['TaID']
-        
-        s_time = self.UWB['time']
-        
-        print("Ln:",self.Ln)
-        print("Lp:",self.Lp)
-        print("TagNum:",TagNum)
-        print("Nanchor:",Nanchor)
-        print("RxID_data:",RxID_data)
-        print("RxID_size:",RxID_size)
-        print("RxDist_data:",RxDist_data)
-        print("s_time:",s_time)
-        # print("tag_pos_b:",tag_pos_b)
-        print("xa:",xa)
-        print("xa_size:",len(xa))
-        print("ya:",ya)
-        print("ya_size:",len(ya))
-        # print("tag_pos_est:",tag_pos_est)
-        # print("heading_est:",heading_est)
-        # print("tag_pos_est_aver:",tag_pos_est_aver)
-        # print("headingest_a_aver_v:",headingest_a_aver_v)
-
-        # UWBpos 함수 호출
-        xa = (ctypes.c_double * len(xa))(*xa)
-        xa_size = ctypes.c_double(len(xa))
-        ya = (ctypes.c_double * len(ya))(*ya)
-        ya_size = ctypes.c_double(len(ya))
+        tag_b = xt_b + 1j*yt_b
         Lp = ctypes.c_double(self.Lp)
         Ln = ctypes.c_double(self.Ln)
-        RxID_data = (ctypes.c_double * len(RxID_data))(*RxID_data)
-        RxDist_data = (ctypes.c_double * len(RxDist_data))(*RxDist_data)
-        TagNum = ctypes.c_double(TagNum)
-        Nanchor = ctypes.c_double(Nanchor)
-        # heading_est = ctypes.POINTER(self.heading_est)
-        heading_est = ctypes.pointer(self.heading_est)
-        headingest_a_aver_v = ctypes.pointer(self.heading_a_aver_v)
-        # RxID_size = ctypes.c_int(RxID_size)
-        # RxDist_size = ctypes.c_int(RxDist_size)
-                    # (ctypes.c_double * len(xa))(*xa)
-        RxID_size = (ctypes.c_double * len(RxID_size))(*RxID_size)
-        RxDist_size = (ctypes.c_double * len(RxDist_size))(*RxDist_size)
+        TagNum = ctypes.c_double(self.UWB['TaID'])
+        Nanchor = ctypes.c_double(len(self.UWB['AnID']))
+        RxID_data = np.array(self.UWB['RxID'])
+        RxID_size = (ctypes.c_double * 2)(len(RxID_data), 0)
+        RxDist_data = np.array(self.UWB['dist'])
+        RxDist_size = (ctypes.c_double * 1)(len(RxDist_data))
+        s_time = ctypes.c_double(self.UWB['time'])
+        # Assuming creal_T is a ctypes.Structure, you might define it like this:
+        tag_pos_b_array_type = creal_T * 4
+        tag_pos_b = tag_pos_b_array_type()
         
-        start_time = time.time()
-        self.c_func.UWBpos(Ln, Lp, TagNum, Nanchor,RxID_data, RxID_size,RxDist_data, RxDist_size, s_time, tag_pos_b, xa, xa_size, ya, ya_size,tag_pos_est, heading_est,tag_pos_est_aver, headingest_a_aver_v)  
+        
+
+        heading_est = ctypes.pointer(ctypes.c_double(self.heading_est))
+        heading_a_aver_v = ctypes.pointer(ctypes.c_double(self.heading_a_aver_v))
+
+
+        for i in range(4):
+            tag_pos_b[i].re = np.real(tag_b[i])
+            tag_pos_b[i].im = np.imag(tag_b[i])
+        # Other setup code, e.g., creation of creal_T and emxArray_creal_T objects...
+
+        # Let's assume the type is emxArray_creal_T
+        self.c_func.UWBpos.argtypes = [
+            ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double),
+            ctypes.c_double, ctypes.POINTER(creal_T), ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double), ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double), ctypes.c_double,
+            ctypes.POINTER(emxArray_creal_T), ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(emxArray_creal_T), ctypes.POINTER(ctypes.c_double)
+        ]
+
+
+        # Prepare the data
+        xa_ptr = (ctypes.c_double * len(xa))(*xa)
+        ya_ptr = (ctypes.c_double * len(ya))(*ya)
+        RxID_data_ptr = (ctypes.c_double * len(RxID_data))(*RxID_data)
+        RxDist_data_ptr = (ctypes.c_double * len(RxDist_data))(*RxDist_data)
+
+        # Call the function
+        self.c_func.UWBpos(Ln, Lp, TagNum, Nanchor, RxID_data_ptr, RxID_size, RxDist_data_ptr, RxDist_size, s_time, tag_pos_b, ctypes.c_double(4), xa_ptr, ctypes.c_double(len(xa)), ya_ptr, ctypes.c_double(len(ya)), tag_pos_est, heading_est, tag_pos_est_aver, heading_a_aver_v)
+        # print("eee", self.emxArray_to_pycomplex_list(tag_pos_est))
+
         
 
     
@@ -407,29 +392,15 @@ class Sensor_fusion:
                 # self.c_func.main_UWBpos()
         
         
-# ctypes로 사용할 C 언어의 데이터 형식 정의
-class creal_size_T(ctypes.Structure):
-    _fields_ = [('rows', ctypes.c_int),
-                ('cols', ctypes.c_int)]
-    
 class creal_T(ctypes.Structure):
-    _fields_ = [('re', ctypes.c_double),
-                ('im', ctypes.c_double)]
+    _fields_ = [('re', ctypes.c_double), ('im', ctypes.c_double)]
 
-class emxCreateWrapper_creal_T(ctypes.Structure):
-    _fields_ = [("data", ctypes.POINTER(creal_T)),
-                ("size", ctypes.POINTER(creal_size_T)),
-                ("numDimensions", ctypes.c_int),
-                ("allocatedSize", ctypes.c_int),
-                ("canFreeData", ctypes.c_bool)]
-
-class emxCreate_creal_T(ctypes.Structure):
-    _fields_ = [("data", ctypes.POINTER(creal_T)),
-                ("size", ctypes.POINTER(creal_size_T)),
-                ("numDimensions", ctypes.c_int),
-                ("allocatedSize", ctypes.c_int)]
-
-
+class emxArray_creal_T(ctypes.Structure):
+    _fields_ = [('data', ctypes.POINTER(creal_T)),
+                ('size', ctypes.c_int * 2),
+                ('allocatedSize', ctypes.c_int),
+                ('numDimensions', ctypes.c_int),
+                ('canFreeData', ctypes.c_bool)]
 
     
 if __name__ == '__main__':

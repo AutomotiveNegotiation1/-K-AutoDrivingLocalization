@@ -176,51 +176,25 @@ class Sensor_fusion:
         rospy.init_node("sensor_fusion_node")
         np.set_printoptions(threshold=np.inf)
         
-        pub = rospy.Publisher('visualization_marker', Marker, queue_size=10)
-        rate = rospy.Rate(100) # 10hz
-        
         # 절대 경로로 DLL 파일 지정
-        dll_path = os.path.abspath("./libtest.a")
-        print(dll_path)
+        dll_path = os.path.abspath("./libuwb2.so")
         self.c_func = CDLL(dll_path)
-        self.Creal_T_Array = Creal_T * 4
-        
-        # self.emxCreate_creal_T = self.c_func.emxCreate_creal_T
-        # self.emxCreate_creal_T.restype = ctypes.POINTER(EmxArrayCRealT)
-        # self.tag_pos_est = None
-        # self.tag_pos_est_aver = None
-        
-        # self.c_func.argtypes = [ctypes.c_double,  # Ln
-        #                         ctypes.c_double,  # Lp
-        #                         ctypes.c_double,  # TagNum
-        #                         ctypes.c_double,  # Nanchor
-        #                         ctypes.POINTER(ctypes.c_double),  # RxID_data
-        #                         ctypes.POINTER(ctypes.c_int),  # RxID_size
-        #                         ctypes.POINTER(ctypes.c_double),  # RxDist_data
-        #                         ctypes.POINTER(ctypes.c_int),  # RxDist_size
-        #                         ctypes.c_double,  # s_time
-        #                         ctypes.POINTER(Complex),  # dcv
-        #                         ctypes.POINTER(ctypes.c_double),  # xa_tmp
-        #                         ctypes.POINTER(ctypes.c_double),  # xa_tmp
-        #                         ctypes.POINTER(emxArray_creal_T),  # tag_pos_est
-        #                         ctypes.POINTER(ctypes.c_double),  # heading_est
-        #                         ctypes.POINTER(emxArray_creal_T),  # tag_pos_est_aver
-        #                         ctypes.POINTER(ctypes.c_double)]  # headingest_a_aver_v
           
         self.UWB = dict()
         
         self.RxID_list = None
-        self.RxID_data_list=None
+        self.RxID_data_list = None
         
-        self.statusUWB = False
+        self.statusUWB = None
         
-        # self.Lp = 4
-        # self.Ln = 4
+        self.Lp = 4
+        self.Ln = 4
+        self.zt_b = 1.53
         
-        # heading_est = 0
-        # self.heading_est = ctypes.c_double(heading_est)
-        # heading_a_aver_v = 0
-        # self.heading_a_aver_v = ctypes.c_double(heading_a_aver_v)
+        self.tag_pos_est = np.zeros((2,4))
+        self.tag_pos_est_aver = np.zeros((2,4))
+        self.heading_est = 0
+        self.heading_a_aver_v = 0
         
         # ROS 노드 구독
         # rospy.Subscriber("/zed_f9r/imu", Imu, self.ImuCallback)
@@ -228,10 +202,6 @@ class Sensor_fusion:
         rospy.Subscriber("/dwm1001/anchor/ttyUWB1", Anchor, self.Anchorcallback1)
         rospy.Subscriber("/dwm1001/anchor/ttyUWB2", Anchor, self.Anchorcallback2)
         rospy.Subscriber("/dwm1001/anchor/ttyUWB3", Anchor, self.Anchorcallback3)
-        # rospy.Subscriber("/dwm1001/ttyUWB0", Tag, s3elf.TagCallback)
-        # rospy.Subscriber("/dwm1001/ttyUWB1", Tag, self.TagCallback)
-        # rospy.Subscriber("/dwm1001/ttyUWB2", Tag, self.TagCallback)
-        # rospy.Subscriber("/dwm1001/ttyUWB3", Tag, self.TagCallback)
         
     def ImuCallback(self, msg):
         self.IMU['lx'] = msg.linear_acceleration.x
@@ -260,23 +230,54 @@ class Sensor_fusion:
                 
 
     def uwb_sort(self, num, msg):
-        if len(msg.id) >= 2:
+        if self.statusUWB is None:
+            self.statusUWB = False
+            
+        if len(msg.id) > 1 and self.statusUWB == False:
             self.create_RxID(msg.id)
             self.UWB['TaID'] = num
             self.UWB['AnID'] = np.array(msg.id)
-            self.UWB['x'] = np.array(msg.x)
-            self.UWB['y'] = np.array(msg.y)
-            self.UWB['z'] = np.array(msg.z)
-            self.UWB['dist'] = np.array(msg.distanceFromTag)
+            self.UWB['xain'] = np.array(msg.x)
+            self.UWB['yain'] = np.array(msg.y)
+            self.UWB['zain'] = np.array(msg.z)
             self.UWB['time'] = msg.header.stamp.secs
             self.UWB['ntime'] = msg.header.stamp.nsecs
+            self.UWB['RXID'] = [0, 0, 0, 0, 0, 0]
+            self.UWB['RXDist'] = [0, 0, 0, 0, 0, 0]
             
             RxID = []
-            for item in msg.id:
+            for i, item in enumerate(msg.id):
                 if item in self.RxID_data_list:
-                    RxID.append(self.RxID_list[self.RxID_data_list.index(item)])
-                    
-            self.UWB['RxID'] = RxID
+                    self.UWB['RXID'][i] = self.RxID_data_list.index(item)+1
+                    # self.UWB['RXDist'][i] = msg.distanceFromTag[i]
+                
+            
+            # # Compute the new RXDist values using the scalar self.zt_b
+            # self.UWB['RXDist'] = np.sqrt(np.array(self.UWB['RXDist'])**2 - (np.array(msg.z[0]) - self.zt_b)**2).real
+
+            #         # RxDist = real(sqrt(RxDistOrig.^2-(za(1)-zt_b)^2));
+            
+            # Create a mapping from msg.id to the corresponding values
+            id_mapping = {item: (distance, x, y, z) for item, distance, x, y, z in zip(msg.id, msg.distanceFromTag, msg.x, msg.y, msg.z)}
+
+            # Create new arrays for the values, filling them in based on the order defined in self.RxID_data_list
+            RXDist_new, xain_new, yain_new, zain_new = [], [], [], []
+            for item in self.RxID_data_list:
+                distance, x, y, z = id_mapping.get(item, (0, 0, 0, 0))  # Default values if item not found
+                RXDist_new.append(distance)
+                xain_new.append(x)
+                yain_new.append(y)
+                zain_new.append(z)
+
+            # Update the self.UWB dictionary
+            self.UWB['RXDist'] = RXDist_new
+            self.UWB['xain'] = xain_new
+            self.UWB['yain'] = yain_new
+            self.UWB['zain'] = zain_new
+
+            # Compute the new RXDist values using the scalar self.zt_b
+            self.UWB['RXDist'] = np.sqrt(np.array(self.UWB['RXDist'])**2 - (np.array(zain_new[0]) - self.zt_b)**2).real
+
             
             self.statusUWB = True
         else:
@@ -294,96 +295,155 @@ class Sensor_fusion:
     def Anchorcallback3(self, msg):
         self.uwb_sort(3, msg)
         
-#     def ros_time_to_datetime(self, seconds, nsecs):
-#         from datetime import timedelta
-#         epoch = datetime.utcfromtimestamp(0)
-#         ros_time = epoch + timedelta(seconds=seconds, microseconds=nsecs/1000)
-#         return ros_time
+    def ros_time_to_datetime(self, seconds, nsecs):
+        from datetime import timedelta
+        epoch = datetime.utcfromtimestamp(0)
+        ros_time = epoch + timedelta(seconds=seconds, microseconds=nsecs/1000)
+        return ros_time
             
-#     # Function to convert EmxArrayCRealT instance to Python complex number list
+    # Function to convert EmxArrayCRealT instance to Python complex number list
     def emxArray_to_pycomplex_list(self, emxArray):
         return [(self.get_creal_ptr(emxArray.contents.data, i).contents.re, self.get_creal_ptr(emxArray.contents.data, i).contents.im) for i in range(4)]
 
 
     def get_creal_ptr(self, base_ptr, offset):
-        Creal_T_Ptr = ctypes.POINTER(Creal_T)
-        creal_ptr = ctypes.cast(ctypes.addressof(base_ptr.contents) + offset * ctypes.sizeof(Creal_T), Creal_T_Ptr)
+        Creal_T_Ptr = ctypes.POINTER(creal_T)
+        creal_ptr = ctypes.cast(ctypes.addressof(base_ptr.contents) + offset * ctypes.sizeof(creal_T), Creal_T_Ptr)
         return creal_ptr
-#     def get_rosbag_record_time(self, rosbag_file_path):
-#         import rosbag
-#         bag = rosbag.Bag(rosbag_file_path)
-
-#         # 처음 메시지와 마지막 메시지의 타임스탬프를 확인하여 녹화 시간 계산
-#         for topic, msg, timestamp in bag.read_messages():
-#             start_time = timestamp.to_sec()
-#             break  # 처음 메시지의 타임스탬프를 얻은 후 루프를 종료
-
-#         for topic, msg, timestamp in bag.read_messages(topics=topic):
-#             end_time = timestamp.to_sec()
-
-#         bag.close()
-
-#         # 녹화 시간 계산
-#         record_duration_seconds = end_time - start_time
-#         record_datetime_start = datetime.utcfromtimestamp(start_time)
-#         record_datetime_end = datetime.utcfromtimestamp(end_time)
-
-#         return record_duration_seconds, record_datetime_start, record_datetime_end
-
+    
     
 
     def UWB_Positioning(self):
-        tag_pos_est = self.Creal_T_Array()
-        tag_pos_est_aver = self.Creal_T_Array()
-        heading_est = ctypes.pointer(ctypes.c_double(0))
-        headingest_a_aver_v = ctypes.pointer(ctypes.c_double(0))
-        self.c_func.TestTotal(tag_pos_est, heading_est, tag_pos_est_aver, headingest_a_aver_v)
+        # Define the argument types for UWBpos2
+        UWBout = emxArray_real_T()
+        tag_pos_b = (creal_T * 4)()
+#         xt_b = [-0.525 0.525 -0.525 0.525];
+# yt_b = [0.505 0.505 -0.505 -0.505];
+# zt_b = 1.53;
+        xt_b = np.array([-0.525, 0.525, -0.525, 0.525])
+        yt_b = np.array([0.505, 0.505, -0.505, -0.505])
+        tag_b = xt_b + 1j*yt_b
         
-        # print(tag_pos_est.re)
-        # print("result :", self.emxArray_to_pycomplex_list(tag_pos_est))
+        for i in range(4):
+            tag_pos_b[i].real = np.real(tag_b[i])
+            tag_pos_b[i].imag = np.imag(tag_b[i])
         
+        Ln = ctypes.c_double(self.Ln)
+        Lp = ctypes.c_double(self.Lp)
+        LnC = ctypes.c_double(len(self.RxID_data_list))
+        TagNum = ctypes.c_double(self.UWB['TaID']+1)
+        Nanchor = ctypes.c_double(len(self.UWB['AnID']))
+        print("self.UWB['RXID']", self.UWB['RXID'])
+        print("self.UWB['RXDist']", self.UWB['RXDist'])
+        RxIDin = (ctypes.c_double * 6)(*[float(x) for x in self.UWB['RXID']])
+        RxDistin = (ctypes.c_double * 6)(*[float(x) for x in self.UWB['RXDist']])
+        s_time = ctypes.c_double(self.UWB['time']+self.UWB['ntime']/1e9)
+        xain = (ctypes.c_double * 6)(*[float(x) for x in self.UWB['xain']])
+        yain = (ctypes.c_double * 6)(*[float(x) for x in self.UWB['yain']])
+
+        # Define the argument types for UWBpos2
+        self.c_func.UWBpos2.argtypes = [
+            ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_double,
+            ctypes.c_double * 6, ctypes.c_double * 6, ctypes.c_double,
+            creal_T * 4, ctypes.c_double * 6, ctypes.c_double * 6,
+            ctypes.POINTER(emxArray_real_T)
+        ]
+
+        # Assuming UWBout is an output, you might need to initialize its properties based on how it's used in the C function
+        UWBout.data = None  # or appropriate initialization
+        UWBout.size = (ctypes.c_int * 2)()  # or appropriate initialization
+        UWBout.size[0] = 1
+        UWBout.size[1] = 18
+        UWBout.allocatedSize = 0
+        UWBout.numDimensions = 2
+        UWBout.canFreeData = False
+
+        # Call the function with the arguments
+        self.c_func.UWBpos2(Ln, Lp, LnC, TagNum, Nanchor, RxIDin, RxDistin, s_time, tag_pos_b, xain, yain, ctypes.byref(UWBout))
+        
+        # Get the dimensions of the UWBout array
+        rows = UWBout.size[0]
+        cols = UWBout.size[1]
+
+        # Convert the pointer to data into a Python list
+        data_list = [UWBout.data[i] for i in range(rows * cols)]
+
+        # Convert the list into a NumPy array and reshape it to the correct dimensions
+        data_array = np.array(data_list).reshape((rows, cols))
+
+        # Print the UWBout data
+        print("UWBout:")
+        self.tag_pos_est[0] = data_array[0][0:4]
+        self.tag_pos_est[1] = data_array[0][4:8]
+        print("tag_pos_est-->", self.tag_pos_est)
+        self.heading_est = data_array[0][8]
+        print("heading_est-->", self.heading_est)
+        self.tag_pos_est_aver[0] = data_array[0][9:13]
+        self.tag_pos_est_aver[1] = data_array[0][13:17]
+        print("tag_pos_est_aver-->", self.tag_pos_est_aver)
+        self.headingest_a_aver_v = data_array[0][17]
+        print("headingest_a_aver_v-->", self.headingest_a_aver_v)
         
 
+
+        self.figure()
+        
+    def figure(self):
+        plt.clf()  # Clear the figure
+        plt.axes().set_aspect('equal')
+        plt.plot(self.UWB['xain'], self.UWB['yain'], 'bo')
+        xa = [0.00, 0.00, 22.80, 7.80, 7.80, 8.15, 8.15, 24.50]
+        ya = [15.40, 0.00, -3.90, 0.00, 10.10, 10.45, -0.35, 21.70] 
+        plt.plot(xa, ya, 'g*')
+
+        plt.plot(self.tag_pos_est[0][0], self.tag_pos_est[1][0], 'ro')
+        plt.plot(self.tag_pos_est[0][1], self.tag_pos_est[1][1], 'r*')
+        plt.plot(self.tag_pos_est[0][2], self.tag_pos_est[1][2], 'rv')
+        plt.plot(self.tag_pos_est[0][3], self.tag_pos_est[1][3], 'r^')
+        
+        Xt_c_e = np.mean(self.tag_pos_est[0])
+        Yt_c_e = np.mean(self.tag_pos_est[1])
+
+        plt.quiver(Xt_c_e, Yt_c_e, np.cos(self.heading_est), np.sin(self.heading_est), color='b', linewidth=1, headwidth=6)
+        plt.pause(0.001)
+        
     
     def main(self):
+        plt.figure(1)
         self.s_time = []
         while not rospy.is_shutdown():
 
             
             if self.statusUWB == True:
                 self.UWB_Positioning()
+                self.statusUWB = False
+        plt.show()      
                 # self.c_func.main_UWBpos()
         
         
-# # ctypes로 사용할 C 언어의 데이터 형식 정의
-class Complex(ctypes.Structure):
-    _fields_ = [('real', ctypes.c_double),
-                ('imag', ctypes.c_double)]
+class creal_T(ctypes.Structure):
+    _fields_ = [
+        ('real', ctypes.c_double),
+        ('imag', ctypes.c_double)
+    ]
 
 class emxArray_creal_T(ctypes.Structure):
     _fields_ = [
-        ("data", ctypes.POINTER(Complex)),
-        ("size", ctypes.POINTER(ctypes.c_int)),
-        ("numDimensions", ctypes.c_int),
-        ("allocatedSize", ctypes.c_int),
-        ("canFreeData", ctypes.c_bool)
-    ]
-    
-class Creal_T(ctypes.Structure):
-    _fields_ = [('re', ctypes.c_double), ('im', ctypes.c_double)]
-
-class EmxArrayCRealT(ctypes.Structure):
-    _fields_ = [
-        ('size', ctypes.c_int * 2),  # Assuming 'size' is an array of two integers
-        ('data', ctypes.POINTER(Creal_T)),  # Pointer to CRealT structures
+        ('data', ctypes.POINTER(creal_T)),
+        ('size', ctypes.POINTER(ctypes.c_int *2)),
+        ('allocatedSize', ctypes.c_int),
         ('numDimensions', ctypes.c_int),
-        ('allocatedSize', ctypes.c_int)
+        ('canFreeData', ctypes.c_bool)
     ]
 
-
-class creal_T(ctypes.Structure):
-    _fields_ = [('real', ctypes.c_double),
-                ('imag', ctypes.c_double)]
+class emxArray_real_T(ctypes.Structure):
+    _fields_ = [
+        ('data', ctypes.POINTER(ctypes.c_double)),
+        ('size', ctypes.POINTER(ctypes.c_int)),
+        ('allocatedSize', ctypes.c_int),
+        ('numDimensions', ctypes.c_int),
+        ('canFreeData', ctypes.c_bool)
+    ]
 
 
     

@@ -55,79 +55,69 @@ static double RxIDprevLen[4];
 void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
             const double RxID_data[], const double RxID_size[2],
             const double RxDist_data[], const double RxDist_size[1], double s_time,
-            const creal_T tag_pos_b[4], const double xa[], const double x_size, const double ya[], const double y_size,
+            const creal_T tag_pos_b[], const double tag_pos_b_size, const double xa[], const double x_size, const double ya[], const double y_size,
             emxArray_creal_T *tag_pos_est, double *heading_est,
             emxArray_creal_T *tag_pos_est_aver, double *headingest_a_aver_v)
 {
-  printf("UWBpos.c : Ln-->[%f]\r\n", Ln);
-  printf("UWBpos.c : Lp-->[%f]\r\n", Lp);
-  printf("UWBpos.c : TagNum-->[%f]\r\n", TagNum);
-  printf("UWBpos.c : Nanchor-->[%f]\r\n", Nanchor);
-  int z;
-  printf("UWBpos.c :RxID_data-->[");
-  for (z=0;z<RxID_size[0];z++){
-    printf("%f ", RxID_data[z]);
-  }
-  printf("]\r\n");
-  printf("UWBpos.c : RxID_size[0]-->[%f]\r\n", RxID_size[0]);
-  
-  int a;
-  printf("UWBpos.c :RxDist_data-->[");
-  for (a=0;a<RxDist_size[0];a++){
-    printf("%f ", RxDist_data[a]);
-  }
-  printf("]\r\n");
-  
-  printf("UWBpos.c :RxDist_size-->[%f]\r\n", RxDist_size[0]);
-
-  printf("UWBpos.c :s_time-->[%f]\r\n", s_time);
-  printf("UWBpos.c :xa_size-->[%f]\r\n", x_size);
-  int b;
-  printf("tag_pos_b-->[");
-  for (b=0;b<4;b++){
-    printf("%f ", tag_pos_b[b]);
-  }
-  int c;
-  printf("UWBpos.c :xa-->[");
-  for (c=0;c<x_size;c++){
-    printf("%f ", xa[c]);
-  }
-  printf("]\r\n");
-
-  printf("UWBpos.c :ya_size-->[%f]\r\n", y_size);
-  int d;
-  printf("UWBpos.c :ya-->[");
-  for (d=0;d<x_size;d++){
-    printf("%f ", ya[d]);
-  }
-  printf("]\r\n");
-
-  int f;
-  printf("UWBpos.c :tag_pos_est-->[");
-  for (f=0;f<4;f++){
-    printf("%f ", tag_pos_est[f]);
-  }
-  printf("]\r\n");
-  printf("UWBpos.c :heading_est-->[%f]\r\n", heading_est);
-  int e;
-  printf("UWBpos.c :tag_pos_est-->[");
-  for (e=0;e<4;e++){
-    printf("%f ", tag_pos_est_aver[e]);
-  }
-  printf("]\r\n");
-  printf("UWBpos.c :headingest_a_aver_v-->[%f]\r\n", headingest_a_aver_v);
-  // printf("tag_pos_b-->[%f]\r\n", Ln);
-  // printf("tag_pos_b-->[%f]\r\n", Ln);
-  // printf("tag_pos_b-->[%f]\r\n", Ln);
-  // printf("tag_pos_b-->[%f]\r\n", Ln);
-  // printf("tag_pos_b-->[%f]\r\n", Ln);
-  // printf("tag_pos_b-->[%f]\r\n", Ln);
+  // printf("UWBpos.c : Ln-->[%f]\r\n", Ln);
+  // printf("UWBpos.c : Lp-->[%f]\r\n", Lp);
+  // printf("UWBpos.c : TagNum-->[%f]\r\n", TagNum);
+  // printf("UWBpos.c : Nanchor-->[%f]\r\n", Nanchor);
   // int z;
-  // printf("tag_pos_b-->[");
-  // for (z=0;z<6;z++){
-  //   printf("%f ", Lp[z]);
+  // printf("UWBpos.c :RxID_data-->[");
+  // for (z=0;z<RxID_size[0];z++){
+  //   printf("%f ", RxID_data[z]);
   // }
   // printf("]\r\n");
+  // // printf("UWBpos.c : RxID_size[0]-->[%f]\r\n", RxID_size[0]);
+  
+  // int a;
+  // printf("UWBpos.c :RxDist_data-->[");
+  // for (a=0;a<RxDist_size[0];a++){
+  //   printf("%f ", RxDist_data[a]);
+  // }
+  // printf("]\r\n");
+  
+  // printf("UWBpos.c :RxDist_size-->[%f]\r\n", RxDist_size[0]);
+
+  // printf("UWBpos.c :s_time-->[%f]\r\n", s_time);
+  // printf("UWBpos.c :xa_size-->[%f]\r\n", x_size);
+  // // printf("UWBpos.c :tag_pos_b-->[%f]\r\n", tag_pos_b);
+  // int b;
+  // printf("UWBpos.c :tag_pos_b-->[");
+  // for (b=0;b<tag_pos_b_size;b++){
+  //   printf("%f ", tag_pos_b[b].re);
+  //   printf("%f ", tag_pos_b[b].im);
+  // }
+  // printf("]\r\n");
+  // int c;
+  // printf("UWBpos.c :xa-->[");
+  // for (c=0;c<x_size;c++){
+  //   printf("%f ", xa[c]);
+  // }
+  // printf("]\r\n");
+
+  // printf("UWBpos.c :ya_size-->[%f]\r\n", y_size);
+  // int d;
+  // printf("UWBpos.c :ya-->[");
+  // for (d=0;d<x_size;d++){
+  //   printf("%f ", ya[d]);
+  // }
+  // printf("]\r\n");
+
+  // printf("UWBpos.c :tag_pos_est-->[");
+  // for (f=0;f<8;f++){
+  //   printf("%f ", tag_pos_est->data);
+  // }
+  // printf("]\r\n");
+  // printf("UWBpos.c :heading_est-->[%f]\r\n", heading_est);
+  // int e;
+  // printf("UWBpos.c :tag_pos_est_aver-->[");
+  // for (e=0;e<4;e++){
+  //   printf("%f ", tag_pos_est_aver[e]);
+  // }
+  // printf("]\r\n");
+  // printf("UWBpos.c :headingest_a_aver_v-->[%f]\r\n", headingest_a_aver_v);
   emxArray_boolean_T *x;
   emxArray_creal_T *InterpPosT;
   emxArray_int32_T *i;
@@ -167,7 +157,8 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
   double *TagDistInitCount_data;
   double *TagDistInit_data;
   int b_tmp_data[12];
-  int tmp_data[4];
+  int tmp_data[4] = {0, 0, 0, 0};
+
   int firstBlockLength;
   int hi;
   int ib;
@@ -245,8 +236,15 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
   tag_pos_est->size[1] = (int)Lp;
   emxEnsureCapacity_creal_T(tag_pos_est, ib);
   tag_pos_est_data = tag_pos_est->data;
+  // printf("UWBpos.c : tag_pos_est_data-->[%f]\r\n", tag_pos_est_data);
+  // int f;
+  // printf("UWBpos.c :tag_pos_est-->[");
+  // for (f=0;f<4;f++){
+  //   printf("%f ", tag_pos_est);
+  // }
+  // printf("]\r\n");
   for (ib = 0; ib < nblocks; ib++) {
-    tag_pos_est_data[ib].re = 0.0;
+    tag_pos_est_data[ib].re = 0.0 +ib;
     tag_pos_est_data[ib].im = 0.0;
   }
   *heading_est = 0.0;
@@ -261,6 +259,7 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
   }
   *headingest_a_aver_v = 0.0;
   if (r < 10.0 * Lp) {
+    printf("UWBpos.c: r < 10.0 * Lp Number -->[%f]\r\n",r);
     ib = (int)Nanchor;
     for (firstBlockLength = 0; firstBlockLength < ib; firstBlockLength++) {
       /*              for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
@@ -281,6 +280,8 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
       /*              end */
     }
   } else if (r == 10.0 * Lp) {
+
+    printf("UWBpos.c: r == 10.0 * Lp Number -->[%f]\r\n",r);
     ib = (int)Nanchor;
     for (firstBlockLength = 0; firstBlockLength < ib; firstBlockLength++) {
       /*              for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
@@ -303,6 +304,8 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
     emxInit_real_T(&DistT, 2);
     ib = DistT->size[0] * DistT->size[1];
     DistT->size[0] = TagDistInit->size[0];
+    printf("UWBpos.c : TagDistInit->size[0]-->[%d]\r\n", TagDistInit->size[0]);
+    printf("UWBpos.c : TagDistInit->size[1]-->[%d]\r\n", TagDistInit->size[1]);
     DistT->size[1] = TagDistInit->size[1];
     emxEnsureCapacity_real_T(DistT, ib);
     DistT_data = DistT->data;
@@ -386,6 +389,7 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
     emxEnsureCapacity_real_T(IndT, ib);
     TagDistInit_data = IndT->data;
     firstBlockLength = i->size[0];
+    printf("UWBpos.c : firstBlockLength-->[%d]\r\n", firstBlockLength);
     for (ib = 0; ib < firstBlockLength; ib++) {
       TagDistInit_data[ib] = i_data[ib];
     }
@@ -461,6 +465,7 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
       }
     }
   } else {
+    printf("UWBpos.c: r > 10.0 * Lp Number -->[%f]\r\n",r);
     /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
     /* %%%%%%%%%%%%%%%%%  Next Position Prediction    %%%%%%%%%%%%%%%%%% */
     for (hi = 0; hi < nblocks; hi++) {
@@ -651,15 +656,44 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
       /*  tr(pm)xPy = tr(Pm)pm x A */
       /*  inv(tr(Pm)Pm) x tr(pm)xPy = A */
     }
+    for (ib = 0; ib < nblocks; ib++) {
     /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
     nblocks = RxID_size[1];
-    for (ib = 0; ib < nblocks; ib++) {
       tmp_data[ib] = (int)RxID_data[ib] - 1;
     }
+    printf("UWBpos.c : RxDist_data[ib]-->[%f]\r\n", RxDist_data[0]);
     nblocks = RxDist_size[0];
+    // printf("Total :f[%d]\r\n", nblocks);
     for (ib = 0; ib < nblocks; ib++) {
-      TagDistInit_data[tmp_data[ib] + TagDistInit->size[0] *
-                                          ((int)TagNum - 1)] = RxDist_data[ib];
+      // printf("[%d]\r\n", ib);
+      // printf("UWBpos.c : RxDist_data[ib]-->[%f]\r\n", RxDist_data[ib]);
+      // printf("UWBpos.c : tmp_data[ib]-->[%f]\r\n", tmp_data[ib]);
+      // printf("UWBpos.c : point1-->[%d]\r\n", TagDistInit->size[0]);
+      // printf("UWBpos.c : point2-->[%d]\r\n", ((int)TagNum - 1));
+      // printf("UWBpos.c : point2-1-->[%d]\r\n", ((int)TagNum));
+      // printf("UWBpos.c : point3-->[%f]\r\n", tmp_data[ib] + (TagDistInit->size[0]) * (TagNum - 1));
+      // printf("UWBpos.c : point4-->[%d]\r\n", (int)(tmp_data[ib] + TagDistInit->size[0] * ((int)TagNum - 1)));
+      // float a = tmp_data[ib];
+      // int b = TagDistInit->size[0];
+      // int c = TagNum - 1;
+      // float test = a; // float로 변경
+      // int test2 = (b * c);
+      // float test3 = test + test2; // float로 변경
+      // printf("Size of float: %zu bytes\n", sizeof(a)); // int 대신 float의 크기 출력
+      // printf("UWBpos.c : point4-1-->[%f]\r\n", test); // %d 대신 %f 사용
+      // printf("UWBpos.c : point4-1-1-->[%d]\r\n", test2);
+      // printf("UWBpos.c : point4-2-->[%f]\r\n", a); // %d 대신 %f 사용
+      // printf("UWBpos.c : point4-3-->[%d]\r\n", b);
+      // printf("UWBpos.c : point4-4-->[%d]\r\n", c);
+      // size_t size = sizeof(TagDistInit_data);
+      // size_t count = sizeof(TagDistInit_data) / sizeof(TagDistInit_data[0]);
+      // printf("Size of arr: %zu bytes\n", size);
+      // printf("UWBpos.c : point5-->[%zu]\r\n", count);
+
+      // printf("UWBpos.c : point6-->[%f]\r\n", TagDistInit_data[(int)(tmp_data[ib] + TagDistInit->size[0] * ((int)TagNum - 1))]);
+      TagDistInit_data[(int)(tmp_data[ib] + TagDistInit->size[0] * ((int)TagNum - 1))] = RxDist_data[ib];
+      
+      // printf("UWBpos.c : TagDistInit_data-->[%f]\r\n", TagDistInit_data[tmp_data[ib] + TagDistInit->size[0] * ((int)TagNum - 1)]);
     }
     /*      NP = size(TagDistInit,1); */
     /*      AnchIDList = [1:NP]; */
@@ -678,7 +712,8 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
     /* %%%%%%%%%%%%%%%% New Position Calc.   %%%%%%%%%%%%%%%%%%%%%%%%%%% */
     /*          for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1 */
     emxInit_creal_T(&InterpPosT, 1);
-    if (RxID_size[1] > 1) {
+    printf("UWBpos.c : RxID_size[0]-->[%f]\r\n", RxID_size[0]);
+    if (RxID_size[0] > 1) {
       /*          [tag_pos_est, heading_est, CandPos] =
        * GetPos2(xa,ya,RxDist,RxID,tag_pos_b,Nanchor,PP,InterpPosition(:,1)+j*InterpPosition(:,2));
        */
@@ -698,11 +733,12 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
         tag_pos_est_aver_data[ib].im =
             InterpPosition_data[ib].im + (0.0 * TempC_re + TempC_im);
       }
-      GetPos3(xa, ya, RxDist_data, RxDist_size[0], RxID_data, RxID_size,
+      GetPos3(xa, x_size, ya, y_size, RxDist_data, RxDist_size[0], RxID_data, RxID_size,
               tag_pos_b, Nanchor, TagNum, InterpPosT, TagDistInit, RxIDprev,
               RxIDprevLen, PPprev, b_tag_pos_est, heading_est, &bsum);
+      // printf("ok\r\n");
       /*   */
-      GetPosRefine2(xa, ya, RxDist_data, RxID_data, RxID_size, tag_pos_b,
+      GetPosRefine2(xa, x_size, ya, y_size, RxDist_data, RxID_data, RxID_size, tag_pos_b,
                     Nanchor, TagNum, b_tag_pos_est, heading_est, &bsum);
       ib = tag_pos_est->size[0] * tag_pos_est->size[1];
       tag_pos_est->size[0] = 1;
@@ -713,6 +749,13 @@ void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
       tag_pos_est_data[1] = b_tag_pos_est[1];
       tag_pos_est_data[2] = b_tag_pos_est[2];
       tag_pos_est_data[3] = b_tag_pos_est[3];
+
+      int z = 0;
+      printf("UWBpos.c :tag_pos_est-->[");
+      for (z = 0; z <= 4; z++) {
+        printf("%f ", tag_pos_est_data[z]);
+      }
+      printf("]\r\n");
       /*          [tag_pos_est, heading_est] =
        * GetInitPos(xa(A),ya(A),TagDistInit,anch_pos(A),tag_pos_b,length(A),Lp);
        */

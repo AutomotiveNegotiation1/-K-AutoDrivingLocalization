@@ -1,33 +1,36 @@
 import numpy as np
 from GetInitPos import GetInitPos
 from InterpPos import InterpPos
-from GetPos2 import GetPos2
+from GetPos3 import GetPos3
 from GetPosRefine2 import GetPosRefine2
 
-def UWBpos(r, Ln, Lp, TagNum, Nanchor, RxID, RxDist, s_time, tag_pos_b, xa, ya):
+def UWBpos(Ln, Lp, TagNum, Nanchor, RxID, RxDist, s_time, tag_pos_b, xa, ya):
+    np.set_printoptions(threshold=np.inf)
     average_len = 10
     NumInterpPoint = 12
-    # r = InterpPosition = Tag_Pos_List = TagDistInitCount = TagDistInit = heading_est_a = centerest_a = centerest_a_aver = headingest_a_aver = None
-    PP = TagNum
-    
-    if r == 0:
-        InterpPosition = np.zeros((Lp, 2), dtype=complex)
-        Tag_Pos_List = np.zeros((NumInterpPoint, 2, Lp), dtype=complex)
+    global r, InterpPosition, Tag_Pos_List, TagDistInitCount, TagDistInit, heading_est_a, centerest_a, centerest_a_aver, headingest_a_aver, RxIDprev, RxIDprevLen, PPprev
+    # print("2 :", Ln, Lp, TagNum, Nanchor, RxID, RxDist, s_time, tag_pos_b, xa, ya)
+    if 'r' not in globals():
+        r = 0
+        InterpPosition = np.zeros((Lp, 2)) + 1j
+        Tag_Pos_List = np.zeros((NumInterpPoint, 2, Lp)) + 1j
         TagDistInitCount = np.zeros((Ln, Lp))
         TagDistInit = np.zeros((Ln, Lp))
-        heading_est_a = np.zeros(average_len*2)
-        centerest_a = np.zeros((average_len*2, 2))
-        centerest_a_aver = np.zeros((average_len*2, 2))
-        headingest_a_aver = np.zeros(average_len*2)
+        heading_est_a = np.zeros(average_len * 2)
+        centerest_a = np.zeros((average_len * 2, 2))
+        centerest_a_aver = np.zeros((average_len * 2, 2))
+        headingest_a_aver = np.zeros(average_len * 2)
+        RxIDprev = np.zeros((4, Ln))
+        RxIDprevLen = np.zeros(4)
+        PPprev = np.zeros(4)
 
     r += 1
     anch_pos = xa + 1j*ya
-    
+    PP = TagNum
     tag_pos_est = np.zeros(Lp)
     heading_est = 0
     tag_pos_est_aver = np.zeros(Lp)
     headingest_a_aver_v = 0
-
     if r < 10 * Lp:
         for NN in range(Nanchor):
             TagDistInitCount[RxID[NN], PP] += 1
@@ -43,7 +46,6 @@ def UWBpos(r, Ln, Lp, TagNum, Nanchor, RxID, RxDist, s_time, tag_pos_b, xa, ya):
             
         DistT = TagDistInit.copy()
         DistT[TagDistInit == 0] = 1000000
-        print(DistT.sum(axis=1))
         IndT = np.where(DistT.sum(axis=1) < 100000)
         DistT = DistT[IndT]
         AnchID = IndT
@@ -66,7 +68,7 @@ def UWBpos(r, Ln, Lp, TagNum, Nanchor, RxID, RxDist, s_time, tag_pos_b, xa, ya):
 
         #%%%%%%%%%%%%%%%% New Position Calc.   %%%%%%%%%%%%%%%%%%%%%%%%%%%
         if len(RxID) > 1:
-            tag_pos_est, heading_est, CandPos = GetPos2(xa, ya, RxDist, RxID, tag_pos_b, Nanchor, PP, InterpPosition[:, 0] + 1j*InterpPosition[:, 1])
+            tag_pos_est, heading_est, CandPos = GetPos3(xa, ya, RxDist, RxID, tag_pos_b, Nanchor, PP, InterpPosition[:, 0] + 1j*InterpPosition[:, 1], TagDistInit, RxIDprev, RxIDprevLen, PPprev)
             tag_pos_est, heading_est, CandPos = GetPosRefine2(xa, ya, RxDist, RxID, tag_pos_b, Nanchor, PP, tag_pos_est, heading_est, CandPos)
         else:
             InterpPosT = InterpPosition[:, 0] + 1j * InterpPosition[:, 1]
@@ -81,11 +83,13 @@ def UWBpos(r, Ln, Lp, TagNum, Nanchor, RxID, RxDist, s_time, tag_pos_b, xa, ya):
 
             CandPos = InterpPosition[PP, 0] + 1j * InterpPosition[PP, 1]
 
-        Tag_Pos_List[0:NumInterpPoint-1, :, PP] = Tag_Pos_List[1:NumInterpPoint, :, PP]
-        Tag_Pos_List[NumInterpPoint, :, PP] = [s_time, CandPos]
+        Tag_Pos_List[0:NumInterpPoint-2, :, PP] = Tag_Pos_List[1:NumInterpPoint-1, :, PP]
+        Tag_Pos_List[NumInterpPoint-1, :, PP] = [s_time, CandPos]
 
         Xt_c_e = np.real(np.mean(tag_pos_est))
         Yt_c_e = np.imag(np.mean(tag_pos_est))
+        
+        print("UWBpos.py : [x, y]--> [",Xt_c_e,",", Yt_c_e,"]")
 
         tag_center_pos_est = np.mean(tag_pos_est)
 
@@ -101,11 +105,12 @@ def UWBpos(r, Ln, Lp, TagNum, Nanchor, RxID, RxDist, s_time, tag_pos_b, xa, ya):
         centerest_a[:-1, :] = centerest_a[1:, :]
         centerest_a[-1, :] = [np.real(tag_center_pos_est), np.imag(tag_center_pos_est)]
         centerest_a_aver[:-1, :] = centerest_a_aver[1:, :]
+        headingest_a_aver = headingest_a_aver.reshape(-1,1)
         headingest_a_aver[:-1, :] = headingest_a_aver[1:, :]    
 
         if (r > (average_len * 2)):
-            MeanA = np.mean(centerest_a[0:average_len, 0] + 1j * centerest_a[0:average_len, 2])
-            MeanB = np.mean(centerest_a[average_len:average_len*2, 0] + 1j * centerest_a[average_len:average_len*2, 2])
+            MeanA = np.mean(centerest_a[0:average_len, 0] + 1j * centerest_a[0:average_len, 1])
+            MeanB = np.mean(centerest_a[average_len:average_len*2, 0] + 1j * centerest_a[average_len:average_len*2, 1])
             centerest_a_aver[-1, :] = [np.real(MeanB + (MeanB - MeanA) / 2), np.imag(MeanB + (MeanB - MeanA) / 2)]
             MeanA_head = np.mean(heading_est_a[0:average_len])
             MeanB_head = np.mean(heading_est_a[average_len:average_len*2])
@@ -118,5 +123,22 @@ def UWBpos(r, Ln, Lp, TagNum, Nanchor, RxID, RxDist, s_time, tag_pos_b, xa, ya):
         K_Yt_c_e = centerest_a_aver[-1, 1]
         tag_pos_est_aver = tag_pos_b * np.exp(1j * (headingest_a_aver[-1])) + K_Xt_c_e + 1j * K_Yt_c_e
         headingest_a_aver_v = headingest_a_aver[-1]
+    # RxIDprevLen의 마지막 요소를 제외한 모든 요소를 한 칸씩 앞으로 이동
+    RxIDprevLen[:-1] = RxIDprevLen[1:]
+
+    # RxIDprevLen의 마지막 요소에 새로운 값 할당
+    RxIDprevLen[-1] = len(RxID)
+
+    # RxIDprev의 각 행을 한 칸씩 앞으로 이동
+    RxIDprev[:-1, :] = RxIDprev[1:, :]
+
+    # RxIDprev의 마지막 행에 새로운 값 할당
+    RxIDprev[-1, :len(RxID)] = RxID
+
+    # PPprev의 값을 한 칸씩 앞으로 이동
+    PPprev[:-1] = PPprev[1:]
+
+    # PPprev의 마지막 요소에 새로운 값 할당
+    PPprev[-1] = PP
 
     return r, tag_pos_est, heading_est, tag_pos_est_aver, headingest_a_aver_v

@@ -32,6 +32,7 @@ static void binary_expand_op(emxArray_real_T *in1, const emxArray_real_T *in2,
   int stride_1_1;
   in3_data = in3->data;
   in2_data = in2->data;
+  printf("ok\r\n");
   i = in1->size[0] * in1->size[1];
   in1->size[0] = 1;
   if (in3->size[0] == 1) {

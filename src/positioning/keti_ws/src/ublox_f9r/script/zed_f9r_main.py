@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python
 """ For more info on the documentation go to https://www.u-blox.com/sites/default/files/ZED-F9R-01B_Datasheet_UBX-19054459.pdf
 """
 

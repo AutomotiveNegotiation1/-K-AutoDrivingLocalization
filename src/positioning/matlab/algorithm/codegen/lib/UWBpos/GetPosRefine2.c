@@ -17,7 +17,7 @@
 #include <math.h>
 
 /* Function Definitions */
-void GetPosRefine2(const double xa[6], const double ya[6],
+void GetPosRefine2(const double xa[], const double x_size, const double ya[], const double y_size,
                    const double dist_data[], const double RxID_data[],
                    const int RxID_size[2], const creal_T tag_pos_b[4],
                    double Ln, double PP, creal_T tag_pos_est[4],

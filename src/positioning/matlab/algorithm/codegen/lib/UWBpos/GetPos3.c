@@ -21,7 +21,7 @@
 #include <string.h>
 
 /* Function Definitions */
-void GetPos3(const double xa[6], const double ya[6], const double dist_data[],
+void GetPos3(const double xa[], const double x_size, const double ya[], const double y_size, const double dist_data[],
              int dist_size, const double RxID_data[], const int RxID_size[2],
              const creal_T tag_pos_b[4], double Ln, double PP,
              const emxArray_creal_T *PredPos, const emxArray_real_T *DistPrev,
@@ -74,7 +74,7 @@ void GetPos3(const double xa[6], const double ya[6], const double dist_data[],
   int i;
   int i1;
   int i2;
-  int i3;
+  int i3=0;
   int i4;
   int i5;
   int i6;
@@ -143,13 +143,17 @@ void GetPos3(const double xa[6], const double ya[6], const double dist_data[],
         Est_H[1] = ya[j2];
         dist[0] = dist_data[L1];
         dist[1] = dist_data[(int)b_r - 1];
-        b_loop_ub = RxID_size[1];
+        b_loop_ub = RxID_size[0];
       }
       for (nd2 = 0; nd2 < i2; nd2++) {
         b_r = PP + (double)nd2;
         xa_size[0] = 1;
-        xa_size[1] = RxID_size[1];
+        xa_size[1] = RxID_size[0];
+        printf("GetPos3.c : b_loop_ub-->[%d]\r\n", b_loop_ub);
         for (i3 = 0; i3 < b_loop_ub; i3++) {
+          printf("GetPos3.c : wow\r\n");
+          printf("GetPos3.c : i3-->[%f]\r\n", i3);
+          printf("ok\r\n");
           Pos2C_re = RxID_data[i3];
           brm = ya[(int)Pos2C_re - 1];
           xa_data[i3].re = xa[(int)Pos2C_re - 1] + 0.0 * brm;

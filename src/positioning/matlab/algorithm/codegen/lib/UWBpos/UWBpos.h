@@ -22,7 +22,7 @@ extern "C" {
 extern void UWBpos(double Ln, double Lp, double TagNum, double Nanchor,
                    const double RxID_data[], const double RxID_size[2],
                    const double RxDist_data[], const double RxDist_size[1],
-                   double s_time, const creal_T tag_pos_b[4],
+                   double s_time, const creal_T tag_pos_b[], const double tag_pos_b_size,
                    const double xa[], const double x_size, const double ya[], const double y_size,
                    emxArray_creal_T *tag_pos_est, double *heading_est,
                    emxArray_creal_T *tag_pos_est_aver,

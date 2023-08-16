@@ -34,21 +34,35 @@ def reload_udev_rules():
     subprocess.run(['udevadm', 'trigger'])
 
 def list_com_ports(verbose, vid, pid):
-    serial_order = ['000760178940', '000760179526', '000760009648', '000760009277'] # The desired order of serial numbers
-    baud_rate_mapping = {'ttyUWB0': 115200, 'ttyUWB1': 115200, 'ttyUWB2': 115200, 'ttyUWB3': 115200, 'ttyIMU': 230400} # add other ports and their baud rates here
+    # serial_order = ['000760178940', '000760179526', '000760009277', '000760009648', 'DB6AEYJI'] # The desired order of serial numbers
+    # baud_rate_mapping = {'ttyUWB0': 115200, 'ttyUWB1': 115200, 'ttyUWB2': 115200, 'ttyUWB3': 115200, 'ttyIMU': 230400} # add other ports and their baud rates here
 
+    # if verbose:
+    #     print("Searching for COM ports...")
+
+    # ports = [port for port in serial.tools.list_ports.comports() if (vid is None or port.vid == vid) and (pid is None or port.pid == pid)]
+    # ports_with_serial = [port for port in ports if port.serial_number is not None]
+    # # ports_with_serial.sort(key=lambda port: serial_order.index(port.serial_number)) # Sort by the order in serial_order
+    # ports_with_serial.sort(key=lambda port: serial_order.index(port.serial_number) if len(port.serial_number) == 12 else float('inf'))
+    # ports_without_serial = [port for port in ports if port.serial_number is None]
+
+    serial_order = ['000760178940', '000760179526', '000760009277', '000760009648', 'DB6AEYJI'] # The desired order of serial numbers
+    baud_rate_mapping = {'ttyUWB0': 115200, 'ttyUWB1': 115200, 'ttyUWB2': 115200, 'ttyUWB3': 115200, 'ttyIMU': 230400} # add other ports and their baud rates here
+    
     if verbose:
         print("Searching for COM ports...")
 
     ports = [port for port in serial.tools.list_ports.comports() if (vid is None or port.vid == vid) and (pid is None or port.pid == pid)]
-    ports_with_serial = [port for port in ports if port.serial_number is not None]
-    ports_with_serial.sort(key=lambda port: serial_order.index(port.serial_number)) # Sort by the order in serial_order
-    ports_without_serial = [port for port in ports if port.serial_number is None]
+    # Include only ports with serial numbers of length 12
+    ports_with_serial = [port for port in ports if port.serial_number is not None and len(port.serial_number) == 12]
+    # Sort by the order in serial_order, only considering serial numbers of length 12
+    ports_with_serial.sort(key=lambda port: serial_order.index(port.serial_number))
+    ports_without_serial = [port for port in ports if port.serial_number is None or len(port.serial_number) != 12]
 
     port_info = []
     for i, port in enumerate(ports_with_serial + ports_without_serial):
         # print(f"{port.device} - {port.manufacturer} - {port.serial_number}")
-        if port.serial_number is not None:
+        if port.serial_number is not None and len(port.serial_number) == 12:
             port_name = "ttyUWB{}".format(i)
         else:
             port_name = "ttyIMU"
@@ -57,6 +71,9 @@ def list_com_ports(verbose, vid, pid):
         port_info.append({"type": "UWB" if 'UWB' in port_name else "IMU", "port": port_name, "baud_rate": baud_rate})
 
     print(json.dumps(port_info, indent=4))
+    subprocess.run('sudo chmod 777 /dev/ttyUWB*', shell=True)
+    subprocess.run('sudo chmod 777 /dev/ttyIMU', shell=True)
+
     # print("ListCOMPort.py", json.dumps(port_info))
     reload_udev_rules()
 
