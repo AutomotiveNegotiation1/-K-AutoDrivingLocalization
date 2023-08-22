@@ -1,4 +1,37 @@
 #!/usr/bin/env python3.8
+###############################################################################
+#
+# Copyright (C) 2023 - 2028 KETI, All rights reserved.
+#                           (Korea Electronics Technology Institute)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# Use of the Software is limited solely to applications:
+# (a) running for Korean Government Project, or
+# (b) that interact with KETI project/platform.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# KETI BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+# OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# Except as contained in this notice, the name of the KETI shall not be used
+# in advertising or otherwise to promote the sale, use or other dealings in
+# this Software without prior written authorization from KETI.
+#
+##############################################################################
+
 # from ctypes.wintypes import PPOINTL
 from stringprep import c6_set
 import rospy
@@ -40,8 +73,8 @@ class MadgwickFilter:
             0.5 * ( q.w * gyro[1] - q.i * gyro[2] + q.k * gyro[0]),
             0.5 * ( q.w * gyro[2] + q.i * gyro[1] - q.j * gyro[0])
         )
-        
-        
+
+
         accel = accel - np.cross(gyro, self.vel)
         self.vel = self.vel + accel * 0.01
         self.pos = np.array([xt_c, yt_c, 0]) + self.vel * 0.01
@@ -83,37 +116,37 @@ class Sensor_fusion:
     def __init__(self):
         # ROS 노드 초기화
         rospy.init_node("sensor_fusion_node")
-        
+
         self.id_order = None
         self.id_order_check = False
-        
+
         self.UWB = dict()
         self.uwb0 = dict()
         self.uwb1 = dict()
         self.uwb2 = dict()
         self.uwb3 = dict()
-        
+
         self.IMU = dict()
         self.acc = dict()
         self.ang = dict()
-        
+
         self.xt_b = np.array([-0.09, 0.09, -0.09, 0.09])
         self.yt_b = np.array([0.12, 0.12, -0.12, -0.12])
-        
+
         self.accel_bias = np.array([0, 0, 0])
         self.gyro_bias = np.array([0, 0, 0])
-        
+
         self.accel = np.array([0, 0, 0])
         self.vel = np.array([0, 0, 0])
         self.pos = np.array([0, 0, 0])
-        
+
         self.xt_b_center = np.mean(self.xt_b);
         self.yt_b_center = np.mean(self.yt_b);
         self.angles_from_heading = np.arctan2(self.yt_b, self.xt_b);
         self.rl = np.sqrt(self.xt_b**2+self.yt_b**2)
         self.tag_pos_b = self.xt_b + 1j*self.yt_b;
         self.r = 0
-        
+
         self.heading_est_a = np.array([]).reshape(-1 ,1)
         self.centerest_a = np.array([]).reshape(-1, 2)
         self.centerest_a_aver = np.array([]).reshape(-1, 2)
@@ -121,9 +154,9 @@ class Sensor_fusion:
         self.headingest_a_aver = np.array([]).reshape(-1 ,1)
         self.K_centerest_a_aver = np.array([]).reshape(-1, 2)
         self.K_headingest_a_aver = np.array([]).reshape(-1 ,1)
-        
+
         self.flag = None
-        
+
         # ROS 노드 구독
         rospy.Subscriber("/zed_f9r/imu", Imu, self.ImuCallback)
         rospy.Subscriber("/dwm1001/anchor/ttyUWB0", Anchor, self.Anchorcallback0)
@@ -134,8 +167,8 @@ class Sensor_fusion:
         # rospy.Subscriber("/dwm1001/ttyUWB1", Tag, self.TagCallback)
         # rospy.Subscriber("/dwm1001/ttyUWB2", Tag, self.TagCallback)
         # rospy.Subscriber("/dwm1001/ttyUWB3", Tag, self.TagCallback)
-        
-        
+
+
     def create_id_order(self, ids):
         if self.id_order is None:
             self.id_order = ids
@@ -147,7 +180,7 @@ class Sensor_fusion:
 
                 # 이 요소들을 self.id_order에 추가합니다.
                 self.id_order.extend(difference)
-                
+
     def uwb_sort(self, num, msg, uwb):
         self.create_id_order(msg.id)
         try:
@@ -163,7 +196,7 @@ class Sensor_fusion:
             uwb['dist'] = [msg.distanceFromTag[i] for i in order_indices]
         except ValueError:
             pass
-        
+
     def uwb_init(self):
         self.UWB['dist'] = np.array([self.uwb0['dist'], self.uwb1['dist'], self.uwb2['dist'], self.uwb3['dist']])
         self.UWB['dist'] = self.UWB['dist'].T
@@ -183,16 +216,16 @@ class Sensor_fusion:
             self.UWB['x'] = self.UWB['x']
             self.UWB['y'] = self.UWB['y']
             self.UWB['z'] = self.UWB['z']
-            
+
     def ImuCallback(self, msg):
         self.acc['x'] = msg.linear_acceleration.x
         self.acc['y'] = msg.linear_acceleration.y
         self.acc['z'] = msg.linear_acceleration.z
-        
+
         self.ang['x'] = msg.angular_velocity.x
         self.ang['y'] = msg.angular_velocity.y
         self.ang['z'] = msg.angular_velocity.z
-        
+
         self.IMU['acc'] = self.acc
         self.IMU['ang'] = self.ang
 
@@ -205,10 +238,10 @@ class Sensor_fusion:
 
     def Anchorcallback2(self, msg):
         self.uwb_sort(2, msg, self.uwb2)
-    
+
     def Anchorcallback3(self, msg):
         self.uwb_sort(3, msg, self.uwb3)
-        
+
 
     def GetUWBPos_v1(self, xa, ya, dist, angles_from_heading):
         # print(angles_from_heading)
@@ -224,12 +257,12 @@ class Sensor_fusion:
                             A[Li, 2*q:2*q+2] = [2*(xa[n]-xa[m]), 2*(ya[n]-ya[m])]
                             Y[Li, 0] = dist[n, p]**2 + dist[n, q]**2 - dist[m, p]**2 - dist[m, q]**2 - 2*xa[n]**2 + 2*xa[m]**2 - 2*ya[n]**2 + 2*ya[m]**2
                             Li += 1
-                            
+
 
         np.set_printoptions(threshold=np.inf)
         Res = np.linalg.inv(A.T @ A) @ A.T @ Y
         Xt_e = -Res[::2]
-        Yt_e = -Res[1::2]      
+        Yt_e = -Res[1::2]
 
         # Estimated Center Position
         Xt_c_e = np.mean(Xt_e)
@@ -239,14 +272,14 @@ class Sensor_fusion:
         tag_pos_est = Xt_e.T + 1j*Yt_e.T
         tag_arrow_est = np.sum((tag_pos_est - Xt_c_e - 1j*Yt_c_e) * np.exp(-1j*angles_from_heading))
         heading_est = np.arctan2(np.imag(tag_arrow_est), np.real(tag_arrow_est))
-        
+
         return tag_pos_est, heading_est
-    
+
     def GetUWBPosUpdate_v1(self, xa, ya, Xt_c_e, Yt_c_e, heading_est, rl, dist, angles_from_heading):
         Lj = 0
         B = np.zeros((48, 3))
         W = np.zeros((48, 1))
-        
+
         for p in range(4):
             for n in range(4):
                 for m in range(4):
@@ -267,12 +300,12 @@ class Sensor_fusion:
         heading_est = heading_est + Refined[2]
 
         return tag_center_pos_est, heading_est, Xt_c_e, Yt_c_e
-    
+
     def get_tag_pos(self, tag_center_pos_est, heading_est, tag_pos_b):
         tag_pos_est = tag_pos_b * np.exp(1j * heading_est) + tag_center_pos_est
         return tag_pos_est.reshape(1, -1)
 
-    
+
     def TwoAnchPos3(self, Xa, Ya, dist, tag_pos, EstCenter, anch_pos, dist_a):
         AA = np.sqrt((Xa[0] - Xa[1])**2 + (Ya[0] - Ya[1])**2)
         B = dist[0]
@@ -296,9 +329,9 @@ class Sensor_fusion:
         Y2S = np.sum((X2 - tag_pos.T)**2)
         Z1S = np.abs(np.sum((X1 - EstCenter.T)**2) - 0.5)
         Z2S = np.abs(np.sum((X2 - EstCenter.T)**2) - 0.5)
-        
+
         Prob = np.array([[]])
-        
+
 
         if (X1S + Y1S) > (X2S + Y2S):
             list_of_arrays = [X2.T, X1.T]
@@ -308,14 +341,14 @@ class Sensor_fusion:
             list_of_arrays = [X1.T, X2.T]
             Pos = np.vstack(list_of_arrays)
             Prob = np.array([X1S + Y1S, X2S + Y2S]).reshape(-1, 1)
-            
+
         return Pos, Prob
 
     def TwoAnchPos4(self, Xa, Ya, dist, tag_pos, EstCenter, anch_pos, dist_a):
         AA = np.sqrt((Xa[0] - Xa[1])**2 + (Ya[0] - Ya[1])**2)
         B = dist[0]
         C = dist[1]
-        
+
         s1 = (AA+B+C)/2
         S2 = np.real(cmath.sqrt(s1*(s1-AA)*(s1-B)*(s1-C)))
         d = 2*S2/AA
@@ -333,10 +366,10 @@ class Sensor_fusion:
         Y2S = np.sum((X2 - tag_pos.T.reshape(-1, 1))**2)
         Z1S = np.abs(np.sum((X1 - EstCenter.T.reshape(-1, 1))**2) - 0.5)
         Z2S = np.abs(np.sum((X2 - EstCenter.T.reshape(-1, 1))**2) - 0.5)
-        
+
         # Pos = np.array([[]])
         Prob = np.array([[]])
-        
+
 
         if (X1S + Y1S) > (X2S + Y2S):
             list_of_arrays = [X2.T, X1.T]
@@ -349,16 +382,16 @@ class Sensor_fusion:
             # Pos = np.append(Pos, np.array([X1.T, X2.T]), axis=0)
             Pos = np.vstack(list_of_arrays)
             Prob = np.array([X1S + Y1S, X2S + Y2S]).reshape(-1, 1)
-            
+
         return Pos, Prob
-    
+
     def calibrate_imu(self, imu_data, num_samples):
         # imu_data는 가속도계 및 자이로스코프 데이터의 2D 배열이다.
         # 각 행은 [ax, ay, az, gx, gy, gz] 형식이다.
 
         # 캘리브레이션에 사용할 샘플 수 선택
         data = np.array(imu_data[:num_samples])
-        
+
         # 가속도계 및 자이로스코프 측정값의 평균 계산
         accel_bias = np.mean(data[:, :3], axis=0)
         gyro_bias = np.mean(data[:, 3:], axis=0)
@@ -368,7 +401,7 @@ class Sensor_fusion:
 
         return accel_bias, gyro_bias
 
-        
+
     def main(self):
         Ln = 4
         Lp = 4
@@ -376,31 +409,31 @@ class Sensor_fusion:
         imu_data = []
         while not rospy.is_shutdown():
             try:
-                
-                
+
+
                 start_time = time.time()
                 self.uwb_init()
                 anch_pos = np.array([x + 1j*y for x, y in zip(self.UWB['x'], self.UWB['y'])])
-                
+
                 if self.r == 0:
                     tag_pos_est, heading_est = self.GetUWBPos_v1(self.UWB['x'], self.UWB['y'], self.UWB['dist'], self.angles_from_heading)
                     # heading_est = self.IMU['ang']['z']
                 else:
                     tag_pos_est = K_tag_pos_est
                     heading_est = K_heading_est
-                
+
                 Xt_e = np.real(tag_pos_est)
                 Yt_e = np.imag(tag_pos_est)
                 Xt_c_e = np.mean(Xt_e)
                 Yt_c_e = np.mean(Yt_e)
-                
+
                 self.accel = np.array([self.IMU['acc']['x'], self.IMU['acc']['y'], self.IMU['acc']['z']]) - np.cross(np.array([self.IMU['ang']['x'], self.IMU['ang']['y'], self.IMU['ang']['z']]), self.vel)
                 self.vel = self.vel + self.accel * 0.01
                 self.pos = np.array([Xt_c_e, Yt_c_e, 0]) + self.vel * 0.01
-                
+
                 Xt_c_e = self.pos[0]
                 Yt_c_e = self.pos[1]
-                
+
 
                 A = [[] for _ in range(Ln)]  # List of empty lists
 
@@ -414,13 +447,13 @@ class Sensor_fusion:
                             QDD += 1
                 # print(A)
                 KK = np.zeros((6,4))
-              
+
                 Pos = [[] for _ in range(Lp)]  # 2D list
                 PosB = [[] for _ in range(Lp)]  # 2D list
                 Prob2T = [[] for _ in range(Lp)]  # 2D list
                 PosC = [[] for _ in range(Lp)]
                 QQ = [[] for _ in range(Lp)]
-        
+
                 for PP in range(Lp):
                     Pos[PP] = np.array([]).reshape(-1, 2)
                     PosB[PP] = np.array([]).reshape(-1, 2)
@@ -435,7 +468,7 @@ class Sensor_fusion:
 
                     Temp = Prob2T[PP][:, 0].reshape(-1, 1) / Prob2T[PP][:, 1].reshape(-1, 1) * 2
                     ValM, IndM = np.sort(Temp, axis=0)[::-1], np.argsort(Temp, axis=0)[::-1]
-                    
+
                     TopI = 0
                     # while TopI < len(ValM) and ValM[TopI][0] > 1:
                     while (ValM[TopI] > 1) and (ValM[TopI] > (ValM[-1] * 1)):
@@ -472,19 +505,19 @@ class Sensor_fusion:
 
                 for ls in range(Lp):
                     biasV[ls] = np.mean(QQ[ls][AT, indi[0]])
-                    
+
                 # Lk = 0
                 # C = np.zeros((48, 3))
                 # Z = np.zeros((48, 1))
                 # for p in range(4):
-                #     for n in range(4):    
+                #     for n in range(4):
                 #         for m in range(4):
                 #             if n != m:
                 #                 if n > 100:
                 #                     continue
-                #                 else: 
-                                    
-                                
+                #                 else:
+
+
                 dist_n = self.UWB['dist']
                 dist_n[indi[0], :] += biasV
 
@@ -515,7 +548,7 @@ class Sensor_fusion:
                     ang = np.array([self.IMU['ang']['x'], self.IMU['ang']['y'], self.IMU['ang']['z']])
                     self.centerest_a_aver = np.append(self.centerest_a_aver, np.array([Xt_c_e, Yt_c_e]).T, axis=0)
                     self.headingest_a_aver = np.append(self.headingest_a_aver, [heading_est], axis=0)
-               
+
                 # 가정: accelerometer_data, gyroscope_data는 각각 가속도, 각속도 측정값을 포함하는 numpy 배열입니다.
                 # Sampling period in seconds
                 dt = 0.01
@@ -526,35 +559,35 @@ class Sensor_fusion:
 
                 # Get orientation (as quaternion)
                 orientation = madgwick_filter.q
-                
+
                 self.vel = madgwick_filter.vel
                 self.pos = madgwick_filter.pos
 
                 # Convert output list to numpy array
                 orientation_output = np.array([orientation.w, orientation.i, orientation.j, orientation.k])
-                
+
                 from scipy.spatial.transform import Rotation as R
 
                 rotation = R.from_quat(orientation_output)
                 euler_angles = rotation.as_euler('ZYX')  # ZYX order is commonly used in navigation.
                 yaw = euler_angles[0]  # yaw is the first element
-                
+
                 heading_est = heading_est + yaw
-                
-                
+
+
                 # print(self.IMU['ang']['x']-self.gyro_bias[0],"  ", self.IMU['ang']['y']-self.gyro_bias[1],"  ", self.IMU['ang']['z']-self.gyro_bias[2])
                 tag_pos_est_aver = self.get_tag_pos(self.centerest_a_aver[self.r, 0] + 1j*self.centerest_a_aver[self.r, 1], self.headingest_a_aver[self.r], self.tag_pos_b)
-                K_Xt_c_e = self.pos[0] 
+                K_Xt_c_e = self.pos[0]
                 K_Yt_c_e = self.pos[1]
-                
-                # K_Xt_c_e = self.centerest_a_aver[self.r, 0] 
+
+                # K_Xt_c_e = self.centerest_a_aver[self.r, 0]
                 # K_Yt_c_e = self.centerest_a_aver[self.r, 1]
                 K_tag_pos_est = self.tag_pos_b * np.exp(1j*(self.headingest_a_aver[self.r])) + K_Xt_c_e + 1j*K_Yt_c_e
                 K_tag_pos_est = K_tag_pos_est.reshape(1, -1)
                 K_heading_est = self.headingest_a_aver[self.r]
                 self.K_centerest_a_aver = np.append(self.K_centerest_a_aver, [self.centerest_a_aver[self.r, :]], axis=0)
                 self.K_headingest_a_aver = np.append(self.K_headingest_a_aver, [self.headingest_a_aver[self.r]], axis=0)
-                
+
                 # Figure 1
                 plt.figure(2)
                 plt.clf()  # Clear the figure
@@ -576,7 +609,7 @@ class Sensor_fusion:
                 plt.text(tag_e[1][0], tag_e[1][1], "2", fontsize=12, color='blue')
                 plt.text(tag_e[2][0], tag_e[2][1], "3", fontsize=12, color='blue')
                 plt.text(tag_e[3][0], tag_e[3][1], "4", fontsize=12, color='blue')
-                
+
                 plt.plot(self.pos[0], self.pos[1], 'k*')
 
                 plt.plot(K_tag_e[0][0], K_tag_e[0][1], 'ro')
@@ -607,16 +640,16 @@ class Sensor_fusion:
                     pass
 
                 plt.pause(0.01)
-                
+
                 self.r += 1
             except KeyError:
                 pass
-            
+
         plt.show()
-        
-        
-    
-    
+
+
+
+
 if __name__ == '__main__':
     fusion = Sensor_fusion()
     fusion.main()

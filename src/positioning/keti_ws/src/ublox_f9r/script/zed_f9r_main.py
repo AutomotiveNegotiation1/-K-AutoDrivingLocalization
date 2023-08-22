@@ -1,4 +1,37 @@
 #!/usr/bin/env python3.8
+###############################################################################
+#
+# Copyright (C) 2023 - 2028 KETI, All rights reserved.
+#                           (Korea Electronics Technology Institute)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# Use of the Software is limited solely to applications:
+# (a) running for Korean Government Project, or
+# (b) that interact with KETI project/platform.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# KETI BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+# OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# Except as contained in this notice, the name of the KETI shall not be used
+# in advertising or otherwise to promote the sale, use or other dealings in
+# this Software without prior written authorization from KETI.
+#
+##############################################################################
+
 """ For more info on the documentation go to https://www.u-blox.com/sites/default/files/ZED-F9R-01B_Datasheet_UBX-19054459.pdf
 """
 
@@ -41,9 +74,9 @@ class gnss_data:
     headVeh = 0
     vel_ned = [0, 0, 0]
     numSV = 0
-    
+
 class zed_f9r_localizer:
-    
+
     def __init__(self):
         # initialize the node
         rospy.init_node('Localizer_ZED_F9R', anonymous=False)
@@ -69,12 +102,12 @@ class zed_f9r_localizer:
             stopbits   = SYS_DEFS.stopbits,
             bytesize   = SYS_DEFS.bytesize
         )
-        
+
         # initialize the variation
         self.imuData = imu_data()
         self.gnssData = gnss_data()
-        
-    
+
+
     def main(self):
         """
         Initialize port and zed-f9r api
@@ -84,7 +117,7 @@ class zed_f9r_localizer:
         :returns: none
 
         """
-        
+
         global serialReadLine
 
         #TODO implemnt functionality dynamic configuration
@@ -105,7 +138,7 @@ class zed_f9r_localizer:
             rospy.loginfo("Can't open port: "+ str(self.serialPortZED_F9R.name))
 
         try:
-            
+
             while not rospy.is_shutdown():
                 # just read everything from serial port
                 serialReadLine = self.serialPortZED_F9R.read()
@@ -128,7 +161,7 @@ class zed_f9r_localizer:
             if "reset" in serialReadLine:
                 rospy.loginfo("succesfully closed ")
                 self.serialPortZED_F9R.close()
-        
+
     def splitByRawData(self, serialPortZED_F9R):
         """
         Split network data such us DATA Frame of IMU, by Hexa data
@@ -142,7 +175,7 @@ class zed_f9r_localizer:
         Buf = bytes(0)
 
         Buf = Buf + serialPortZED_F9R.read()
-        
+
         return Buf
 
     def pubblishCoordinatesIntoTopics(self, serialPortZED_F9R):
@@ -159,7 +192,7 @@ class zed_f9r_localizer:
         payload = []
         Buf = bytes(0)
         Buf = Buf + serialPortZED_F9R.read(2)
-        
+
         if(len(Buf) >= 1):
             if self.checkHeader(Buf):
                 Buf = Buf + serialPortZED_F9R.read(4)
@@ -185,7 +218,7 @@ class zed_f9r_localizer:
                         imuMsg.linear_acceleration.x = self.imuData.accel[0]
                         imuMsg.linear_acceleration.y = self.imuData.accel[1]
                         imuMsg.linear_acceleration.z = self.imuData.accel[2]
-                        
+
                         # rospy.loginfo("imuMsg :" + str(imuMsg))
                         pub_imu.publish(imuMsg)
 
@@ -214,12 +247,12 @@ class zed_f9r_localizer:
                         gnssMsg.pDOP = self.gnssData.pDop
                         gnssMsg.headVeh = self.gnssData.headVeh
                         pub_gnss.publish(gnssMsg)
-                        
+
 
                 Buf = bytes(0)
             else:
-                Buf = bytes(0)             
-                
+                Buf = bytes(0)
+
     def scale_int2float(self, x, scaler):
         y = (x & 0x7fffff) - (x & 0x800000)
         return float(y) * scaler
@@ -274,7 +307,7 @@ class zed_f9r_localizer:
                 tmpData[6:9] = [0, 0, 0]
 
         return tmpData
-    
+
     def ubx_nav_pvt(self, raw):
         global prev_time
         iTow = struct.unpack('<I', raw[0:4])[0]
@@ -327,8 +360,8 @@ class zed_f9r_localizer:
         return True
 
 
-                
-    def ublox_msg_decoding(self, ClassID, payload):   
+
+    def ublox_msg_decoding(self, ClassID, payload):
         if (ClassID == ZED_F9R_API_MESSAGES.UBX_ESF_RAW):
             esf_meas = self.ubx_esf_raw(payload)
             # print('0', time.perf_counter(), esf_meas[0], esf_meas[1], esf_meas[2], esf_meas[3], esf_meas[4], esf_meas[5], esf_meas[6], esf_meas[7], esf_meas[8])
@@ -349,7 +382,7 @@ class zed_f9r_localizer:
 
         return True
 
-                
+
     def checkHeader(self, Buf):
         #print("checkHeader\n");
         return Buf == ZED_F9R_API_MESSAGES.CHECK_HEADER
@@ -367,7 +400,7 @@ class zed_f9r_localizer:
             return True
         else:
             return False
-    
+
     def updateDynamicConfiguration_SERIALPORT(self):
 
         """

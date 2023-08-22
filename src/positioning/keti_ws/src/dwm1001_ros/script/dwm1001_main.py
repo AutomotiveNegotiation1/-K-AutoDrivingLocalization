@@ -1,4 +1,36 @@
 #!/usr/bin/env python3.8
+###############################################################################
+#
+# Copyright (C) 2023 - 2028 KETI, All rights reserved.
+#                           (Korea Electronics Technology Institute)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# Use of the Software is limited solely to applications:
+# (a) running for Korean Government Project, or
+# (b) that interact with KETI project/platform.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# KETI BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+# OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# Except as contained in this notice, the name of the KETI shall not be used
+# in advertising or otherwise to promote the sale, use or other dealings in
+# this Software without prior written authorization from KETI.
+#
+##############################################################################
 """ For more info on the documentation go to https://www.decawave.com/sites/default/files/dwm1001-api-guide.pdf
 """
 
@@ -21,7 +53,7 @@ from localizer_dwm1001.srv         import Anchor_0
 
 
 class dwm1001_localizer:
-    
+
     def __init__(self):
         # initialize the node
         rospy.init_node('Localizer_DWM1001', anonymous=True)
@@ -48,12 +80,12 @@ class dwm1001_localizer:
             bytesize   = SYS_DEFS.bytesize
         )
         self.id = str(rospy.get_param('~frame_id'))
-        
+
         self.node_flag  = None
         self.verbose    = None
         self.pub_anchor = None
         self.pub_tag    = None
-        
+
         # Empty dictionary to store topics being published
         self.topics = {}
 
@@ -145,8 +177,8 @@ class dwm1001_localizer:
         :returns: none
 
         """
-        
-        
+
+
         anchor = Anchor()
         tag    = Tag()
         # loop trough the array given by the serial port
@@ -159,7 +191,7 @@ class dwm1001_localizer:
                 temp_anchor_number = networkDataArray[networkDataArray.index(network)]
                 # publish each anchor, add anchor number to the topic, so we can pubblish multiple anchors
                 # example /dwm1001/anchor0, the last digit is taken from AN0 and so on
-                
+
                 # construct the object for anchor(s)
                 anchor.header.stamp    = rospy.Time.now()
                 anchor.header.frame_id = str(rospy.get_param('~port'))
@@ -168,10 +200,10 @@ class dwm1001_localizer:
                 anchor.y.append(float(networkDataArray[networkDataArray.index(network) + 3]))
                 anchor.z .append(float(networkDataArray[networkDataArray.index(network) + 4]))
                 anchor.distanceFromTag.append(float(networkDataArray[networkDataArray.index(network) + 5]))
-                
+
                 if 'Anchor' not in self.topics :
                      self.topics['Anchor'] = rospy.Publisher('/dwm1001/anchor/{}'.format(anchor.header.frame_id), Anchor, queue_size=10)
-                     
+
                 self.topics['Anchor'].publish(anchor)
                 if self.verbose == None:
                     rospy.loginfo("Anchor: "
@@ -197,10 +229,10 @@ class dwm1001_localizer:
                 tag.x               = float(networkDataArray[networkDataArray.index(network) + 1])
                 tag.y               = float(networkDataArray[networkDataArray.index(network) + 2])
                 tag.z               = float(networkDataArray[networkDataArray.index(network) + 3])
-                
+
                 if 'Tag' not in self.topics :
                      self.topics['Tag'] = rospy.Publisher('/dwm1001/{}'.format(tag.header.frame_id), Tag, queue_size=1)
-                     
+
                 self.topics['Tag'].publish(tag)
                 if self.verbose == None:
                     rospy.loginfo("Tag: "
@@ -212,8 +244,8 @@ class dwm1001_localizer:
                                     + " z: "
                                     + str(tag.z))
                     self.verbose = True
-        
-            
+
+
 
 
 

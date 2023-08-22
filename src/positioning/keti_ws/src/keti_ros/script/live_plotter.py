@@ -1,4 +1,37 @@
 #!/usr/bin/env python3.8
+###############################################################################
+#
+# Copyright (C) 2023 - 2028 KETI, All rights reserved.
+#                           (Korea Electronics Technology Institute)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# Use of the Software is limited solely to applications:
+# (a) running for Korean Government Project, or
+# (b) that interact with KETI project/platform.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# KETI BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+# OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# Except as contained in this notice, the name of the KETI shall not be used
+# in advertising or otherwise to promote the sale, use or other dealings in
+# this Software without prior written authorization from KETI.
+#
+##############################################################################
+
 from __future__ import print_function
 
 import numpy as np
@@ -24,29 +57,29 @@ class LivePlotter(object):
         self.ax1 = self.fig.add_subplot(131)  # 첫 번째 서브플롯
         self.ax2 = self.fig.add_subplot(132)  # 두 번째 서브플롯
         self.ax3 = self.fig.add_subplot(133)  # 세 번째 서브플롯
-        
+
         self.ax1.set_title('1st UWB pos graph')
         self.ax2.set_title('2nd IMU pos graph')
         self.ax3.set_title('3rd Fusion pos graph')
-        
+
         self.ax1.grid(True)
         self.ax2.grid(True)
         self.ax3.grid(True)
-        
+
         x_ticks_ax1 = np.arange(-1, 3, 0.1)
         y_ticks_ax1 = np.arange(-2, 7, 0.1)
         self.ax1.set_xticks(x_ticks_ax1)
-        self.ax1.set_yticks(y_ticks_ax1)  
+        self.ax1.set_yticks(y_ticks_ax1)
 
         x_ticks_ax2 = np.arange(-1, 3, 0.1)
         y_ticks_ax2 = np.arange(-2, 7, 0.1)
         self.ax2.set_xticks(x_ticks_ax2)
         self.ax2.set_yticks(y_ticks_ax2)
-        
+
         x_ticks_ax3 = np.arange(-1, 3, 0.1)
         y_ticks_ax3 = np.arange(-2, 7, 0.1)
         self.ax3.set_xticks(x_ticks_ax3)
-        self.ax3.set_yticks(y_ticks_ax3)      
+        self.ax3.set_yticks(y_ticks_ax3)
 
         self.line1_o, = self.ax1.plot([], [], 'o')
         self.line2_o, = self.ax2.plot([], [], 'o')
@@ -60,7 +93,7 @@ class LivePlotter(object):
 
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.master)
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        
+
     def update_color(self, id):
         self.color = None
         if id == 'DWM1001_tag1':
@@ -73,11 +106,11 @@ class LivePlotter(object):
             self.color = 'tab:cyan'
         print(self.color)
         return self.color
-            
-            
-        
-        
-        
+
+
+
+
+
     def update_plot(self):
         id_1, x_data_1, y_data_1 = self.sensor_fusion.get_anchor_data()
         id_2, x_data_2, y_data_2 = self.sensor_fusion.get_uwb_data()
@@ -89,7 +122,7 @@ class LivePlotter(object):
         # self.line1_o.set_label(id_2)
         self.line3_o.set_data(x_data_4, y_data_4)
         # self.line1_o.set_label(id_2)
-        
+
         self.line1_up.set_data(x_data_1, y_data_1)
 #        self.line2_up.set_data(x_data_1, y_data_1)
         self.line3_up.set_data(x_data_1, y_data_1)

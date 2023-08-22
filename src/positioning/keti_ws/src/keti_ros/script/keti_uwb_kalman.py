@@ -1,4 +1,37 @@
 #!/usr/bin/env python3.8
+###############################################################################
+#
+# Copyright (C) 2023 - 2028 KETI, All rights reserved.
+#                           (Korea Electronics Technology Institute)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# Use of the Software is limited solely to applications:
+# (a) running for Korean Government Project, or
+# (b) that interact with KETI project/platform.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# KETI BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+# OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# Except as contained in this notice, the name of the KETI shall not be used
+# in advertising or otherwise to promote the sale, use or other dealings in
+# this Software without prior written authorization from KETI.
+#
+##############################################################################
+
 # coding=utf-8
 #
 # * Origincal Code
@@ -30,7 +63,7 @@ class UWBKalmanFilter(object):
 
 
     def predict(self):
-        
+
         self.xp = np.dot(self.A, self.x)
         # print("self.xp", self.xp.shape)
         # print("self.xp", self.xp)
@@ -54,10 +87,10 @@ class UWBKalmanFilter(object):
         # print("result :", (self.xp + np.dot(self.K, (self.z - np.dot(self.H, self.xp)))).shape)
         self.x = self.xp + np.dot(self.K, (self.z - np.dot(self.H, self.xp)))
         self.P = self.Pp - np.dot(np.dot(self.K, self.H), self.Pp)
-        
+
         return self.x
-        
-        
+
+
     def result(self):
         phi = np.arctan2(2 * (self.x[2] * self.x[3] + self.x[0] * self.x[1]), 1 - 2 * (self.x[1] ** 2 + self.x[2] ** 2))
         theta = -np.arcsin(2 * (self.x[1] * self.x[3] - self.x[0] * self.x[2]))

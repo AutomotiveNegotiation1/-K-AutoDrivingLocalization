@@ -1,4 +1,38 @@
 #!/usr/bin/env python3.8
+
+###############################################################################
+#
+# Copyright (C) 2023 - 2028 KETI, All rights reserved.
+#                           (Korea Electronics Technology Institute)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# Use of the Software is limited solely to applications:
+# (a) running for Korean Government Project, or
+# (b) that interact with KETI project/platform.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# KETI BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+# OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# Except as contained in this notice, the name of the KETI shall not be used
+# in advertising or otherwise to promote the sale, use or other dealings in
+# this Software without prior written authorization from KETI.
+#
+##############################################################################
+
 from ctypes.wintypes import PPOINTL
 import rospy
 import numpy as np
@@ -13,30 +47,30 @@ class Sensor_fusion:
     def __init__(self):
         # ROS 노드 초기화
         rospy.init_node("sensor_fusion_node")
-        
+
         # self.id_order = ['991B', '439D', '9B8F', '89A4'] # The desired order of uwb id numbers
         self.id_order = None
         self.id_order_check = False
-        
+
         self.UWB = dict()
         self.uwb0 = dict()
         self.uwb1 = dict()
         self.uwb2 = dict()
         self.uwb3 = dict()
-        
+
         # self.xt_b = np.array([0.05, 0.05, -0.05, -0.05])
         # self.yt_b = np.array([0.05, -0.05, 0.05, -0.05])
         self.xt_b = np.array([-0.09, 0.09, -0.09, 0.09])
         self.yt_b = np.array([0.12, 0.12, -0.12, -0.12])
-        
-        
+
+
         self.xt_b_center = np.mean(self.xt_b);
         self.yt_b_center = np.mean(self.yt_b);
         self.angles_from_heading = np.arctan2(self.yt_b, self.xt_b);
         self.rl = np.sqrt(self.xt_b**2+self.yt_b**2)
         self.tag_pos_b = self.xt_b + 1j*self.yt_b;
         self.r = 0
-        
+
         self.heading_est_a = np.array([]).reshape(-1 ,1)
         self.centerest_a = np.array([]).reshape(-1, 2)
         self.centerest_a_aver = np.array([]).reshape(-1, 2)
@@ -44,7 +78,7 @@ class Sensor_fusion:
         self.headingest_a_aver = np.array([]).reshape(-1 ,1)
         self.K_centerest_a_aver = np.array([]).reshape(-1, 2)
         self.K_headingest_a_aver = np.array([]).reshape(-1 ,1)
-        
+
         # ROS 노드 구독
         # rospy.Subscriber("/zed_f9r/imu", Imu, self.ImuCallback)
         rospy.Subscriber("/dwm1001/anchor/ttyUWB0", Anchor, self.Anchorcallback0)
@@ -55,8 +89,8 @@ class Sensor_fusion:
         # rospy.Subscriber("/dwm1001/ttyUWB1", Tag, self.TagCallback)
         # rospy.Subscriber("/dwm1001/ttyUWB2", Tag, self.TagCallback)
         # rospy.Subscriber("/dwm1001/ttyUWB3", Tag, self.TagCallback)
-        
-        
+
+
     def create_id_order(self, ids):
         if self.id_order is None:
             self.id_order = ids
@@ -68,7 +102,7 @@ class Sensor_fusion:
 
                 # 이 요소들을 self.id_order에 추가합니다.
                 self.id_order.extend(difference)
-                
+
     # def uwb_sort(self, num, msg, uwb):
     #     self.create_id_order(msg.id)
     #     uwb['tag_id'] = num
@@ -97,7 +131,7 @@ class Sensor_fusion:
             uwb['dist'] = [msg.distanceFromTag[i] for i in order_indices]
         except ValueError:
             pass
-        
+
     def uwb_init(self):
         self.UWB['dist'] = np.array([self.uwb0['dist'], self.uwb1['dist'], self.uwb2['dist'], self.uwb3['dist']])
         self.UWB['dist'] = self.UWB['dist'].T
@@ -117,7 +151,7 @@ class Sensor_fusion:
             self.UWB['x'] = self.UWB['x']
             self.UWB['y'] = self.UWB['y']
             self.UWB['z'] = self.UWB['z']
-            
+
 
         # print(self.UWB['x'])
         # print(self.UWB['y'])
@@ -131,10 +165,10 @@ class Sensor_fusion:
 
     def Anchorcallback2(self, msg):
         self.uwb_sort(2, msg, self.uwb2)
-    
+
     def Anchorcallback3(self, msg):
         self.uwb_sort(3, msg, self.uwb3)
-        
+
 
     def GetUWBPos_v1(self, xa, ya, dist, angles_from_heading):
         # print(angles_from_heading)
@@ -150,7 +184,7 @@ class Sensor_fusion:
                             A[Li, 2*q:2*q+2] = [2*(xa[n]-xa[m]), 2*(ya[n]-ya[m])]
                             Y[Li, 0] = dist[n, p]**2 + dist[n, q]**2 - dist[m, p]**2 - dist[m, q]**2 - 2*xa[n]**2 + 2*xa[m]**2 - 2*ya[n]**2 + 2*ya[m]**2
                             Li += 1
-                            
+
 
         np.set_printoptions(threshold=np.inf)
         # print("GUPv1-A :", A)
@@ -158,7 +192,7 @@ class Sensor_fusion:
         # Calc. Tag position
         Res = np.linalg.inv(A.T @ A) @ A.T @ Y
         Xt_e = -Res[::2]
-        Yt_e = -Res[1::2]      
+        Yt_e = -Res[1::2]
 
         # Estimated Center Position
         Xt_c_e = np.mean(Xt_e)
@@ -168,14 +202,14 @@ class Sensor_fusion:
         tag_pos_est = Xt_e.T + 1j*Yt_e.T
         tag_arrow_est = np.sum((tag_pos_est - Xt_c_e - 1j*Yt_c_e) * np.exp(-1j*angles_from_heading))
         heading_est = np.arctan2(np.imag(tag_arrow_est), np.real(tag_arrow_est))
-        
+
         return tag_pos_est, heading_est
-    
+
     def GetUWBPosUpdate_v1(self, xa, ya, Xt_c_e, Yt_c_e, heading_est, rl, dist, angles_from_heading):
         Lj = 0
         B = np.zeros((48, 3))
         W = np.zeros((48, 1))
-        
+
         for p in range(4):
             for n in range(4):
                 for m in range(4):
@@ -196,12 +230,12 @@ class Sensor_fusion:
         heading_est = heading_est + Refined[2]
 
         return tag_center_pos_est, heading_est, Xt_c_e, Yt_c_e
-    
+
     def get_tag_pos(self, tag_center_pos_est, heading_est, tag_pos_b):
         tag_pos_est = tag_pos_b * np.exp(1j * heading_est) + tag_center_pos_est
         return tag_pos_est.reshape(1, -1)
 
-    
+
     def TwoAnchPos3(self, Xa, Ya, dist, tag_pos, EstCenter, anch_pos, dist_a):
         AA = np.sqrt((Xa[0] - Xa[1])**2 + (Ya[0] - Ya[1])**2)
         B = dist[0]
@@ -235,10 +269,10 @@ class Sensor_fusion:
         Y2S = np.sum((X2 - tag_pos.T)**2)
         Z1S = np.abs(np.sum((X1 - EstCenter.T)**2) - 0.5)
         Z2S = np.abs(np.sum((X2 - EstCenter.T)**2) - 0.5)
-        
+
         # Pos = np.array([[]])
         Prob = np.array([[]])
-        
+
 
         if (X1S + Y1S) > (X2S + Y2S):
             list_of_arrays = [X2.T, X1.T]
@@ -252,18 +286,18 @@ class Sensor_fusion:
             Pos = np.vstack(list_of_arrays)
             Prob = np.array([X1S + Y1S, X2S + Y2S]).reshape(-1, 1)
             # Prob = np.append(Prob, np.array([X1S + Y1S, X2S + Y2S]), axis=0)
-            
+
         # Pos = Pos.squeeze()
-        
+
         # Pos = np.unique(Pos, axis=0)
-            
+
         return Pos, Prob
 
     def TwoAnchPos4(self, Xa, Ya, dist, tag_pos, EstCenter, anch_pos, dist_a):
         AA = np.sqrt((Xa[0] - Xa[1])**2 + (Ya[0] - Ya[1])**2)
         B = dist[0]
         C = dist[1]
-        
+
         s1 = (AA+B+C)/2
         S2 = np.real(cmath.sqrt(s1*(s1-AA)*(s1-B)*(s1-C)))
         d = 2*S2/AA
@@ -291,10 +325,10 @@ class Sensor_fusion:
         Y2S = np.sum((X2 - tag_pos.T.reshape(-1, 1))**2)
         Z1S = np.abs(np.sum((X1 - EstCenter.T.reshape(-1, 1))**2) - 0.5)
         Z2S = np.abs(np.sum((X2 - EstCenter.T.reshape(-1, 1))**2) - 0.5)
-        
+
         # Pos = np.array([[]])
         Prob = np.array([[]])
-        
+
 
         if (X1S + Y1S) > (X2S + Y2S):
             list_of_arrays = [X2.T, X1.T]
@@ -308,19 +342,19 @@ class Sensor_fusion:
             Pos = np.vstack(list_of_arrays)
             Prob = np.array([X1S + Y1S, X2S + Y2S]).reshape(-1, 1)
             # Prob = np.append(Prob, np.array([X1S + Y1S, X2S + Y2S]), axis=0)
-            
+
         # Pos = Pos.squeeze()
-        
+
         # Pos = np.unique(Pos, axis=0)
-            
+
         return Pos, Prob
 
-        
+
     def main(self):
         Ln = 4
         Lp = 4
         self.average_len = 10
-        
+
         dist_log = []
 
         while not rospy.is_shutdown():
@@ -336,8 +370,8 @@ class Sensor_fusion:
                 # print("y :", self.UWB['y'])
                 # print("dist :", self.UWB['dist'])
                 anch_pos = np.array([x + 1j*y for x, y in zip(self.UWB['x'], self.UWB['y'])])
-                
-                
+
+
                 if self.r == 0:
                     tag_pos_est, heading_est = self.GetUWBPos_v1(self.UWB['x'], self.UWB['y'], self.UWB['dist'], self.angles_from_heading)
                     print("r:0-tag_post_est: ",tag_pos_est)
@@ -347,29 +381,29 @@ class Sensor_fusion:
                     heading_est = K_heading_est
                     print("r:1~-K_tag_pos_est: ",K_tag_pos_est)
                     print("r:1~-K_heading_est: ",K_heading_est)
-                
+
                 # if np.isnan(tag_pos_est).all() and np.isnan(heading_est):
                     # continue
                 # test_tag = np.array([[np.real(tag), np.imag(tag)] for tag in tag_pos_est])
-                    
+
                 Xt_e = np.real(tag_pos_est)
                 Yt_e = np.imag(tag_pos_est)
                 print("Xt_e :", Xt_e)
                 print("Yt_e :", Yt_e)
-                
-                
+
+
                 Xt_c_e = np.mean(Xt_e)
                 Yt_c_e = np.mean(Yt_e)
                 print("Xt_c_e :", Xt_c_e)
                 print("Yt_c_e :", Yt_c_e)
-           
-                
+
+
                 # plt.figure(6)
                 # plt.clf()
                 # plt.plot(self.UWB['x'], self.UWB['y'], 'bo')
                 # plt.plot(Xt_e, Yt_e, 'r^')
                 # plt.show()
-                
+
                 # ## Check Blocked Anchor-Tag
                 # A1 = [3, 4, 5]
                 # A2 = [1, 2, 5]
@@ -388,13 +422,13 @@ class Sensor_fusion:
                             QDD += 1
                 # print(A)
                 KK = np.zeros((6,4))
-              
+
                 Pos = [[] for _ in range(Lp)]  # 2D list
                 PosB = [[] for _ in range(Lp)]  # 2D list
                 Prob2T = [[] for _ in range(Lp)]  # 2D list
                 PosC = [[] for _ in range(Lp)]
                 QQ = [[] for _ in range(Lp)]
-        
+
                 for PP in range(Lp):
                     print("num :", PP)
                     Pos[PP] = np.array([]).reshape(-1, 2)
@@ -420,7 +454,7 @@ class Sensor_fusion:
                     ValM, IndM = np.sort(Temp, axis=0)[::-1], np.argsort(Temp, axis=0)[::-1]
                     print("IndM :", IndM)
                     print("ValM :", ValM)
-                    
+
                     TopI = 0
                     # while TopI < len(ValM) and ValM[TopI][0] > 1:
                     while (ValM[TopI] > 1) and (ValM[TopI] > (ValM[-1] * 1)):
@@ -433,7 +467,7 @@ class Sensor_fusion:
                     # PosC[PP] = [np.array([x[0] + 1j*x[1]]) for x in Pos[PP]]
                     # QQ[PP] = np.abs(PosC[PP] - anch_pos) - self.UWB['dist'][:, PP].T
                     # KK += np.sum(QQ[PP])
-                    
+
                     # PosC[PP] = [np.array([x[0] + 1j*x[1]]) for x in Pos[PP]]
                     print("Pos :", Pos)
                     PosC[PP] = np.array([np.array([x[0]+1j*x[1]]) for x in Pos[PP]])
@@ -450,7 +484,7 @@ class Sensor_fusion:
                         print("1 :", np.abs(PosC[PP] - anch_pos))
                         print("2 :", anch_pos)
                         print("3 :", PosC[PP])
-                        
+
 
                     QQ[PP] = np.abs(PosC[PP] - anch_pos) - self.UWB['dist'][:, PP].T
                     print("QQ[PP] :",QQ[PP])
@@ -501,7 +535,7 @@ class Sensor_fusion:
                 print("tag_pos_est :", tag_pos_est)
                 self.heading_est_a = np.append(self.heading_est_a, [heading_est], axis=0)
                 self.centerest_a = np.append(self.centerest_a, np.array([Xt_c_e, Yt_c_e]).T, axis=0)
-                
+
                 if (self.r > (self.average_len*2)):
                     MeanA = np.mean(self.centerest_a[self.r-19:self.r-10, 0] + 1j*self.centerest_a[self.r-19:self.r-10, 1])
                     MeanB = np.mean(self.centerest_a[self.r-9:self.r, 0] + 1j*self.centerest_a[self.r-9:self.r, 1])
@@ -522,16 +556,16 @@ class Sensor_fusion:
                 K_heading_est = self.headingest_a_aver[self.r]
                 self.K_centerest_a_aver = np.append(self.K_centerest_a_aver, [self.centerest_a_aver[self.r, :]], axis=0)
                 self.K_headingest_a_aver = np.append(self.K_headingest_a_aver, [self.headingest_a_aver[self.r]], axis=0)
-                
+
                 print("tag_pos_est_aver :", tag_pos_est_aver)
                 print("K_tag_pos_est :", K_tag_pos_est)
                 print("K_heading_est :", K_heading_est)
-                
+
 
                 # Figure 1
                 plt.figure(2)
                 plt.clf()  # Clear the figure
-                
+
                 plt.text(self.UWB['x'][0], self.UWB['y'][0], self.UWB['id'][0], fontsize=12, color='red')
                 plt.text(self.UWB['x'][1], self.UWB['y'][1], self.UWB['id'][1], fontsize=12, color='red')
                 plt.text(self.UWB['x'][2], self.UWB['y'][2], self.UWB['id'][2], fontsize=12, color='red')
@@ -548,7 +582,7 @@ class Sensor_fusion:
                 tag_e = np.array([[np.real(tag), np.imag(tag)] for tag in tag_pos_est]).T
                 K_tag_e = np.array([[np.real(K_tag), np.imag(K_tag)] for K_tag in K_tag_pos_est]).T
 
-                print(tag_e[0])                
+                print(tag_e[0])
                 plt.plot(tag_e[0][0], tag_e[0][1], 'bo')
                 plt.plot(tag_e[1][0], tag_e[1][1], 'b*')
                 plt.plot(tag_e[2][0], tag_e[2][1], 'bv')
@@ -593,28 +627,28 @@ class Sensor_fusion:
                 # K_heading_error = np.mean(np.abs(heading[InitLeng:] - K_headingest_a_aver[InitLeng:])) * 180 / np.pi
 
                 plt.pause(0.01)
-                
 
 
-                
+
+
                 # print(self.r)
-                
+
                 self.r += 1
             except KeyError:
                 pass
-            
+
         # # save_data = np.array(dist_log)
         # np.save('./dist_log_20230622_2.npy', save_data)
         # import scipy.io as sio
-        
+
         # data = np.load('./dist_log_20230622_2.npy')
-        
+
         # sio.savemat('./dist_log_20230622.mat', {'dist_log':data})
         plt.show()
-        
-        
-    
-    
+
+
+
+
 if __name__ == '__main__':
     fusion = Sensor_fusion()
     fusion.main()

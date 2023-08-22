@@ -1,3 +1,36 @@
+###############################################################################
+#
+# Copyright (C) 2023 - 2028 KETI, All rights reserved.
+#                           (Korea Electronics Technology Institute)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# Use of the Software is limited solely to applications:
+# (a) running for Korean Government Project, or
+# (b) that interact with KETI project/platform.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# KETI BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+# OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# Except as contained in this notice, the name of the KETI shall not be used
+# in advertising or otherwise to promote the sale, use or other dealings in
+# this Software without prior written authorization from KETI.
+#
+##############################################################################
+
 import numpy as np
 import cmath
 # from scipy import linalg
@@ -28,9 +61,9 @@ def TwoAnchPos3(Xa, Ya, dist, tag_pos, EstCenter, anch_pos, dist_a):
     Y2S = np.sum((X2 - tag_pos.T)**2)
     Z1S = np.abs(np.sum((X1 - EstCenter.T)**2) - 0.5)
     Z2S = np.abs(np.sum((X2 - EstCenter.T)**2) - 0.5)
-    
+
     Prob = np.array([[]])
-    
+
 
     if (X1S + Y1S) > (X2S + Y2S):
         list_of_arrays = [X2.T, X1.T]
@@ -40,9 +73,9 @@ def TwoAnchPos3(Xa, Ya, dist, tag_pos, EstCenter, anch_pos, dist_a):
         list_of_arrays = [X1.T, X2.T]
         Pos = np.vstack(list_of_arrays)
         Prob = np.array([X1S + Y1S, X2S + Y2S]).reshape(-1, 1)
-        
+
     return Pos, Prob
-    
+
 def GetMultiTagPosGen(Pos2C, Va, tag_pos_b, Va_ind):
     ia = np.zeros(len(Va), dtype=int)
     for a in range(len(Va)):
@@ -59,7 +92,7 @@ def GetMultiTagPosGen(Pos2C, Va, tag_pos_b, Va_ind):
     for P in range(Pos2C.shape[0]):
         # print("Pos2C", Pos2C[P, ia[P]])
         Est_C = Est_C + (Pos2C[P, ia[P]]) / NB
-        # print("Est_C_0", Est_C) 
+        # print("Est_C_0", Est_C)
     # print("Est_C_1", Est_C)
     Est_H_p = 0
     for P in range(Pos2C.shape[0]):
@@ -87,7 +120,7 @@ def GetInitPos(xa, ya, dist, anch_pos, tag_pos_b, Ln, Lp):
                 Pos2, Prob2 = TwoAnchPos3([xa[L1], xa[L2]], [ya[L1], ya[L2]], [dist[L1, Pn], dist[L2, Pn]], np.array([0, 0]), np.array([0, 0]), anch_pos[0][:Ln], dist[:, Pn])
                 Pos2C[Pn, 0] = Pos2[0, 0] + 1j * Pos2[0, 1]
                 Pos2C[Pn, 1] = Pos2[1, 0] + 1j * Pos2[1, 1]
-            
+
             for Qn in range(2 ** Lp):
                 Va = format(Qn, f'0{Lp}b')  # MATLAB의 dec2bin과 같은 기능을 수행하는 코드입니다.
                 F, C, H= GetMultiTagPosGen(Pos2C, Va, tag_pos_b[0], [1, 1, 1, 1])
@@ -102,7 +135,7 @@ def GetInitPos(xa, ya, dist, anch_pos, tag_pos_b, Ln, Lp):
                 Sel_F = Cand_F
                 Sel_C = Cand_C
                 Sel_H = Cand_H
-    
+
     heading_est = Sel_H
     tag_pos_est = Sel_C + tag_pos_b * np.exp(1j * Sel_H)
     return tag_pos_est, heading_est
@@ -151,7 +184,7 @@ def GetPos(xa, ya, dist, anch_pos, tag_pos_b, Ln, PP, PredPos):
                 Est_F.append(F)
                 Est_C.append(C)
                 Est_H.append(H)
-                
+
             val, ind = min((val, ind) for ind, val in enumerate(Est_F))
             Cand_F = val
             Cand_C = Est_C[ind]
@@ -160,7 +193,7 @@ def GetPos(xa, ya, dist, anch_pos, tag_pos_b, Ln, PP, PredPos):
                 Sel_F = Cand_F
                 Sel_C = Cand_C
                 Sel_H = Cand_H
-                
+
     heading_est = Sel_H
     tag_pos_est = Sel_C + tag_pos_b * np.exp(1j * Sel_H)
     return tag_pos_est, heading_est
@@ -178,7 +211,7 @@ def GetPos2(xa, ya, dist, RxID, tag_pos_b, Ln, PP, PredPos):
     for L1 in range(Ln):
         for L2 in range(L1 + 1, Ln):
             for Pn in range(PP, PP+1):
-                Pos2, Prob2 = TwoAnchPos3([xa[L1], xa[L2]], [ya[L1], ya[L2]], 
+                Pos2, Prob2 = TwoAnchPos3([xa[L1], xa[L2]], [ya[L1], ya[L2]],
                                           [dist[L1], dist[L2]], np.array([0, 0]), np.array([0, 0]),
                                           xa + 1j * ya, dist)
                 Pos2C[Pn, 0] = complex(Pos2[0, 0], Pos2[0, 1])
@@ -203,12 +236,12 @@ def GetPos2(xa, ya, dist, RxID, tag_pos_b, Ln, PP, PredPos):
             Cand_H = Est_H[ind]
             # print("Cand_C",Cand_C)
             # print("Cand_H",Cand_H)
-                
+
             if Sel_F > Cand_F:
                 Sel_F = Cand_F
                 Sel_C = Cand_C
                 Sel_H = Cand_H
-                
+
                 cand_tag_pos = Pos2C[PP, ind]
 
     heading_est = Sel_H
