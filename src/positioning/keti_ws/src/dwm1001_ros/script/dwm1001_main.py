@@ -204,7 +204,6 @@ class dwm1001_localizer:
                 if 'Anchor' not in self.topics :
                      self.topics['Anchor'] = rospy.Publisher('/dwm1001/anchor/{}'.format(anchor.header.frame_id), Anchor, queue_size=10)
 
-                self.topics['Anchor'].publish(anchor)
                 if self.verbose == None:
                     rospy.loginfo("Anchor: "
                                     + str(anchor.header.frame_id)
@@ -219,7 +218,6 @@ class dwm1001_localizer:
                                     + " dist: "
                                     + str(anchor.distanceFromTag))
 
-
             elif 'POS' in network:
                 # publish tag
                 # construct the object for the tag
@@ -233,7 +231,6 @@ class dwm1001_localizer:
                 if 'Tag' not in self.topics :
                      self.topics['Tag'] = rospy.Publisher('/dwm1001/{}'.format(tag.header.frame_id), Tag, queue_size=1)
 
-                self.topics['Tag'].publish(tag)
                 if self.verbose == None:
                     rospy.loginfo("Tag: "
                                     + str(tag.header.frame_id)
@@ -244,7 +241,9 @@ class dwm1001_localizer:
                                     + " z: "
                                     + str(tag.z))
                     self.verbose = True
-
+        
+        self.topics['Anchor'].publish(anchor)
+        self.topics['Tag'].publish(tag)
 
 
 
