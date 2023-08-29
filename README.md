@@ -1,6 +1,9 @@
 # [KETI]
  - update -K-AutoDrivingLocalization algorithm v1.0
 #
+
+# install
+https://raw.githubusercontent.com/AutomotiveNegotiation1/-K-AutoDrivingLocalization/main/Makefile?token=GHSAT0AAAAAACG3ZQSN6S4WY3MDU6IWYXVAZHNJVSA
 ## 1. 브랜치 운영 규칙
   |브랜치 유형|의미|담당자|비고|
   |:----------:|:----:|:-----:|:----|
