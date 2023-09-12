@@ -1,8 +1,0 @@
-prefix=/media/keti/data/git/-K-AutoDrivingLocalization/src/positioning/keti_ws/install
-
-Name: keti_ros
-Description: Description of keti_ros
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
