@@ -44,16 +44,33 @@ MainWindow::~MainWindow()
 }
 void MainWindow::spinFor(std::chrono::milliseconds timeout)
 {
+    RosKapDataPacket* earliestPacket = nullptr;
+    UwbSubscriber* correspondingSubscriber = nullptr;  // <-- Add this line to remember the subscriber
     ROS_INFO("Start spinFor...");
-    RosKapDataPacket rosPacket = m_kapCallback.next(timeout);  // 각 KapCallback에서 다음 데이터 패킷을 조회합니다.
-
-    // 데이터 패킷이 비어 있지 않은 경우
-    if (!rosPacket.second.empty())
+    
+    for (auto &cb : m_callbacks)
     {
-        // 모든 등록된 콜백을 순회하며 호출합니다.
-        for (auto &cb : m_callbacks)
+        if (!cb->getDataEmpty())
         {
-            Operator(rosPacket.second, rosPacket.first);
+            RosKapDataPacket rosPacket = cb->m_kapCallback->next(timeout);
+            
+            // 첫 번째 패킷 또는 이전에 발견된 패킷보다 더 이른 패킷을 찾는 경우
+            if (!earliestPacket || rosPacket.second.stamp < earliestPacket->second.stamp)
+            {
+                earliestPacket = &rosPacket;
+                correspondingSubscriber = cb;  // <-- Update the subscriber
+            }
+        }
+    }
+
+    // 최소 타임스탬프 패킷을 찾은 경우 Operator 함수에 전달하고 pop
+    if (earliestPacket)
+    {
+        Operator(earliestPacket->second, earliestPacket->first);
+        
+        // TODO: pop 함수를 호출하여 earliestPacket 삭제
+        if(correspondingSubscriber) {
+            correspondingSubscriber->m_kapCallback->pop(*earliestPacket);
         }
     }
 }

@@ -59,18 +59,26 @@ static creal_T prevTagPos[4];
 static std::string tagNum;
 
 
-static creal_T argInit_creal_T(void)
+static creal_T argInit_creal_T(int idx)
 {
     creal_T result;
     std::vector<double> xt_b = {-0.525, 0.525, -0.525, 0.525};
     std::vector<double> yt_b = {0.505, 0.505, -0.505, -0.505};
 
-    for (size_t i = 0; i < xt_b.size(); ++i) {
-        result.re = xt_b[i];
-        result.im = yt_b[i];
+    if (idx < xt_b.size()) {
+        result.re = xt_b[idx];
+        result.im = yt_b[idx];
     }
     return result;
-};
+}
+
+static void argInit_1x4_creal_T(creal_T result[4])
+{
+    /* Loop over the array to initialize each element. */
+    for (int idx1 = 0; idx1 < 4; idx1++) {
+        result[idx1] = argInit_creal_T(idx1);
+    }
+}
 
 static creal_T argInit_creal_preT(void)
 {
@@ -85,14 +93,6 @@ static creal_T argInit_creal_preT(void)
     return result;
 };
 
-static void argInit_1x4_creal_T(creal_T result[4])
-{
-    int idx1;
-    /* Loop over the array to initialize each element. */
-    for (idx1 = 0; idx1 < 4; idx1++) {
-        result[idx1] = argInit_creal_T();
-    }
-};
 
 static void argInit_1x4_creal_preT(creal_T result[4])
 {
@@ -113,6 +113,7 @@ struct Operator
     {
         std::stringstream ss;
         std::stringstream ss2;
+        bool flag = false;
         
         UwbSubscriber_setRxid(packet);  // 정확한 함수 호출
 
@@ -141,9 +142,13 @@ struct Operator
         const double RxDistin[6] = {packet.RxDist[0], packet.RxDist[1], packet.RxDist[2], packet.RxDist[3], packet.RxDist[4], packet.RxDist[5]};
         double s_time = timestamp.toSec();
         double UWBout[21];
-        double prevTagHeading = 0;
-        argInit_1x4_creal_T(tag_pos_b);
-        argInit_1x4_creal_preT(prevTagPos);
+        double prevTagHeading;
+        if (flag == false){
+            prevTagHeading = 0;
+            argInit_1x4_creal_T(tag_pos_b);
+            argInit_1x4_creal_preT(prevTagPos);
+            flag = true;
+        }
 
         UWBpos6(Ln, Lp, LnC, TagNum, Nanchor, RxIDin, RxDistin, s_time, tag_pos_b, xain, yain, prevTagPos, prevTagHeading, UWBout);
 
@@ -242,7 +247,8 @@ struct Operator
                 RxID_list.push_back(i);
             }
         }   
-    }
+    } 
+
 };
 
 struct UwbSubscriber 

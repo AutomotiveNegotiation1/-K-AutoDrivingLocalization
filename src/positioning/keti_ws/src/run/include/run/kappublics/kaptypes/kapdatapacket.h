@@ -50,7 +50,8 @@ struct KapDataPacket
     std::vector<double> RxID;
     std::vector<double> RxDist;
 
-    KapDataPacket(){} // constructor that initializes d to nullptr
+    KapDataPacket(){
+    } // constructor that initializes d to nullptr
 
     bool empty() const {
         return stamp.isZero() ||                // ros::Time의 isZero() 함수는 시간이 0인지 확인합니다.
