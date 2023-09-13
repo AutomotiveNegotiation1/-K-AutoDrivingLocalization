@@ -35,12 +35,11 @@
 #define KAPDATAPACKET_H
 
 #include <vector>
-#include <map>
 #include <ros/time.h>
+#include <run/Anchor.h>
 
 struct KapDataPacket
 {
-    ros::Time stamp;
     std::string frame_id;
     std::vector<std::string> id;
     std::vector<double> x;
@@ -50,24 +49,40 @@ struct KapDataPacket
     std::vector<double> RxID;
     std::vector<double> RxDist;
 
-    KapDataPacket(){
-    } // constructor that initializes d to nullptr
+     // 기본 생성자
+    KapDataPacket() = default;
+
+    KapDataPacket(const run::Anchor::ConstPtr& msg) : 
+        RxID(6, 0.0),     // 6개의 0.0으로 RxID 벡터 초기화
+        RxDist(6, 0.0)   // 6개의 0.0으로 RxDist 벡터 초기화
+    {
+        frame_id = msg->header.frame_id;
+        
+        id.assign(msg->id.begin(), msg->id.end());
+        for (const auto& val : id) {
+            std::cout << val << " ";
+        }
+        std::cout << std::endl;
+        x.assign(msg->x.begin(), msg->x.end());
+        y.assign(msg->y.begin(), msg->y.end());
+        z.assign(msg->z.begin(), msg->z.end());
+        distanceFromTag.assign(msg->distanceFromTag.begin(), msg->distanceFromTag.end());
+        // RxID와 RxDist는 이미 초기화됩니다.
+    }
 
     bool empty() const {
-        return stamp.isZero() ||                // ros::Time의 isZero() 함수는 시간이 0인지 확인합니다.
-            frame_id.empty() ||
-            id.empty() ||
-            x.empty() ||
-            y.empty() ||
-            z.empty() ||
-            distanceFromTag.empty() ||
-            RxID.empty() ||
-            RxDist.empty();
+        return frame_id.empty() ||
+               id.empty() ||
+               x.empty() ||
+               y.empty() ||
+               z.empty() ||
+               distanceFromTag.empty() ||
+               RxID.empty() ||
+               RxDist.empty();
     }
 
     friend bool operator==(const KapDataPacket& lhs, const KapDataPacket& rhs) {
-        return lhs.stamp == rhs.stamp &&
-               lhs.frame_id == rhs.frame_id &&
+        return lhs.frame_id == rhs.frame_id &&
                lhs.id == rhs.id &&
                lhs.x == rhs.x &&
                lhs.y == rhs.y &&
@@ -75,7 +90,7 @@ struct KapDataPacket
                lhs.distanceFromTag == rhs.distanceFromTag &&
                lhs.RxID == rhs.RxID &&
                lhs.RxDist == rhs.RxDist;
-        // You can add conditions for other members if necessary.
+        // 필요한 경우 다른 멤버에 대한 조건을 추가할 수 있습니다.
     }
 };
 

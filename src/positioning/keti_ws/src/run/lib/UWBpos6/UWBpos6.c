@@ -97,27 +97,27 @@ void UWBpos6(double Ln, double Lp, double LnC, double TagNum, double Nanchor,
              const double yain[6], const creal_T prevTagPos[4],
              double prevTagHeading, double UWBout[21])
 {
-  printf("------------------------------------------------------------------\n");
-  printf("Ln: %lf\n", Ln);
-  printf("Lp: %lf\n", Lp);
-  printf("LnC: %lf\n", LnC);
-  printf("TagNum: %lf\n", TagNum);
-  printf("Nanchor: %lf\n", Nanchor);
-  printf("s_time: %lf\n", s_time);
-  printf("prevTagHeading: %lf\n", prevTagHeading);
+  // printf("------------------------------------------------------------------\n");
+  // printf("Ln: %lf\n", Ln);
+  // printf("Lp: %lf\n", Lp);
+  // printf("LnC: %lf\n", LnC);
+  // printf("TagNum: %lf\n", TagNum);
+  // printf("Nanchor: %lf\n", Nanchor);
+  // printf("s_time: %lf\n", s_time);
+  // printf("prevTagHeading: %lf\n", prevTagHeading);
 
-  for (int i = 0; i < 6; i++) {
-      printf("RxIDin[%d]: %lf\n", i, RxIDin[i]);
-      printf("RxDistin[%d]: %lf\n", i, RxDistin[i]);
-      printf("xain[%d]: %lf\n", i, xain[i]);
-      printf("yain[%d]: %lf\n", i, yain[i]);
-  }
+  // for (int i = 0; i < 6; i++) {
+  //     printf("RxIDin[%d]: %lf\n", i, RxIDin[i]);
+  //     printf("RxDistin[%d]: %lf\n", i, RxDistin[i]);
+  //     printf("xain[%d]: %lf\n", i, xain[i]);
+  //     printf("yain[%d]: %lf\n", i, yain[i]);
+  // }
 
-  for (int i = 0; i < 4; i++) {
-      printf("tag_pos_b[%d]: %lf + %lfi\n", i, tag_pos_b[i].re, tag_pos_b[i].im);
-      printf("prevTagPos[%d]: %lf + %lfi\n", i, prevTagPos[i].re, prevTagPos[i].im);
-  }
-  printf("------------------------------------------------------------------\n");
+  // for (int i = 0; i < 4; i++) {
+  //     printf("tag_pos_b[%d]: %lf + %lfi\n", i, tag_pos_b[i].re, tag_pos_b[i].im);
+  //     printf("prevTagPos[%d]: %lf + %lfi\n", i, prevTagPos[i].re, prevTagPos[i].im);
+  // }
+  // printf("------------------------------------------------------------------\n");
   emxArray_creal_T *b_r;
   emxArray_creal_T *x;
   emxArray_real_T *DistPredicted;
@@ -301,7 +301,7 @@ void UWBpos6(double Ln, double Lp, double LnC, double TagNum, double Nanchor,
       /*          end */
     }
   }
-  if (TagNum == 4.0) {
+  if (TagNum == 4) {
     creal_T dc;
     creal_T tag_center_pos_est_tmp;
     double MeanA_im;

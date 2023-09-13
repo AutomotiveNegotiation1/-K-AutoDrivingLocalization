@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
             run::Anchor::ConstPtr uwb_data = message.instantiate<run::Anchor>();
             if (uwb_data != NULL) {
                 publishers[message.getTopic()].publish(uwb_data);
-                ketiPs->spinFor(std::chrono::milliseconds(100));  // I assume you meant to use std::chrono::milliseconds
+                ketiPs->spinFor();  // I assume you meant to use std::chrono::milliseconds
                 ros::spinOnce();
             }
         }
@@ -88,6 +88,7 @@ int main(int argc, char** argv) {
     }
  
     bag.close();
+    ROS_INFO("Finish...");
     delete ketiPs;
     return 0;
 }
