@@ -104,6 +104,8 @@ struct ComplexNumber {
 struct PosDataPacket {
     std::vector<creal_T> tag_pos_est = std::vector<creal_T>(4);
     std::vector<creal_T> tag_pos_est_aver = std::vector<creal_T>(4);
+    std::vector<double> x;
+    std::vector<double> y;
     double heading_est;
     double headingest_a_aver_v;
 };

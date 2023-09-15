@@ -1,11 +1,10 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    position(nullptr)
 {
-    ROS_INFO("Create Positioning object...");
     std::srand(QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0);
     ui->setupUi(this);
     
@@ -55,16 +54,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-  ROS_INFO("Cleaning up ...");
-  
-  // m_callbacks의 각 요소에 대한 메모리 할당 반환
-  for(auto &cb : m_callbacks) {
-      delete cb;
-  }
-  m_callbacks.clear();  // 옵션: 리스트를 비운다
-  
-  UWBpos6_terminate();
-  delete ui;
 }
 
 void MainWindow::titleDoubleClick(QMouseEvent* event)
@@ -184,17 +173,46 @@ void MainWindow::mouseWheel()
     ui->customPlot->axisRect()->setRangeZoom(Qt::Horizontal|Qt::Vertical);
 }
 
+
+void MainWindow::onNewPositionData(const PosDataPacket& data) {
+  qDebug() << "onNewPositionData called.";
+  position = &data;
+  // 2. Update the graph
+  updateGraph();
+}
+
+
+
 void MainWindow::updateGraph()
 {
+    if (!position) {
+      // handle error or return
+      return;
+    } 
+
     // Clear previous graphs
     ui->customPlot->clearGraphs();
 
     // 태그의 위치를 추출하고, 그래프에 점으로 표현
     QVector<double> xPoints(4), yPoints(4);
     for (int i = 0; i < 4; i++) {
-        xPoints[i] = pos.tag_pos_est[i].re;
-        yPoints[i] = pos.tag_pos_est[i].im;
+        xPoints[i] = position->tag_pos_est[i].re;
+        yPoints[i] = position->tag_pos_est[i].im;
     }
+
+    // 앵커의 위치를 추출하고, 그래프에 점으로 표현
+    QVector<double> anxPoints(position->x.size()), anyPoints(position->y.size());
+    for (int i = 0; i < position->x.size(); i++) {
+        anxPoints[i] = position->x[i];
+        anyPoints[i] = position->y[i];
+    }
+
+    // 앵커의 그래프
+    ui->customPlot->addGraph();
+    ui->customPlot->graph()->setData(anxPoints, anyPoints);
+    ui->customPlot->graph()->setScatterStyle(QCPScatterStyle::ssTriangle);  // 세모 모양
+    ui->customPlot->graph()->setLineStyle(QCPGraph::lsNone);
+    ui->customPlot->graph()->setPen(QPen(Qt::blue));  // 앵커의 색상
 
     // 중심점 계산
     double xCenter = (xPoints[0] + xPoints[1] + xPoints[2] + xPoints[3]) / 4;
@@ -202,8 +220,8 @@ void MainWindow::updateGraph()
 
     // 화살표의 끝점 계산
     double arrowLength = 0.5;  // 화살표의 적절한 길이를 선택
-    double xArrowEnd = xCenter + arrowLength * cos(pos.heading_est);
-    double yArrowEnd = yCenter + arrowLength * sin(pos.heading_est);
+    double xArrowEnd = xCenter + arrowLength * cos(position->heading_est);
+    double yArrowEnd = yCenter + arrowLength * sin(position->heading_est);
 
     // 네 개의 태그 위치에 점 표시
     ui->customPlot->addGraph();
@@ -315,78 +333,4 @@ void MainWindow::graphClicked(QCPAbstractPlottable *plottable, int dataIndex)
   double dataValue = plottable->interface1D()->dataMainValue(dataIndex);
   QString message = QString("Clicked on graph '%1' at data point #%2 with value %3.").arg(plottable->name()).arg(dataIndex).arg(dataValue);
   ui->statusBar->showMessage(message, 2500);
-}
-
-void MainWindow::spinFor()
-{
-    RosKapDataPacket earliestPacket;
-    UwbSubscriber* correspondingSubscriber = nullptr;  // <-- Add this line to remember the subscriber
-    ROS_INFO("Start spinFor...");
-    
-    for (auto &cb : m_callbacks)
-    {
-        if (!cb->getDataEmpty())
-        {
-            RosKapDataPacket rosPacket = cb->m_kapCallback->next();
-            
-            // 첫 번째 패킷 또는 이전에 발견된 패킷보다 더 이른 패킷을 찾는 경우
-            double rostimeValue = convertToDouble(rosPacket.first);
-            double earliesttimeValue = convertToDouble(earliestPacket.first);
-            if (earliestPacket.second.empty() || rostimeValue < earliesttimeValue)
-            {
-                earliestPacket = rosPacket;
-                correspondingSubscriber = cb;  // <-- Update the subscriber
-            }
-        }
-    }
-
-    // 최소 타임스탬프 패킷을 찾은 경우 Operator 함수에 전달하고 pop
-    if (!earliestPacket.second.empty())
-    {
-        Operator op(*this, earliestPacket.second, earliestPacket.first, pos); // MainWindow 참조 추가
-        
-        // TODO: pop 함수를 호출하여 earliestPacket 삭제
-        if(correspondingSubscriber) {
-            correspondingSubscriber->m_kapCallback->pop(earliestPacket);
-        }
-    }
-}
-
-double MainWindow::convertToDouble(const ros::Time& time) {
-    return static_cast<double>(time.sec) + static_cast<double>(time.nsec) / 1e9;
-}
-
-void MainWindow::registerSubcribers(ros::NodeHandle &node) {
-    bool should_publish;
-
-    if (ros::param::get("/run_node/sub_UWB0", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "0"));
-    }
-    if (ros::param::get("/run_node/sub_UWB1", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "1"));
-    }
-    if (ros::param::get("/run_node/sub_UWB2", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "2"));
-    }
-    if (ros::param::get("/run_node/sub_UWB3", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "3"));
-    }
-    // ... (repeat for other UWB nodes)
-}
-
-void MainWindow::registerCallback(UwbSubscriber *cb)  // Make sure PacketCallback is defined
-{
-    m_callbacks.push_back(cb);
-
-    std::string callbacks_info = "Registered Callbacks: ";
-    for (const auto& callback : m_callbacks) {
-        callbacks_info += "[" + callback->getName() + "] ";  // Assuming you have a `getName()` function in your UwbSubscriber class
-    }
-    ROS_INFO("%s", callbacks_info.c_str());
-}
-
-bool MainWindow::handleError(std::string error)
-{
-    ROS_ERROR("%s", error.c_str());
-    return false;
 }

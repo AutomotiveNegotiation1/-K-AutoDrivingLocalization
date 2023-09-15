@@ -37,14 +37,13 @@
 #include <QMainWindow>
 #include <QInputDialog>
 #include "qcustomplot.h"
+#include "ui_mainwindow.h"
 
 #include <ros/ros.h>
 #include <vector>
 #include <map>
 #include <chrono>
-#include "kapcallback.h"
-#include "uwbsubscriber.h"
-#include "UWBpos6_terminate.h"
+
 #include "kapdatapacket.h"
 
 
@@ -60,11 +59,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-	void spinFor();
-	void registerSubcribers(ros::NodeHandle &node);
-	double convertToDouble(const ros::Time& time);
-
     void updateGraph();
+
+public slots:
+    void onNewPositionData(const PosDataPacket& data);
     
 private slots:
     void titleDoubleClick(QMouseEvent *event);
@@ -81,11 +79,8 @@ private slots:
     
 private:
     Ui::MainWindow *ui;
-    PosDataPacket pos;
-    std::list<UwbSubscriber *> m_callbacks;
-
-    void registerCallback(UwbSubscriber *cb);
-    bool handleError(std::string error);	
+    const PosDataPacket *position;
+    
 };
 
 #endif // MAINWINDOW_H

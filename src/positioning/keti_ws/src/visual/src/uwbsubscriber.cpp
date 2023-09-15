@@ -1,9 +1,4 @@
-// uwbsubscriber.cpp
-
-#include "mainwindow.h"
 #include "uwbsubscriber.h"
-
-
 
 std::vector<std::string> RxID_data_list;
 std::vector<int> RxID_list;
@@ -14,8 +9,8 @@ creal_T prevTagPos[4];
 std::string tagNum;
 
 
-Operator::Operator(MainWindow& win, KapDataPacket &packet, ros::Time timestamp, PosDataPacket &pos)
-    : window(win)
+Operator::Operator(std::function<void(const PosDataPacket&)> callback, KapDataPacket &packet, ros::Time timestamp, PosDataPacket &pos)
+    : callback_(callback)  // Initialize the callback
 {
     double zt_b = 2.30;
     double Ln = 6;
@@ -36,7 +31,9 @@ Operator::Operator(MainWindow& win, KapDataPacket &packet, ros::Time timestamp, 
         
         // 배열에 값을 할당
         xain[i] = packet.x[i];
+        pos.x.push_back(xain[i]);
         yain[i] = packet.y[i];
+        pos.y.push_back(yain[i]);
     }
     // double LnC = RxID_data_list.size();
     double LnC = static_cast<double>(RxID_data_list.size());
@@ -81,6 +78,8 @@ Operator::Operator(MainWindow& win, KapDataPacket &packet, ros::Time timestamp, 
     pos.heading_est = UWBout[8];
     pos.headingest_a_aver_v = UWBout[17];
 
+    callback_(pos);
+
     std::vector<creal_T> tag_pos_est(4);   // Each element should be an array or another container. This depends on the exact type of data.
     std::vector<creal_T> tag_pos_est_aver(4);
 
@@ -97,15 +96,15 @@ Operator::Operator(MainWindow& win, KapDataPacket &packet, ros::Time timestamp, 
     ROS_INFO("tag_pos_est--> (%f,%f), (%f,%f)", tag_pos_est[0].re, tag_pos_est[0].im, tag_pos_est[1].re, tag_pos_est[1].im);
     ROS_INFO("tag_pos_est--> (%f,%f), (%f,%f)", tag_pos_est[2].re, tag_pos_est[2].im, tag_pos_est[3].re, tag_pos_est[3].im);
 
-    prevTagPos[0].re = UWBout[0];
-    prevTagPos[1].re = UWBout[1];
-    prevTagPos[2].re = UWBout[2];
-    prevTagPos[3].re = UWBout[3];
+    // prevTagPos[0].re = UWBout[0];
+    // prevTagPos[1].re = UWBout[1];
+    // prevTagPos[2].re = UWBout[2];
+    // prevTagPos[3].re = UWBout[3];
     
-    prevTagPos[0].im = UWBout[4];
-    prevTagPos[1].im = UWBout[5];
-    prevTagPos[2].im = UWBout[6];
-    prevTagPos[3].im = UWBout[7];
+    // prevTagPos[0].im = UWBout[4];
+    // prevTagPos[1].im = UWBout[5];
+    // prevTagPos[2].im = UWBout[6];
+    // prevTagPos[3].im = UWBout[7];
     
 
     double heading_est = UWBout[8];
@@ -127,6 +126,7 @@ Operator::Operator(MainWindow& win, KapDataPacket &packet, ros::Time timestamp, 
     double headingest_a_aver_v = UWBout[17];
     ROS_INFO("headingest_a_aver_v--> %f", headingest_a_aver_v);
 }
+
 
 double Operator::extractNumber(const std::string& input) {
     std::string numberStr;

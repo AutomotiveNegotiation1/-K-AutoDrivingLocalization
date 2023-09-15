@@ -56,6 +56,7 @@ include_directories(
 set(SOURCES
   src/main.cpp
   src/mainwindow.cpp
+  src/mainpositioning.cpp
   src/qcustomplot.cpp
   src/kapcallback.cpp  # 추가
   src/uwbsubscriber.cpp  # 추가

@@ -3,22 +3,23 @@
 
 #include <sstream>
 #include <set>
-
-#include <ros/ros.h>
 #include <unordered_map>
 #include <boost/variant.hpp>
 #include <complex>
+
+#include <ros/ros.h>
 #include <visual/Anchor.h>
+
 #include "packetcallback.h"
 #include "kapcallback.h"
 #include "kapdatapacket.h"
+#include "mainwindow.h"
 
 #include "rtwtypes.h"
 #include "UWBpos6.h"
 #include "UWBpos6_terminate.h"
 #include "rt_nonfinite.h"
-
-class MainWindow;  // Forward declaration
+#include <functional>  // for std::function
 
 // Assuming that these variables are used globally across multiple source files,
 // if not, consider moving them into an appropriate class or namespace.
@@ -37,17 +38,19 @@ void argInit_1x4_creal_preT(creal_T result[4]);
 
 struct Operator 
 {
-    MainWindow& window; 
     double zt_b = 2.30;
     double Ln = 6;
     double Lp = 4;
 
-    Operator(MainWindow& win, KapDataPacket &packet, ros::Time timestamp, PosDataPacket &pos);  // Constructor declaration
+    Operator(std::function<void(const PosDataPacket&)> callback, KapDataPacket &packet, ros::Time timestamp, PosDataPacket &pos);  // 선언만 있어야 함
+    
     // ... other members
-
-    // Assuming these functions are member functions
     double extractNumber(const std::string& input);
+
+private:
+    std::function<void(const PosDataPacket&)> callback_;  // Store the callback
 };
+
 
 struct UwbSubscriber 
 {
