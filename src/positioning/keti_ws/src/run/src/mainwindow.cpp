@@ -38,13 +38,23 @@ MainWindow::MainWindow()
     ROS_INFO("Create Positioning object...");
 }
 
+
 MainWindow::~MainWindow()
 {
     ROS_INFO("Cleaning up ...");
+    
+    // m_callbacks의 각 요소에 대한 메모리 할당 반환
+    for(auto &cb : m_callbacks) {
+        delete cb;
+    }
+    m_callbacks.clear();  // 옵션: 리스트를 비운다
+    
+    UWBpos6_terminate();
 }
-void MainWindow::spinFor(std::chrono::milliseconds timeout)
+
+void MainWindow::spinFor()
 {
-    RosKapDataPacket* earliestPacket = nullptr;
+    RosKapDataPacket earliestPacket;
     UwbSubscriber* correspondingSubscriber = nullptr;  // <-- Add this line to remember the subscriber
     ROS_INFO("Start spinFor...");
     
@@ -52,43 +62,49 @@ void MainWindow::spinFor(std::chrono::milliseconds timeout)
     {
         if (!cb->getDataEmpty())
         {
-            RosKapDataPacket rosPacket = cb->m_kapCallback->next(timeout);
+            RosKapDataPacket rosPacket = cb->m_kapCallback->next();
             
             // 첫 번째 패킷 또는 이전에 발견된 패킷보다 더 이른 패킷을 찾는 경우
-            if (!earliestPacket || rosPacket.second.stamp < earliestPacket->second.stamp)
+            double rostimeValue = convertToDouble(rosPacket.first);
+            double earliesttimeValue = convertToDouble(earliestPacket.first);
+            if (earliestPacket.second.empty() || rostimeValue < earliesttimeValue)
             {
-                earliestPacket = &rosPacket;
+                earliestPacket = rosPacket;
                 correspondingSubscriber = cb;  // <-- Update the subscriber
             }
         }
     }
 
     // 최소 타임스탬프 패킷을 찾은 경우 Operator 함수에 전달하고 pop
-    if (earliestPacket)
+    if (!earliestPacket.second.empty())
     {
-        Operator(earliestPacket->second, earliestPacket->first);
+        Operator(earliestPacket.second, earliestPacket.first);
         
         // TODO: pop 함수를 호출하여 earliestPacket 삭제
         if(correspondingSubscriber) {
-            correspondingSubscriber->m_kapCallback->pop(*earliestPacket);
+            correspondingSubscriber->m_kapCallback->pop(earliestPacket);
         }
     }
+}
+
+double MainWindow::convertToDouble(const ros::Time& time) {
+    return static_cast<double>(time.sec) + static_cast<double>(time.nsec) / 1e9;
 }
 
 void MainWindow::registerSubcribers(ros::NodeHandle &node) {
     bool should_publish;
 
     if (ros::param::get("/run_node/sub_UWB0", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "0", &m_kapCallback));
+        registerCallback(new UwbSubscriber(node, "0"));
     }
     if (ros::param::get("/run_node/sub_UWB1", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "1", &m_kapCallback));
+        registerCallback(new UwbSubscriber(node, "1"));
     }
     if (ros::param::get("/run_node/sub_UWB2", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "2", &m_kapCallback));
+        registerCallback(new UwbSubscriber(node, "2"));
     }
     if (ros::param::get("/run_node/sub_UWB3", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "3", &m_kapCallback));
+        registerCallback(new UwbSubscriber(node, "3"));
     }
     // ... (repeat for other UWB nodes)
 }

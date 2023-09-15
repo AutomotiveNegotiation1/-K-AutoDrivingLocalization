@@ -39,8 +39,8 @@
 #include <map>
 #include <chrono>
 #include "kapcallback.h"
-#include "messagesubscibers/uwbsubscriber.h"
 #include "uwbsubscriber.h"
+#include "UWBpos6_terminate.h"
 
 struct KapControl;
 struct KapDevice;
@@ -53,39 +53,15 @@ public:
 	MainWindow(); 
 	~MainWindow();
 
-	void spinFor(std::chrono::milliseconds timeout);
+	void spinFor();
 	void registerSubcribers(ros::NodeHandle &node);
-
-	bool allTagsRegistered() const {
-        return registeredTags == 4;
-    }
-
-    bool reachedMaxLoopsWithoutAllTags() const {
-        return loopCounter >= maxLoopsWithoutAllTags;
-    }
-
-    void incrementLoopCounter() {
-        loopCounter++;
-    }
-
-    void resetLoopCounter() {
-        loopCounter = 0;
-    }
-
-	int getMaxLoopsWithoutAllTags() const {
-        return maxLoopsWithoutAllTags;
-    }
+	double convertToDouble(const ros::Time& time);
 
 private:
 	void registerCallback(UwbSubscriber *cb);
 	bool handleError(std::string error);	
 
-    int loopCounter = 0;
-    const int maxLoopsWithoutAllTags = 10;
-    int registeredTags = 0;
-
-	KapCallback m_kapCallback;
-    RosKapDataPacket lastPacket;
+	// KapCallback m_kapCallback;
 	std::list<UwbSubscriber *> m_callbacks;
 };
 
