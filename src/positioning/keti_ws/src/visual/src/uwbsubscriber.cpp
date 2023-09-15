@@ -9,39 +9,58 @@ creal_T prevTagPos[4];
 std::string tagNum;
 
 
-Operator::Operator(std::function<void(const PosDataPacket&)> callback, KapDataPacket &packet, ros::Time timestamp, PosDataPacket &pos)
+Operator::Operator(std::function<void(const PosDataPacket&)> callback, KapDataPacket &packet, double timestamp, PosDataPacket &pos)
     : callback_(callback)  // Initialize the callback
 {
     double zt_b = 2.30;
-    double Ln = 6;
-    double Lp = 4;
     bool flag = false;
 
-    // packet.x와 packet.y의 실제 길이에 따라 배열의 크기를 정의
-    size_t numPoints = packet.id.size(); // 만약 id의 크기가 x와 y와 동일하다면, 그렇지 않으면 적절한 필드를 사용하여 정의하십시오.
-    double xain[numPoints];
-    double yain[numPoints];
-
-    for (size_t i = 0; i < numPoints; ++i) {
+    double Ln = 6;
+    double Lp = 4;
+    double LnC = static_cast<double>(RxID_data_list.size());
+    double TagNum = extractNumber(packet.frame_id)+1;
+    double Nanchor = packet.id.size();
+    
+    for (size_t i = 0; i < Nanchor; ++i) {
         auto it = std::find(RxID_data_list.begin(), RxID_data_list.end(), packet.id[i]);
         if (it != RxID_data_list.end()) {
             packet.RxID[i] = std::distance(RxID_data_list.begin(), it) + 1;
             packet.RxDist[i] = std::sqrt(std::pow(packet.distanceFromTag[i], 2) - std::pow(packet.z[i], 2));
         }
-        
-        // 배열에 값을 할당
-        xain[i] = packet.x[i];
-        pos.x.push_back(xain[i]);
-        yain[i] = packet.y[i];
-        pos.y.push_back(yain[i]);
     }
-    // double LnC = RxID_data_list.size();
-    double LnC = static_cast<double>(RxID_data_list.size());
-    double TagNum = extractNumber(packet.frame_id)+1;
-    double Nanchor = packet.id.size();
-    const double RxIDin[6] = {packet.RxID[0], packet.RxID[1], packet.RxID[2], packet.RxID[3], packet.RxID[4], packet.RxID[5]};
-    const double RxDistin[6] = {packet.RxDist[0], packet.RxDist[1], packet.RxDist[2], packet.RxDist[3], packet.RxDist[4], packet.RxDist[5]};
-    double s_time = timestamp.toSec();
+
+    int index = 0;
+    double RxIDin[6];
+    for(double val : packet.RxID) {
+        RxIDin[index] = val;
+        ++index;
+    }
+
+    index = 0;
+    double RxDistin[6];
+    for(double val : packet.RxDist) {
+        RxDistin[index] = val;
+        ++index;
+    }
+
+    index = 0;
+    double xain[6];
+    for(double val : packet.x) {
+        xain[index] = val;
+        pos.x.push_back(xain[index]);
+        ++index;
+    }
+
+    index = 0;
+    double yain[6];
+    for(double val : packet.y) {
+        yain[index] = val;
+        pos.y.push_back(yain[index]);
+        ++index;
+    }
+
+    double s_time = timestamp;
+
     double UWBout[21];
     double prevTagHeading;
     if (flag == false){
@@ -52,7 +71,6 @@ Operator::Operator(std::function<void(const PosDataPacket&)> callback, KapDataPa
     }
 
     UWBpos6(Ln, Lp, LnC, TagNum, Nanchor, RxIDin, RxDistin, s_time, tag_pos_b, xain, yain, prevTagPos, prevTagHeading, UWBout);
-
 
     pos.tag_pos_est.resize(4);
     pos.tag_pos_est[0].re = UWBout[0];
@@ -147,7 +165,8 @@ std::string UwbSubscriber::getName() const {
     return frame_id;  // or whatever you wish to return as name
 }
 
-UwbSubscriber::UwbSubscriber(ros::NodeHandle& node, std::string uwbNum)
+UwbSubscriber::UwbSubscriber(ros::NodeHandle& node, std::string uwbNum, KapCallback *kapCallback)
+    :m_kapCallback(kapCallback)
 {
     bool statusUWB = false;
     tagNum = uwbNum;
@@ -158,24 +177,24 @@ UwbSubscriber::UwbSubscriber(ros::NodeHandle& node, std::string uwbNum)
     std::string topic_name = topic_name_stream.str();
 
     ROS_INFO("topic_name-->%s", topic_name.c_str());
-    m_kapCallback = new KapCallback();
+    // m_kapCallback = new KapCallback();
 
     sub = node.subscribe<visual::Anchor>(topic_name, 10, &UwbSubscriber::UwbSubscriber_callback, this);
 }
 
 void UwbSubscriber::UwbSubscriber_callback(const visual::Anchor::ConstPtr& msg)
 {
-    KapDataPacket packet(msg);
-    UwbSubscriber_setRxid(msg);  // 정확한 함수 호출
+    m_kapDataPacket = KapDataPacket(msg);
+    UwbSubscriber_setRxid(msg, m_kapDataPacket);  // 정확한 함수 호출
     // Check if m_kapCallback is not a nullptr before invoking the function
     if (m_kapCallback) {
-        m_kapCallback->onLiveDataAvailable(packet, msg->header.stamp);
+        m_kapCallback->onLiveDataAvailable(m_kapDataPacket);
     } else {
         ROS_WARN("m_kapCallback is a nullptr!");
     }
 }
 
-void UwbSubscriber::UwbSubscriber_setRxid(const visual::Anchor::ConstPtr& msg)
+void UwbSubscriber::UwbSubscriber_setRxid(const visual::Anchor::ConstPtr& msg, KapDataPacket packet)
 {
     std::vector<std::string> ids = msg->id;  // Initialize ids from msg
     if (RxID_list.empty())
@@ -209,6 +228,7 @@ void UwbSubscriber::UwbSubscriber_setRxid(const visual::Anchor::ConstPtr& msg)
             RxID_list.push_back(i);
         }
     }   
+
 } 
 
 bool UwbSubscriber::getDataEmpty(){

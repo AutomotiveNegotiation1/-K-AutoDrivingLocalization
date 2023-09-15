@@ -42,7 +42,7 @@ struct Operator
     double Ln = 6;
     double Lp = 4;
 
-    Operator(std::function<void(const PosDataPacket&)> callback, KapDataPacket &packet, ros::Time timestamp, PosDataPacket &pos);  // 선언만 있어야 함
+    Operator(std::function<void(const PosDataPacket&)> callback, KapDataPacket &packet, double timestamp, PosDataPacket &pos);  // 선언만 있어야 함
     
     // ... other members
     double extractNumber(const std::string& input);
@@ -57,13 +57,14 @@ struct UwbSubscriber
     ros::Subscriber sub;
     std::string frame_id = "tag";
     std::ostringstream topic_name_stream;
-    KapCallback* m_kapCallback;
+    KapCallback *m_kapCallback;
+    KapDataPacket m_kapDataPacket;
 
     // Method declarations
     std::string getName() const;
-    UwbSubscriber(ros::NodeHandle& node, std::string uwbNum);
+    UwbSubscriber(ros::NodeHandle& node, std::string uwbNum, KapCallback *kapCallback);
     void UwbSubscriber_callback(const visual::Anchor::ConstPtr& msg);
-    void UwbSubscriber_setRxid(const visual::Anchor::ConstPtr& msg);
+    void UwbSubscriber_setRxid(const visual::Anchor::ConstPtr& msg, KapDataPacket packet);
     bool getDataEmpty();
 };
 

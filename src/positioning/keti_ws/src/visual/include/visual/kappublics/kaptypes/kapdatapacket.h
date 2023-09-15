@@ -42,6 +42,7 @@
 
 struct KapDataPacket
 {
+    ros::Time s_time;
     std::string frame_id;
     std::vector<std::string> id;
     std::vector<double> x;
@@ -59,7 +60,7 @@ struct KapDataPacket
         RxDist(6, 0.0)   // 6개의 0.0으로 RxDist 벡터 초기화
     {
         frame_id = msg->header.frame_id;
-        
+        s_time = msg->header.stamp;
         id.assign(msg->id.begin(), msg->id.end());
         for (const auto& val : id) {
             std::cout << val << " ";

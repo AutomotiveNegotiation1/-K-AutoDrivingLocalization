@@ -43,13 +43,13 @@ typedef std::pair<ros::Time, KapDataPacket> RosKapDataPacket;
 class KapCallback
 {
 public:
-    KapCallback(size_t maxBufferSize = 5);
+    KapCallback(size_t maxBufferSize = 30);
     virtual ~KapCallback() throw();
 
     RosKapDataPacket next();
     void pop(const RosKapDataPacket &targetPacket);
     bool getDataEmpty();
-    virtual void onLiveDataAvailable(KapDataPacket packet, ros::Time timestamp);
+    virtual void onLiveDataAvailable(KapDataPacket packet);
 
 private:
     std::list<RosKapDataPacket> m_buffer;

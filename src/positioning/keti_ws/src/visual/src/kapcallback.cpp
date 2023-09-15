@@ -44,11 +44,14 @@ KapCallback::~KapCallback() throw()
 
 RosKapDataPacket KapCallback::next()
 {
+    RosKapDataPacket packet;
     if (m_buffer.empty()) 
     {
         return RosKapDataPacket();
     }
-    return m_buffer.front();
+    packet = m_buffer.front();
+    m_buffer.pop_front();
+    return packet;
 }
 
 void KapCallback::pop(const RosKapDataPacket &targetPacket)
@@ -78,12 +81,12 @@ bool KapCallback::getDataEmpty()
     }
 }
 
-void KapCallback::onLiveDataAvailable(KapDataPacket packet, ros::Time timestamp)
+void KapCallback::onLiveDataAvailable(KapDataPacket packet)
 {
     if (m_buffer.size() == m_maxBufferSize)
     {
         m_buffer.pop_front();
     }
 
-    m_buffer.push_back(RosKapDataPacket(timestamp, packet));
+    m_buffer.push_back(RosKapDataPacket(packet.s_time, packet));
 }

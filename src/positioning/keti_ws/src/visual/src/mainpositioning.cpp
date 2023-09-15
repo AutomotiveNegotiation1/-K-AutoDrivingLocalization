@@ -15,18 +15,20 @@ MainPositioning::~MainPositioning()
 
 void MainPositioning::registerSubcribers(ros::NodeHandle &node) {
     bool should_publish;
-
-    if (ros::param::get("/run_node/sub_UWB0", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "0"));
-    }
-    if (ros::param::get("/run_node/sub_UWB1", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "1"));
-    }
-    if (ros::param::get("/run_node/sub_UWB2", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "2"));
-    }
-    if (ros::param::get("/run_node/sub_UWB3", should_publish) && should_publish) {
-        registerCallback(new UwbSubscriber(node, "3"));
+    std::list<double> totalTag;
+    if (ros::param::get("/visual_node/Tag_on", should_publish) && should_publish) {
+        if (ros::param::get("/visual_node/sub_UWB0", should_publish) && should_publish) {
+            registerCallback(new UwbSubscriber(node, "0", &m_kapCallback));
+        }
+        if (ros::param::get("/visual_node/sub_UWB1", should_publish) && should_publish) {
+            registerCallback(new UwbSubscriber(node, "1", &m_kapCallback));
+        }
+        if (ros::param::get("/visual_node/sub_UWB2", should_publish) && should_publish) {
+            registerCallback(new UwbSubscriber(node, "2", &m_kapCallback));
+        }
+        if (ros::param::get("/visual_node/sub_UWB3", should_publish) && should_publish) {
+            registerCallback(new UwbSubscriber(node, "3", &m_kapCallback));
+        }
     }
     // ... (repeat for other UWB nodes)
 }
@@ -48,32 +50,11 @@ double MainPositioning::convertToDouble(const ros::Time& time) {
 
 void MainPositioning::spinFor()
 {
-    RosKapDataPacket earliestPacket;
-    UwbSubscriber* correspondingSubscriber = nullptr;  // <-- Add this line to remember the subscriber
-    ROS_INFO("Start spinFor...");
-    
-    for (auto &cb : m_callbacks)
-    {
-        if (!cb->getDataEmpty())
-        {
-            RosKapDataPacket rosPacket = cb->m_kapCallback->next();
-            
-            // 첫 번째 패킷 또는 이전에 발견된 패킷보다 더 이른 패킷을 찾는 경우
-            double rostimeValue = convertToDouble(rosPacket.first)/1e9;
-            double earliesttimeValue = convertToDouble(earliestPacket.first)/1e9;
-            if (earliestPacket.second.empty() || rostimeValue < earliesttimeValue)
-            {
-                earliestPacket = rosPacket;
-                correspondingSubscriber = cb;  // <-- Update the subscriber
-            }
-        }
-    }
+	RosKapDataPacket rosPacket = m_kapCallback.next();
 
-    // 최소 타임스탬프 패킷을 찾은 경우 Operator 함수에 전달하고 pop
-    if (!earliestPacket.second.empty())
-    {
-        // Operator op(mainWindow_, earliestPacket.second, earliestPacket.first, pos); // MainWindow 참조 추가
-        Operator op(
+	if (!rosPacket.second.empty())
+	{
+		Operator op(
             [this](const PosDataPacket& pos) {
                 ROS_INFO("Emitting newPositionData.");
 
@@ -83,18 +64,63 @@ void MainPositioning::spinFor()
                 }, Qt::QueuedConnection);
 
             }, 
-            earliestPacket.second, 
-            earliestPacket.first, 
+            rosPacket.second, 
+            convertToDouble(rosPacket.first), 
             pos
         );
 
-        
-        // TODO: pop 함수를 호출하여 earliestPacket 삭제
-        if(correspondingSubscriber) {
-            correspondingSubscriber->m_kapCallback->pop(earliestPacket);
-        }
-    }
+	}
 }
+
+// void MainPositioning::spinFor()
+// {
+//     RosKapDataPacket earliestPacket;
+//     UwbSubscriber* correspondingSubscriber = nullptr;  // <-- Add this line to remember the subscriber
+//     ROS_INFO("Start spinFor...");
+    
+//     for (auto &cb : m_callbacks)
+//     {
+//         if (!cb->getDataEmpty())
+//         {
+//             RosKapDataPacket rosPacket = cb->m_kapCallback->next();
+            
+//             // 첫 번째 패킷 또는 이전에 발견된 패킷보다 더 이른 패킷을 찾는 경우
+//             double rostimeValue = convertToDouble(rosPacket.first)/1e9;
+//             double earliesttimeValue = convertToDouble(earliestPacket.first)/1e9;
+//             if (earliestPacket.second.empty() || rostimeValue < earliesttimeValue)
+//             {
+//                 earliestPacket = rosPacket;
+//                 correspondingSubscriber = cb;  // <-- Update the subscriber
+//             }
+//         }
+//     }
+
+//     // 최소 타임스탬프 패킷을 찾은 경우 Operator 함수에 전달하고 pop
+//     if (!earliestPacket.second.empty())
+//     {
+//         // Operator op(mainWindow_, earliestPacket.second, earliestPacket.first, pos); // MainWindow 참조 추가
+//         Operator op(
+//             [this](const PosDataPacket& pos) {
+//                 ROS_INFO("Emitting newPositionData.");
+
+//                 // Use QMetaObject::invokeMethod to safely emit the signal from the main thread.
+//                 QMetaObject::invokeMethod(this, [this, pos](){
+//                     emit newPositionData(pos);
+//                 }, Qt::QueuedConnection);
+
+//             }, 
+//             earliestPacket.second, 
+//             convertToDouble(earliestPacket.first)/1e9, 
+//             pos
+//         );
+
+        
+//         // TODO: pop 함수를 호출하여 earliestPacket 삭제
+//         if(correspondingSubscriber) {
+//             correspondingSubscriber->m_kapCallback->pop(earliestPacket);
+//         }
+//     }
+// }
 
 // 2023.09.14
 // void MainPositioning::run()

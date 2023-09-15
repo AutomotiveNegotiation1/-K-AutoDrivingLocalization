@@ -35,6 +35,8 @@ testpublisher_queue_size: 5
 
 frame_id: "pos_link"
 
+Tag_on: true
+
 # Message subscriber
 sub_UWB0: true
 sub_UWB1: true

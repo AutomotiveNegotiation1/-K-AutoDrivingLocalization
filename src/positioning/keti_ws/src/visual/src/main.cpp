@@ -22,7 +22,6 @@ int main(int argc, char** argv) {
     } else {
         ROS_WARN("Signal and slot connection failed.");
     }
-
     
     rosThread.start();
 

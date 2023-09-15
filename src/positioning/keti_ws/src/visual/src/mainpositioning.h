@@ -70,6 +70,8 @@ signals:
 private:
     ros::NodeHandle &nh_;
     std::list<UwbSubscriber *> m_callbacks;
+    KapCallback m_kapCallback;
+    KapDataPacket m_kapDatapacket; 
     PosDataPacket pos;
 
 //2023.09.15
