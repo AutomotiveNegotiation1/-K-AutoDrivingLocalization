@@ -220,8 +220,10 @@ void MainWindow::updateGraph()
 
     // 화살표의 끝점 계산
     double arrowLength = 0.5;  // 화살표의 적절한 길이를 선택
-    double xArrowEnd = xCenter + arrowLength * cos(position->heading_est);
-    double yArrowEnd = yCenter + arrowLength * sin(position->heading_est);
+    double adjustedHeading = position->heading_est + M_PI/2;
+    double xArrowEnd = xCenter + arrowLength * cos(adjustedHeading);
+    double yArrowEnd = yCenter + arrowLength * sin(adjustedHeading);
+
 
     // 네 개의 태그 위치에 점 표시
     ui->customPlot->addGraph();
