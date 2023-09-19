@@ -31,25 +31,25 @@
 *
 ******************************************************************************/
 
-#ifndef KAPCALLBACK_H
-#define KAPCALLBACK_H
+#ifndef KUIPCALLBACK_H
+#define KUIPCALLBACK_H
 
 #include <ros/ros.h>
 #include <list>
-#include "kapdatapacket.h"
+#include "kuipdatapacket.h"
 
-typedef std::pair<ros::Time, KapDataPacket> RosKapDataPacket;
+typedef std::pair<double, KuipDataPacket> RosKapDataPacket;
 
-class KapCallback
+class KuipCallback
 {
 public:
-    KapCallback(size_t maxBufferSize = 30);
-    virtual ~KapCallback() throw();
+    KuipCallback(size_t maxBufferSize = 30);
+    virtual ~KuipCallback() throw();
 
     RosKapDataPacket next();
     void pop(const RosKapDataPacket &targetPacket);
     bool getDataEmpty();
-    virtual void onLiveDataAvailable(KapDataPacket packet);
+    virtual void onLiveDataAvailable(KuipDataPacket packet);
 
 private:
     std::list<RosKapDataPacket> m_buffer;

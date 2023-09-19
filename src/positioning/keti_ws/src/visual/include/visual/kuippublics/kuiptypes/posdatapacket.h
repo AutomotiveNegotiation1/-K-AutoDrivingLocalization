@@ -30,57 +30,18 @@
 * this Software without prior written authorization from KETI.
 *
 ******************************************************************************/
-
-#ifndef MAINPOSITIONING_H
-#define MAINPOSITIONING_H
-
-#include <QThread>
-
-#include <ros/ros.h>
-#include <rosbag/bag.h>
-#include <rosbag/view.h>
-#include <visual/Anchor.h>
+#ifndef POSDATAPACKER_H
+#define POSDATAPACKER_H
 
 #include <vector>
-#include <map>
-#include <chrono>
+#include "rtwtypes.h"
 
-#include "kapcallback.h"
-#include "uwbsubscriber.h"
-#include "UWBpos6_terminate.h"
-#include "kapdatapacket.h"
-
-
-
-struct UwbSubscriber;
-
-class MainPositioning : public QThread {
-    Q_OBJECT
-
-protected:
-    void registerSubcribers(ros::NodeHandle &nh_);
-    void registerCallback(UwbSubscriber *cb);
-    double convertToDouble(const ros::Time& time);
-    void spinFor();
-    void run();
-
-signals:
-    void newPositionData(const PosDataPacket& data);
-
-private:
-    ros::NodeHandle &nh_;
-    std::list<UwbSubscriber *> m_callbacks;
-    KapCallback m_kapCallback;
-    KapDataPacket m_kapDatapacket; 
-    PosDataPacket pos;
-
-//2023.09.15
-private:
-    std::function<void(const PosDataPacket&)> callback_;  // Store the callback
-
-public:
-    MainPositioning(ros::NodeHandle &nh) : nh_(nh) {}
-    ~MainPositioning();
+struct PosDataPacket {
+    creal_T tag_pos_est[4];
+    creal_T tag_pos_est_aver[4];
+    double heading_est;
+    double headingest_a_aver_v;
 };
 
-#endif // MAINPOSITIONING_H
+
+#endif

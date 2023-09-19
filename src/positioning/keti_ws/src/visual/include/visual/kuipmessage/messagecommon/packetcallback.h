@@ -31,62 +31,18 @@
 *
 ******************************************************************************/
 
-#include "kapcallback.h"
+#ifndef PACKETCALLBACK_H
+#define PACKETCALLBACK_H
 
-KapCallback::KapCallback(size_t maxBufferSize)
-    : m_maxBufferSize(maxBufferSize)
+#include <ros/ros.h>
+#include "kuipdatapacket.h"
+
+const std::string DEFAULT_FRAME_ID = "some_value";
+
+class PacketCallback
 {
-}
+    public:
+        virtual void operator()(KuipDataPacket &, double) = 0;
+};
 
-KapCallback::~KapCallback() throw()
-{
-}
-
-RosKapDataPacket KapCallback::next()
-{
-    RosKapDataPacket packet;
-    if (m_buffer.empty()) 
-    {
-        return RosKapDataPacket();
-    }
-    packet = m_buffer.front();
-    m_buffer.pop_front();
-    return packet;
-}
-
-void KapCallback::pop(const RosKapDataPacket &targetPacket)
-{
-    auto it = std::find(m_buffer.begin(), m_buffer.end(), targetPacket);
-    if (it != m_buffer.end())
-    {
-        m_buffer.erase(it);
-    }
-}
-
-bool KapCallback::getDataEmpty() 
-{
-    if (m_buffer.empty()) 
-    {
-        return true;
-    }
-
-    RosKapDataPacket packet = m_buffer.front();
-    if (packet.second.id.empty()) 
-    {
-        return true;
-    } 
-    else 
-    {
-        return false;
-    }
-}
-
-void KapCallback::onLiveDataAvailable(KapDataPacket packet)
-{
-    if (m_buffer.size() == m_maxBufferSize)
-    {
-        m_buffer.pop_front();
-    }
-
-    m_buffer.push_back(RosKapDataPacket(packet.s_time, packet));
-}
+#endif

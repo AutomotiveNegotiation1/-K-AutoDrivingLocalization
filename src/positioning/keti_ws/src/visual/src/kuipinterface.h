@@ -31,18 +31,62 @@
 *
 ******************************************************************************/
 
-#ifndef PACKETCALLBACK_H
-#define PACKETCALLBACK_H
+#ifndef KUIPINTERFACE_H
+#define KUIPINTERFACE_H
+
+#include <QThread>
 
 #include <ros/ros.h>
-#include "kapdatapacket.h"
+#include <rosbag/bag.h>
+#include <rosbag/view.h>
+#include <visual/Anchor.h>
 
-const std::string DEFAULT_FRAME_ID = "some_value";
+#include <vector>
+#include <map>
+#include <chrono>
 
-class PacketCallback
-{
-    public:
-        virtual void operator()(const KapDataPacket &, ros::Time) = 0;
+#include "kuipcallback.h"
+#include "kuipdatapacket.h"
+#include "packetcallback.h"
+#include "uwbsubscriber.h"
+#include "imusubscriber.h"
+#include "mainwindow.h"
+
+#include "UWBpos6_terminate.h"
+
+
+
+class PacketCallback;
+
+class kuipInterface : public QThread {
+    Q_OBJECT
+
+protected:
+    void registerSubcribers(ros::NodeHandle &nh_);
+    void registerCallback(PacketCallback *cb);
+    double convertToDouble(const ros::Time& time);
+    void spinFor();
+    void run();
+
+signals:
+    void newPositionData(const PosDataPacket& data);
+
+private:
+    bool init = false;
+    ros::NodeHandle &nh_;
+    MainWindow &mw_;
+    std::list<PacketCallback *> m_callbacks;
+    KuipCallback m_kuipCallback;
+    KuipDataPacket m_kapDatapacket; 
+    PosDataPacket pos;
+
+//2023.09.15
+private:
+    std::function<void(const PosDataPacket&)> callback_;  // Store the callback
+
+public:
+    kuipInterface(ros::NodeHandle &nh, MainWindow &mw) : nh_(nh),mw_(mw){}
+    ~kuipInterface();
 };
 
-#endif
+#endif // MAINPOSITIONING_H

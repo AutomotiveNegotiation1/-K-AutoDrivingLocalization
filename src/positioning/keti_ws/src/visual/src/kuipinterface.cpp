@@ -1,6 +1,39 @@
-#include "mainpositioning.h"
+/******************************************************************************
+*
+* Copyright (C) 2023 - 2028 KETI, All rights reserved.
+*                           (Korea Electronics Technology Institute)
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+*
+* Use of the Software is limited solely to applications:
+* (a) running for Korean Government Project, or
+* (b) that interact with KETI project/platform.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+* KETI BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+* OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* Except as contained in this notice, the name of the KETI shall not be used
+* in advertising or otherwise to promote the sale, use or other dealings in
+* this Software without prior written authorization from KETI.
+*
+******************************************************************************/
 
-MainPositioning::~MainPositioning()
+#include "kuipinterface.h"
+
+kuipInterface::~kuipInterface()
 {
   ROS_INFO("Cleaning up ...");
   
@@ -13,66 +46,55 @@ MainPositioning::~MainPositioning()
   UWBpos6_terminate();
 }
 
-void MainPositioning::registerSubcribers(ros::NodeHandle &node) {
+void kuipInterface::registerSubcribers(ros::NodeHandle &node) {
     bool should_publish;
     std::list<double> totalTag;
     if (ros::param::get("/visual_node/Tag_on", should_publish) && should_publish) {
         if (ros::param::get("/visual_node/sub_UWB0", should_publish) && should_publish) {
-            registerCallback(new UwbSubscriber(node, "0", &m_kapCallback));
+            registerCallback(new UwbSubscriber(node, "0", &m_kuipCallback));
         }
         if (ros::param::get("/visual_node/sub_UWB1", should_publish) && should_publish) {
-            registerCallback(new UwbSubscriber(node, "1", &m_kapCallback));
+            registerCallback(new UwbSubscriber(node, "1", &m_kuipCallback));
         }
         if (ros::param::get("/visual_node/sub_UWB2", should_publish) && should_publish) {
-            registerCallback(new UwbSubscriber(node, "2", &m_kapCallback));
+            registerCallback(new UwbSubscriber(node, "2", &m_kuipCallback));
         }
         if (ros::param::get("/visual_node/sub_UWB3", should_publish) && should_publish) {
-            registerCallback(new UwbSubscriber(node, "3", &m_kapCallback));
+            registerCallback(new UwbSubscriber(node, "3", &m_kuipCallback));
         }
     }
-    // ... (repeat for other UWB nodes)
+
+    if (ros::param::get("/visual_node/IMU_on", should_publish) && should_publish) {
+        registerCallback(new ImuSubscriber(node, &m_kuipCallback));
+    }
 }
 
-void MainPositioning::registerCallback(UwbSubscriber *cb)  // Make sure PacketCallback is defined
+void kuipInterface::registerCallback(PacketCallback *cb)  // Make sure PacketCallback is defined
 {
     m_callbacks.push_back(cb);
-
-    std::string callbacks_info = "Registered Callbacks: ";
-    for (const auto& callback : m_callbacks) {
-        callbacks_info += "[" + callback->getName() + "] ";  // Assuming you have a `getName()` function in your UwbSubscriber class
-    }
-    ROS_INFO("%s", callbacks_info.c_str());
 }
 
-double MainPositioning::convertToDouble(const ros::Time& time) {
-    return static_cast<double>(time.sec) + static_cast<double>(time.nsec) / 1e9;
-}
-
-void MainPositioning::spinFor()
+void kuipInterface::spinFor()
 {
-	RosKapDataPacket rosPacket = m_kapCallback.next();
+	RosKapDataPacket rosPacket = m_kuipCallback.next();
 
 	if (!rosPacket.second.empty())
 	{
-		Operator op(
-            [this](const PosDataPacket& pos) {
-                ROS_INFO("Emitting newPositionData.");
-
-                // Use QMetaObject::invokeMethod to safely emit the signal from the main thread.
-                QMetaObject::invokeMethod(this, [this, pos](){
-                    emit newPositionData(pos);
-                }, Qt::QueuedConnection);
-
-            }, 
-            rosPacket.second, 
-            convertToDouble(rosPacket.first), 
-            pos
-        );
+        for (auto &cb : m_callbacks)
+		{
+			cb->operator()(rosPacket.second, rosPacket.first);
+            // ImuSubscriber* imuSub = dynamic_cast<ImuSubscriber*>(cb);
+            // if (imuSub && !init) {
+            //     // cb는 ImuSubscriber입니다. 이 안에서 원하는 작업을 수행하십시오.
+            //     bool connected = QObject::connect(imuSub, &ImuSubscriber::newPositionData, &mw_, &MainWindow::onNewPositionData);
+            //     init = true;
+            // }
+		}
 
 	}
 }
 
-// void MainPositioning::spinFor()
+// void KpInterface::spinFor()
 // {
 //     RosKapDataPacket earliestPacket;
 //     UwbSubscriber* correspondingSubscriber = nullptr;  // <-- Add this line to remember the subscriber
@@ -123,7 +145,7 @@ void MainPositioning::spinFor()
 // }
 
 // 2023.09.14
-void MainPositioning::run()
+void kuipInterface::run()
 {
     try {
         registerSubcribers(nh_);
@@ -172,7 +194,7 @@ void MainPositioning::run()
 
 
 //2023.09.15
-// void MainPositioning::run()
+// void kuipInterface::run()
 // {
 
 //     std::ifstream file("/home/umaps/-K-AutoDrivingLocalization/src/positioning/keti_ws/src/visual/src/processed_data.csv");

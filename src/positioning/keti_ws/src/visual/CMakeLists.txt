@@ -46,8 +46,10 @@ include_directories(
   
   ${CMAKE_CURRENT_SOURCE_DIR}/include  
   ${CMAKE_CURRENT_SOURCE_DIR}/include/visual  
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/kappublics/kaptypes  # Add this line
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/messagesubscibers
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/kuippublics/kuiptypes  # Add this line
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/kuippublics/kuipcontroller  # Add this line
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/kuipmessage/messagesubscibers
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/kuipmessage/messagecommon
   # ${CMAKE_CURRENT_SOURCE_DIR}/lib/UWBpos2
   ${CMAKE_CURRENT_SOURCE_DIR}/lib/UWBpos6
 )
@@ -56,10 +58,9 @@ include_directories(
 set(SOURCES
   src/main.cpp
   src/mainwindow.cpp
-  src/mainpositioning.cpp
+  src/kuipinterface.cpp
   src/qcustomplot.cpp
-  src/kapcallback.cpp  # 추가
-  src/uwbsubscriber.cpp  # 추가
+  src/kuipcallback.cpp  # 추가
 )
 
 add_executable(${PROJECT_NAME}_node ${SOURCES} ${UWB_SOURCES6} ${UWB_HEADERS})
