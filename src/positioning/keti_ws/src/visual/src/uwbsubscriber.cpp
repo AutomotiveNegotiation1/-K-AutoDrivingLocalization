@@ -2,8 +2,12 @@
 
 std::vector<std::string> RxID_data_list;
 std::vector<int> RxID_list;
+std::vector<double> xain_list;
+std::vector<double> yain_list;
 bool statusUWB = false; // or whatever default value you wish to set
 std::vector<std::string> difference;
+std::vector<double> xain_difference;
+std::vector<double> yain_difference;
 creal_T tag_pos_b[4];
 creal_T prevTagPos[4];
 std::string tagNum;
@@ -45,7 +49,7 @@ Operator::Operator(std::function<void(const PosDataPacket&)> callback, KapDataPa
 
     index = 0;
     double xain[6];
-    for(double val : packet.x) {
+    for(double val : xain_list) {
         xain[index] = val;
         pos.x.push_back(xain[index]);
         ++index;
@@ -53,11 +57,12 @@ Operator::Operator(std::function<void(const PosDataPacket&)> callback, KapDataPa
 
     index = 0;
     double yain[6];
-    for(double val : packet.y) {
+    for(double val : yain_list) {
         yain[index] = val;
         pos.y.push_back(yain[index]);
         ++index;
     }
+
 
     double s_time = timestamp;
 
@@ -197,9 +202,13 @@ void UwbSubscriber::UwbSubscriber_callback(const visual::Anchor::ConstPtr& msg)
 void UwbSubscriber::UwbSubscriber_setRxid(const visual::Anchor::ConstPtr& msg, KapDataPacket packet)
 {
     std::vector<std::string> ids = msg->id;  // Initialize ids from msg
-    if (RxID_list.empty())
+    std::vector<double> xas = msg->x;
+    std::vector<double> yas = msg->y;
+    if (RxID_list.empty() && xain_list.empty() && yain_list.empty())
     {
         RxID_data_list = msg->id;
+        xain_list = msg->x;
+        yain_list = msg->y;
         for (int i = 0; i < ids.size(); ++i)  // Initialize i and use ids
         {
             RxID_list.push_back(i);
@@ -210,9 +219,17 @@ void UwbSubscriber::UwbSubscriber_setRxid(const visual::Anchor::ConstPtr& msg, K
         std::set<std::string> ids_set(ids.begin(), ids.end());
         std::set<std::string> RxID_data_set(RxID_data_list.begin(), RxID_data_list.end());
 
-        if (ids_set != RxID_data_set) 
+        std::set<double> xain_set(xas.begin(), xas.end());
+        std::set<double> xain_data_set(xain_list.begin(), xain_list.end());
+
+        std::set<double> yain_set(yas.begin(), yas.end());
+        std::set<double> yain_data_set(yain_list.begin(), yain_list.end());
+
+        if (ids_set != RxID_data_set && xain_set != xain_data_set && yain_set != yain_data_set) 
         {
             difference.clear();
+            xain_difference.clear();
+            yain_difference.clear();
             for (const auto& item : ids) 
             {
                 if (RxID_data_set.find(item) == RxID_data_set.end()) 
@@ -220,8 +237,27 @@ void UwbSubscriber::UwbSubscriber_setRxid(const visual::Anchor::ConstPtr& msg, K
                     difference.push_back(item);
                 }
             }
+
+            for (const auto& item : xas) 
+            {
+                if (xain_data_set.find(item) == xain_data_set.end()) 
+                {
+                    xain_difference.push_back(item);
+                }
+            }
+
+            for (const auto& item : yas) 
+            {
+                if (yain_data_set.find(item) == yain_data_set.end()) 
+                {
+                    yain_difference.push_back(item);
+                }
+            }
+            
         }   
         RxID_data_list.insert(RxID_data_list.end(), difference.begin(), difference.end());
+        xain_list.insert(xain_list.end(), xain_difference.begin(), xain_difference.end());
+        yain_list.insert(yain_list.end(), yain_difference.begin(), yain_difference.end());
         RxID_list.clear();
         for (int i = 0; i < RxID_data_list.size(); ++i) 
         {
