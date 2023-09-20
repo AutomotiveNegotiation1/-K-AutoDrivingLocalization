@@ -45,9 +45,48 @@
 #include "kuipcallback.h"
 #include "kuipdatapacket.h"
 #include "posdatapacket.h"
+#include "rtwtypes.h"
 
-struct ImuSubscriber : public QObject, public PacketCallback {
-    Q_OBJECT
+#include "IMUpos.h"
+#include "IMUpos_terminate.h"
+#include "rt_nonfinite.h"
+
+static double b_acc_o[3] = {};
+static double b_gyro[3] = {};
+static double mode = 0;
+static double kf_psi = 0;
+static double gyro_psi = 0;
+static double cent_pos_est[3] = {};
+static double cent_vel_est[3] = {};
+static double state_o;
+static double acc_b_phi;
+static double acc_b_theta;
+
+static void argInit_1x3_real_T(double result[3]);
+
+static double argInit_real_T();
+
+// Function Definitions
+//
+// Arguments    : double result[3]
+// Return Type  : void
+//
+static void argInit_1x3_real_T(double result[3])
+{
+  // Loop over the array to initialize each element.
+  for (int idx1{0}; idx1 < 3; idx1++) {
+    // Set the value of the array element.
+    // Change this value to the value that the application requires.
+    result[idx1] = argInit_real_T();
+  }
+}
+
+static double argInit_real_T()
+{
+    return 0.0;
+}
+
+struct ImuSubscriber : public PacketCallback {
 
 private:
     ros::Subscriber sub;
@@ -60,9 +99,6 @@ private:
     // Constants
     const double Ln = 6.0;
     const double Lp = 4.0;
-
-signals:
-    void newPositionData(const PosDataPacket& data);
 
 public:
     ImuSubscriber(ros::NodeHandle& node, KuipCallback* kapCallback) 
@@ -105,7 +141,7 @@ private:
 
     void _callback(const sensor_msgs::Imu::ConstPtr& msg) {
         m_kapDataPacket = KuipDataPacket(msg);
-        
+        m_kapDataPacket.frame_id = "imu";
         if (m_kapCallback) {
             m_kapCallback->onLiveDataAvailable(m_kapDataPacket);
         } else {
@@ -115,7 +151,41 @@ private:
 
     void processPacketData(KuipDataPacket &packet, double timestamp) 
     {
+        double IMUacc_c[3] = {};
+        if (!packet.linear_x.empty()) {
+            IMUacc_c[0] = packet.linear_x.back();
+        }
+        if (!packet.linear_y.empty()) {
+            IMUacc_c[1] = packet.linear_y.back();
+        }
+        if (!packet.linear_z.empty()) {
+            IMUacc_c[2] = packet.linear_z.back();
+        }
 
+        double IMUgyro_c[3] = {};
+        if (!packet.angular_x.empty()) {
+            IMUgyro_c[0] = packet.angular_x.back();
+        }
+        if (!packet.angular_y.empty()) {
+            IMUgyro_c[1] = packet.angular_y.back();
+        }
+        if (!packet.angular_z.empty()) {
+            IMUgyro_c[2] = packet.angular_z.back();
+        }
+
+        double s_time = packet.s_time;
+        
+
+        argInit_1x3_real_T(b_acc_o);
+        argInit_1x3_real_T(cent_pos_est);
+        b_gyro[0] = b_acc_o[0];
+        b_gyro[1] = b_acc_o[1];
+        b_gyro[2] = b_acc_o[2];
+
+        IMUpos(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, mode, &kf_psi,
+         &gyro_psi, cent_pos_est, cent_vel_est, &state_o, &acc_b_phi,
+         &acc_b_theta);
+        
     }
 };
 

@@ -54,12 +54,11 @@ RosKapDataPacket KuipCallback::next()
     return packet;
 }
 
-void KuipCallback::pop(const RosKapDataPacket &targetPacket)
+void KuipCallback::pop()
 {
-    auto it = std::find(m_buffer.begin(), m_buffer.end(), targetPacket);
-    if (it != m_buffer.end())
+    if (!m_buffer.empty()) 
     {
-        m_buffer.erase(it);
+        m_buffer.pop_front();
     }
 }
 

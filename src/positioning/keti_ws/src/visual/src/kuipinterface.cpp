@@ -77,18 +77,27 @@ void kuipInterface::registerCallback(PacketCallback *cb)  // Make sure PacketCal
 void kuipInterface::spinFor()
 {
 	RosKapDataPacket rosPacket = m_kuipCallback.next();
-
-	if (!rosPacket.second.empty())
+    std::string frame_id1 = rosPacket.second.frame_id;
+	if (!rosPacket.second.empty(rosPacket.second.frame_id))
 	{
         for (auto &cb : m_callbacks)
 		{
-			cb->operator()(rosPacket.second, rosPacket.first);
-            // ImuSubscriber* imuSub = dynamic_cast<ImuSubscriber*>(cb);
-            // if (imuSub && !init) {
-            //     // cb는 ImuSubscriber입니다. 이 안에서 원하는 작업을 수행하십시오.
-            //     bool connected = QObject::connect(imuSub, &ImuSubscriber::newPositionData, &mw_, &MainWindow::onNewPositionData);
-            //     init = true;
-            // }
+            ImuSubscriber* imuSub = dynamic_cast<ImuSubscriber*>(cb);
+            std::string frame_id = rosPacket.second.frame_id;
+            if (rosPacket.second.frame_id == "imu"){
+                if (imuSub){
+                    cb->operator()(rosPacket.second, rosPacket.first);
+                    m_kuipCallback.pop();
+                    break;
+                }
+            }
+            else{
+                if (!imuSub){
+                    cb->operator()(rosPacket.second, rosPacket.first);
+                    m_kuipCallback.pop();
+                    break;
+                }
+            }
 		}
 
 	}
@@ -164,33 +173,45 @@ void kuipInterface::run()
         "/dwm1001/anchor/ttyUWB0",
         "/dwm1001/anchor/ttyUWB1",
         "/dwm1001/anchor/ttyUWB2",
-        "/dwm1001/anchor/ttyUWB3"
+        "/dwm1001/anchor/ttyUWB3",
+        "/zed_f9r/imu"
     };
 
     std::map<std::string, ros::Publisher> publishers;
 
     for (const auto& topic : topics) {
-        publishers[topic] = nh_.advertise<visual::Anchor>(topic, 10);
+        if (topic == "/zed_f9r/imu") {
+            publishers[topic] = nh_.advertise<sensor_msgs::Imu>(topic, 10);
+        } else {
+            publishers[topic] = nh_.advertise<visual::Anchor>(topic, 10);
+        }
     }
 
     rosbag::View view(bag);
 
     for (const rosbag::MessageInstance& message : view) {
         if (publishers.find(message.getTopic()) != publishers.end()) {
-            visual::Anchor::ConstPtr uwb_data = message.instantiate<visual::Anchor>();
-            if (uwb_data != NULL) {
-                publishers[message.getTopic()].publish(uwb_data);
-                // std::this_thread::sleep_for(std::chrono::milliseconds(10));
-                spinFor();  // I assume you meant to use std::chrono::milliseconds
-                ros::spinOnce();
+            if (message.getTopic() == "/zed_f9r/imu") {
+                sensor_msgs::Imu::ConstPtr imu_data = message.instantiate<sensor_msgs::Imu>();
+                if (imu_data != NULL) {
+                    publishers[message.getTopic()].publish(imu_data);
+                }
+            } else {
+                visual::Anchor::ConstPtr uwb_data = message.instantiate<visual::Anchor>();
+                if (uwb_data != NULL) {
+                    publishers[message.getTopic()].publish(uwb_data);
+                }
             }
+            // std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            spinFor();  // Assuming that 'spinFor()' is some kind of sleep/delay function. If not, please clarify.
+            ros::spinOnce();
         }
-        
     }
- 
+
     bag.close();
     ROS_INFO("Finish...");
 }
+
 
 
 //2023.09.15

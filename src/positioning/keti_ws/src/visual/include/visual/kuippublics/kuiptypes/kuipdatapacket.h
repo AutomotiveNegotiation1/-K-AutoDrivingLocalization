@@ -64,8 +64,8 @@ struct KuipDataPacket
      // 기본 생성자
     KuipDataPacket() = default;
 
-    KuipDataPacket(const sensor_msgs::Imu::ConstPtr& msg){
-        frame_id = msg->header.frame_id;
+    KuipDataPacket(const sensor_msgs::Imu::ConstPtr& msg) {
+        // frame_id = msg->header.frame_id;
         s_time = convertToDouble(msg->header.stamp);
         
         // Assigning the values directly
@@ -82,7 +82,6 @@ struct KuipDataPacket
         RxID(6, 0.0),     // 6개의 0.0으로 RxID 벡터 초기화
         RxDist(6, 0.0)   // 6개의 0.0으로 RxDist 벡터 초기화
     {
-        frame_id = msg->header.frame_id;
         s_time = convertToDouble(msg->header.stamp);
         id.assign(msg->id.begin(), msg->id.end());
         for (const auto& val : id) {
@@ -100,7 +99,7 @@ struct KuipDataPacket
     };
 
 
-    bool empty() const {
+    bool empty(std::string frame_id) const {
         if (frame_id.empty()){
             return frame_id.empty() ||
                 id.empty() ||
@@ -112,18 +111,22 @@ struct KuipDataPacket
                 RxDist.empty(); //||
                 
         }
-        else if(frame_id != "ttyIMU"){
-            return frame_id.empty() ||
-                id.empty() ||
+        else if(frame_id == "imu"){
+            return linear_x.empty() ||
+                linear_y.empty() ||
+                linear_z.empty() ||
+                angular_x.empty() ||
+                angular_y.empty() ||
+                angular_z.empty();
+        }
+        else{
+            return id.empty() ||
                 x.empty() ||
                 y.empty() ||
                 z.empty() ||
                 distanceFromTag.empty() ||
                 RxID.empty() ||
                 RxDist.empty();
-        }
-        else{
-            // imu empty() boolean
         }
     };
 
@@ -135,7 +138,13 @@ struct KuipDataPacket
                lhs.z == rhs.z &&
                lhs.distanceFromTag == rhs.distanceFromTag &&
                lhs.RxID == rhs.RxID &&
-               lhs.RxDist == rhs.RxDist;
+               lhs.RxDist == rhs.RxDist &&
+               lhs.linear_x == rhs.linear_x &&
+               lhs.linear_y == rhs.linear_y &&
+               lhs.linear_z == rhs.linear_z &&
+               lhs.angular_x == rhs.angular_x &&
+               lhs.angular_y == rhs.angular_y &&
+               lhs.angular_z == rhs.angular_z;
         // 필요한 경우 다른 멤버에 대한 조건을 추가할 수 있습니다.
     }
 };

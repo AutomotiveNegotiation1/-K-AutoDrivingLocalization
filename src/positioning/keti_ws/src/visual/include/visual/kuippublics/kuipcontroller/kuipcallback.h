@@ -47,7 +47,7 @@ public:
     virtual ~KuipCallback() throw();
 
     RosKapDataPacket next();
-    void pop(const RosKapDataPacket &targetPacket);
+    void pop();
     bool getDataEmpty();
     virtual void onLiveDataAvailable(KuipDataPacket packet);
 
