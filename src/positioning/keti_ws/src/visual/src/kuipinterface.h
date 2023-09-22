@@ -40,7 +40,7 @@
 #include <rosbag/bag.h>
 #include <rosbag/view.h>
 #include <visual/Anchor.h>
-
+#include <functional>
 #include <vector>
 #include <map>
 #include <chrono>
@@ -50,6 +50,7 @@
 #include "packetcallback.h"
 #include "uwbsubscriber.h"
 #include "imusubscriber.h"
+#include "fusionsubscriber.h"
 #include "mainwindow.h"
 
 #include "UWBpos6_terminate.h"
@@ -72,7 +73,9 @@ signals:
     void newPositionData(const PosDataPacket& data);
 
 private:
-    bool init = false;
+    int uwbInit = 0;
+    int imuInit = 0;
+    FusionSubscriber* fusion;
     ros::NodeHandle &nh_;
     MainWindow &mw_;
     std::list<PacketCallback *> m_callbacks;

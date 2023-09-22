@@ -13,6 +13,7 @@
 
 /* Include Files */
 #include "UWBpos6_types.h"
+#include "fusion_types.h"
 #include "rtwtypes.h"
 #include <stddef.h>
 #include <stdlib.h>

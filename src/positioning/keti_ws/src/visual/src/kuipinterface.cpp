@@ -48,24 +48,39 @@ kuipInterface::~kuipInterface()
 
 void kuipInterface::registerSubcribers(ros::NodeHandle &node) {
     bool should_publish;
+    fusion = new FusionSubscriber();
     std::list<double> totalTag;
     if (ros::param::get("/visual_node/Tag_on", should_publish) && should_publish) {
         if (ros::param::get("/visual_node/sub_UWB0", should_publish) && should_publish) {
-            registerCallback(new UwbSubscriber(node, "0", &m_kuipCallback));
+            UwbSubscriber* uwb1 = new UwbSubscriber(node, "0", &m_kuipCallback);
+            uwb1->registerCallback([this](double value) { fusion->onUWBDataReceived(value); });
+            QObject::connect(uwb1, &UwbSubscriber::positionDataReceived, &mw_, &MainWindow::onPositionDataReceived);
+            registerCallback(uwb1);
         }
         if (ros::param::get("/visual_node/sub_UWB1", should_publish) && should_publish) {
-            registerCallback(new UwbSubscriber(node, "1", &m_kuipCallback));
+            UwbSubscriber* uwb2 = new UwbSubscriber(node, "1", &m_kuipCallback);
+            uwb2->registerCallback([this](double value) { fusion->onUWBDataReceived(value); });
+            QObject::connect(uwb2, &UwbSubscriber::positionDataReceived, &mw_, &MainWindow::onPositionDataReceived);
+            registerCallback(uwb2);
         }
         if (ros::param::get("/visual_node/sub_UWB2", should_publish) && should_publish) {
-            registerCallback(new UwbSubscriber(node, "2", &m_kuipCallback));
+            UwbSubscriber* uwb3 = new UwbSubscriber(node, "2", &m_kuipCallback);
+            uwb3->registerCallback([this](double value) { fusion->onUWBDataReceived(value); });
+            QObject::connect(uwb3, &UwbSubscriber::positionDataReceived, &mw_, &MainWindow::onPositionDataReceived);
+            registerCallback(uwb3);
         }
         if (ros::param::get("/visual_node/sub_UWB3", should_publish) && should_publish) {
-            registerCallback(new UwbSubscriber(node, "3", &m_kuipCallback));
+            UwbSubscriber* uwb4 = new UwbSubscriber(node, "3", &m_kuipCallback);
+            uwb4->registerCallback([this](double value) { fusion->onUWBDataReceived(value); });
+            QObject::connect(uwb4, &UwbSubscriber::positionDataReceived, &mw_, &MainWindow::onPositionDataReceived);
+            registerCallback(uwb4);
         }
     }
 
     if (ros::param::get("/visual_node/IMU_on", should_publish) && should_publish) {
-        registerCallback(new ImuSubscriber(node, &m_kuipCallback));
+        ImuSubscriber* imu = new ImuSubscriber(node, &m_kuipCallback);
+        imu->registerCallback([this](double value) { fusion->onIMUDataReceived(value); });
+        registerCallback(imu);
     }
 }
 
@@ -73,6 +88,45 @@ void kuipInterface::registerCallback(PacketCallback *cb)  // Make sure PacketCal
 {
     m_callbacks.push_back(cb);
 }
+
+// void kuipInterface::spinFor()
+// {
+// 	RosKapDataPacket rosPacket = m_kuipCallback.next();
+//     std::string frame_id1 = rosPacket.second.frame_id;
+// 	if (!rosPacket.second.empty(rosPacket.second.frame_id))
+// 	{
+//         for (auto &cb : m_callbacks)
+// 		{
+//             std::string frame_id = rosPacket.second.frame_id;
+//             if (rosPacket.second.frame_id == "imu") {
+//                 ImuSubscriber* imuSub = dynamic_cast<ImuSubscriber*>(cb);
+//                 if (imuSub) {
+//                     cb->operator()(rosPacket.second, rosPacket.first);
+//                     m_kuipCallback.pop();
+//                     if (imuInit < 1) {
+//                         // Register callback for IMU data
+//                         cb->registerCallback([this](double value) { fusion->onIMUDataReceived(value); });
+//                         imuInit++;
+//                     }
+//                     break;
+//                 }
+//             }
+//             else {
+//                 UwbSubscriber* uwbSub = dynamic_cast<UwbSubscriber*>(cb);
+//                 if (uwbSub) {
+//                     cb->operator()(rosPacket.second, rosPacket.first);
+//                     cb->registerCallback([this](double value) { fusion->onUWBDataReceived(value); });
+//                     m_kuipCallback.pop();
+//                     QObject::connect(uwbSub, &UwbSubscriber::positionDataReceived, &mw_, &MainWindow::onPositionDataReceived);
+//                     break;
+                    
+//                 }
+//             }
+
+// 		}
+
+// 	}
+// }
 
 void kuipInterface::spinFor()
 {

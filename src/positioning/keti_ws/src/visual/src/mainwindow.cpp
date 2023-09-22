@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     position(nullptr)
 {
+    qRegisterMetaType<PosDataPacket>("PosDataPacket");
     std::srand(QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0);
     ui->setupUi(this);
     
@@ -174,9 +175,9 @@ void MainWindow::mouseWheel()
 }
 
 
-void MainWindow::onNewPositionData(const PosDataPacket& data) {
+void MainWindow::onPositionDataReceived(PosDataPacket data) {
   qDebug() << "onNewPositionData called.";
-  // position = &data;
+  position = &data;
   // 2. Update the graph
   updateGraph();
 }
@@ -185,92 +186,93 @@ void MainWindow::onNewPositionData(const PosDataPacket& data) {
 
 void MainWindow::updateGraph()
 {
-//     if (!position) {
-//       // handle error or return
-//       return;
-//     } 
+    if (!position) {
+      // handle error or return
+      return;
+    } 
 
-//     // Clear previous graphs
-//     ui->customPlot->clearGraphs();
+    // Clear previous graphs
+    ui->customPlot->clearGraphs();
 
-//     // 태그의 위치를 추출하고, 그래프에 점으로 표현
-//     QVector<double> xPoints(4), yPoints(4);
-//     for (int i = 0; i < 4; i++) {
-//         xPoints[i] = position->tag_pos_est[i].re;
-//         yPoints[i] = position->tag_pos_est[i].im;
-//     }
+    // 태그의 위치를 추출하고, 그래프에 점으로 표현
+    QVector<double> xPoints(4), yPoints(4);
+    for (int i = 0; i < 4; i++) {
+        xPoints[i] = position->tag_pos_est[i].re;
+        yPoints[i] = position->tag_pos_est[i].im;
+    }
 
-//     // 앵커의 위치를 추출하고, 그래프에 점으로 표현
-//     QVector<double> anxPoints(position->x.size()), anyPoints(position->y.size());
-//     for (int i = 0; i < position->x.size(); i++) {
-//         anxPoints[i] = position->x[i];
-//         anyPoints[i] = position->y[i];
-//     }
+    // 앵커의 위치를 추출하고, 그래프에 점으로 표현
+    const int arraySize = 6; // or sizeof(position->x) / sizeof(position->x[0]);
 
-//     // 앵커의 그래프
-//     ui->customPlot->addGraph();
-//     ui->customPlot->graph()->setData(anxPoints, anyPoints);
-//     ui->customPlot->graph()->setScatterStyle(QCPScatterStyle::ssTriangle);  // 세모 모양
-//     ui->customPlot->graph()->setLineStyle(QCPGraph::lsNone);
-//     ui->customPlot->graph()->setPen(QPen(Qt::blue));  // 앵커의 색상
+    QVector<double> anxPoints(arraySize), anyPoints(arraySize);
+    for (int i = 0; i < arraySize; i++) {
+        anxPoints[i] = position->x[i];
+        anyPoints[i] = position->y[i];
+    }
+    // 앵커의 그래프
+    ui->customPlot->addGraph();
+    ui->customPlot->graph()->setData(anxPoints, anyPoints);
+    ui->customPlot->graph()->setScatterStyle(QCPScatterStyle::ssTriangle);  // 세모 모양
+    ui->customPlot->graph()->setLineStyle(QCPGraph::lsNone);
+    ui->customPlot->graph()->setPen(QPen(Qt::blue));  // 앵커의 색상
 
-//     // 중심점 계산
-//     double xCenter = (xPoints[0] + xPoints[1] + xPoints[2] + xPoints[3]) / 4;
-//     double yCenter = (yPoints[0] + yPoints[1] + yPoints[2] + yPoints[3]) / 4;
+    // 중심점 계산
+    double xCenter = (xPoints[0] + xPoints[1] + xPoints[2] + xPoints[3]) / 4;
+    double yCenter = (yPoints[0] + yPoints[1] + yPoints[2] + yPoints[3]) / 4;
 
-//     // 화살표의 끝점 계산
-//     double arrowLength = 0.5;  // 화살표의 적절한 길이를 선택
-//     double adjustedHeading = position->heading_est + M_PI/2;
-//     double xArrowEnd = xCenter + arrowLength * cos(adjustedHeading);
-//     double yArrowEnd = yCenter + arrowLength * sin(adjustedHeading);
-
-
-//     // 네 개의 태그 위치에 점 표시
-//     ui->customPlot->addGraph();
-//     ui->customPlot->graph()->setData(xPoints, yPoints);
-//     ui->customPlot->graph()->setScatterStyle(QCPScatterStyle::ssCircle);
-//     ui->customPlot->graph()->setLineStyle(QCPGraph::lsNone);
-
-//     // Instead of adding an arrow item, create a new graph to represent the arrow
-//     QVector<double> arrowX(2), arrowY(2);
-//     arrowX[0] = xCenter;
-//     arrowY[0] = yCenter;
-//     arrowX[1] = xArrowEnd;
-//     arrowY[1] = yArrowEnd;
-
-//     ui->customPlot->addGraph();
-//     ui->customPlot->graph()->setData(arrowX, arrowY);
-//     ui->customPlot->graph()->setLineStyle(QCPGraph::lsLine);
-//     QPen arrowPen;
-//     arrowPen.setWidth(2); // Set to a suitable width
-//     arrowPen.setColor(Qt::red); // Or any color you prefer
-//     ui->customPlot->graph()->setPen(arrowPen);
-
-//     double maxDist = 0;
-//     for(int i = 0; i < 4; i++) {
-//         double dist = std::sqrt(std::pow(xPoints[i] - xCenter, 2) + std::pow(yPoints[i] - yCenter, 2));
-//         if(dist > maxDist) {
-//             maxDist = dist;
-//         }
-//     }
-
-//     double ratio = 1.0;  // 1:1 aspect ratio
-//     double range = 40;  // Range for both x and y axes
-//     double pixelWidth = ui->customPlot->xAxis->pixelToCoord(1) - ui->customPlot->xAxis->pixelToCoord(0);
-//     double pixelHeight = ui->customPlot->yAxis->pixelToCoord(0) - ui->customPlot->yAxis->pixelToCoord(1);
-
-//     ui->customPlot->yAxis->setScaleRatio(ui->customPlot->xAxis, pixelHeight / pixelWidth * ratio);
-
-//     // Set range
-//     ui->customPlot->xAxis->setRange(-range, range);
-//     ui->customPlot->yAxis->setRange(-range, range);
+    // 화살표의 끝점 계산
+    double arrowLength = 0.5;  // 화살표의 적절한 길이를 선택
+    double adjustedHeading = position->heading_est + M_PI/2;
+    double xArrowEnd = xCenter + arrowLength * cos(adjustedHeading);
+    double yArrowEnd = yCenter + arrowLength * sin(adjustedHeading);
 
 
-// // ... [rest of your code]
+    // 네 개의 태그 위치에 점 표시
+    ui->customPlot->addGraph();
+    ui->customPlot->graph()->setData(xPoints, yPoints);
+    ui->customPlot->graph()->setScatterStyle(QCPScatterStyle::ssCircle);
+    ui->customPlot->graph()->setLineStyle(QCPGraph::lsNone);
+
+    // Instead of adding an arrow item, create a new graph to represent the arrow
+    QVector<double> arrowX(2), arrowY(2);
+    arrowX[0] = xCenter;
+    arrowY[0] = yCenter;
+    arrowX[1] = xArrowEnd;
+    arrowY[1] = yArrowEnd;
+
+    ui->customPlot->addGraph();
+    ui->customPlot->graph()->setData(arrowX, arrowY);
+    ui->customPlot->graph()->setLineStyle(QCPGraph::lsLine);
+    QPen arrowPen;
+    arrowPen.setWidth(2); // Set to a suitable width
+    arrowPen.setColor(Qt::red); // Or any color you prefer
+    ui->customPlot->graph()->setPen(arrowPen);
+
+    double maxDist = 0;
+    for(int i = 0; i < 4; i++) {
+        double dist = std::sqrt(std::pow(xPoints[i] - xCenter, 2) + std::pow(yPoints[i] - yCenter, 2));
+        if(dist > maxDist) {
+            maxDist = dist;
+        }
+    }
+
+    double ratio = 1.0;  // 1:1 aspect ratio
+    double range = 40;  // Range for both x and y axes
+    double pixelWidth = ui->customPlot->xAxis->pixelToCoord(1) - ui->customPlot->xAxis->pixelToCoord(0);
+    double pixelHeight = ui->customPlot->yAxis->pixelToCoord(0) - ui->customPlot->yAxis->pixelToCoord(1);
+
+    ui->customPlot->yAxis->setScaleRatio(ui->customPlot->xAxis, pixelHeight / pixelWidth * ratio);
+
+    // Set range
+    ui->customPlot->xAxis->setRange(-range, range);
+    ui->customPlot->yAxis->setRange(-range, range);
 
 
-//     // 그래프 다시 그리기
-//     ui->customPlot->replot();
+// ... [rest of your code]
+
+
+    // 그래프 다시 그리기
+    ui->customPlot->replot();
 }
 
 

@@ -36,13 +36,18 @@
 
 #include <ros/ros.h>
 #include "kuipdatapacket.h"
+#include "posdatapacket.h"
 
-const std::string DEFAULT_FRAME_ID = "some_value";
-
-class PacketCallback
+class PacketCallback 
 {
+    protected:
+        std::string packetFrameID;
+
     public:
+        virtual std::string getPacketFrameID() = 0;
         virtual void operator()(KuipDataPacket &, double) = 0;
+        virtual void registerCallback(const std::function<void(double)>& callback) = 0;
+        // In packetcallback.h
 };
 
 #endif
