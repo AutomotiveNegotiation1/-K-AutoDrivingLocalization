@@ -37,6 +37,9 @@ catkin_package(
 
 # file(GLOB UWB_SOURCES2 lib/UWBpos2/*.c)
 file(GLOB UWB_SOURCES6 lib/UWBpos6/*.c)
+file(GLOB IMU_SOURCES lib/IMUpos/*.c)
+file(GLOB FUSION_SOURCES lib/fusion/*.c)
+file(GLOB OBJECT_SOURCES include/visual/kuipmessage/messagesubscibers/*.cpp)
 
 include_directories(
   include  # your custom include directory, if you have one
@@ -46,23 +49,26 @@ include_directories(
   
   ${CMAKE_CURRENT_SOURCE_DIR}/include  
   ${CMAKE_CURRENT_SOURCE_DIR}/include/visual  
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/kappublics/kaptypes  # Add this line
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/messagesubscibers
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/kuippublics/kuiptypes  # Add this line
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/kuippublics/kuipcontroller  # Add this line
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/kuipmessage/messagesubscibers
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/visual/kuipmessage/messagecommon
   # ${CMAKE_CURRENT_SOURCE_DIR}/lib/UWBpos2
   ${CMAKE_CURRENT_SOURCE_DIR}/lib/UWBpos6
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/IMUpos
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/fusion
 )
 
 
 set(SOURCES
   src/main.cpp
   src/mainwindow.cpp
-  src/mainpositioning.cpp
+  src/kuipinterface.cpp
   src/qcustomplot.cpp
-  src/kapcallback.cpp  # 추가
-  src/uwbsubscriber.cpp  # 추가
+  src/kuipcallback.cpp  # 추가
 )
 
-add_executable(${PROJECT_NAME}_node ${SOURCES} ${UWB_SOURCES6} ${UWB_HEADERS})
+add_executable(${PROJECT_NAME}_node ${SOURCES} ${UWB_SOURCES6} ${IMU_SOURCES} ${FUSION_SOURCES} ${OBJECT_SOURCES})
 
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 

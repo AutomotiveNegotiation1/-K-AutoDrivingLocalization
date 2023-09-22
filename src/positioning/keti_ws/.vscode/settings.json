@@ -78,6 +78,7 @@
         "variant": "cpp",
         "bit": "cpp",
         "valarray": "cpp",
-        "csignal": "cpp"
+        "csignal": "cpp",
+        "future": "cpp"
     }
 }
