@@ -45,6 +45,8 @@
 #include <chrono>
 #include <cmath>
 
+#include <functional>
+
 #include "posdatapacket.h"
 #include "kuipdatapacket.h"
 
@@ -64,8 +66,8 @@ public:
     void updateGraph();
 
 public slots:
-    void onNewPositionData(const PosDataPacket& data);
-    
+    void onPositionDataReceived(PosDataPacket data);
+
 private slots:
     void titleDoubleClick(QMouseEvent *event);
     void axisLabelDoubleClick(QCPAxis* axis, QCPAxis::SelectablePart part);
@@ -81,7 +83,7 @@ private slots:
     
 private:
     Ui::MainWindow *ui;
-    const PosDataPacket *position;
+    PosDataPacket* position;
     
 };
 

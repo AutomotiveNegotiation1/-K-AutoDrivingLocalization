@@ -41,6 +41,8 @@ struct PosDataPacket {
     creal_T tag_pos_est_aver[4];
     double heading_est;
     double headingest_a_aver_v;
+    double x[6];
+    double y[6];
 };
 
 
