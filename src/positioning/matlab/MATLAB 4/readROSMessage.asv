@@ -1,0 +1,53 @@
+aa = rosbag('2023-07-26-18-35-13.bag');
+
+for dfe = 1 : 4
+    UWB{dfe} = select(aa,'Topic',['/dwm1001/anchor/ttyUWB'0');
+    UWB0Msg = readMessages(UWB0,'DataFormat','struct');
+UWB1 = select(aa,'Topic','/dwm1001/anchor/ttyUWB1');
+UWB1Msg = readMessages(UWB1,'DataFormat','struct');
+UWB2 = select(aa,'Topic','/dwm1001/anchor/ttyUWB2');
+UWB2Msg = readMessages(UWB2,'DataFormat','struct');
+UWB3 = select(aa,'Topic','/dwm1001/anchor/ttyUWB3');
+UWB3Msg = readMessages(UWB3,'DataFormat','struct');
+
+UWB_Tag0 = select(aa,'Topic','/dwm1001/ttyUWB0');
+UWB_Tag0Msg = readMessages(UWB_Tag0,'DataFormat','struct');
+UWB_Tag1 = select(aa,'Topic','/dwm1001/ttyUWB1');
+UWB_Tag1Msg = readMessages(UWB_Tag1,'DataFormat','struct');
+UWB_Tag2 = select(aa,'Topic','/dwm1001/ttyUWB2');
+UWB_Tag2Msg = readMessages(UWB_Tag2,'DataFormat','struct');
+UWB_Tag3 = select(aa,'Topic','/dwm1001/ttyUWB3');
+UWB_Tag3Msg = readMessages(UWB_Tag3,'DataFormat','struct');
+
+xt_b(1) = UWB_Tag0Msg{1}.X;
+yt_b(1) = UWB_Tag0Msg{1}.Y;
+zt_b(1) = UWB_Tag0Msg{1}.Z;
+xt_b(2) = UWB_Tag1Msg{1}.X;
+yt_b(2) = UWB_Tag1Msg{1}.Y;
+zt_b(2) = UWB_Tag1Msg{1}.Z;
+xt_b(3) = UWB_Tag2Msg{1}.X;
+yt_b(3) = UWB_Tag2Msg{1}.Y;
+zt_b(3) = UWB_Tag2Msg{1}.Z;
+xt_b(4) = UWB_Tag3Msg{1}.X;
+yt_b(4) = UWB_Tag3Msg{1}.Y;
+zt_b(4) = UWB_Tag3Msg{1}.Z;
+
+% AnchorIDmap(1,:) = '9B8F';
+% AnchorIDmap(2,:) = '1221';
+% AnchorIDmap(3,:) = '991B';
+% AnchorIDmap(4,:) = '89A4';
+
+Ln = 0;
+Lp = 4;
+
+AnchorIDmapH = [];
+AnchorIDmap = [];
+% AnchorIDmapH{1} = '9B8F';
+% AnchorIDmapH{2} = '1221';
+% AnchorIDmapH{3} = '991B';
+% AnchorIDmapH{4} = '89A4';
+% Ln = 4;
+% Lp = 4;
+% for kks = 1 : Ln
+%     AnchorIDmap(kks) = hex2dec(AnchorIDmapH{kks});
+% end

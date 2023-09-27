@@ -1,0 +1,170 @@
+function [UWBout] = UWBpos6(Ln, Lp, LnC, TagNum, Nanchor, RxIDin, RxDistin, s_time, tag_pos_b, xain, yain, prevTagPos, prevTagHeading)
+
+%% Variable declaration
+average_len = 30;
+NumInterpPoint = 16;
+tag_center_vel_est = 0;
+
+persistent r Tag_Pos_List heading_est_a centerest_a centerest_a_aver headingest_a_aver DistList DistListTime PrevPos PrevHeading
+
+if isempty (r)
+    r = 0;
+    Tag_Pos_List = zeros(NumInterpPoint,2,Lp)+0j;
+    heading_est_a = zeros(average_len*2,1);
+    centerest_a = zeros(average_len*2,2);
+    centerest_a_aver = zeros(average_len*2,2);
+    headingest_a_aver = zeros(average_len*2,1);
+    DistList = zeros(Ln,Lp,average_len);
+    DistListTime = zeros(Ln,Lp,average_len);
+    PrevPos = zeros(Lp,1);
+    PrevHeading = 0;
+end
+
+%% Initialization
+if r < 1000
+    r = r + 1;
+end
+
+RxID = RxIDin(1:Nanchor);
+xa = xain(1:LnC);
+ya = yain(1:LnC);
+anch_pos = xa + j*ya;
+RxDist = RxDistin(1:Nanchor);
+
+% prevDist = abs(transpose(anch_pos) - reshape(prevTagPos,1,4));
+prevDistTemp1 = transpose(anch_pos);
+prevDistTemp2 = reshape(prevTagPos,1,4);
+prevDistTemp3 = transpose(anch_pos) - reshape(prevTagPos,1,4);
+prevDist = abs(prevDistTemp3);
+
+PP = TagNum;
+anch_pos = xa + j*ya;
+
+tag_pos_est = zeros(1,Lp);
+heading_est = 0;
+
+tag_pos_est_aver=zeros(1,Lp);
+headingest_a_aver_v = 0;
+
+%% DistList/DistListTime matrix mapping
+for q = 1 : Nanchor
+
+    DistList(RxID(q),TagNum,1:end-1) = DistList(RxID(q),TagNum,2:end);
+    DistList(RxID(q),TagNum,end) = RxDistin(q);
+    DistListTime(RxID(q),TagNum,1:end-1) = DistListTime(RxID(q),TagNum,2:end);
+    DistListTime(RxID(q),TagNum,end) = s_time;
+
+end
+
+%% DistPredicted matrix mapping
+DistPredicted = zeros(Ln,Lp);
+
+for q = 1 : Ln
+    for p = 1 : Lp
+        for rq = 1 : average_len
+            if (s_time-DistListTime(q,p,rq)) > 2
+                DistList(q,p,rq) = 0;
+                DistListTime(q,p,rq) = 0;
+            end
+        end
+        if (s_time - DistListTime(q,p,end))< 0.3
+            DistPredicted(q,p) = DistList(q,p,end);
+        else
+            DistPredicted(q,p) = 0;
+        end
+
+    end
+end
+
+%% TagNum = 4
+if TagNum == 4
+
+    if min(sum(DistPredicted)) > 0
+        xyTemp = xa+j*ya;
+        [tag_pos_est_t3, heading_est_t3, ErrSum] =  GetInitPos3(xa,ya, DistPredicted(1:LnC,:),xyTemp,tag_pos_b,LnC,4,prevTagPos,prevTagHeading);
+    else
+        tag_pos_est_t3 = PrevPos;
+        heading_est_t3 = PrevHeading;
+        ErrSum = 10000;
+    end
+
+    Tag_Pos_List(1:NumInterpPoint-1,:,:) = Tag_Pos_List(2:NumInterpPoint,:,:);
+    Tag_Pos_List(NumInterpPoint,:,1) = [s_time tag_pos_est_t3(1)];
+    Tag_Pos_List(NumInterpPoint,:,2) = [s_time tag_pos_est_t3(2)];
+    Tag_Pos_List(NumInterpPoint,:,3) = [s_time tag_pos_est_t3(3)];
+    Tag_Pos_List(NumInterpPoint,:,4) = [s_time tag_pos_est_t3(4)];
+
+
+    PrevPos = tag_pos_est_t3;
+    PrevHeading = heading_est_t3;
+
+    tag_pos_est = tag_pos_est_t3;
+    heading_est = heading_est_t3;
+
+    tag_center_pos_est = mean(tag_pos_est);
+
+    if sum(Tag_Pos_List(12,1,:)-Tag_Pos_List(1,1,:)) ~=0
+        tag_center_vel_est = mean((Tag_Pos_List(12,2,:)-Tag_Pos_List(1,2,:))./(Tag_Pos_List(12,1,:)-Tag_Pos_List(1,1,:)));
+    else
+        tag_center_vel_est = 0;
+    end
+
+    heading_est_a(1:end-1) = heading_est_a(2:end);
+
+    TempPh = heading_est - heading_est_a(end-1,:);
+    NoT = int32(abs(TempPh)/(2*pi) );
+    if (heading_est - heading_est_a(end-1,:)) > pi
+        heading_est_a(end) = heading_est - 2*pi*NoT;
+    elseif (heading_est_a(end-1) - heading_est) > pi
+        heading_est_a(end) = heading_est + 2*pi*NoT;
+    else
+        heading_est_a(end) = heading_est;
+    end
+
+    centerest_a(1:end-1,:) = centerest_a(2:end,:);
+    centerest_a(end,:) = [real(tag_center_pos_est) imag(tag_center_pos_est)];
+    centerest_a_aver(1:end-1,:) = centerest_a_aver(2:end,:);
+    headingest_a_aver(1:end-1,:) = headingest_a_aver(2:end,:);
+
+    if (r>(average_len*2))
+        MeanA = mean(centerest_a(1:average_len,1)+j*centerest_a(1:average_len,2));
+        MeanB = mean(centerest_a(average_len+1:average_len*2,1)+j*centerest_a(average_len+1:average_len*2,2));
+        centerest_a_aver(end,:) = [real(MeanB + (MeanB-MeanA)/2) imag((MeanB + (MeanB-MeanA)/2))] ;
+        MeanA_head = mean(heading_est_a(1:average_len));
+        MeanB_head = mean(heading_est_a(average_len+1:average_len*2));
+        headingest_a_aver(end) = ([(MeanB_head + (MeanB_head-MeanA_head)/2)]) ;
+    else
+        centerest_a_aver(end,:) = [real(mean(tag_pos_est)) imag(mean(tag_pos_est))];
+        headingest_a_aver(end) = heading_est_a(end);
+    end
+
+
+    [K_Xt_c_e] = centerest_a_aver(end,1);
+    [K_Yt_c_e] = centerest_a_aver(end,2);
+    tag_pos_est_aver = tag_pos_b*exp(j*(mod(headingest_a_aver(end),2*pi)))+K_Xt_c_e+j*K_Yt_c_e;
+
+
+    headingest_a_aver_v = mod(headingest_a_aver(end),2*pi);
+
+    UWBout = zeros(1,18);
+    UWBout(1:4) = real(tag_pos_est_t3);
+    UWBout(5:8) = imag(tag_pos_est_t3);
+    UWBout(9) = heading_est_t3;
+    UWBout(10:13) = real(tag_pos_est_aver);
+    UWBout(14:17) = imag(tag_pos_est_aver);
+    UWBout(18) = headingest_a_aver_v;
+    UWBout(19:20) = [real(tag_center_vel_est) imag(tag_center_vel_est)];
+    UWBout(21) = ErrSum;
+else %% TagNum is not 4
+    UWBout = zeros(1,18);
+    UWBout(1:4) = real(PrevPos);
+    UWBout(5:8) = imag(PrevPos);
+    UWBout(9) = PrevHeading;
+    UWBout(10:13) = real(PrevPos);
+    UWBout(14:17) = imag(PrevPos);
+    UWBout(18) = PrevHeading;
+    UWBout(19:20) = [real(tag_center_vel_est) imag(tag_center_vel_est)];
+    UWBout(21) = 100;
+end
+
+

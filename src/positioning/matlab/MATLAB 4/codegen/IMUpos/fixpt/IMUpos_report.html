@@ -1,0 +1,548 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Fixed-Point Report for IMUpos</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+	body { font-family: monospace; }
+	h2 { font-family: Arial, Helvetica, sans-serif; color: #990000; margin-top: 50px; }
+	table,th,td { border: 1px solid black; }
+	table { margin-top: 30px; }
+	th { align: center; font-weight: bold; }
+	tr.h { background-color: #99CCFF; }
+	tr.a { background-color: #EEEEFF; }
+	tr.b { background-color: #FFFFFF; }
+	tr.c { background-color: #FFA500; }
+	tr.a td, tr.b td { border-style: none; }
+	td.left { text-align: left; }
+	td.right { text-align: right; }
+	td.center { text-align: center; }
+	td.bold { font-weight: bold; }
+	pre { padding: 0px; margin: 0px; }
+	span { font-style: italic; }
+	.code, .code tr, .code th, .code td { border: none; border-collapse: collapse; }
+	.padd { padding-left: 5px; }
+	td.cov, th.cov { width: 50px; height: 20px; text-align: center; font-weight: bold; border-right: 2px solid black; cell-spacing: 0px; }
+	td.cov { vertical-align: top; }
+	td.black { color: #000000; font-weight: bold; padding-top: 4px; }
+	td.white { color: #FFFFFF; font-weight: bold; padding-top: 4px; }
+	.code th { font-weight: bold; border-bottom: 2px solid black; }
+</style>
+</head>
+<body>
+<h3>Generated on  2023-09-20 15:47:29</h3>
+<p>The following table shows fixed point instrumentation results</p>
+<h2>Fixed-Point Report <span>IMUpos<span></h2>
+<TABLE class="code">
+<TR>
+<TH class="cov padd">Simulation Coverage</TH>
+<TH>Code</TH>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>function [cent_pos_est, cent_vel_est, kf_psi, gyro_psi, b_acc_o, b_gyro, state_o, acc_b_phi,acc_b_theta] = IMUpos(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, mode, kf_psi, gyro_psi, cent_pos_est, cent_vel_est)
+
+
+%% mode : 0 -&gt; F9R,  1 -&gt; Xens
+if mode == 1
+dt_acc = 0.01;
+dt_gyro = 0.01;
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(157,38,35);">0%</TD>
+<TD class="padd"><pre>else
+dt_acc = 0.01;
+dt_gyro = 0.03;
+end</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>    
+Lv = 10;
+persistent k IMUacc IMUgyro s_time_prev Acc_Acc Acc_Vel Acc_Pos gyro_theta state gyro_phi % Acc_Steady Acc_PQR Acc_Acc_a kf_phi kf_theta %gyro_psi 
+gravity = 9.8;
+
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov black" style="background-color: rgb(255,160,118);">Once</TD>
+<TD class="padd"><pre>if isempty (k)
+    k = 0;
+    state = 0; % 0 : init,
+    IMUacc = zeros(2*Lv, 3);
+    IMUgyro = zeros(2*Lv, 3);
+    Acc_Acc = zeros(3,2*Lv );
+    Acc_Vel = zeros(3,2*Lv);
+    Acc_Pos = zeros(3,2*Lv);
+    
+%%%%% For Test %%%%%%
+%     Acc_Steady = zeros(3,2*Lv);
+%     Acc_PQR = zeros(3,2*Lv);
+%     Acc_Acc_a = zeros(3,2*Lv );
+%     kf_phi = 0;
+%     kf_theta = 0;
+%%%%%%%%%%%%%%%%%%%%%%%
+
+    gyro_phi = 0;
+    gyro_theta = 0;
+
+
+%     gyro_psi = 0;
+end</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>
+
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov black" style="background-color: rgb(207,226,203);">12%</TD>
+<TD class="padd"><pre>if k &lt; 900
+    k = k + 1;
+end</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>
+
+IMUgyro(1:end-1, :) = IMUgyro(2:end, :);
+IMUgyro(end,:)  = IMUgyro_c;
+IMUacc(1:end-1, :) = IMUacc(2:end, :);
+IMUacc(end,:) = IMUacc_c;
+
+Acc_Vel(:,end) = cent_vel_est;
+Acc_Pos(:,end) = cent_pos_est;
+
+% dt_gyro = s_time - s_time_prev;
+
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(7,113,11);">99%</TD>
+<TD class="padd"><pre>if k &gt; 100
+    state = 2;
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(157,38,35);">0%</TD>
+<TD class="padd"><pre>    if mode == 1
+        p = (IMUgyro(end,1)-b_gyro(1));    q = (IMUgyro(end,2)-b_gyro(2));    r = (IMUgyro(end,3)-b_gyro(3));
+    else
+        p = (IMUgyro(end,1)-b_gyro(1))*pi/180;    q = (IMUgyro(end,2)-b_gyro(2))*pi/180;    r = (IMUgyro(end,3)-b_gyro(3))*pi/180;
+    end</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(7,113,11);">99%</TD>
+<TD class="padd"><pre>
+
+    acc_b = (IMUacc(end,[1 2 3])-b_acc_o)';
+
+    used_phi = 0;
+    used_theta = 0;
+    used_psi = kf_psi;
+
+    %%% for test
+%     used_phi = kf_phi;
+%     used_theta = kf_theta;
+%     used_psi = kf_psi;
+
+    
+    used_phi_next = 0;
+    used_theta_next = 0;
+    used_psi_next = kf_psi;
+
+    Acc_Pos(:,end) = cent_pos_est;
+    Acc_Vel(:,end) = cent_vel_est;
+    Acc_Pos(:,1:end-1) = Acc_Pos(:,2:end);
+    Acc_Vel(:,1:end-1) = Acc_Vel(:,2:end);
+    Acc_Acc(:,1:end-1) = Acc_Acc(:,2:end);
+    %%%%%%%%%%%%%%%%% For Test %%%%%%%%%%%%%%%%%%
+%     Acc_Acc_a(:,1:end-1) = Acc_Acc_a(:,2:end);
+%     Acc_PQR(:,1:end-1) = Acc_PQR(:,2:end);
+%     Acc_Steady(:,1:end-1) = Acc_Steady(:,2:end);
+% 
+%             %         vel_t = rotationVectorToMatrix([used_phi;used_theta;used_psi])*Acc_Vel(:,i-1);
+%             %         Acc_PQR(:,i) = 1*([0 vel_t(3) -vel_t(2);-vel_t(3) 0 0;vel_t(2) 0 0]*[p;q;r]);
+%             %         Acc_Steady(:,i) = gravity*[sin(used_theta_next);-cos(used_theta_next)*sin(used_phi_next);-cos(used_theta_next)*cos(used_phi_next)];
+%             %         Acc_Acc(:,i) = rotationVectorToMatrix([used_phi;used_theta;used_psi])'*(acc_b(:,i)-Acc_PQR(:,i)-Acc_Steady(:,i));
+%             vel_t = [0 1 0;1 0 0;0 0 1]*rotationVectorToMatrix([used_phi;used_theta;used_psi])*Acc_Vel(:,end-1);
+%             Acc_PQR(:,end) = [0 1 0;1 0 0;0 0 1]*([0 vel_t(3) -vel_t(2);-vel_t(3) 0 0;vel_t(2) 0 0]*[p;q;r]);
+% %             Acc_PQR(:,end) = [0;0;0];
+%             Acc_Steady(:,end) = [0 1 0;1 0 0;0 0 1]*gravity*[sin(used_theta);-cos(used_theta)*sin(used_phi);-cos(used_theta)*cos(used_phi)];
+%             Acc_Acc_a(:,end) = [0 1 0;1 0 0;0 0 1]*rotationVectorToMatrix([used_phi;used_theta;used_psi])'*(acc_b-Acc_PQR(:,end)-Acc_Steady(:,end));
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    %if mode == 1
+        Acc_Acc(:,end) = [0 1 0;1 0 0;0 0 1]*rotationVectorToMatrix([0;0;used_psi])'*([acc_b(1);acc_b(2);0]);
+%     else
+%         Acc_Acc(:,end) = [0 1 0;1 0 0;0 0 1]*rotationVectorToMatrix([0;0;used_psi])'*([acc_b(1);acc_b(2);0]);
+%     end
+
+    [gyro_phi,gyro_theta,gyro_psi] = EulerGyroUpdate(p,q,r,dt_gyro,gyro_phi,gyro_theta,gyro_psi);
+%     [gyro_phi,gyro_theta,gyro_psi] = EulerGyroUpdate(p,q,r,dt_acc,gyro_phi,gyro_theta,gyro_psi);
+
+    [acc_b_phi,acc_b_theta] = EulerAcc(acc_b(1), acc_b(2), acc_b(3));
+
+    qua_acc = EulerToQuaternion(acc_b_phi, acc_b_theta, gyro_psi);
+    qua_kf = EulerToQuaternion(gyro_phi,gyro_theta,gyro_psi);
+    AA = eye(4)+dt_gyro*1/2*[0 -p -q -r;    p 0 r -q;    q -r 0 p;    r q -p 0    ];
+    % %
+    [kf_phi,kf_theta,kf_psi] = EulerKalman_2(qua_kf,AA,qua_acc);
+    kf_phi =real(kf_phi);
+    kf_theta =real(kf_theta);
+    kf_psi =real(kf_psi);
+
+    Acc_Vel(:,end) = Acc_Vel(:,end-1) + Acc_Acc(:,end)*dt_acc;
+    Acc_Pos(:,end) = Acc_Pos(:,end-1) + Acc_Vel(:,end-1)*dt_acc + Acc_Acc(:,end)*dt_acc^2/2;
+
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov black" style="background-color: rgb(255,160,118);">Once</TD>
+<TD class="padd"><pre>elseif k == 100
+
+    b_gyro = mean(IMUgyro);
+    b_acc_o = (mean(IMUacc)'+[0;0;gravity])';
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(157,38,35);">0%</TD>
+<TD class="padd"><pre>    if mode == 1
+        p = (IMUgyro(end,1)-b_gyro(1));    q = (IMUgyro(end,2)-b_gyro(2));    r = (IMUgyro(end,3)-b_gyro(3));
+    else
+        p = (IMUgyro(end,1)-b_gyro(1))*pi/180;    q = (IMUgyro(end,2)-b_gyro(2))*pi/180;    r = (IMUgyro(end,3)-b_gyro(3))*pi/180;
+    end</pre></TD>
+</TR>
+<TR>
+<TD class="cov black" style="background-color: rgb(255,160,118);">Once</TD>
+<TD class="padd"><pre>
+    acc_b = (IMUacc(end,:)-b_acc_o)';
+
+    [acc_b_phi,acc_b_theta] = EulerAcc(acc_b(1), acc_b(2), acc_b(3));
+    gyro_phi = acc_b_phi;
+    kf_phi = gyro_phi;
+    gyro_theta = acc_b_theta;
+    kf_theta = gyro_theta;
+    gyro_psi = kf_psi;
+    state = 1;
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>else
+    if mode == 1
+        p = (IMUgyro(end,1));    q = (IMUgyro(end,2));    r = (IMUgyro(end,3));
+    else
+        p = (IMUgyro(end,1))*pi/180;    q = (IMUgyro(end,2))*pi/180;    r = (IMUgyro(end,3))*pi/180;
+    end
+    acc_b = (IMUacc(end,:))';
+
+    Acc_Vel(:,1:end-1) = Acc_Vel(:,2:end);
+    Acc_Acc(:,1:end-1) = Acc_Acc(:,2:end);
+    Acc_Pos(:,1:end-1) = Acc_Pos(:,2:end);
+
+    Acc_Acc(:,end) = [0 0 0]';
+    Acc_Vel(:,end) = [cent_vel_est(1) cent_vel_est(2) cent_vel_est(3)]';
+    Acc_Pos(:,end) = [cent_pos_est(1) cent_pos_est(2) cent_pos_est(3)]';
+
+    [acc_b_phi,acc_b_theta] = EulerAcc(acc_b(1), acc_b(2), acc_b(3));
+    gyro_phi = gyro_phi*(k-1)/k+acc_b_phi/k;
+    kf_phi = gyro_phi;
+    gyro_theta = gyro_theta*(k-1)/k+acc_b_theta/k;
+    kf_theta = gyro_theta;
+    gyro_psi = kf_psi;
+    %             b_gyro = b_gyro*(k0(5)-1)/k0(5)+IMUgyro(end,:)/k0(5);
+end
+
+s_time_prev = s_time;
+cent_pos_est = Acc_Pos(:,end);
+cent_vel_est = Acc_Vel(:,end);
+state_o = state;
+end</pre></TD>
+</TR>
+</TABLE>
+<TABLE><TR class="h"><th>Variable Name</th><th>Type</th><th>Sim Min</th><th>Sim Max</th><th>Static Min</th><th>Static Max</th><th>Whole Number</th><th>ProposedType <BR /> (Best For WL = 16)</th></TR><TR class="a">
+<TD class="left">AA</TD><TD class="left">double 4 x 4 </TD><TD class="right">-0.00308123849295589</TD><TD class="right">1</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 14)</TD></TR>
+<TR class="b">
+<TD class="left">Acc_Acc</TD><TD class="left">double 3 x 20 </TD><TD class="right">-3.426849611815357</TD><TD class="right">3.626941466350248</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="a">
+<TD class="left">Acc_Pos</TD><TD class="left">double 3 x 20 </TD><TD class="right">-4.005607467967847</TD><TD class="right">20.62988537097217</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 10)</TD></TR>
+<TR class="b">
+<TD class="left">Acc_Vel</TD><TD class="left">double 3 x 20 </TD><TD class="right">-3.99839795432882</TD><TD class="right">3.9353830148834477</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="a">
+<TD class="left">IMUacc</TD><TD class="left">double 20 x 3 </TD><TD class="right">-11.15300178527832</TD><TD class="right">2.338657855987549</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 11)</TD></TR>
+<TR class="b">
+<TD class="left">IMUacc_c</TD><TD class="left">double 1 x 3 </TD><TD class="right">-11.15300178527832</TD><TD class="right">2.338657855987549</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 11)</TD></TR>
+<TR class="a">
+<TD class="left">IMUgyro</TD><TD class="left">double 20 x 3 </TD><TD class="right">-0.6172538995742798</TD><TD class="right">0.16954468190670016</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+<TR class="b">
+<TD class="left">IMUgyro_c</TD><TD class="left">double 1 x 3 </TD><TD class="right">-0.6172538995742798</TD><TD class="right">0.16954468190670016</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+<TR class="a">
+<TD class="left">Lv</TD><TD class="left">double</TD><TD class="right">10</TD><TD class="right">10</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 4, 0)</TD></TR>
+<TR class="b">
+<TD class="left">acc_b</TD><TD class="left">double 3 x 1 </TD><TD class="right">-11.181899060397642</TD><TD class="right">1.956647355415599</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 11)</TD></TR>
+<TR class="a">
+<TD class="left">acc_b_phi</TD><TD class="left">double</TD><TD class="right">-0.18336733746028716</TD><TD class="right">0.40728793412288855</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 16)</TD></TR>
+<TR class="b">
+<TD class="left">acc_b_theta</TD><TD class="left">double</TD><TD class="right">-0.26856778417494226</TD><TD class="right">0.20595094604026476</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 16)</TD></TR>
+<TR class="a">
+<TD class="left">b_acc_o</TD><TD class="left">double 1 x 3 </TD><TD class="right">-0.6715069511009795</TD><TD class="right">0.7199536300201997</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+<TR class="b">
+<TD class="left">b_gyro</TD><TD class="left">double 1 x 3 </TD><TD class="right">-0.002269111663190415</TD><TD class="right">0.0005601346085313707</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 23)</TD></TR>
+<TR class="a">
+<TD class="left">cent_pos_est</TD><TD class="left">double 3 x 1 </TD><TD class="right">-4.005607467967847</TD><TD class="right">20.62988537097217</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 10)</TD></TR>
+<TR class="b">
+<TD class="left">cent_vel_est</TD><TD class="left">double 3 x 1 </TD><TD class="right">-3.99839795432882</TD><TD class="right">3.9353830148834477</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="a">
+<TD class="left">dt_acc</TD><TD class="left">double</TD><TD class="right">0.01</TD><TD class="right">0.01</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(0, 16, 22)</TD></TR>
+<TR class="b">
+<TD class="left">dt_gyro</TD><TD class="left">double</TD><TD class="right">0.01</TD><TD class="right">0.01</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(0, 16, 22)</TD></TR>
+<TR class="a">
+<TD class="left">gravity</TD><TD class="left">double</TD><TD class="right">9.8</TD><TD class="right">9.8</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(0, 16, 12)</TD></TR>
+<TR class="b">
+<TD class="left">gyro_phi</TD><TD class="left">double</TD><TD class="right">-0.034174832896995945</TD><TD class="right">0.163776893655794</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="a">
+<TD class="left">gyro_psi</TD><TD class="left">double</TD><TD class="right">-3.157550140211688</TD><TD class="right">3.141482301093506</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="b">
+<TD class="left">gyro_theta</TD><TD class="left">double</TD><TD class="right">-0.03817028351213994</TD><TD class="right">0.1486839781757991</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="a">
+<TD class="left">k</TD><TD class="left">double</TD><TD class="right">0</TD><TD class="right">900</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 10, 0)</TD></TR>
+<TR class="b">
+<TD class="left">kf_phi</TD><TD class="left">double</TD><TD class="right">-0.03526961501178418</TD><TD class="right">0.1772985016495374</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="a">
+<TD class="left">kf_psi</TD><TD class="left">double</TD><TD class="right">-3.1414954702814817</TD><TD class="right">3.1415818272692486</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="b">
+<TD class="left">kf_theta</TD><TD class="left">double</TD><TD class="right">-0.0489775429235648</TD><TD class="right">0.1449370053660879</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="a">
+<TD class="left">mode</TD><TD class="left">double</TD><TD class="right">1</TD><TD class="right">1</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 1, 0)</TD></TR>
+<TR class="b">
+<TD class="left">p</TD><TD class="left">double</TD><TD class="right">-0.17602030178895803</TD><TD class="right">0.17181379356989057</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="a">
+<TD class="left">q</TD><TD class="left">double</TD><TD class="right">-0.1494689285347704</TD><TD class="right">0.09285599742433989</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="b">
+<TD class="left">qua_acc</TD><TD class="left">double 4 x 1 </TD><TD class="right">-0.9999827646278283</TD><TD class="right">0.9999739002954402</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+<TR class="a">
+<TD class="left">qua_kf</TD><TD class="left">double 4 x 1 </TD><TD class="right">-0.9999686716377822</TD><TD class="right">0.9999650516320642</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+<TR class="b">
+<TD class="left">r</TD><TD class="left">double</TD><TD class="right">-0.616247698591178</TD><TD class="right">0.01588575549321831</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+<TR class="c">
+<TD class="left">s_time</TD><TD class="left">double</TD><TD class="right">1693384935.8143528</TD><TD class="right">1693385011.6912878</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(0, 16, -15)</TD></TR>
+<TR class="c">
+<TD class="left">s_time_prev</TD><TD class="left">double</TD><TD class="right">1693384935.8143528</TD><TD class="right">1693385011.6912878</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(0, 16, -15)</TD></TR>
+<TR class="a">
+<TD class="left">state</TD><TD class="left">double</TD><TD class="right">0</TD><TD class="right">2</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 2, 0)</TD></TR>
+<TR class="b">
+<TD class="left">state_o</TD><TD class="left">double</TD><TD class="right">0</TD><TD class="right">2</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 2, 0)</TD></TR>
+<TR class="a">
+<TD class="left">used_phi</TD><TD class="left">double</TD><TD class="right">0</TD><TD class="right">0</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 1, 0)</TD></TR>
+<TR class="b">
+<TD class="left">used_phi_next</TD><TD class="left">double</TD><TD class="right">0</TD><TD class="right">0</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 1, 0)</TD></TR>
+<TR class="a">
+<TD class="left">used_psi</TD><TD class="left">double</TD><TD class="right">-3.1414954702814817</TD><TD class="right">3.1415818272692486</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="b">
+<TD class="left">used_psi_next</TD><TD class="left">double</TD><TD class="right">-3.1414954702814817</TD><TD class="right">3.1415818272692486</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="a">
+<TD class="left">used_theta</TD><TD class="left">double</TD><TD class="right">0</TD><TD class="right">0</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 1, 0)</TD></TR>
+<TR class="b">
+<TD class="left">used_theta_next</TD><TD class="left">double</TD><TD class="right">0</TD><TD class="right">0</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 1, 0)</TD></TR>
+</TABLE>
+
+<h2>Fixed-Point Report <span>EulerGyroUpdate<span></h2>
+<TABLE class="code">
+<TR>
+<TH class="cov padd">Simulation Coverage</TH>
+<TH>Code</TH>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>function [phi, theta, psi] = EulerGyroUpdate(p,q,r,dt,phi_p, theta_p, psi_p)
+
+UpdateMat = [1 sin(phi_p)*tan(theta_p) cos(phi_p)*tan(theta_p);0 cos(phi_p) -sin(phi_p);0 sin(phi_p)/cos(theta_p) cos(phi_p)/cos(theta_p)];
+
+NextEuler = [phi_p;theta_p;psi_p] + dt*UpdateMat*[p;q;r];
+
+phi = NextEuler(1);
+theta = NextEuler(2);
+psi = NextEuler(3);
+end</pre></TD>
+</TR>
+</TABLE>
+<TABLE><TR class="h"><th>Variable Name</th><th>Type</th><th>Sim Min</th><th>Sim Max</th><th>Static Min</th><th>Static Max</th><th>Whole Number</th><th>ProposedType <BR /> (Best For WL = 16)</th></TR><TR class="a">
+<TD class="left">NextEuler</TD><TD class="left">double 3 x 1 </TD><TD class="right">-3.157550140211688</TD><TD class="right">3.1412897012550465</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="b">
+<TD class="left">UpdateMat</TD><TD class="left">double 3 x 3 </TD><TD class="right">-0.1630457138829972</TD><TD class="right">1.010089685495041</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 14)</TD></TR>
+<TR class="a">
+<TD class="left">dt</TD><TD class="left">double</TD><TD class="right">0.01</TD><TD class="right">0.01</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(0, 16, 22)</TD></TR>
+<TR class="b">
+<TD class="left">p</TD><TD class="left">double</TD><TD class="right">-0.17602030178895803</TD><TD class="right">0.17181379356989057</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="a">
+<TD class="left">phi</TD><TD class="left">double</TD><TD class="right">-0.034174832896995945</TD><TD class="right">0.163776893655794</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="b">
+<TD class="left">phi_p</TD><TD class="left">double</TD><TD class="right">-0.034174832896995945</TD><TD class="right">0.163776893655794</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="a">
+<TD class="left">psi</TD><TD class="left">double</TD><TD class="right">-3.157550140211688</TD><TD class="right">3.1412897012550465</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="b">
+<TD class="left">psi_p</TD><TD class="left">double</TD><TD class="right">-3.15570863906254</TD><TD class="right">3.141482301093506</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="a">
+<TD class="left">q</TD><TD class="left">double</TD><TD class="right">-0.1494689285347704</TD><TD class="right">0.09285599742433989</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="b">
+<TD class="left">r</TD><TD class="left">double</TD><TD class="right">-0.616247698591178</TD><TD class="right">0.01588575549321831</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+<TR class="a">
+<TD class="left">theta</TD><TD class="left">double</TD><TD class="right">-0.03817028351213994</TD><TD class="right">0.1486839781757991</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="b">
+<TD class="left">theta_p</TD><TD class="left">double</TD><TD class="right">-0.03817028351213994</TD><TD class="right">0.1486839781757991</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+</TABLE>
+
+<h2>Fixed-Point Report <span>EulerAcc<span></h2>
+<TABLE class="code">
+<TR>
+<TH class="cov padd">Simulation Coverage</TH>
+<TH>Code</TH>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>function [phi, theta] = EulerAcc(ax, ay, az)
+
+phi = atan(ay/az);
+theta = atan(ax/sqrt(ay^2 + az^2));
+end</pre></TD>
+</TR>
+</TABLE>
+<TABLE><TR class="h"><th>Variable Name</th><th>Type</th><th>Sim Min</th><th>Sim Max</th><th>Static Min</th><th>Static Max</th><th>Whole Number</th><th>ProposedType <BR /> (Best For WL = 16)</th></TR><TR class="a">
+<TD class="left">ax</TD><TD class="left">double</TD><TD class="right">-2.618905929585216</TD><TD class="right">1.956647355415599</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="b">
+<TD class="left">ay</TD><TD class="left">double</TD><TD class="right">-4.1063901347468565</TD><TD class="right">1.8885655634974752</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 12)</TD></TR>
+<TR class="a">
+<TD class="left">az</TD><TD class="left">double</TD><TD class="right">-11.181899060397642</TD><TD class="right">-8.249869002420152</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 11)</TD></TR>
+<TR class="b">
+<TD class="left">phi</TD><TD class="left">double</TD><TD class="right">-0.18336733746028716</TD><TD class="right">0.40728793412288855</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 16)</TD></TR>
+<TR class="a">
+<TD class="left">theta</TD><TD class="left">double</TD><TD class="right">-0.26856778417494226</TD><TD class="right">0.20595094604026476</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 16)</TD></TR>
+</TABLE>
+
+<h2>Fixed-Point Report <span>EulerToQuaternion<span></h2>
+<TABLE class="code">
+<TR>
+<TH class="cov padd">Simulation Coverage</TH>
+<TH>Code</TH>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>function z = EulerToQuaternion(phi, theta, psi)
+
+sinPhi      = sin(phi/2);   cosPhi = cos(phi/2);
+sinTheta    = sin(theta/2); cosTheta = cos(theta/2);
+sinPsi      = sin(psi/2); cosPsi = cos(psi/2);
+
+z = [ cosPhi*cosTheta*cosPsi  + sinPhi*sinTheta*sinPsi;
+      sinPhi*cosTheta*cosPsi  - cosPhi*sinTheta*sinPsi;
+      cosPhi*sinTheta*cosPsi  + sinPhi*cosTheta*sinPsi;
+      cosPhi*cosTheta*sinPsi  - sinPhi*sinTheta*cosPsi;
+      ];
+end</pre></TD>
+</TR>
+</TABLE>
+<TABLE><TR class="h"><th>Variable Name</th><th>Type</th><th>Sim Min</th><th>Sim Max</th><th>Static Min</th><th>Static Max</th><th>Whole Number</th><th>ProposedType <BR /> (Best For WL = 16)</th></TR><TR class="a">
+<TD class="left">cosPhi</TD><TD class="left">double</TD><TD class="right">0.9793361280480135</TD><TD class="right">0.9999999999993759</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(0, 16, 15)</TD></TR>
+<TR class="b">
+<TD class="left">cosPsi</TD><TD class="left">double</TD><TD class="right">-0.007978658656291826</TD><TD class="right">0.9999862237955508</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 14)</TD></TR>
+<TR class="a">
+<TD class="left">cosTheta</TD><TD class="left">double</TD><TD class="right">0.9909974583106588</TD><TD class="right">0.9999999999940141</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(0, 16, 15)</TD></TR>
+<TR class="b">
+<TD class="left">phi</TD><TD class="left">double</TD><TD class="right">-0.18336733746028716</TD><TD class="right">0.40728793412288855</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 16)</TD></TR>
+<TR class="a">
+<TD class="left">psi</TD><TD class="left">double</TD><TD class="right">-3.157550140211688</TD><TD class="right">3.1412897012550465</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="b">
+<TD class="left">sinPhi</TD><TD class="left">double</TD><TD class="right">-0.09155527548789648</TD><TD class="right">0.20223933420560103</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="a">
+<TD class="left">sinPsi</TD><TD class="left">double</TD><TD class="right">-0.9999999999999222</TD><TD class="right">0.9999999885274854</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 14)</TD></TR>
+<TR class="b">
+<TD class="left">sinTheta</TD><TD class="left">double</TD><TD class="right">-0.13388068427452135</TD><TD class="right">0.10279357839269927</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="a">
+<TD class="left">theta</TD><TD class="left">double</TD><TD class="right">-0.26856778417494226</TD><TD class="right">0.20595094604026476</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 16)</TD></TR>
+<TR class="b">
+<TD class="left">z</TD><TD class="left">double 4 x 1 </TD><TD class="right">-0.9999827646278283</TD><TD class="right">0.9999739002954402</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+</TABLE>
+
+<h2>Fixed-Point Report <span>EulerKalman_2<span></h2>
+<TABLE class="code">
+<TR>
+<TH class="cov padd">Simulation Coverage</TH>
+<TH>Code</TH>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>function [phi,theta,psi] = EulerKalman_2(x,A,z)
+
+persistent H Q R
+persistent P
+persistent firstRun
+
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov black" style="background-color: rgb(255,160,118);">Once</TD>
+<TD class="padd"><pre>if isempty(firstRun)
+    H = eye(4);
+    
+    Q = 1e0*eye(4);
+    R = 1e2*eye(4);
+    
+%     x = [1 0 0 0]';
+    P = 1*eye(4);
+    
+    firstRun = 1;
+end</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>
+
+xp = A*x;
+Pp = A*P*A' + Q;
+
+K = Pp*H'*inv(H*Pp*H' + R);
+
+x = xp + K*(z - H*xp);
+P = Pp - K*H*Pp;
+
+phi = atan2( 2*(x(3)*x(4) +x(1)*x(2)), 1- 2*(x(2)^2+x(3)^2) );
+theta = -asin(2*(x(2)*x(4) -x(1)*x(3)) );
+psi = atan2(2*(x(2)*x(3) + x(1)*x(4)), 1-2*(x(3)^2 +x(4)^2) );
+end</pre></TD>
+</TR>
+</TABLE>
+<TABLE><TR class="h"><th>Variable Name</th><th>Type</th><th>Sim Min</th><th>Sim Max</th><th>Static Min</th><th>Static Max</th><th>Whole Number</th><th>ProposedType <BR /> (Best For WL = 16)</th></TR><TR class="a">
+<TD class="left">A</TD><TD class="left">double 4 x 4 </TD><TD class="right">-0.00308123849295589</TD><TD class="right">1</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 14)</TD></TR>
+<TR class="b">
+<TD class="left">H</TD><TD class="left">double 4 x 4 </TD><TD class="right">0</TD><TD class="right">1</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 1, 0)</TD></TR>
+<TR class="a">
+<TD class="left">K</TD><TD class="left">double 4 x 4 </TD><TD class="right">-4.2611397207892567e-19</TD><TD class="right">0.09512902652708588</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 18)</TD></TR>
+<TR class="b">
+<TD class="left">P</TD><TD class="left">double 4 x 4 </TD><TD class="right">-4.261139720789256e-17</TD><TD class="right">9.512902652708586</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 11)</TD></TR>
+<TR class="a">
+<TD class="left">Pp</TD><TD class="left">double 4 x 4 </TD><TD class="right">-5.204170427930421e-17</TD><TD class="right">10.512993489224064</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 11)</TD></TR>
+<TR class="b">
+<TD class="left">Q</TD><TD class="left">double 4 x 4 </TD><TD class="right">0</TD><TD class="right">1</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 1, 0)</TD></TR>
+<TR class="a">
+<TD class="left">R</TD><TD class="left">double 4 x 4 </TD><TD class="right">0</TD><TD class="right">100</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 7, 0)</TD></TR>
+<TR class="b">
+<TD class="left">firstRun</TD><TD class="left">double</TD><TD class="right">1</TD><TD class="right">1</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 1, 0)</TD></TR>
+<TR class="a">
+<TD class="left">phi</TD><TD class="left">double</TD><TD class="right">-0.03526961501178418</TD><TD class="right">0.1772985016495374</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="b">
+<TD class="left">psi</TD><TD class="left">double</TD><TD class="right">-3.1414954702814817</TD><TD class="right">3.1415818272692486</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 13)</TD></TR>
+<TR class="a">
+<TD class="left">theta</TD><TD class="left">double</TD><TD class="right">-0.0489775429235648</TD><TD class="right">0.1449370053660879</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 17)</TD></TR>
+<TR class="b">
+<TD class="left">x</TD><TD class="left">double 4 x 1 </TD><TD class="right">-0.9999686716377822</TD><TD class="right">0.9999650516320642</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+<TR class="a">
+<TD class="left">xp</TD><TD class="left">double 4 x 1 </TD><TD class="right">-0.9999700644849854</TD><TD class="right">0.9999670815209043</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+<TR class="b">
+<TD class="left">z</TD><TD class="left">double 4 x 1 </TD><TD class="right">-0.9999827646278283</TD><TD class="right">0.9999739002954402</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">No</TD><TD class="left">numerictype(1, 16, 15)</TD></TR>
+</TABLE>
+
+</body>
+</html>

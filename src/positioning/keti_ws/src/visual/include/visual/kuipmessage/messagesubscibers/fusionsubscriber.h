@@ -130,7 +130,7 @@ private:
         result = fusion(&tag_center_vel_est, state_IMU, Nanchor, b_acc_o,
                         acc_b_theta, &acc_b_phi, UWBErrSum, init_flag,
                         kalman_on, imuNum, cent_pos_est, cent_vel_est, &kf_psi,
-                        tag_pos_est, heading_est, zt_b);
+                        tag_pos_est, -heading_est, zt_b);
 
         if (init_flag == 1){
             gyro_psi = -heading_est;

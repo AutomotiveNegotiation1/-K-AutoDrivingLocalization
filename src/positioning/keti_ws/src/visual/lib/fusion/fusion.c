@@ -184,7 +184,6 @@ creal_T fusion(const creal_T *tag_center_vel_est, double state_IMU,
   if (k < 1000.0) {
     k++;
   }
-  k++;
   sinTheta = (9.0 * tag_pos_est[2].re + tag_pos_est[0].re) +
              (9.0 * tag_pos_est[3].re + tag_pos_est[1].re);
   cosTheta = (9.0 * tag_pos_est[2].im + tag_pos_est[0].im) +

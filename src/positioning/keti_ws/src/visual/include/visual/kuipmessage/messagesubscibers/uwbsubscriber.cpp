@@ -220,6 +220,7 @@ void UwbSubscriber::processPacketData(KuipDataPacket &packet, double timestamp)
     Nanchor = packet.id.size();
 
     // Process the Nanchor data in a single loop
+    zt_b = 1.53;
     for (size_t i = 0; i < Nanchor; ++i) {
         auto it = std::find(RxID_data_list.begin(), RxID_data_list.end(), packet.id[i]);
         if (it != RxID_data_list.end()) {
