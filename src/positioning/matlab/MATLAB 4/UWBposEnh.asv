@@ -1,0 +1,96 @@
+function [out_flag_o, tag_pos_est2, heading_est2] = UWBposEnh(Ln, Lp, PP, Nanchor, RxID, RxDist, s_time, tag_pos_b, xa, ya, tag_pos_est_2, heading_est_2)
+            
+persistent RxDistMat s_time_list RxIDList NanchorList PPlist tag_pos_est_list heading_est_list l tag_pos_est heading_est
+
+if isempty(RxDistMat)
+    RxDistMat = zeros(Ln,Lp);
+    RxIDList = zeros(Ln,Lp);
+    NanchorList = zeros(1,4);
+    PPlist = zeros(1,4);
+    tag_pos_est_list = zeros(Lp,Lp);
+    heading_est_list = zeros(1,Lp);
+    s_time_list = zeros(1,4);
+    tag_pos_est = zeros(1,4);
+    heading_est = 0;
+    l = 1;
+end
+
+out_flag_o = 0;
+s_time_list(1:end-1) = s_time_list(2:end);
+s_time_list(end) = s_time;
+
+% if ((s_time - s_time_list(3))>0.02)
+%     RxDistMat = zeros(Ln,Lp);
+%     RxIDList = zeros(Ln,Lp);
+%     NanchorList = zeros(1,4);
+%     PPlist = zeros(1,4);
+    tag_pos_est2 = tag_pos_est;
+    heading_est2 = heading_est;
+    out_flag_o = 0;
+%     tag_pos_est_list = zeros(Lp,Lp);
+%     heading_est_list = zeros(1,Lp);
+% else
+%     out_flag_o = 0;
+%     tag_pos_est2 = zeros(1,4);
+%     heading_est2 = 0;
+% end
+    RxDistMat(RxID,PP) = RxDist;
+    RxIDList(1:Nanchor,PP) = RxID;
+    NanchorList(PP) = Nanchor;
+%     PPlist(l) = PP;
+
+    anch_pos = xa + j*ya;
+
+    if length(find(RxDistMat(:)>0)) >= 8
+            out_flag_o = 1;
+
+%         [tag_pos_est, heading_est] = GetInitPos(xa,ya,RxDistMat,anch_pos,tag_pos_b,Ln,Lp);
+%         [tag_pos_est, heading_est] = GetUWBPos_v2(xa, ya, RxDistMat, tag_pos_b);
+        [tag_pos_est, heading_est] = GetUWBPos_v3(xa, ya, RxDistMat, tag_pos_b);
+    end
+
+%     l = mod(l-1,4)+1;
+% 
+%     s_time_list(l) = s_time;
+% 
+%     RxDistMat(RxID,l) = RxDist;
+%     PPlist(l) = PP;
+%     NanchorList(l) = Nanchor;
+%     RxIDList(1:Nanchor,l) = RxID;
+%     tag_pos_est_list(:,l) = tag_pos_est;
+%     heading_est_list(l) = heading_est;
+%     
+%     mean_tag_pos_est = tag_pos_est;
+%     suc_list = zeros(1,4);
+%     suc_list(l) = 1;
+%     for q = 2 : 4
+%         te = mod(l+4-q,4)+1;
+%         if (s_time_list(l) - s_time_list(te))<0.02
+%             mean_tag_pos_est = mean_tag_pos_est(q)/(q+1) + tag_pos_est_list(:,te)/(q+1);
+%             suc_list(te) = 1;
+%         end
+%     end
+% 
+%     anchor_pos = xa+j*ya;
+%     for q = 1 : 4
+%         if suc_list(q)==1
+%         te = suc_list(q);
+%         Nanchor_C = NanchorList();
+%         RxID_C = RxIDList(1:Nanchor_C,te);
+%         PP_C = PPlist(te);
+%         temp = ( RxDistMat(RxID_C,te) - abs(mean_tag_pos_est(PP_C)-anchor_pos(RxID_C))').^2;
+%         [va] = sort(temp);
+%         end
+%         
+%     end
+    
+
+
+
+
+
+
+
+
+
+
