@@ -270,11 +270,11 @@ void UwbSubscriber::processPacketData(KuipDataPacket &packet, double timestamp)
     headingest_a_aver_v = UWBout[17];
 
     for (int i = 0; i < 4; i++) {
-        pos.tag_pos_est[i] = tag_pos_est[i];
+        pos.tag_pos_est[i] = prevTagPos[i];
         pos.tag_pos_est_aver[i] = tag_pos_est_aver[i];
     }
 
-    pos.heading_est = heading_est;
+    pos.heading_est = prevTagHeading;
     pos.headingest_a_aver_v = headingest_a_aver_v;
 
     for (size_t i = 0; i < yain_list.size(); ++i) {
@@ -285,8 +285,7 @@ void UwbSubscriber::processPacketData(KuipDataPacket &packet, double timestamp)
     tag_center_vel_est.re = UWBout[18];
     tag_center_vel_est.im = UWBout[19];
 
-    UWBErrSum = UWBout[20
-    ];
+    UWBErrSum = UWBout[20];
 
     if (heading_est != 0 && init_flag == 0) {
         init_flag = 1;

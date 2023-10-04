@@ -59,6 +59,7 @@ extern double cent_vel_est[3];
 extern double state_o;
 extern double acc_b_phi;
 extern double acc_b_theta;
+extern double signalIMU;
 
 class ImuSubscriber : public PacketCallback {
 private:

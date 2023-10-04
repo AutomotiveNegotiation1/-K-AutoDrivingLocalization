@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->customPlot->legend->setFont(legendFont);
     ui->customPlot->legend->setSelectedFont(legendFont);
     ui->customPlot->legend->setSelectableParts(QCPLegend::spItems); // legend box shall not be selectable, only legend items
+    ui->customPlot->setGeometry(100, 100, 800, 600);  
     updateGraph();
     ui->customPlot->rescaleAxes();
     

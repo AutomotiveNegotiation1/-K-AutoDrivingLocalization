@@ -5,7 +5,7 @@
  * File: EulerKalman_2.h
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 20-Sep-2023 17:05:14
+ * C/C++ source code generated on  : 04-Oct-2023 13:17:07
  */
 
 #ifndef EULERKALMAN_2_H

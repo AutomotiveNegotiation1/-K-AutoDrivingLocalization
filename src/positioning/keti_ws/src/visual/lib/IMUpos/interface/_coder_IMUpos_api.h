@@ -5,7 +5,7 @@
  * File: _coder_IMUpos_api.h
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 20-Sep-2023 17:05:14
+ * C/C++ source code generated on  : 04-Oct-2023 14:13:20
  */
 
 #ifndef _CODER_IMUPOS_API_H
