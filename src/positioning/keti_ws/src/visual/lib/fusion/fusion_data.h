@@ -5,7 +5,7 @@
  * File: fusion_data.h
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 22-Sep-2023 09:43:03
+ * C/C++ source code generated on  : 04-Oct-2023 13:17:07
  */
 
 #ifndef FUSION_DATA_H
@@ -22,6 +22,7 @@ extern double Q[16];
 extern double R[16];
 extern double P[16];
 extern const signed char iv[16];
+extern const double dv[9];
 extern const signed char iv1[144];
 extern bool isInitialized_fusion;
 

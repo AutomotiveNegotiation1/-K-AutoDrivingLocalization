@@ -5,7 +5,7 @@
  * File: fusion.c
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 22-Sep-2023 09:43:03
+ * C/C++ source code generated on  : 04-Oct-2023 13:17:07
  */
 
 /* Include Files */
@@ -160,8 +160,7 @@ creal_T fusion(const creal_T *tag_center_vel_est, double state_IMU,
                double cent_vel_est[3], double *kf_psi,
                const creal_T tag_pos_est[4], double heading_est, double zt_b)
 {
-  static const double dv[9] = {0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01};
-  static const double dv1[9] = {0.1, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.1};
+  static const double b_dv[9] = {0.1, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.1};
   static const signed char b_a[9] = {0, 1, 0, 1, 0, 0, 0, 0, 1};
   creal_T IMUposU;
   double A[16];
@@ -661,7 +660,7 @@ creal_T fusion(const creal_T *tag_center_vel_est, double state_IMU,
       }
       if (rt_hypotd_snf(UWB_M_Pos[57] - cent_pos_est[0],
                         UWB_M_Pos[58] - cent_pos_est[1]) < 2.0) {
-        PosKalman2(x, b_A, &UWB_M_Pos[57], dv1);
+        PosKalman2(x, b_A, &UWB_M_Pos[57], b_dv);
       } else {
         PosKalman2(x, b_A, &UWB_M_Pos[57], dv);
         /*                          z = [UWB_M_Pos(:,end);UWB_M_Vel(:,end)]; */

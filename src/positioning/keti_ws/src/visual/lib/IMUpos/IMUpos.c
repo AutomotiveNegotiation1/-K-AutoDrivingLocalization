@@ -5,7 +5,7 @@
  * File: IMUpos.c
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 20-Sep-2023 17:05:14
+ * C/C++ source code generated on  : 04-Oct-2023 14:13:20
  */
 
 /* Include Files */
@@ -80,7 +80,7 @@ static double rt_atan2d_snf(double u0, double u1)
 }
 
 /*
- * mode : 0 -> F9R,  1 -> Xens
+ * mode : 2 -> F9R,  1 -> Xens
  *
  * Arguments    : const double IMUacc_c[3]
  *                const double IMUgyro_c[3]
@@ -142,7 +142,7 @@ void IMUpos(const double IMUacc_c[3], const double IMUgyro_c[3], double s_time,
     Acc_Pos[i + 57] = cent_pos_est[i];
   }
   /*  dt_gyro = s_time - s_time_prev; */
-  if (k > 100.0) {
+  if (k > 300.0) {
     double AA[16];
     double K[16];
     double Pp[16];
@@ -597,7 +597,7 @@ void IMUpos(const double IMUacc_c[3], const double IMUgyro_c[3], double s_time,
     Acc_Vel[59] = Acc_Vel[56] + Acc_Acc[59] * 0.01;
     Acc_Pos[59] =
         (Acc_Pos[56] + Acc_Vel[56] * 0.01) + Acc_Acc[59] * 0.0001 / 2.0;
-  } else if (k == 100.0) {
+  } else if (k == 300.0) {
     double acc_b[3];
     for (kAcol = 0; kAcol < 3; kAcol++) {
       double alpha;
@@ -664,7 +664,7 @@ void IMUpos(const double IMUacc_c[3], const double IMUgyro_c[3], double s_time,
 }
 
 /*
- * mode : 0 -> F9R,  1 -> Xens
+ * mode : 2 -> F9R,  1 -> Xens
  *
  * Arguments    : void
  * Return Type  : void

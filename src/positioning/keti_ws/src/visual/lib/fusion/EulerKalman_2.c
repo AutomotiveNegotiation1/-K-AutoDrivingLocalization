@@ -5,12 +5,12 @@
  * File: EulerKalman_2.c
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 20-Sep-2023 17:05:14
+ * C/C++ source code generated on  : 04-Oct-2023 13:17:07
  */
 
 /* Include Files */
 #include "EulerKalman_2.h"
-#include "IMUpos_data.h"
+#include "fusion_data.h"
 #include "rt_nonfinite.h"
 
 /* Function Definitions */
@@ -20,17 +20,15 @@
  */
 void EulerKalman_2_init(void)
 {
-  static const signed char iv[16] = {1, 0, 0, 0, 0, 1, 0, 0,
-                                     0, 0, 1, 0, 0, 0, 0, 1};
-  static const signed char iv1[16] = {100, 0, 0,   0, 0, 100, 0, 0,
-                                      0,   0, 100, 0, 0, 0,   0, 100};
+  static const signed char b_iv[16] = {100, 0, 0,   0, 0, 100, 0, 0,
+                                       0,   0, 100, 0, 0, 0,   0, 100};
   int i;
   /*      x = [1 0 0 0]'; */
   for (i = 0; i < 16; i++) {
     int i1;
     i1 = iv[i];
     Q[i] = i1;
-    R[i] = iv1[i];
+    R[i] = b_iv[i];
     H[i] = 0.0;
     P[i] = i1;
   }

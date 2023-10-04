@@ -5,7 +5,7 @@
  * File: fusion_data.c
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 22-Sep-2023 09:43:03
+ * C/C++ source code generated on  : 04-Oct-2023 13:17:07
  */
 
 /* Include Files */
@@ -22,6 +22,8 @@ double R[16];
 double P[16];
 
 const signed char iv[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+
+const double dv[9] = {0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01};
 
 const signed char iv1[144] = {
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

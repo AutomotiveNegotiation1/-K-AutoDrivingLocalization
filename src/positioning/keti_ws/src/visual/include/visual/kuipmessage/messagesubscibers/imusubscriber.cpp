@@ -43,6 +43,7 @@ double cent_vel_est[3] = {};
 double state_o;
 double acc_b_phi;
 double acc_b_theta;
+double signalIMU = 0;
 
 static void argInit_1x3_real_T(double result[3]) {
     for (int idx1{0}; idx1 < 3; idx1++) {
@@ -118,7 +119,7 @@ void ImuSubscriber::processPacketData(KuipDataPacket &packet, double timestamp) 
     double s_time = packet.s_time;
     
 
-    argInit_1x3_real_T(cent_pos_est);
+    // argInit_1x3_real_T(cent_pos_est);
     b_gyro[0] = b_acc_o[0];
     b_gyro[1] = b_acc_o[1];
     b_gyro[2] = b_acc_o[2];
@@ -126,6 +127,8 @@ void ImuSubscriber::processPacketData(KuipDataPacket &packet, double timestamp) 
     IMUpos(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, mode, &kf_psi,
         &gyro_psi, cent_pos_est, cent_vel_est, &state_o, &acc_b_phi,
         &acc_b_theta);
+
+    signalIMU = 1;
 
     sendEvent(state_o);
     
