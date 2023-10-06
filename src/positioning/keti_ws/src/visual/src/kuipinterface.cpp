@@ -207,7 +207,7 @@ void kuipInterface::spinFor()
 //     }
 // }
 
-// 2023.09.14
+// 2023.10.05
 void kuipInterface::run()
 {
     try {
@@ -216,55 +216,70 @@ void kuipInterface::run()
         ROS_ERROR("%s", e.what());
     }
 
-    rosbag::Bag bag;
-    try {
-        bag.open("/home/umaps/rosbag/[zed_f9r]2023-08-31-18-00-04_long_stop.bag", rosbag::bagmode::Read);
-    } catch (rosbag::BagException& e) {
-        ROS_ERROR("Error opening bag file: %s", e.what());
+    while (ros::ok()) {
+        spinFor();
+        ros::spinOnce();
     }
-
-    std::vector<std::string> topics = {
-        "/dwm1001/anchor/ttyUWB0",
-        "/dwm1001/anchor/ttyUWB1",
-        "/dwm1001/anchor/ttyUWB2",
-        "/dwm1001/anchor/ttyUWB3",
-        "/zed_f9r/imu"
-    };
-
-    std::map<std::string, ros::Publisher> publishers;
-
-    for (const auto& topic : topics) {
-        if (topic == "/zed_f9r/imu") {
-            publishers[topic] = nh_.advertise<sensor_msgs::Imu>(topic, 10);
-        } else {
-            publishers[topic] = nh_.advertise<visual::Anchor>(topic, 10);
-        }
-    }
-
-    rosbag::View view(bag);
-
-    for (const rosbag::MessageInstance& message : view) {
-        if (publishers.find(message.getTopic()) != publishers.end()) {
-            if (message.getTopic() == "/zed_f9r/imu") {
-                sensor_msgs::Imu::ConstPtr imu_data = message.instantiate<sensor_msgs::Imu>();
-                if (imu_data != NULL) {
-                    publishers[message.getTopic()].publish(imu_data);
-                }
-            } else {
-                visual::Anchor::ConstPtr uwb_data = message.instantiate<visual::Anchor>();
-                if (uwb_data != NULL) {
-                    publishers[message.getTopic()].publish(uwb_data);
-                }
-            }
-            // std::this_thread::sleep_for(std::chrono::milliseconds(10));
-            spinFor();  // Assuming that 'spinFor()' is some kind of sleep/delay function. If not, please clarify.
-            ros::spinOnce();
-        }
-    }
-
-    bag.close();
-    ROS_INFO("Finish...");
 }
+
+// 2023.09.14
+// void kuipInterface::run()
+// {
+//     try {
+//         registerSubcribers(nh_);
+//     } catch (const std::exception& e) {
+//         ROS_ERROR("%s", e.what());
+//     }
+
+//     rosbag::Bag bag;
+//     try {
+//         bag.open("/home/umaps/rosbag/[zed_f9r]2023-08-31-18-00-04_long_stop.bag", rosbag::bagmode::Read);
+//     } catch (rosbag::BagException& e) {
+//         ROS_ERROR("Error opening bag file: %s", e.what());
+//     }
+
+//     std::vector<std::string> topics = {
+//         "/dwm1001/anchor/ttyUWB0",
+//         "/dwm1001/anchor/ttyUWB1",
+//         "/dwm1001/anchor/ttyUWB2",
+//         "/dwm1001/anchor/ttyUWB3",
+//         "/zed_f9r/imu"
+//     };
+
+//     std::map<std::string, ros::Publisher> publishers;
+
+//     for (const auto& topic : topics) {
+//         if (topic == "/zed_f9r/imu") {
+//             publishers[topic] = nh_.advertise<sensor_msgs::Imu>(topic, 10);
+//         } else {
+//             publishers[topic] = nh_.advertise<visual::Anchor>(topic, 10);
+//         }
+//     }
+
+//     rosbag::View view(bag);
+
+//     for (const rosbag::MessageInstance& message : view) {
+//         if (publishers.find(message.getTopic()) != publishers.end()) {
+//             if (message.getTopic() == "/zed_f9r/imu") {
+//                 sensor_msgs::Imu::ConstPtr imu_data = message.instantiate<sensor_msgs::Imu>();
+//                 if (imu_data != NULL) {
+//                     publishers[message.getTopic()].publish(imu_data);
+//                 }
+//             } else {
+//                 visual::Anchor::ConstPtr uwb_data = message.instantiate<visual::Anchor>();
+//                 if (uwb_data != NULL) {
+//                     publishers[message.getTopic()].publish(uwb_data);
+//                 }
+//             }
+//             // std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//             spinFor();  // Assuming that 'spinFor()' is some kind of sleep/delay function. If not, please clarify.
+//             ros::spinOnce();
+//         }
+//     }
+
+//     bag.close();
+//     ROS_INFO("Finish...");
+// }
 
 
 
