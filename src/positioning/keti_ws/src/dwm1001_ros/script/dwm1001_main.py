@@ -56,7 +56,8 @@ class dwm1001_localizer:
 
     def __init__(self):
         # initialize the node
-        rospy.init_node('Localizer_DWM1001', anonymous=True)
+        rospy.init_node('Localizer_DWM1001', log_level=rospy.DEBUG, anonymous=True)
+
 
         # allow serial port to be detected by user
         # os.popen("sudo chmod 777 /dev/ttyACM1", "w")
@@ -113,7 +114,7 @@ class dwm1001_localizer:
 
         # check if the serial port is opened
         if(self.serialPortDWM1001.isOpen()):
-            rospy.loginfo("Port opened: "+ str(self.serialPortDWM1001.name) )
+            rospy.logdebug("Port opened: "+ str(self.serialPortDWM1001.name) )
             # start sending commands to the board so we can initialize the board
             self.initializeDWM1001API()
             # give some time to DWM1001 to wake up
@@ -121,9 +122,9 @@ class dwm1001_localizer:
             # send command lec, so we can get positions is CSV format
             self.serialPortDWM1001.write(DWM1001_API_COMMANDS.LEC)
             self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
-            rospy.loginfo("Reading DWM1001 coordinates")
+            rospy.logdebug("Reading DWM1001 coordinates")
         else:
-            rospy.loginfo("Can't open port: "+ str(self.serialPortDWM1001.name))
+            rospy.logdebug("Can't open port: "+ str(self.serialPortDWM1001.name))
 
         try:
 
@@ -135,23 +136,23 @@ class dwm1001_localizer:
                     self.pubblishCoordinatesIntoTopics(self.splitByComma(serialReadLine))
 
                 except IndexError:
-                    rospy.loginfo("Found index error in the network array!DO SOMETHING!")
+                    rospy.logdebug("Found index error in the network array!DO SOMETHING!")
 
 
 
         except KeyboardInterrupt:
-            rospy.loginfo("Quitting DWM1001 Shell Mode and closing port, allow 1 second for UWB recovery")
+            rospy.logdebug("Quitting DWM1001 Shell Mode and closing port, allow 1 second for UWB recovery")
             self.serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
             self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
 
         finally:
-            rospy.loginfo("Quitting, and sending reset command to dev board")
+            rospy.logdebug("Quitting, and sending reset command to dev board")
             # serialPortDWM1001.reset_input_buffer()
             self.serialPortDWM1001.write(DWM1001_API_COMMANDS.RESET)
             self.serialPortDWM1001.write(DWM1001_API_COMMANDS.SINGLE_ENTER)
             self.rate.sleep()
             if "reset" in serialReadLine:
-                rospy.loginfo("succesfully closed ")
+                rospy.logdebug("succesfully closed ")
                 self.serialPortDWM1001.close()
 
     def splitByComma(self, dataFromUSB):
@@ -205,7 +206,7 @@ class dwm1001_localizer:
                      self.topics['Anchor'] = rospy.Publisher('/dwm1001/anchor/{}'.format(anchor.header.frame_id), Anchor, queue_size=10)
 
                 if self.verbose == None:
-                    rospy.loginfo("Anchor: "
+                    rospy.logdebug("Anchor: "
                                     + str(anchor.header.frame_id)
                                     + " ID: "
                                     + str(anchor.id)
@@ -232,7 +233,7 @@ class dwm1001_localizer:
                      self.topics['Tag'] = rospy.Publisher('/dwm1001/{}'.format(tag.header.frame_id), Tag, queue_size=1)
 
                 if self.verbose == None:
-                    rospy.loginfo("Tag: "
+                    rospy.logdebug("Tag: "
                                     + str(tag.header.frame_id)
                                     + " x: "
                                     + str(tag.x)
@@ -242,8 +243,12 @@ class dwm1001_localizer:
                                     + str(tag.z))
                     self.verbose = True
         
-        self.topics['Anchor'].publish(anchor)
-        self.topics['Tag'].publish(tag)
+        # ... 기존 코드 ...
+
+        if 'Anchor' in self.topics:
+            self.topics['Anchor'].publish(anchor)
+        if 'Tag' in self.topics:
+            self.topics['Tag'].publish(tag)
 
 
 
@@ -316,19 +321,19 @@ class dwm1001_localizer:
 
         """
         global serialReadLine
-        #rospy.loginfo("""Reconfigure Request: {dwm1001_network_info}, {open_port},\
+        #rospy.logdebug("""Reconfigure Request: {dwm1001_network_info}, {open_port},\
         #      {serial_port}, {close_port}""".format(**config))
 
         if config["quit_dwm1001_api"]:
-            rospy.loginfo("Not implement it yet")
+            rospy.logdebug("Not implement it yet")
             config["quit_dwm1001_api"] = False
 
         if config["close_port"]:
-            rospy.loginfo("Close port not implement it yet")
+            rospy.logdebug("Close port not implement it yet")
             config["close_port"] = False
 
         if config["exit"]:
-            rospy.loginfo("Not implement it yet")
+            rospy.logdebug("Not implement it yet")
             config["exit"] = False
 
         return config

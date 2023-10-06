@@ -21,7 +21,7 @@
             "label": "ROS: roslaunch",
             "type": "shell",
             "command": "roslaunch",
-            "args": ["${workspaceFolder}/src/visual/launch/visual.launch"],
+            "args": ["${workspaceFolder}/src/ipe/launch/ipe.launch"],
             "problemMatcher": []
         }
     ]

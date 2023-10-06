@@ -1,34 +1,37 @@
-<launch>    
-    <!--Exctract info from dwm1001 dev boards, filter them and publish them into topics-->
-    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_01" output="screen">
+<launch>
+    <!-- Declare debug argument -->
+    <arg name="debug_output" default="log"/>
 
-        <param name="port"      value="ttyUWB0" /> <!-- Name of serial port -->
-        <param name="baud_rate"      value="115200" /> <!-- Name of serial id -->
-        <param name="frame_id"      value="tag1" />  <!--Baudrate of serial port-->
+    <!-- Extract info from dwm1001 dev boards, filter them and publish them into topics -->
+    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_01" output="$(arg debug_output)">
 
-    </node>
-    
-    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_02" output="screen">
-
-        <param name="port"      value="ttyUWB1" /> <!-- Name of serial port -->
-        <param name="baud_rate"      value="115200" /> <!-- Name of serial id -->
-        <param name="frame_id"      value="tag2" />  <!--Baudrate of serial port-->
+        <param name="port"      value="ttyUWB0" />
+        <param name="baud_rate" value="115200" />
+        <param name="frame_id"  value="tag1" />
 
     </node>
-    
-    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_03" output="screen">
 
-        <param name="port"      value="ttyUWB2" /> <!-- Name of serial port -->
-        <param name="baud_rate"      value="115200" /> <!-- Name of serial id -->
-        <param name="frame_id"      value="tag3" />  <!--Baudrate of serial port-->
+    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_02" output="$(arg debug_output)">
+
+        <param name="port"      value="ttyUWB1" />
+        <param name="baud_rate" value="115200" />
+        <param name="frame_id"  value="tag2" />
 
     </node>
-    
-    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_04" output="screen">
 
-        <param name="port"      value="ttyUWB3" /> <!-- Name of serial port -->
-        <param name="baud_rate"      value="115200" /> <!-- Name of serial id -->
-        <param name="frame_id"      value="tag4" />  <!--Baudrate of serial port-->
+    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_03" output="$(arg debug_output)">
+
+        <param name="port"      value="ttyUWB2" />
+        <param name="baud_rate" value="115200" />
+        <param name="frame_id"  value="tag3" />
+
+    </node>
+
+    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_04" output="$(arg debug_output)">
+
+        <param name="port"      value="ttyUWB3" />
+        <param name="baud_rate" value="115200" />
+        <param name="frame_id"  value="tag4" />
 
     </node>
 </launch>
