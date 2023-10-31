@@ -98,21 +98,25 @@ inline void argInit_1x4_creal_preT(creal_T result[4])
     }
 };
 
-UwbSubscriber::UwbSubscriber(ros::NodeHandle& node, const std::string& uwbNum, IPECallback* ipeCallback) : m_ipeCallback(ipeCallback) {
+UwbSubscriber::UwbSubscriber(ros::NodeHandle& node, const std::string& m_uwbNum, IPECallback* ipeCallback) 
+: m_ipeCallback(ipeCallback), uwbNum(m_uwbNum) {  // 여기에서 uwbNum을 초기화
     setupSubscriber(node, uwbNum);
+}
+
+UwbSubscriber::~UwbSubscriber() {
 }
 
 void UwbSubscriber::operator()(IPEDataPacket &packet, double timestamp) {
     processPacketData(packet, timestamp);
 }
 
-void UwbSubscriber::registerCallback(const std::function<void(double)>& callback) {
+void UwbSubscriber::registerCallback(const std::function<void(double, std::string&)>& callback) {
     callbacks.push_back(callback);
 }
 
-void UwbSubscriber::sendEvent(double data) {
+void UwbSubscriber::sendEvent(double data, std::string& uwbNum) {
     for (const auto& callback : callbacks) {
-        callback(data);
+        callback(data, uwbNum);
     }
 }
 
@@ -295,24 +299,4 @@ void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp)
         init_flag = 0;
     }
 
-    sendEvent(init_flag);
-    // QMetaObject::invokeMethod(this, "emitSignal", Q_ARG(PosDataPacket, pos));
-
-    // callback_(pos);
-
-    ROS_INFO("tag_pos_est--> (%f,%f), (%f,%f), (%f,%f), (%f,%f)", 
-            tag_pos_est[0].re, tag_pos_est[0].im, 
-            tag_pos_est[1].re, tag_pos_est[1].im,
-            tag_pos_est[2].re, tag_pos_est[2].im, 
-            tag_pos_est[3].re, tag_pos_est[3].im);
-
-    ROS_INFO("tag_pos_est_aver--> (%f,%f), (%f,%f), (%f,%f), (%f,%f)", 
-            pos.tag_pos_est_aver[0].re, pos.tag_pos_est_aver[0].im, 
-            pos.tag_pos_est_aver[1].re, pos.tag_pos_est_aver[1].im,
-            pos.tag_pos_est_aver[2].re, pos.tag_pos_est_aver[2].im, 
-            pos.tag_pos_est_aver[3].re, pos.tag_pos_est_aver[3].im);
-
-    ROS_INFO("heading_est--> %f", pos.heading_est);
-    ROS_INFO("headingest_a_aver_v--> %f", pos.headingest_a_aver_v);
-    ROS_INFO("UWB_ERROR_SUM-->%f", UWBout[20]);
-}
+    sendEvent(init_flag, uwbNum);

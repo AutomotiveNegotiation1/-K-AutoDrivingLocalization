@@ -112,10 +112,11 @@ catkin_package(
 ## Build ##
 ###########
 
-file(GLOB UWB_SOURCES6 include/ipe/engine/UWBpos6/*.c)
-file(GLOB IMU_SOURCES include/ipe/engine/IMUpos/*.c)
-file(GLOB FUSION_SOURCES include/ipe/engine/fusion/*.c)
-file(GLOB OBJECT_SOURCES include/ipe/ipemessage/messagesubscibers/*.cpp)
+# file(GLOB UWB_SOURCES6 include/ipe/engine/UWBpos6/*.c)
+# file(GLOB IMU_SOURCES include/ipe/engine/IMUpos/*.c)
+file(GLOB FUSION_SOURCES include/ipe/engine/fusion/*.cpp)
+file(GLOB OBJECT_SOURCES1 include/ipe/ipemessage/messagesubscibers/*.cpp)
+file(GLOB OBJECT_SOURCES2 include/ipe/ipemessage/messagecommon/*.cpp)
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
@@ -132,8 +133,6 @@ include_directories(
 
   ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/ipemessage/messagesubscibers
   ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/ipemessage/messagecommon
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/engine/UWBpos6
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/engine/IMUpos
   ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/engine/fusion
 )
 
@@ -155,7 +154,7 @@ set(SOURCES
 )
 
 ## Declare a C++ executable
-add_executable(${PROJECT_NAME}_node ${SOURCES} ${UWB_SOURCES6} ${IMU_SOURCES} ${FUSION_SOURCES} ${OBJECT_SOURCES})
+add_executable(${PROJECT_NAME}_node ${SOURCES} ${FUSION_SOURCES} ${OBJECT_SOURCES1} ${OBJECT_SOURCES2} )
 
 ## Add cmake target dependencies of the executable
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

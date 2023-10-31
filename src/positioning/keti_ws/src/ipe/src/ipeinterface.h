@@ -41,6 +41,7 @@
 #include <vector>
 #include <map>
 #include <chrono>
+#include <thread>
 
 #include "ipecallback.h"
 #include "ipedatapacket.h"
@@ -50,7 +51,7 @@
 #include "imusubscriber.h"
 #include "fusionsubscriber.h"
 
-#include "UWBpos6_terminate.h"
+#include "fusion_terminate.h"
 
 
 

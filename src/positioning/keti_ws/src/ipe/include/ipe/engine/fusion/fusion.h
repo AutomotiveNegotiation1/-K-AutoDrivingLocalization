@@ -1,26 +1,22 @@
-/*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: fusion.h
- *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 04-Oct-2023 13:17:07
- */
+//
+// Academic License - for use in teaching, academic research, and meeting
+// course requirements at degree granting institutions only.  Not for
+// government, commercial, or other organizational use.
+// File: fusion.h
+//
+// MATLAB Coder version            : 5.6
+// C/C++ source code generated on  : 17-Oct-2023 17:24:31
+//
 
 #ifndef FUSION_H
 #define FUSION_H
 
-/* Include Files */
+// Include Files
 #include "rtwtypes.h"
-#include <stddef.h>
-#include <stdlib.h>
+#include <cstddef>
+#include <cstdlib>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* Function Declarations */
+// Function Declarations
 extern creal_T
 fusion(const creal_T *tag_center_vel_est, double state_IMU, double Nanchor,
        const double b_acc_o[3], double acc_b_theta, const double *acc_b_phi,
@@ -28,15 +24,11 @@ fusion(const creal_T *tag_center_vel_est, double state_IMU, double Nanchor,
        double cent_pos_est[3], double cent_vel_est[3], double *kf_psi,
        const creal_T tag_pos_est[4], double heading_est, double zt_b);
 
-void fusion_init(void);
-
-#ifdef __cplusplus
-}
-#endif
+void fusion_init();
 
 #endif
-/*
- * File trailer for fusion.h
- *
- * [EOF]
- */
+//
+// File trailer for fusion.h
+//
+// [EOF]
+//

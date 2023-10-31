@@ -1,15 +1,15 @@
-/*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: main.h
- *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 04-Oct-2023 13:17:07
- */
+//
+// Academic License - for use in teaching, academic research, and meeting
+// course requirements at degree granting institutions only.  Not for
+// government, commercial, or other organizational use.
+// File: main.h
+//
+// MATLAB Coder version            : 5.6
+// C/C++ source code generated on  : 17-Oct-2023 17:24:31
+//
 
 /*************************************************************************/
-/* This automatically generated example C main file shows how to call    */
+/* This automatically generated example C++ main file shows how to call  */
 /* entry-point functions that MATLAB Coder generated. You must customize */
 /* this file for your application. Do not modify this file directly.     */
 /* Instead, make a copy of this file, modify it, and integrate it into   */
@@ -36,29 +36,23 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-/* Include Files */
+// Include Files
 #include "rtwtypes.h"
-#include <stddef.h>
-#include <stdlib.h>
+#include <cstddef>
+#include <cstdlib>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* Function Declarations */
+// Function Declarations
 extern int main(int argc, char **argv);
 
-extern void main_PosKalman2(void);
+extern void main_IMUpos();
 
-extern void main_fusion(void);
+extern void main_UWBpos6();
 
-#ifdef __cplusplus
-}
-#endif
+extern void main_fusion();
 
 #endif
-/*
- * File trailer for main.h
- *
- * [EOF]
- */
+//
+// File trailer for main.h
+//
+// [EOF]
+//

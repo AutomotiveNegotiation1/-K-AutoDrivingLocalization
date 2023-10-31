@@ -46,7 +46,7 @@ class PacketCallback
     public:
         virtual std::string getPacketFrameID() = 0;
         virtual void operator()(IPEDataPacket &, double) = 0;
-        virtual void registerCallback(const std::function<void(double)>& callback) = 0;
+        virtual void registerCallback(const std::function<void(double, std::string&)>& callback) = 0;
         // In packetcallback.h
 };
 

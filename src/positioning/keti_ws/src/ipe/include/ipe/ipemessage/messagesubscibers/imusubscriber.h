@@ -42,9 +42,8 @@
 #include "ipecallback.h"
 #include "ipedatapacket.h"
 #include "posdatapacket.h"
-#include "rtwtypes.h"
+
 #include "IMUpos.h"
-#include "IMUpos_terminate.h"
 #include "rt_nonfinite.h"
 
 // Declare Global Variables
@@ -67,7 +66,8 @@ private:
     std::ostringstream topic_name_stream;
     IPECallback* m_ipeCallback;
     IPEDataPacket m_ipeDataPacket;
-    std::vector<std::function<void(double)>> callbacks;
+    std::vector<std::function<void(double, std::string&)>> callbacks;
+
     const double Ln = 6.0;
     const double Lp = 4.0;
 
@@ -75,7 +75,7 @@ public:
     ImuSubscriber(ros::NodeHandle& node, IPECallback* ipeCallback);
     virtual ~ImuSubscriber();
     void operator()(IPEDataPacket &packet, double timestamp);
-    void registerCallback(const std::function<void(double)>& callback);
+    void registerCallback(const std::function<void(double, std::string&)>& callback) override;
     void sendEvent(double data);
     std::string getPacketFrameID();
 

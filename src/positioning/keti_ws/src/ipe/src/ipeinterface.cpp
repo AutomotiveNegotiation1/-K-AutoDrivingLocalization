@@ -43,7 +43,7 @@ IPEInterface::~IPEInterface()
   }
   m_callbacks.clear();  // 옵션: 리스트를 비운다
   
-  UWBpos6_terminate();
+  fusion_terminate();
 }
 
 void IPEInterface::registerSubcribers(ros::NodeHandle &node) {
@@ -53,29 +53,30 @@ void IPEInterface::registerSubcribers(ros::NodeHandle &node) {
     if (ros::param::get("/ipe_node/Tag_on", should_publish) && should_publish) {
         if (ros::param::get("/ipe_node/sub_UWB0", should_publish) && should_publish) {
             UwbSubscriber* uwb1 = new UwbSubscriber(node, "0", &m_ipeCallback);
-            uwb1->registerCallback([this](double value) { fusion->onUWBDataReceived(value); });
+            uwb1->registerCallback([this](double value, std::string& value2) { fusion->onUWBDataReceived(value, value2); });
             registerCallback(uwb1);
         }
         if (ros::param::get("/ipe_node/sub_UWB1", should_publish) && should_publish) {
             UwbSubscriber* uwb2 = new UwbSubscriber(node, "1", &m_ipeCallback);
-            uwb2->registerCallback([this](double value) { fusion->onUWBDataReceived(value); });
+            uwb2->registerCallback([this](double value, std::string& value2) { fusion->onUWBDataReceived(value, value2); });
             registerCallback(uwb2);
         }
         if (ros::param::get("/ipe_node/sub_UWB2", should_publish) && should_publish) {
             UwbSubscriber* uwb3 = new UwbSubscriber(node, "2", &m_ipeCallback);
-            uwb3->registerCallback([this](double value) { fusion->onUWBDataReceived(value); });
+            uwb3->registerCallback([this](double value, std::string& value2) { fusion->onUWBDataReceived(value, value2); });
             registerCallback(uwb3);
         }
         if (ros::param::get("/ipe_node/sub_UWB3", should_publish) && should_publish) {
             UwbSubscriber* uwb4 = new UwbSubscriber(node, "3", &m_ipeCallback);
-            uwb4->registerCallback([this](double value) { fusion->onUWBDataReceived(value); });
+            uwb4->registerCallback([this](double value, std::string& value2) { fusion->onUWBDataReceived(value, value2); });
             registerCallback(uwb4);
         }
     }
 
     if (ros::param::get("/ipe_node/IMU_on", should_publish) && should_publish) {
         ImuSubscriber* imu = new ImuSubscriber(node, &m_ipeCallback);
-        imu->registerCallback([this](double value) { fusion->onIMUDataReceived(value); });
+        imu->registerCallback([this](double value, std::string& frameID) { fusion->onIMUDataReceived(value); });
+
         registerCallback(imu);
     }
 }
@@ -117,21 +118,6 @@ void IPEInterface::spinFor()
 
 
 // 2023.10.05
-// void IPEInterface::run()
-// {
-//     try {
-//         registerSubcribers(nh_);
-//     } catch (const std::exception& e) {
-//         ROS_ERROR("%s", e.what());
-//     }
-
-//     while (ros::ok()) {
-//         spinFor();
-//         ros::spinOnce();
-//     }
-// }
-
-// 2023.09.14
 void IPEInterface::run()
 {
     try {
@@ -140,52 +126,67 @@ void IPEInterface::run()
         ROS_ERROR("%s", e.what());
     }
 
-    rosbag::Bag bag;
-    try {
-        bag.open("/home/umaps/rosbag/[zed_f9r]2023-08-31-18-00-04_long_stop.bag", rosbag::bagmode::Read);
-    } catch (rosbag::BagException& e) {
-        ROS_ERROR("Error opening bag file: %s", e.what());
+    while (ros::ok()) {
+        spinFor();
+        ros::spinOnce();
     }
-
-    std::vector<std::string> topics = {
-        "/dwm1001/anchor/ttyUWB0",
-        "/dwm1001/anchor/ttyUWB1",
-        "/dwm1001/anchor/ttyUWB2",
-        "/dwm1001/anchor/ttyUWB3",
-        "/zed_f9r/imu"
-    };
-
-    std::map<std::string, ros::Publisher> publishers;
-
-    for (const auto& topic : topics) {
-        if (topic == "/zed_f9r/imu") {
-            publishers[topic] = nh_.advertise<sensor_msgs::Imu>(topic, 10);
-        } else {
-            publishers[topic] = nh_.advertise<ipe::Anchor>(topic, 10);
-        }
-    }
-
-    rosbag::View view(bag);
-
-    for (const rosbag::MessageInstance& message : view) {
-        if (publishers.find(message.getTopic()) != publishers.end()) {
-            if (message.getTopic() == "/zed_f9r/imu") {
-                sensor_msgs::Imu::ConstPtr imu_data = message.instantiate<sensor_msgs::Imu>();
-                if (imu_data != NULL) {
-                    publishers[message.getTopic()].publish(imu_data);
-                }
-            } else {
-                ipe::Anchor::ConstPtr uwb_data = message.instantiate<ipe::Anchor>();
-                if (uwb_data != NULL) {
-                    publishers[message.getTopic()].publish(uwb_data);
-                }
-            }
-            // std::this_thread::sleep_for(std::chrono::milliseconds(10));
-            spinFor();  // Assuming that 'spinFor()' is some kind of sleep/delay function. If not, please clarify.
-            ros::spinOnce();
-        }
-    }
-
-    bag.close();
-    ROS_INFO("Finish...");
 }
+
+// 2023.09.14
+// void IPEInterface::run()
+// {
+//     try {
+//         registerSubcribers(nh_);
+//     } catch (const std::exception& e) {
+//         ROS_ERROR("%s", e.what());
+//     }
+
+//     rosbag::Bag bag;
+//     try {
+//         bag.open("/home/umaps/rosbag/[zed_f9r]2023-08-31-17-58-37_fast.bag", rosbag::bagmode::Read);
+//     } catch (rosbag::BagException& e) {
+//         ROS_ERROR("Error opening bag file: %s", e.what());
+//     }
+
+//     std::vector<std::string> topics = {
+//         "/dwm1001/anchor/ttyUWB0",
+//         "/dwm1001/anchor/ttyUWB1",
+//         "/dwm1001/anchor/ttyUWB2",
+//         "/dwm1001/anchor/ttyUWB3",
+//         "/zed_f9r/imu"
+//     };
+
+//     std::map<std::string, ros::Publisher> publishers;
+
+//     for (const auto& topic : topics) {
+//         if (topic == "/zed_f9r/imu") {
+//             publishers[topic] = nh_.advertise<sensor_msgs::Imu>(topic, 10);
+//         } else {
+//             publishers[topic] = nh_.advertise<ipe::Anchor>(topic, 10);
+//         }
+//     }
+
+//     rosbag::View view(bag);
+
+//     for (const rosbag::MessageInstance& message : view) {
+//         if (publishers.find(message.getTopic()) != publishers.end()) {
+//             if (message.getTopic() == "/zed_f9r/imu") {
+//                 sensor_msgs::Imu::ConstPtr imu_data = message.instantiate<sensor_msgs::Imu>();
+//                 if (imu_data != NULL) {
+//                     publishers[message.getTopic()].publish(imu_data);
+//                 }
+//             } else {
+//                 ipe::Anchor::ConstPtr uwb_data = message.instantiate<ipe::Anchor>();
+//                 if (uwb_data != NULL) {
+//                     publishers[message.getTopic()].publish(uwb_data);
+//                 }
+//             }
+//             std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//             spinFor();  // Assuming that 'spinFor()' is some kind of sleep/delay function. If not, please clarify.
+//             ros::spinOnce();
+//         }
+//     }
+
+//     bag.close();
+//     ROS_INFO("Finish...");
+// }

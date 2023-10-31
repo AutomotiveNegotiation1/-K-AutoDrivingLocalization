@@ -62,13 +62,14 @@ void ImuSubscriber::operator()(IPEDataPacket &packet, double timestamp) {
     processPacketData(packet, timestamp);
 }
 
-void ImuSubscriber::registerCallback(const std::function<void(double)>& callback) {
+void ImuSubscriber::registerCallback(const std::function<void(double, std::string&)>& callback) {
     callbacks.push_back(callback);
 }
 
 void ImuSubscriber::sendEvent(double data) {
     for (const auto& callback : callbacks) {
-        callback(data);
+        std::string st = "IMU";
+        callback(data, st);
     }
 }
 

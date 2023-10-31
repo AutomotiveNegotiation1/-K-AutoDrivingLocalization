@@ -1,44 +1,39 @@
-/*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: _coder_fusion_mex.h
- *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 04-Oct-2023 13:17:07
- */
+//
+// Academic License - for use in teaching, academic research, and meeting
+// course requirements at degree granting institutions only.  Not for
+// government, commercial, or other organizational use.
+// File: _coder_fusion_mex.h
+//
+// MATLAB Coder version            : 5.6
+// C/C++ source code generated on  : 17-Oct-2023 17:24:31
+//
 
 #ifndef _CODER_FUSION_MEX_H
 #define _CODER_FUSION_MEX_H
 
-/* Include Files */
+// Include Files
 #include "emlrt.h"
 #include "mex.h"
 #include "tmwtypes.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* Function Declarations */
+// Function Declarations
 MEXFUNCTION_LINKAGE void mexFunction(int32_T nlhs, mxArray *plhs[],
                                      int32_T nrhs, const mxArray *prhs[]);
 
-emlrtCTX mexFunctionCreateRootTLS(void);
+emlrtCTX mexFunctionCreateRootTLS();
 
-void unsafe_PosKalman2_mexFunction(int32_T nlhs, mxArray *plhs[1], int32_T nrhs,
-                                   const mxArray *prhs[4]);
+void unsafe_IMUpos_mexFunction(int32_T nlhs, mxArray *plhs[9], int32_T nrhs,
+                               const mxArray *prhs[10]);
+
+void unsafe_UWBpos6_mexFunction(int32_T nlhs, mxArray *plhs[1], int32_T nrhs,
+                                const mxArray *prhs[13]);
 
 void unsafe_fusion_mexFunction(int32_T nlhs, mxArray *plhs[6], int32_T nrhs,
                                const mxArray *prhs[16]);
 
-#ifdef __cplusplus
-}
 #endif
-
-#endif
-/*
- * File trailer for _coder_fusion_mex.h
- *
- * [EOF]
- */
+//
+// File trailer for _coder_fusion_mex.h
+//
+// [EOF]
+//

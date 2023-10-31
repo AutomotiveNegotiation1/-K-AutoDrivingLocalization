@@ -39,28 +39,26 @@
 #include "packetcallback.h"
 #include "ipecallback.h"
 #include "ipedatapacket.h"
+#include "socketmanager.h"
 
 #include "fusion.h"
 #include "fusion_terminate.h"
-#include "fusion_types.h"
 #include "rt_nonfinite.h"
 
-/* Function Declarations */
-inline void computePrevTagPos(double cent_pos_est[3], double kf_psi, creal_T tag_pos_b[4], creal_T prevTagPos[4])
-{
-    creal_T j = {0.0, 1.0};
-    creal_T first_part = {cent_pos_est[0], cent_pos_est[1]};
-    
-    std::complex<double> temp_exp = std::exp(std::complex<double>(0, -kf_psi));
-    creal_T exp_part = {temp_exp.real(), temp_exp.imag()};
-    
-    for (int i = 0; i < 4; i++) {
-        creal_T second_part;
-        second_part.re = exp_part.re * (tag_pos_b[i].re + 0.4) - exp_part.im * tag_pos_b[i].im;
-        second_part.im = exp_part.re * tag_pos_b[i].im + exp_part.im * (tag_pos_b[i].re + 0.4);
 
-        prevTagPos[i].re = first_part.re + second_part.re;
-        prevTagPos[i].im = first_part.im + second_part.im;
+/* Function Declarations */
+inline void computePrevTagPos(real_T cent_pos_est_x, real_T cent_pos_est_y)
+{
+    std::complex<real_T> j(0, 1); // 복소수 단위
+
+    for (int i = 0; i < 4; ++i) {
+        std::complex<real_T> cent_pos_est(cent_pos_est_x, cent_pos_est_y);
+        std::complex<real_T> current_tag_pos_b(tag_pos_b[i].re, tag_pos_b[i].im);
+        
+        std::complex<real_T> TagPos = cent_pos_est + std::exp(j * (-kf_psi)) * (current_tag_pos_b + 0.4 * j);
+        
+        prevTagPos[i].re = TagPos.real();
+        prevTagPos[i].im = TagPos.imag();
     }
 }
 
@@ -84,12 +82,26 @@ private:
     double state_IMU;
     double kalman_on = 1;
     double imuNum = 0;
+    bool clientAdded; // Add this flag
 
 public:
+    // UDP Socket Variables
+    SocketManager* socketManager;
+    socklen_t clientSize;
+    char buffer[1024];
+    std::string messageToSend = "This is a test message.";
+    std::string muwbNum;
+    double center_x = 0;
+    double center_y = 0;
+    double heading = 0;
+
     FusionSubscriber() {
-        // setupSubscirber(node);
+        socketManager = SocketManager::getInstance(); // <-- Add this line to initialize the socketManager
+        socketManager->addClient("192.168.3.198", 54000);
     }
-    void onUWBDataReceived(double data) {
+
+
+    void onUWBDataReceived(double data, std::string& uwbNum) {
         init_flag_ = data;
         processPacketData();
     }
@@ -103,6 +115,14 @@ public:
 private:
     void setupSubscirber(ros::NodeHandle& node){
         // source code : publish vehicle pos based on socket
+    }
+
+    void sendUDPMessage(double center_x, double center_y, double heading) {
+        std::ostringstream oss;
+        oss << center_x << "," << center_y << "," << heading;
+        std::string result = oss.str();
+        socketManager->broadcastUDPMessage(result);
+
     }
 
     void processPacketData() {
@@ -125,18 +145,23 @@ private:
         *                double zt_b
         * Return Type  : creal_T
         */
-        creal_T result;
+        creal_T IMUposU;
 
-        result = fusion(&tag_center_vel_est, state_IMU, Nanchor, b_acc_o,
-                        acc_b_theta, &acc_b_phi, UWBErrSum, init_flag,
-                        kalman_on, imuNum, cent_pos_est, cent_vel_est, &kf_psi,
-                        tag_pos_est, heading_est, zt_b);
+        // result = fusion(&tag_center_vel_est, state_IMU, Nanchor, b_acc_o,
+        //                 acc_b_theta, &acc_b_phi, UWBErrSum, init_flag,
+        //                 kalman_on, imuNum, cent_pos_est, cent_vel_est, &kf_psi,
+        //                 tag_pos_est, heading_est, zt_b);
+
+        IMUposU = fusion(&tag_center_vel_est, state_IMU, Nanchor, b_acc_o,
+                   acc_b_theta, &acc_b_phi, UWBErrSum, init_flag,
+                   kalman_on, imuNum, cent_pos_est, cent_vel_est, &kf_psi,
+                   tag_pos_est, heading_est, zt_b);
 
         if (init_flag == 1){
             gyro_psi = -heading_est;
             kf_psi = gyro_psi;
-            cent_pos_est[0] = result.re;
-            cent_pos_est[1] = result.im;
+            cent_pos_est[0] = IMUposU.re;
+            cent_pos_est[1] = IMUposU.im;
             cent_pos_est[1] = 0;
             cent_vel_est[0] = tag_center_vel_est.re;
             cent_vel_est[1] = tag_center_vel_est.im;
@@ -147,9 +172,13 @@ private:
             init_flag = 2;
         }
         signalIMU = 0;
-        computePrevTagPos(cent_pos_est, kf_psi, tag_pos_b, prevTagPos);
+        computePrevTagPos(IMUposU.re, IMUposU.im);
         prevTagHeading = -kf_psi;
 
+        ROS_INFO("TagPos : (%f,%f)",cent_pos_est[0], cent_pos_est[1]);
+        ROS_INFO("Heading : (%f)", prevTagHeading);
+
+        sendUDPMessage(cent_pos_est[0], cent_pos_est[1], prevTagHeading);
     }
 
 };

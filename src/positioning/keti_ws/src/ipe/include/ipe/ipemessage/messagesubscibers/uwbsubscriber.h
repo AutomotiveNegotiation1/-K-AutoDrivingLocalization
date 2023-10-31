@@ -41,13 +41,15 @@
 #include <functional>
 #include <ros/ros.h>
 #include <ipe/Anchor.h>
+#include <sstream>
+
 #include "packetcallback.h"
 #include "ipecallback.h"
 #include "ipedatapacket.h"
 #include "posdatapacket.h"
-#include "rtwtypes.h"
+#include "socketmanager.h"
+
 #include "UWBpos6.h"
-#include "UWBpos6_terminate.h"
 #include "rt_nonfinite.h"
 
 // Declare Global Variables
@@ -80,38 +82,42 @@ inline creal_T argInit_creal_preT(int idx);
 inline void argInit_1x4_creal_preT(creal_T result[4]);
 
 
+
 class UwbSubscriber : public PacketCallback {
+private:
     // Member Variables
     ros::Subscriber sub;
     std::string frame_id;
     std::ostringstream topic_name_stream;
     IPECallback* m_ipeCallback;
     IPEDataPacket m_ipeDataPacket;
-    std::vector<std::function<void(double)>> callbacks;
+    std::vector<std::function<void(double, std::string&)>> callbacks;
+    std::string uwbNum;
     
     // Constants
     const double Ln = 6.0;
     const double Lp = 4.0;
-    
-public:
-    // Constructor
-    UwbSubscriber(ros::NodeHandle& node, const std::string& uwbNum, IPECallback* ipeCallback);
-    
-    // Operator Overload
-    void operator()(IPEDataPacket &packet, double timestamp);
-    
-    // Public Member Functions
-    void registerCallback(const std::function<void(double)>& callback);
-    void sendEvent(double data);
-    std::string getPacketFrameID();
 
-private:
     // Private Member Functions
     void setupSubscriber(ros::NodeHandle& node, const std::string& uwbNum);
     void _callback(const ipe::Anchor::ConstPtr& msg);
     void _setRxid(const ipe::Anchor::ConstPtr& msg);
     double extractNumber(const std::string& input);
     void processPacketData(IPEDataPacket &packet, double timestamp);
+    // void sendUDPMessage(double center_x, double center_y, double heading);
+
+public:
+    // Constructor
+    UwbSubscriber(ros::NodeHandle& node, const std::string& uwbNum, IPECallback* ipeCallback);
+    ~UwbSubscriber();
+    
+    // Operator Overload
+    void operator()(IPEDataPacket &packet, double timestamp);
+    
+    // Public Member Functions
+    void registerCallback(const std::function<void(double, std::string&)>& callback);
+    void sendEvent(double data, std::string& uwbNum);
+    std::string getPacketFrameID();
 };
 
 #endif // UWBSUBSCRIBER_H

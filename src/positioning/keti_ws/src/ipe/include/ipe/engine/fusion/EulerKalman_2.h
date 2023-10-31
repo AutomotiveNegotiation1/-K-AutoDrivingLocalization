@@ -1,35 +1,30 @@
-/*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- * File: EulerKalman_2.h
- *
- * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 04-Oct-2023 13:17:07
- */
+//
+// Academic License - for use in teaching, academic research, and meeting
+// course requirements at degree granting institutions only.  Not for
+// government, commercial, or other organizational use.
+// File: EulerKalman_2.h
+//
+// MATLAB Coder version            : 5.6
+// C/C++ source code generated on  : 17-Oct-2023 17:24:31
+//
 
 #ifndef EULERKALMAN_2_H
 #define EULERKALMAN_2_H
 
-/* Include Files */
+// Include Files
 #include "rtwtypes.h"
-#include <stddef.h>
-#include <stdlib.h>
+#include <cstddef>
+#include <cstdlib>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// Function Declarations
+double EulerKalman_2(double x[4], const double A[16], const double z[4],
+                     double &theta, double *psi);
 
-/* Function Declarations */
-void EulerKalman_2_init(void);
-
-#ifdef __cplusplus
-}
-#endif
+void EulerKalman_2_init();
 
 #endif
-/*
- * File trailer for EulerKalman_2.h
- *
- * [EOF]
- */
+//
+// File trailer for EulerKalman_2.h
+//
+// [EOF]
+//
