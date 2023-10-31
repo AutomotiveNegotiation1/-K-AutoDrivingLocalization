@@ -1,0 +1,156 @@
+function [cent_pos_est, cent_vel_est, kf_psi, gyro_psi, b_acc_o, b_gyro, state_o, acc_b_phi,acc_b_theta] = IMUpos(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, mode, kf_psi, gyro_psi, cent_pos_est, cent_vel_est)
+
+
+%% mode : 0 -> F9R,  1 -> Xens
+dt_acc = 0.01;
+Lv = 10;
+persistent k IMUacc IMUgyro s_time_prev Acc_Acc Acc_Vel Acc_Pos gyro_theta state gyro_phi Acc_Steady Acc_PQR Acc_Acc_a kf_phi kf_theta %gyro_psi 
+gravity = 9.8;
+
+if isempty (k)
+    k = 0;
+    state = 0; % 0 : init,
+    IMUacc = zeros(2*Lv, 3);
+    IMUgyro = zeros(2*Lv, 3);
+    Acc_Acc = zeros(3,2*Lv );
+    Acc_Vel = zeros(3,2*Lv);
+    Acc_Pos = zeros(3,2*Lv);
+    
+%%%%% For Test %%%%%%
+    Acc_Steady = zeros(3,2*Lv);
+    Acc_PQR = zeros(3,2*Lv);
+    Acc_Acc_a = zeros(3,2*Lv );
+    kf_phi = 0;
+    kf_theta = 0;
+%%%%%%%%%%%%%%%%%%%%%%%
+
+    gyro_phi = 0;
+    gyro_theta = 0;
+
+
+%     gyro_psi = 0;
+end
+
+if k < 900
+    k = k + 1;
+end
+
+IMUgyro(1:end-1, :) = IMUgyro(2:end, :);
+IMUgyro(end,:)  = IMUgyro_c;
+IMUacc(1:end-1, :) = IMUacc(2:end, :);
+IMUacc(end,:) = IMUacc_c;
+
+Acc_Vel(:,end) = cent_vel_est;
+Acc_Pos(:,end) = cent_pos_est;
+
+if k > 500
+
+    if mode == 1
+        p = (IMUgyro(end,1)-b_gyro(1));    q = (IMUgyro(end,2)-b_gyro(2));    r = (IMUgyro(end,3)-b_gyro(3));
+    else
+        p = (IMUgyro(end,1)-b_gyro(1))*pi/180;    q = (IMUgyro(end,2)-b_gyro(2))*pi/180;    r = (IMUgyro(end,3)-b_gyro(3))*pi/180;
+    end
+
+    acc_b = (IMUacc(end,[1 2 3])-b_acc_o)';
+
+    used_phi = 0;
+    used_theta = 0;
+    used_psi = kf_psi;
+
+    %%% for test
+    used_phi = kf_phi;
+    used_theta = kf_theta;
+    used_psi = kf_psi;
+
+    used_phi_next = 0;
+    used_theta_next = 0;
+    used_psi_next = kf_psi;
+
+    Acc_Pos(:,1:end-1) = Acc_Pos(:,2:end);
+    Acc_Vel(:,1:end-1) = Acc_Vel(:,2:end);
+    Acc_Acc(:,1:end-1) = Acc_Acc(:,2:end);
+
+    %%%%%%%%%%%%%%%%% For Test %%%%%%%%%%%%%%%%%%
+    Acc_PQR(:,1:end-1) = Acc_PQR(:,2:end);
+    Acc_Steady(:,1:end-1) = Acc_Steady(:,2:end);
+
+            %         vel_t = rotationVectorToMatrix([used_phi;used_theta;used_psi])*Acc_Vel(:,i-1);
+            %         Acc_PQR(:,i) = 1*([0 vel_t(3) -vel_t(2);-vel_t(3) 0 0;vel_t(2) 0 0]*[p;q;r]);
+            %         Acc_Steady(:,i) = gravity*[sin(used_theta_next);-cos(used_theta_next)*sin(used_phi_next);-cos(used_theta_next)*cos(used_phi_next)];
+            %         Acc_Acc(:,i) = rotationVectorToMatrix([used_phi;used_theta;used_psi])'*(acc_b(:,i)-Acc_PQR(:,i)-Acc_Steady(:,i));
+            vel_t = [0 1 0;1 0 0;0 0 1]*rotationVectorToMatrix([used_phi;used_theta;used_psi])*Acc_Vel(:,end-1);
+            Acc_PQR(:,end) = 1*([0 vel_t(3) -vel_t(2);-vel_t(3) 0 0;vel_t(2) 0 0]*[p;q;r]);
+            Acc_PQR(:,end) = [0;0;0];
+            Acc_Steady(:,end) = [0 1 0;1 0 0;0 0 1]*gravity*[sin(used_theta);-cos(used_theta)*sin(used_phi);-cos(used_theta)*cos(used_phi)];
+            Acc_Acc_a(:,end) = [0 1 0;1 0 0;0 0 1]*rotationVectorToMatrix([used_phi;used_theta;used_psi])'*(acc_b-Acc_PQR(:,end)-Acc_Steady(:,end));
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    if mode == 1
+        Acc_Acc(:,end) = [0 1 0;1 0 0;0 0 1]*rotationVectorToMatrix([0;0;used_psi])'*([acc_b(1);acc_b(2);0]);
+    else
+        Acc_Acc(:,end) = [0 1 0;1 0 0;0 0 1]*rotationVectorToMatrix([0;0;used_psi])'*([acc_b(1);acc_b(2);0]);
+    end
+
+    [gyro_phi,gyro_theta,gyro_psi] = EulerGyroUpdate(p,q,r,dt_acc,gyro_phi,gyro_theta,gyro_psi);
+%     [gyro_phi,gyro_theta,gyro_psi] = EulerGyroUpdate(p,q,r,dt_acc,gyro_phi,gyro_theta,gyro_psi);
+
+    [acc_b_phi,acc_b_theta] = EulerAcc(acc_b(1), acc_b(2), acc_b(3));
+
+    qua_acc = EulerToQuaternion(acc_b_phi, acc_b_theta, gyro_psi);
+    qua_kf = EulerToQuaternion(gyro_phi,gyro_theta,gyro_psi);
+    AA = eye(4)+dt_acc*1/2*[0 -p -q -r;    p 0 r -q;    q -r 0 p;    r q -p 0    ];
+    % %
+    [kf_phi,kf_theta,kf_psi] = EulerKalman_2(qua_kf,AA,qua_acc);
+    kf_phi =real(kf_phi);
+    kf_theta =real(kf_theta);
+    kf_psi =real(kf_psi);
+
+    Acc_Vel(:,end) = Acc_Vel(:,end-1) + Acc_Acc(:,end)*dt_acc;
+    Acc_Pos(:,end) = Acc_Pos(:,end-1) + Acc_Vel(:,end-1)*dt_acc + Acc_Acc(:,end)*dt_acc^2/2;
+
+elseif k == 500
+
+    b_gyro = mean(IMUgyro);
+    b_acc_o = (mean(IMUacc)'+[0;0;gravity])';
+    if mode == 1
+        p = (IMUgyro(end,1)-b_gyro(1));    q = (IMUgyro(end,2)-b_gyro(2));    r = (IMUgyro(end,3)-b_gyro(3));
+    else
+        p = (IMUgyro(end,1)-b_gyro(1))*pi/180;    q = (IMUgyro(end,2)-b_gyro(2))*pi/180;    r = (IMUgyro(end,3)-b_gyro(3))*pi/180;
+    end
+    acc_b = (IMUacc(end,:)-b_acc_o)';
+
+    [acc_b_phi,acc_b_theta] = EulerAcc(acc_b(1), acc_b(2), acc_b(3));
+    gyro_phi = acc_b_phi;
+    kf_phi = gyro_phi;
+    gyro_theta = acc_b_theta;
+    kf_theta = gyro_theta;
+    gyro_psi = 0;
+    state = 1;
+else
+    if mode == 1
+        p = (IMUgyro(end,1));    q = (IMUgyro(end,2));    r = (IMUgyro(end,3));
+    else
+        p = (IMUgyro(end,1))*pi/180;    q = (IMUgyro(end,2))*pi/180;    r = (IMUgyro(end,3))*pi/180;
+    end
+    acc_b = (IMUacc(end,:))';
+
+    Acc_Vel(:,1:end-1) = Acc_Vel(:,2:end);
+    Acc_Acc(:,1:end-1) = Acc_Acc(:,2:end);
+    Acc_Pos(:,1:end-1) = Acc_Pos(:,2:end);
+
+    Acc_Acc(:,end) = [0 0 0]';
+    Acc_Vel(:,end) = [0 0 0]';
+    Acc_Pos(:,end) = [cent_pos_est(1) cent_pos_est(2) cent_pos_est(3)]';
+
+    [acc_b_phi,acc_b_theta] = EulerAcc(acc_b(1), acc_b(2), acc_b(3));
+    gyro_phi = gyro_phi*(k-1)/k+acc_b_phi/k;
+    kf_phi = gyro_phi;
+    gyro_theta = gyro_theta*(k-1)/k+acc_b_theta/k;
+    kf_theta = gyro_theta;
+    gyro_psi = pi;
+    %             b_gyro = b_gyro*(k0(5)-1)/k0(5)+IMUgyro(end,:)/k0(5);
+end
+
+cent_pos_est = Acc_Pos(:,end);
+cent_vel_est = Acc_Vel(:,end);
+state_o = state;

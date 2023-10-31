@@ -1,0 +1,20 @@
+
+Warnings: 
+
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 9, column : 8. The expression 'dt_acc = 0.01' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 10, column : 9. The expression 'dt_gyro = 0.03' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 59, column : 11. The expression 'p = (IMUgyro(end,1)-b_gyro(1))*pi/180' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 59, column : 53. The expression 'q = (IMUgyro(end,2)-b_gyro(2))*pi/180' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 59, column : 95. The expression 'r = (IMUgyro(end,3)-b_gyro(3))*pi/180' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 129, column : 11. The expression 'p = (IMUgyro(end,1)-b_gyro(1))*pi/180' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 129, column : 53. The expression 'q = (IMUgyro(end,2)-b_gyro(2))*pi/180' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 129, column : 95. The expression 'r = (IMUgyro(end,3)-b_gyro(3))*pi/180' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 144, column : 11. The expression 'p = (IMUgyro(end,1))*pi/180' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 144, column : 43. The expression 'q = (IMUgyro(end,2))*pi/180' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\IMUpos.m, line : 144, column : 75. The expression 'r = (IMUgyro(end,3))*pi/180' was not executed during simulation. Consider using a more thorough testbench.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\EulerGyroUpdate.m, line : 3, column : 27. Function 'tan' not supported for fixed-point conversion.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\EulerGyroUpdate.m, line : 3, column : 51. Function 'tan' not supported for fixed-point conversion.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\EulerAcc.m, line : 3, column : 7. Function 'atan' not supported for fixed-point conversion.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\EulerAcc.m, line : 4, column : 9. Function 'atan' not supported for fixed-point conversion.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\EulerKalman_2.m, line : 22, column : 11. Function 'inv' not supported for fixed-point conversion.
+File: E:\Indoor_loc\PositioningAlg_20230904\MATLAB 4\EulerKalman_2.m, line : 28, column : 10. Function 'asin' not supported for fixed-point conversion.

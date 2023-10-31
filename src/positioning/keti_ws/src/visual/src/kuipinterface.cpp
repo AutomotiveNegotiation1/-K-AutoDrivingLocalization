@@ -207,6 +207,21 @@ void kuipInterface::spinFor()
 //     }
 // }
 
+// 2023.10.05
+// void kuipInterface::run()
+// {
+//     try {
+//         registerSubcribers(nh_);
+//     } catch (const std::exception& e) {
+//         ROS_ERROR("%s", e.what());
+//     }
+
+//     while (ros::ok()) {
+//         spinFor();
+//         ros::spinOnce();
+//     }
+// }
+
 // 2023.09.14
 void kuipInterface::run()
 {

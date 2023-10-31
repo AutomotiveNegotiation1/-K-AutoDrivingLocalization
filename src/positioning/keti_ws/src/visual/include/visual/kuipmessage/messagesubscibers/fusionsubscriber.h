@@ -143,9 +143,10 @@ private:
             cent_vel_est[2] = 0;
         }
 
-        if (init_flag == 1){
+        if (signalIMU == 1 && init_flag == 1){
             init_flag = 2;
         }
+        signalIMU = 0;
         computePrevTagPos(cent_pos_est, kf_psi, tag_pos_b, prevTagPos);
         prevTagHeading = -kf_psi;
 

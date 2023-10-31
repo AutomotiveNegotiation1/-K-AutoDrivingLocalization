@@ -5,7 +5,7 @@
  * File: fusion.h
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 22-Sep-2023 09:43:03
+ * C/C++ source code generated on  : 04-Oct-2023 13:17:07
  */
 
 #ifndef FUSION_H

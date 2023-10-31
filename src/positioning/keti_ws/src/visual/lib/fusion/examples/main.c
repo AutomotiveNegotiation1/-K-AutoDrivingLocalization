@@ -5,7 +5,7 @@
  * File: main.c
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 22-Sep-2023 09:43:03
+ * C/C++ source code generated on  : 04-Oct-2023 13:17:07
  */
 
 /*************************************************************************/
@@ -200,7 +200,7 @@ You do not need to do this more than one time. */
  */
 void main_PosKalman2(void)
 {
-  double dv[144];
+  double b_dv[144];
   double x[12];
   double dv2[9];
   double dv1[3];
@@ -211,10 +211,10 @@ void main_PosKalman2(void)
   /* Initialize function input argument 'R'. */
   /* Call the entry-point 'PosKalman2'. */
   argInit_12x1_real_T(x);
-  argInit_12x12_real_T(dv);
+  argInit_12x12_real_T(b_dv);
   argInit_1x3_real_T(dv1);
   argInit_3x3_real_T(dv2);
-  PosKalman2(x, dv, dv1, dv2);
+  PosKalman2(x, b_dv, dv1, dv2);
 }
 
 /*
@@ -227,9 +227,9 @@ void main_fusion(void)
   creal_T IMUposU;
   creal_T tag_center_vel_est;
   double dv1[5];
+  double b_dv[3];
   double cent_pos_est_tmp[3];
   double cent_vel_est[3];
-  double dv[3];
   double kf_psi;
   double state_IMU_tmp;
   /* Initialize function 'fusion' input arguments. */
@@ -247,10 +247,10 @@ void main_fusion(void)
   cent_vel_est[2] = cent_pos_est_tmp[2];
   kf_psi = state_IMU_tmp;
   tag_center_vel_est = argInit_creal_T();
-  argInit_1x3_real_T(dv);
+  argInit_1x3_real_T(b_dv);
   argInit_1x5_real_T(dv1);
   argInit_1x4_creal_T(dcv);
-  IMUposU = fusion(&tag_center_vel_est, state_IMU_tmp, state_IMU_tmp, dv,
+  IMUposU = fusion(&tag_center_vel_est, state_IMU_tmp, state_IMU_tmp, b_dv,
                    state_IMU_tmp, &state_IMU_tmp, state_IMU_tmp, state_IMU_tmp,
                    state_IMU_tmp, dv1, cent_pos_est_tmp, cent_vel_est, &kf_psi,
                    dcv, state_IMU_tmp, state_IMU_tmp);

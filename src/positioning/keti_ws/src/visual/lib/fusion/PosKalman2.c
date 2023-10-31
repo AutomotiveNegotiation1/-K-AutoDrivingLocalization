@@ -5,7 +5,7 @@
  * File: PosKalman2.c
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 22-Sep-2023 09:43:03
+ * C/C++ source code generated on  : 04-Oct-2023 13:17:07
  */
 
 /* Include Files */
@@ -209,7 +209,7 @@ void PosKalman2(double x[12], const double A[144], const double z[3],
  */
 void PosKalman2_init(void)
 {
-  static const double dv[144] = {
+  static const double b_dv[144] = {
       0.01, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
       0.0,  0.01, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
       0.0,  0.0,  0.01, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
@@ -222,9 +222,7 @@ void PosKalman2_init(void)
       0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.01, 0.0,  0.0,
       0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.01, 0.0,
       0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.01};
-  static const double y[9] = {1.0E-5, 0.0, 0.0, 0.0,   1.0E-5,
-                              0.0,    0.0, 0.0, 1.0E-5};
-  static const signed char b_y[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};
+  static const signed char y[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};
   int H_tmp;
   int i;
   signed char b_I[9];
@@ -243,21 +241,22 @@ void PosKalman2_init(void)
     H_tmp = 3 * i + 2;
     b_H[H_tmp] = b_I[H_tmp];
   }
-  memcpy(&b_Q[0], &dv[0], 144U * sizeof(double));
+  memcpy(&b_Q[0], &b_dv[0], 144U * sizeof(double));
   for (i = 0; i < 3; i++) {
     H_tmp = 12 * (i + 9);
-    b_Q[H_tmp + 9] = y[3 * i];
-    b_Q[H_tmp + 10] = y[3 * i + 1];
-    b_Q[H_tmp + 11] = y[3 * i + 2];
+    b_Q[H_tmp + 9] = dv[3 * i];
+    b_Q[H_tmp + 10] = dv[3 * i + 1];
+    b_Q[H_tmp + 11] = dv[3 * i + 2];
   }
+  /* Q(10:12,10:12)=1e-5*eye(3); */
   for (i = 0; i < 144; i++) {
     b_P[i] = iv1[i];
   }
   for (i = 0; i < 3; i++) {
     H_tmp = 12 * (i + 3);
-    b_P[H_tmp] = b_y[3 * i];
-    b_P[H_tmp + 1] = b_y[3 * i + 1];
-    b_P[H_tmp + 2] = b_y[3 * i + 2];
+    b_P[H_tmp] = y[3 * i];
+    b_P[H_tmp + 1] = y[3 * i + 1];
+    b_P[H_tmp + 2] = y[3 * i + 2];
   }
   for (i = 0; i < 6; i++) {
     for (H_tmp = 0; H_tmp < 6; H_tmp++) {
@@ -266,9 +265,9 @@ void PosKalman2_init(void)
   }
   for (i = 0; i < 3; i++) {
     H_tmp = 12 * (i + 9);
-    b_P[H_tmp + 9] = b_y[3 * i];
-    b_P[H_tmp + 10] = b_y[3 * i + 1];
-    b_P[H_tmp + 11] = b_y[3 * i + 2];
+    b_P[H_tmp + 9] = y[3 * i];
+    b_P[H_tmp + 10] = y[3 * i + 1];
+    b_P[H_tmp + 11] = y[3 * i + 2];
   }
 }
 

@@ -5,7 +5,7 @@
             "name": "(lldb) Launch",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/devel/lib/visual/visual_node",
+            "program": "${workspaceFolder}/devel/lib/ipe/ipe_node",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "externalConsole": false,

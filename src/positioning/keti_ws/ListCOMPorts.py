@@ -81,15 +81,16 @@ def list_com_ports(verbose, vid, pid):
     port_info = []
     for i, port in enumerate(ports_with_serial + ports_without_serial):
         # print(f"{port.device} - {port.manufacturer} - {port.serial_number}")
-        if port.serial_number is not None:
-            port_name = "ttyUWB{}".format(i)
-        else:
-            port_name = "ttyIMU"
-        create_udev_rule(port.device, port_name)
-        baud_rate = baud_rate_mapping.get(port_name, 115200) # default to 115200 if the port is not in the mapping
-        port_info.append({"type": "UWB" if 'UWB' in port_name else "IMU", "port": port_name, "baud_rate": baud_rate})
+        if f"{port.manufacturer}" != "None":
+            if port.serial_number is not None:
+                port_name = "ttyUWB{}".format(i)
+            else:
+                port_name = "ttyIMU"
+            create_udev_rule(port.device, port_name)
+            baud_rate = baud_rate_mapping.get(port_name, 115200) # default to 115200 if the port is not in the mapping
+            port_info.append({"type": "UWB" if 'UWB' in port_name else "IMU", "port": port_name, "baud_rate": baud_rate})
 
-    print(json.dumps(port_info, indent=4))
+    # print(json.dumps(port_info, indent=4))
     # print("ListCOMPort.py", json.dumps(port_info))
     reload_udev_rules()
 

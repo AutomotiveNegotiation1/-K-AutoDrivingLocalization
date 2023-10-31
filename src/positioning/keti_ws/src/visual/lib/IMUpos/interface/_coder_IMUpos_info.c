@@ -5,7 +5,7 @@
  * File: _coder_IMUpos_info.c
  *
  * MATLAB Coder version            : 5.6
- * C/C++ source code generated on  : 20-Sep-2023 17:05:14
+ * C/C++ source code generated on  : 04-Oct-2023 14:13:20
  */
 
 /* Include Files */
@@ -25,28 +25,28 @@ static const mxArray *emlrtMexFcnResolvedFunctionsInfo(void)
 {
   const mxArray *nameCaptureInfo;
   const char_T *data[6] = {
-      "789ced58cd8ed25018bd1834b3991137b3766f621ac0512726a6c50e320cce5868028a81"
-      "da5e86daf6de4e7fc68197f01558fa0cc607d02798b832be870ba13f"
-      "94dee4a64a274508dfe6e3e4b43da7df474e6e0a72b5460e00b007fc32f7fdbe1be042d0"
-      "6f8178917c2ee8790287753b607609fe53d0658c1c78e5f80049069c",
-      "dfa960434512725a2313020bda58bf848ac70c541db654033617c1ab19328e16a8399851"
-      "b3df952194b5a66b006b68470ef545309fc784f2be79102fda3c0e29"
-      "f32810fc5bfe1d7fd8ad210563aba763b97b866dd5513152d139ab9ff78a4cb1c43c65ca"
-      "dd06db3a61b9fbe56ead219ad87e68c4fd9a29fdde4df01bf2bcab43",
-      "ab3ab2b0682a9203e7fafd94fa77a8fa3ea360f7bd0ea3f7fd9c52af42d58bf3ffbe1f62"
-      "42c1a292e614ce37c937d9a3eb77bcfeebe78f5c967ae8fa6b254bbd"
-      "b056a5774579dedffeeff6297a0582afd5eb9d63c13a821d56fb70f94418e3d281528d7c"
-      "9c25e824f900149cd5f32794fbffd77ceda7f4bb43e0c8afcf78a9c1",
-      "caf2aaf2749252ef19552fce2f99a7d3c9f81bd9d41cfdfeed3997a55e589b9ea3cc1b1b"
-      "39e38376456b768e47230e6b92d4d8e6e8ca7234eddeef25f80d792f"
-      "355af8b53b3d825968ea13c47df453fac8fabcca53f5e2fc92f9ba38296f659b9ab3852f"
-      "bfb7e75570f3397b224a83f2d07405a6ce0d5c87d335e142e5b639bb",
-      "aedf03c8ef35a4df90f7d2a32ee986847a45b0bef9ca52f5e2fc92f91a4e285cd3c6e6eb"
-      "83fcf5365fc1cde7eb295b851fdb8fda8f65e1c5e94b5614e5d268cc"
-      "af7fbefe0110d0442f",
+      "789ced984f8fd24018c6075dcdc664152ffb313615d6d578b205b6b295ddb5d004b486ad"
+      "ed00ddb633b57f7629d73d68e2c1835f608fdef4ebf8453c0bfd4369"
+      "93498d2520a4737979fbd0791ede925f2605a566ab0400780882f5793fa87b615f0eeb1d"
+      "905c69bd14d69d541fad7ba1b297d2bf8655c6c8816327689064c0f9",
+      "9d0a36542421a7e3991058d0c6fa15547c65a0eab0a31ab0bdd89cce3ae378419a373369"
+      "f6b93682b2d6760d608dec38a1bed8cce7714bf8bd3b20b948f37849"
+      "984739a5bf6bbcafbd10051b5ab63881ae7d29a1a158c7d748c792628be7d8561d152315"
+      "0dfbb43eec57a84af509451d8acd966062fbc088f29a39f33ecac81b",
+      "e90d578716eb59583015c981f3795de4f4bf4ff40f1405bb1f74183f9f9f39fd9a44bfa4"
+      "feafcf2735a70323dc2f6b5ed19cb3f2a76bfcfd5dbf0e7fff2aadd2"
+      "afae7d7ab04abf68adcb6f4cd8ef6fff7ffb04bf724a6f725cef84b78e618fd62eaf9ef3"
+      "135c3d52d838c779864f560e40e857b5ff2de1feff95b31739f3eea6",
+      "fa386fa0f8dca065795d5cfd9ed38f21fa25f55c5c9dce2702eab6f294bd7b53f0142c9f"
+      "a7d45b1b3993a36e4d6bf74e3c8fc19a24b50a9eae8da7799ffbe38c"
+      "bc91ee73a383dfb8d3c39885a6c9c2eb9b7a7ee5887e493d176717e71502775b793be6be"
+      "15bc05cbe7ed6b411a1c8e4c97a73866e03a8caef11f55a6e0eda6be",
+      "2748bfc749e78d749f1f9ca41b12ea57c0fa389bf73ccb12fd927a2ece46739a32765bf9"
+      "dafef1a5e02b583e5fcf68165e779f769fc97cfdec152d0872d59b34"
+      "369faf7f00e0c55ed9",
       ""};
   nameCaptureInfo = NULL;
-  emlrtNameCaptureMxArrayR2016a(&data[0], 5768U, &nameCaptureInfo);
+  emlrtNameCaptureMxArrayR2016a(&data[0], 5792U, &nameCaptureInfo);
   return nameCaptureInfo;
 }
 
@@ -76,10 +76,10 @@ mxArray *emlrtMexFcnProperties(void)
   emlrtSetField(xEntryPoints, 0, "ConstantInputs", xInputs);
   emlrtSetField(
       xEntryPoints, 0, "FullPath",
-      emlrtMxCreateString(
-          "E:\\Indoor_loc\\PositioningAlg_20230904\\MATLAB 4\\IMUpos.m"));
+      emlrtMxCreateString("C:\\Users\\zeusjang\\Downloads\\Positioning_Alg_"
+                          "20231004\\IMUpos.m"));
   emlrtSetField(xEntryPoints, 0, "TimeStamp",
-                emlrtMxCreateDoubleScalar(739134.799212963));
+                emlrtMxCreateDoubleScalar(739163.46112268523));
   xResult =
       emlrtCreateStructMatrix(1, 1, 7, (const char_T **)&propFieldName[0]);
   emlrtSetField(xResult, 0, "Version",
