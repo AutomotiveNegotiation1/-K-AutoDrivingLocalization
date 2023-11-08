@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   rosbag
   message_generation
   message_runtime
+  geometry_msgs  # Add this line  
 )
 
 ## System dependencies are found with CMake's conventions
@@ -51,6 +52,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
+  Uwbpos.msg
+  Imupos.msg
+  Fusion.msg
   Anchor.msg
   Tag.msg
 )
@@ -72,7 +76,8 @@ add_message_files(
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  std_msgs
+  geometry_msgs
+  std_msgs  
 )
 
 ################################################
@@ -105,7 +110,7 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  CATKIN_DEPENDS roscpp std_msgs message_runtime
+  CATKIN_DEPENDS roscpp std_msgs message_runtime geometry_msgs  # 여기에도 추가합니다
 )
 
 ###########

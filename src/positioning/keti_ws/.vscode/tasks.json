@@ -21,8 +21,14 @@
             "label": "ROS: roslaunch",
             "type": "shell",
             "command": "roslaunch",
-            "args": ["${workspaceFolder}/src/ipe/launch/ipe.launch"],
-            "problemMatcher": []
+            "args": [
+                "${workspaceFolder}/src/ipe/launch/ipe.launch"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

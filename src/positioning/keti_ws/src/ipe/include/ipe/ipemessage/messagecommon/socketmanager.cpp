@@ -73,6 +73,7 @@ bool SocketManager::isClientExist(const std::string& ip, unsigned short port) {
 }
 
 bool SocketManager::sendUDPMessage(const std::string& message, const sockaddr_in& clientAddress) {
+
     ssize_t sent = sendto(sock, message.c_str(), message.size(), 0, 
                           (struct sockaddr*)&clientAddress, sizeof(clientAddress));
     if (sent == -1) {
@@ -84,6 +85,7 @@ bool SocketManager::sendUDPMessage(const std::string& message, const sockaddr_in
 
 bool SocketManager::broadcastUDPMessage(const std::string& message) {
     bool success = true;
+    std::cout << message << std::endl;
     for (const auto& pair : clientMap) {
         const sockaddr_in& clientAddress = pair.first;
         if (!sendUDPMessage(message, clientAddress)) {
