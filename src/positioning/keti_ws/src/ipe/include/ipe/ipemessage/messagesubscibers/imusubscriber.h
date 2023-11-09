@@ -49,16 +49,16 @@
 #include "rt_nonfinite.h"
 
 // Declare Global Variables
-// extern double b_acc_o[3];
-// extern double b_gyro[3];
-// extern double mode;
-// extern double kf_psi;
-// extern double gyro_psi;
-// extern double cent_pos_est[3];
-// extern double cent_vel_est[3];
-// extern double state_o;
-// extern double acc_b_phi;
-// extern double acc_b_theta;
+extern double b_acc_o[3];
+extern double b_gyro[3];
+extern double mode;
+extern double kf_psi;
+extern double gyro_psi;
+extern double cent_pos_est[3];
+extern double cent_vel_est[3];
+extern double state_o;
+extern double acc_b_phi;
+extern double acc_b_theta;
 
 class ImuSubscriber : public PacketCallback {
 private:
@@ -74,16 +74,16 @@ private:
     const double Ln = 6.0;
     const double Lp = 4.0;
 
-    double b_acc_o[3] = {};
-    double b_gyro[3] = {};
-    double mode = 0;
-    double kf_psi = 0;
-    double gyro_psi = 0;
-    double cent_pos_est[3] = {};
-    double cent_vel_est[3] = {};
-    double state_o;
-    double acc_b_phi;
-    double acc_b_theta;
+    // double b_acc_o[3] = {};
+    // double b_gyro[3] = {};
+    // double mode = 0;
+    // double kf_psi = 0;
+    // double gyro_psi = 0;
+    // double cent_pos_est[3] = {};
+    // double cent_vel_est[3] = {};
+    // double state_o;
+    // double acc_b_phi;
+    // double acc_b_theta;
 
 public:
     ImuSubscriber(ros::NodeHandle& node, IPECallback* ipeCallback);

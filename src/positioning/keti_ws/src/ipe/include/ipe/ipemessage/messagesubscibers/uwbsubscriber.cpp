@@ -41,19 +41,19 @@ std::vector<std::string> RxID_data_list;
 std::vector<int> RxID_list;
 std::vector<std::string> difference;
 
-// creal_T tag_pos_b[4];
-// creal_T prevTagPos[4];
-// creal_T tag_pos_est[4];
-// creal_T tag_pos_est_aver[4];
-// creal_T tag_center_vel_est;
-// std::string tagNum;
-// double UWBErrSum;
-// double heading_est;
-// double headingest_a_aver_v;
-// double init_flag;
-// double Nanchor;
-// double zt_b;
-// double prevTagHeading;
+creal_T tag_pos_b[4];
+creal_T prevTagPos[4];
+creal_T tag_pos_est[4];
+creal_T tag_pos_est_aver[4];
+creal_T tag_center_vel_est;
+std::string tagNum;
+double UWBErrSum;
+double heading_est;
+double headingest_a_aver_v;
+double init_flag;
+double Nanchor;
+double zt_b;
+double prevTagHeading;
 
 inline creal_T argInit_creal_T(int idx)
 {
@@ -134,9 +134,9 @@ void UwbSubscriber::setupSubscriber(ros::NodeHandle& node, const std::string& uw
 
     ROS_INFO("topic_name-->%s", topic_name.c_str());
 
-    pub = node.advertise<ipe::Uwbpos>("/UWB", 10);
+    // pub = node.advertise<ipe::Uwbpos>("/UWB", 10);
     sub = node.subscribe<ipe::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this);
-    subFusion = node.subscribe<ipe::Fusion>("/Fusion", 10, &UwbSubscriber::_callback_Fusion, this);
+    // subFusion = node.subscribe<ipe::Fusion>("/Fusion", 10, &UwbSubscriber::_callback_Fusion, this);
 
 }
 
@@ -152,17 +152,17 @@ void UwbSubscriber::_callback(const ipe::Anchor::ConstPtr& msg) {
     }
 }
 
-void UwbSubscriber::_callback_Fusion(const ipe::Fusion::ConstPtr& msg) {
-    if (!msg){
-        prevTagHeading = msg->prevTagHeading;
-        init_flag = msg->init_flag;
-        for(int i=0; i<4;i++){
-            msg->prevTagPos[i];
-            prevTagPos[i].re = msg->prevTagPos[i];
-            prevTagPos[i].im = msg->prevTagPos[i+1];
-        }
-    }
-}
+// void UwbSubscriber::_callback_Fusion(const ipe::Fusion::ConstPtr& msg) {
+//     if (!msg){
+//         prevTagHeading = msg->prevTagHeading;
+//         init_flag = msg->init_flag;
+//         for(int i=0; i<4;i++){
+//             msg->prevTagPos[i];
+//             prevTagPos[i].re = msg->prevTagPos[i];
+//             prevTagPos[i].im = msg->prevTagPos[i+1];
+//         }
+//     }
+// }
 
 void UwbSubscriber::_setRxid(const ipe::Anchor::ConstPtr& msg) {
     std::vector<std::string> newIds = msg->id;
@@ -272,19 +272,19 @@ void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp)
             UWBpos6(Ln, Lp, LnC, TagNum, Nanchor, packet.RxID.data(), packet.RxDist.data(), s_time, tag_pos_b, xain_list.data(), yain_list.data(), prevTagPos, prevTagHeading, UWBout);
         }
     }
-    ipe::Uwbpos uwb_pos_msg;
-    uwb_pos_msg.header.stamp = ros::Time::now();
-    uwb_pos_msg.header.frame_id = "UWBPos";
+    // ipe::Uwbpos uwb_pos_msg;
+    // uwb_pos_msg.header.stamp = ros::Time::now();
+    // uwb_pos_msg.header.frame_id = "UWBPos";
 
     // // Assigning UWBout data to pos
     for (int i = 0; i < 4; i++) {
         tag_pos_est[i].re = UWBout[i];
-        uwb_pos_msg.tag_pos_est.push_back(tag_pos_est[i].re);
+        // uwb_pos_msg.tag_pos_est.push_back(tag_pos_est[i].re);
         tag_pos_est[i].im = UWBout[i + 4];
-        uwb_pos_msg.tag_pos_est.push_back(tag_pos_est[i].im);
+        // uwb_pos_msg.tag_pos_est.push_back(tag_pos_est[i].im);
         
-        uwb_pos_msg.tag_pos_b.push_back(tag_pos_b[i].re);
-        uwb_pos_msg.tag_pos_b.push_back(tag_pos_b[i].im);
+        // uwb_pos_msg.tag_pos_b.push_back(tag_pos_b[i].re);
+        // uwb_pos_msg.tag_pos_b.push_back(tag_pos_b[i].im);
 
         tag_pos_est_aver[i].re = UWBout[i + 9];
         tag_pos_est_aver[i].im = UWBout[i + 13];
@@ -312,10 +312,10 @@ void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp)
     tag_center_vel_est.im = UWBout[19];
 
     UWBErrSum = UWBout[20];
-    uwb_pos_msg.UWBErrSum = UWBErrSum;
-    uwb_pos_msg.heading_est = heading_est;
-    uwb_pos_msg.Nanchor = Nanchor;
-    uwb_pos_msg.zt_b = zt_b;
+    // uwb_pos_msg.UWBErrSum = UWBErrSum;
+    // uwb_pos_msg.heading_est = heading_est;
+    // uwb_pos_msg.Nanchor = Nanchor;
+    // uwb_pos_msg.zt_b = zt_b;
 
     if (heading_est != 0 && init_flag == 0) {
         init_flag = 1;
@@ -328,12 +328,12 @@ void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp)
     } else {
         init_flag = 0;
     }
-    uwb_pos_msg.init_flag = init_flag;
+    // uwb_pos_msg.init_flag = init_flag;
     
-    uwb_pos_msg.tag_center_vel_est.push_back(tag_center_vel_est.re);
-    uwb_pos_msg.tag_center_vel_est.push_back(tag_center_vel_est.im);
+    // uwb_pos_msg.tag_center_vel_est.push_back(tag_center_vel_est.re);
+    // uwb_pos_msg.tag_center_vel_est.push_back(tag_center_vel_est.im);
 
-    pub.publish(uwb_pos_msg);
+    // pub.publish(uwb_pos_msg);
 
     sendEvent(init_flag, uwbNum);
 }

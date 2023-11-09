@@ -65,18 +65,18 @@ extern std::vector<int> RxID_list;
 extern bool statusUWB;
 extern std::vector<std::string> difference;
 
-// extern creal_T tag_pos_b[4];
-// extern creal_T prevTagPos[4];
-// extern std::string tagNum;
-// extern creal_T tag_pos_est[4];
-// extern creal_T tag_pos_est_aver[4];
-// extern creal_T tag_center_vel_est;
-// extern double heading_est;
-// extern double headingest_a_aver_v;
-// extern double init_flag;
-// extern double Nanchor;
-// extern double zt_b;
-// extern double prevTagHeading;
+extern creal_T tag_pos_b[4];
+extern creal_T prevTagPos[4];
+extern std::string tagNum;
+extern creal_T tag_pos_est[4];
+extern creal_T tag_pos_est_aver[4];
+extern creal_T tag_center_vel_est;
+extern double heading_est;
+extern double headingest_a_aver_v;
+extern double init_flag;
+extern double Nanchor;
+extern double zt_b;
+extern double prevTagHeading;
 
 // Declare Initialization Functions
 inline creal_T argInit_creal_T(int idx);
@@ -99,19 +99,19 @@ private:
     std::vector<std::function<void(double, std::string&)>> callbacks;
     std::string uwbNum;
 
-    creal_T tag_pos_b[4];
-    creal_T prevTagPos[4];
-    creal_T tag_pos_est[4];
-    creal_T tag_pos_est_aver[4];
-    creal_T tag_center_vel_est;
-    std::string tagNum;
-    double UWBErrSum;
-    double heading_est;
-    double headingest_a_aver_v;
-    double init_flag;
-    double Nanchor;
-    double zt_b;
-    double prevTagHeading;
+    // creal_T tag_pos_b[4];
+    // creal_T prevTagPos[4];
+    // creal_T tag_pos_est[4];
+    // creal_T tag_pos_est_aver[4];
+    // creal_T tag_center_vel_est;
+    // std::string tagNum;
+    // double UWBErrSum;
+    // double heading_est;
+    // double headingest_a_aver_v;
+    // double init_flag;
+    // double Nanchor;
+    // double zt_b;
+    // double prevTagHeading;
         
     // Constants
     const double Ln = 6.0;
