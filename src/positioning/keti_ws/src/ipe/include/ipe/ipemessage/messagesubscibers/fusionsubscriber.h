@@ -147,7 +147,6 @@ public:
 
     void onIMUDataReceived(double data) {
         state_IMU = data;
-        imuNum++;
         processPacketData();
     }
 
@@ -176,13 +175,14 @@ private:
         acc_b_theta = msg->acc_b_theta;
         acc_b_phi = msg->acc_b_phi;
         kf_psi = msg->kf_psi;
+        imuNum++;
 
         for (int i=0;i<4;i++){
             b_acc_o[i] = msg->b_acc_o[i];
-            cent_pos_est[i] = msg->cent_pos_est[i];
-            cent_vel_est[i] = msg->cent_vel_est[i];
+            // cent_pos_est[i] = msg->cent_pos_est[i];
+            // cent_vel_est[i] = msg->cent_vel_est[i];
         }
-        bool imucall = true;
+        imucall = true;
     }
 
     void setupSubscirber(ros::NodeHandle& node){
@@ -204,15 +204,16 @@ private:
 
         if (imucall == true) {
             sendUDPMessage(cent_pos_est[0], cent_pos_est[1], -kf_psi);
-            fusion_msg.cent_pos_est[0] = cent_pos_est[0];
-            fusion_msg.cent_pos_est[1] = cent_pos_est[1];
-            fusion_msg.cent_pos_est[2] = cent_pos_est[2];
+            // fusion_msg.cent_pos_est.push_back(cent_pos_est[0]);
+            // fusion_msg.cent_pos_est.push_back(cent_pos_est[1]);
+            // fusion_msg.cent_pos_est.push_back(cent_pos_est[2]);
             fusion_msg.kf_psi = kf_psi;
+            imucall = false;
         }
         else if (uwbcall == true) {
             creal_T IMUposU;
 
-            IMUposU = fusion(&tag_center_vel_est, state_IMU, Nanchor, b_acc_o,
+            IMUposU = fusion(&tag_center_vel_est, state_o, Nanchor, b_acc_o,
                     acc_b_theta, &acc_b_phi, UWBErrSum, init_flag,
                     kalman_on, imuNum, cent_pos_est, cent_vel_est, &kf_psi,
                     tag_pos_est, heading_est, zt_b);
@@ -231,7 +232,6 @@ private:
             if (imucall == true && init_flag == 1){
                 init_flag = 2;
             }
-            imucall = false;
             uwbcall = false;
 
             std::complex<real_T> j(0, 1); // 복소수 단위
@@ -241,7 +241,7 @@ private:
                 std::complex<real_T> current_tag_pos_b(tag_pos_b[i].re, tag_pos_b[i].im);
                 
                 std::complex<real_T> TagPos = cent_pos_est + std::exp(j * (-kf_psi)) * (current_tag_pos_b + 0.4 * j);
-                
+                double d = TagPos.real();
                 fusion_msg.prevTagPos.push_back(TagPos.real());
                 fusion_msg.prevTagPos.push_back(TagPos.imag());
             }
@@ -251,14 +251,15 @@ private:
             // ROS_INFO("Heading : (%f)", prevTagHeading);
 
             sendUDPMessage(cent_pos_est[0], cent_pos_est[1], prevTagHeading);
-            fusion_msg.cent_pos_est[0] = cent_pos_est[0];
-            fusion_msg.cent_pos_est[1] = cent_pos_est[1];
-            fusion_msg.cent_pos_est[2] = cent_pos_est[2];
+            fusion_msg.cent_pos_est.push_back(cent_pos_est[0]);
+            fusion_msg.cent_pos_est.push_back(cent_pos_est[1]);
+            fusion_msg.cent_pos_est.push_back(cent_pos_est[2]);
+            
+            fusion_msg.cent_vel_est.push_back(cent_vel_est[0]);
+            fusion_msg.cent_vel_est.push_back(cent_vel_est[1]);
+            fusion_msg.cent_vel_est.push_back(cent_vel_est[2]);
 
-            fusion_msg.cent_vel_est[0] = cent_vel_est[0];
-            fusion_msg.cent_vel_est[1] = cent_vel_est[1];
-            fusion_msg.cent_vel_est[2] = cent_vel_est[2];
-
+            fusion_msg.acc_b_phi = acc_b_phi;
             fusion_msg.prevTagHeading = prevTagHeading;
             fusion_msg.init_flag = init_flag;
             fusion_msg.gyro_psi = gyro_psi;

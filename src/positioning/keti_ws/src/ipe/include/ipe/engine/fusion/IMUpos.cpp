@@ -59,7 +59,7 @@ static double gyro_phi;
 void IMUpos(const double IMUacc_c[3], const double IMUgyro_c[3], double s_time,
             double b_acc_o[3], double b_gyro[3], double mode, double *kf_psi,
             double *gyro_psi, double cent_pos_est[3], double cent_vel_est[3],
-            double *state_o, double *acc_b_phi, double *acc_b_theta)
+            double *state_o, double *acc_b_phi, double *acc_b_theta) 
 {
   static const double b_dv[3]{0.0, 0.0, 9.8};
   double dt_gyro;

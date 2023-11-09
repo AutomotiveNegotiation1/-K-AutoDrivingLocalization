@@ -153,11 +153,14 @@ void UwbSubscriber::_callback(const ipe::Anchor::ConstPtr& msg) {
 }
 
 void UwbSubscriber::_callback_Fusion(const ipe::Fusion::ConstPtr& msg) {
-    prevTagHeading = msg->prevTagHeading;
-    init_flag = msg->init_flag;
-    for(int i=0; i<4;i++){
-        prevTagPos[i].re = msg->prevTagPos[i];
-        prevTagPos[i].im = msg->prevTagPos[i+1];
+    if (!msg){
+        prevTagHeading = msg->prevTagHeading;
+        init_flag = msg->init_flag;
+        for(int i=0; i<4;i++){
+            msg->prevTagPos[i];
+            prevTagPos[i].re = msg->prevTagPos[i];
+            prevTagPos[i].im = msg->prevTagPos[i+1];
+        }
     }
 }
 

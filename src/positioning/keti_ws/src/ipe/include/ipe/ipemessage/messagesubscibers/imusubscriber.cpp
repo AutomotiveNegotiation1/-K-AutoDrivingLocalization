@@ -88,11 +88,14 @@ void ImuSubscriber::_callback(const sensor_msgs::Imu::ConstPtr& msg) {
 }
 
 void ImuSubscriber::_callback_Fusion(const ipe::Fusion::ConstPtr& msg) {
-    kf_psi = msg->kf_psi;
-    gyro_psi = msg->gyro_psi;
-    for(int i=0; i<3;i++){
-        cent_pos_est[i] = msg->cent_pos_est[i];
-        cent_vel_est[i] = msg->cent_vel_est[i];
+    if (!msg){
+        kf_psi = msg->kf_psi;
+        gyro_psi = msg->gyro_psi;
+        acc_b_phi = msg->acc_b_phi;
+        for(int i=0; i<3;i++){
+            cent_pos_est[i] = msg->cent_pos_est[i];
+            cent_vel_est[i] = msg->cent_vel_est[i];
+        }
     }
 }
 
@@ -145,8 +148,14 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp) {
     imu_pos_msg.b_acc_o.push_back(b_acc_o[1]);
     imu_pos_msg.b_acc_o.push_back(b_acc_o[2]);
 
+    imu_pos_msg.b_acc_o.push_back(b_gyro[0]);
+    imu_pos_msg.b_acc_o.push_back(b_gyro[1]);
+    imu_pos_msg.b_acc_o.push_back(b_gyro[2]);
+
     imu_pos_msg.acc_b_theta = acc_b_theta;
     imu_pos_msg.acc_b_phi = acc_b_phi;
+
+    imu_pos_msg.gyro_psi = gyro_psi;
 
     imu_pos_msg.cent_pos_est.push_back(cent_pos_est[0]);
     imu_pos_msg.cent_pos_est.push_back(cent_pos_est[1]);
