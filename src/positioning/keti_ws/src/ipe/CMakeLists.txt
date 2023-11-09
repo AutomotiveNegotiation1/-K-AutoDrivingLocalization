@@ -119,7 +119,7 @@ catkin_package(
 
 # file(GLOB UWB_SOURCES6 include/ipe/engine/UWBpos6/*.c)
 # file(GLOB IMU_SOURCES include/ipe/engine/IMUpos/*.c)
-file(GLOB FUSION_SOURCES include/ipe/engine/fusion/*.cpp)
+file(GLOB FUSION_SOURCES include/ipe/engine/fusion2/*.cpp)
 file(GLOB OBJECT_SOURCES1 include/ipe/ipemessage/messagesubscibers/*.cpp)
 file(GLOB OBJECT_SOURCES2 include/ipe/ipemessage/messagecommon/*.cpp)
 
@@ -138,7 +138,7 @@ include_directories(
 
   ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/ipemessage/messagesubscibers
   ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/ipemessage/messagecommon
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/engine/fusion
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/engine/fusion2
 )
 
 

@@ -146,6 +146,25 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp) {
         &gyro_psi, cent_pos_est, cent_vel_est, &state_o, &acc_b_phi,
         &acc_b_theta);
 
+// Arguments    : const double IMUacc_c[3]
+//                const double IMUgyro_c[3]
+//                double s_time
+//                double b_acc_o[3]
+//                double b_gyro[3]
+//                double mode
+//                double *kf_psi
+//                double *gyro_psi
+//                double cent_pos_est[3]
+//                double cent_vel_est[3]
+//                double *state_o
+//                double *acc_b_phi
+//                double *acc_b_theta
+    UWBpos6(Ln_tmp, Ln_tmp, Ln_tmp, Ln_tmp, Ln_tmp, RxIDin_tmp, RxIDin_tmp,
+          Ln_tmp, tag_pos_b_tmp, xain_tmp, xain_tmp, tag_pos_b_tmp, Ln_tmp,
+          UWBout);
+
+    
+
     // b_gyro[0] = b_gyro[0];
     // b_gyro[1] = b_gyro[1];
     // b_gyro[2] = b_gyro[2];

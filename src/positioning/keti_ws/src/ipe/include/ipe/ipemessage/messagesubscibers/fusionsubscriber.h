@@ -44,10 +44,9 @@
 #include "ipedatapacket.h"
 #include "socketmanager.h"
 
-#include "fusion.h"
-#include "fusion_terminate.h"
+#include "fusion2.h"
+#include "fusion2_terminate.h"
 #include "rt_nonfinite.h"
-
 
 /* Function Declarations */
 // inline void computePrevTagPos(real_T cent_pos_est_x, real_T cent_pos_est_y)
@@ -84,6 +83,7 @@ private:
     double init_flag_;
     double state_IMU;
     double kalman_on = 1;
+    double kl = 0;
     double imuNum = 0;
     bool clientAdded; // Add this flag
     bool uwbcall = false;
@@ -215,11 +215,78 @@ private:
         }
         else if (uwbcall == true) {
             creal_T IMUposU;
+// Function Definitions
+//
+// Arguments    : const creal_T *tag_center_vel_est
+//                double state_IMU
+//                double Nanchor
+//                const double b_acc_o[3]
+//                double acc_b_theta
+//                const double *acc_b_phi
+//                double UWBErrSum
+//                double init_flag
+//                double kalman_on
+//                const double k0[5]
+//                double cent_pos_est[3]
+//                double cent_vel_est[3]
+//                double *kf_psi
+//                const creal_T tag_pos_est[4]
+//                double heading_est
+//                double zt_b
+// Return Type  : creal_T
+//
 
-            IMUposU = fusion(&tag_center_vel_est, state_o, Nanchor, b_acc_o,
-                    acc_b_theta, &acc_b_phi, UWBErrSum, init_flag,
-                    kalman_on, imuNum, cent_pos_est, cent_vel_est, &kf_psi,
-                    tag_pos_est, heading_est, zt_b);
+// Arguments    : double kl
+//                const double k0[5]
+//                const creal_T tag_pos_est[4]
+//                const creal_T tag_center_vel_est
+//                double cent_pos_est[3]
+//                double cent_vel_est[3]
+//                double b_acc_o[3]
+//                const double acc_b_phi_data[]   [1]
+//                const int acc_b_phi_size[1]     [2]
+//                const double b_Acc_Pos[60]      [3]
+//                const double b_Acc_Vel[60]      [4]
+//                double kalman_on
+//                double init_flag
+//                double UWBErrSum
+//                double *kf_psi
+//                double *gyro_psi                [5]
+//                double heading_est
+//                double acc_b_theta              [6]
+//                double IMUSel                   [-]
+//                double Nanchor                  [7]
+//                double state_IMU
+
+// Arguments    : double kl
+//                const double k0[5]
+//                const creal_T tag_pos_est[4]
+//                const creal_T tag_center_vel_est
+//                double cent_pos_est[3]
+//                double cent_vel_est[3]
+//                double b_acc_o[3]
+//                double acc_b_phi
+//                const double b_Acc_Pos[60]
+//                const double b_Acc_Vel[60]
+//                double kalman_on
+//                double init_flag
+//                double UWBErrSum
+//                double *kf_psi
+//                double *gyro_psi
+//                double heading_est
+//                double acc_b_theta
+//                double IMUSel
+//                double Nanchor
+//                double state_IMU
+
+            // IMUposU = fusion(&tag_center_vel_est, state_o, Nanchor, b_acc_o,
+            //         acc_b_theta, &acc_b_phi, UWBErrSum, init_flag,
+            //         kalman_on, imuNum, cent_pos_est, cent_vel_est, &kf_psi,
+            //         tag_pos_est, heading_est, zt_b);
+
+            IMUposU = fusion2(kl, imuNum, tag_pos_est, tag_center_vel_est, cent_pos_est,
+                    cent_vel_est, b_acc_o, acc_b_phi, [3], [4], kalman_on, init_flag, UWBErrSum, &kf_psi,
+                    &gyro_psi, heading_est, acc_b_theta, IMUSel, [7], state_o);
 
             if (init_flag == 1) {
                 gyro_psi = -heading_est;
