@@ -36,6 +36,8 @@
 #include <sstream>
 #include <set>
 #include <ros/ros.h>
+#include <ipe/Imupos.h>
+#include <ipe/Fusion.h>
 #include <sensor_msgs/Imu.h>
 #include <functional>
 #include "packetcallback.h"
@@ -57,11 +59,12 @@ extern double cent_vel_est[3];
 extern double state_o;
 extern double acc_b_phi;
 extern double acc_b_theta;
-extern double signalIMU;
 
 class ImuSubscriber : public PacketCallback {
 private:
+    ros::Publisher pub;
     ros::Subscriber sub;
+    ros::Subscriber subFusion;
     std::string frame_id = "imu";
     std::ostringstream topic_name_stream;
     IPECallback* m_ipeCallback;
@@ -70,6 +73,17 @@ private:
 
     const double Ln = 6.0;
     const double Lp = 4.0;
+
+    // double b_acc_o[3] = {};
+    // double b_gyro[3] = {};
+    // double mode = 0;
+    // double kf_psi = 0;
+    // double gyro_psi = 0;
+    // double cent_pos_est[3] = {};
+    // double cent_vel_est[3] = {};
+    // double state_o;
+    // double acc_b_phi;
+    // double acc_b_theta;
 
 public:
     ImuSubscriber(ros::NodeHandle& node, IPECallback* ipeCallback);
@@ -82,6 +96,7 @@ public:
 private:
     void setupSubscriber(ros::NodeHandle& node);
     void _callback(const sensor_msgs::Imu::ConstPtr& msg);
+    void _callback_Fusion(const ipe::Fusion::ConstPtr& msg);
     void processPacketData(IPEDataPacket &packet, double timestamp);
 };
 
