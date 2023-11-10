@@ -84,9 +84,9 @@ struct IPEDataPacket
     {
         s_time = convertToDouble(msg->header.stamp);
         id.assign(msg->id.begin(), msg->id.end());
-        for (const auto& val : id) {
-            std::cout << val << " ";
-        }
+        // for (const auto& val : id) {
+        //     std::cout << val << " ";
+        // }
         std::cout << std::endl;
         x.assign(msg->x.begin(), msg->x.end());
         y.assign(msg->y.begin(), msg->y.end());

@@ -51,7 +51,7 @@
 #include "imusubscriber.h"
 #include "fusionsubscriber.h"
 
-#include "fusion_terminate.h"
+#include "fusion2_terminate.h"
 
 
 

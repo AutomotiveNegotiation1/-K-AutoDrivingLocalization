@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   rosbag
   message_generation
   message_runtime
+  geometry_msgs  # Add this line  
 )
 
 ## System dependencies are found with CMake's conventions
@@ -51,6 +52,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
+  Uwbpos.msg
+  Imupos.msg
+  Fusion.msg
   Anchor.msg
   Tag.msg
 )
@@ -72,7 +76,8 @@ add_message_files(
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  std_msgs
+  geometry_msgs
+  std_msgs  
 )
 
 ################################################
@@ -105,7 +110,7 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  CATKIN_DEPENDS roscpp std_msgs message_runtime
+  CATKIN_DEPENDS roscpp std_msgs message_runtime geometry_msgs  # 여기에도 추가합니다
 )
 
 ###########
@@ -114,7 +119,7 @@ catkin_package(
 
 # file(GLOB UWB_SOURCES6 include/ipe/engine/UWBpos6/*.c)
 # file(GLOB IMU_SOURCES include/ipe/engine/IMUpos/*.c)
-file(GLOB FUSION_SOURCES include/ipe/engine/fusion/*.cpp)
+file(GLOB FUSION_SOURCES include/ipe/engine/fusion2/*.cpp)
 file(GLOB OBJECT_SOURCES1 include/ipe/ipemessage/messagesubscibers/*.cpp)
 file(GLOB OBJECT_SOURCES2 include/ipe/ipemessage/messagecommon/*.cpp)
 
@@ -133,7 +138,7 @@ include_directories(
 
   ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/ipemessage/messagesubscibers
   ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/ipemessage/messagecommon
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/engine/fusion
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/ipe/engine/fusion2
 )
 
 

@@ -3,7 +3,8 @@
     "tasks": [
         {
             "label": "ROS: central_catkin_make",
-            "type": "catkin_make",
+            "type": "shell",
+            "command": "catkin_make",
             "args": [
                 "--directory",
                 "${workspaceFolder}",
@@ -20,8 +21,7 @@
         {
             "label": "ROS: roslaunch",
             "type": "shell",
-            "command": "roslaunch",
-            "args": ["${workspaceFolder}/src/ipe/launch/ipe.launch"],
+            "command": "bash -c 'source /opt/ros/melodic/setup.bash && source ${workspaceFolder}/devel/setup.bash && roslaunch ipe ipe.launch'",
             "problemMatcher": []
         }
     ]

@@ -180,7 +180,8 @@ while((length(UWBMsg{1})>=k0(1))&&(length(UWBMsg{2})>=k0(2))&&(length(UWBMsg{3})
         end
 
         %     [cent_pos_est, cent_vel_est, kf_phi, kf_theta, kf_psi, gyro_psi, b_acc_o, b_gyro, state_IMU, acc_b_phi, acc_b_theta ] = IMUposTest(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, IMUSel, kf_phi, kf_theta, kf_psi, gyro_psi, cent_pos_est, cent_vel_est);
-        [cent_pos_est, cent_vel_est, kf_psi, gyro_psi, b_acc_o, b_gyro, state_IMU, acc_b_phi, acc_b_theta ] = IMUpos(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, IMUSel, kf_psi, gyro_psi, cent_pos_est, cent_vel_est);
+        [cent_pos_est, cent_vel_est, kf_psi, gyro_psi, b_acc_o, b_gyro, state_IMU, acc_b_phi, acc_b_theta ] = 
+        IMUpos(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, IMUSel, kf_psi, gyro_psi, cent_pos_est, cent_vel_est);
 
         k0(5) = k0(5) + 1;
 

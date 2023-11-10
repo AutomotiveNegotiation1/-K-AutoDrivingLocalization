@@ -32,7 +32,8 @@
 #  this Software without prior written authorization from KETI.
 # 
 # *****************************************************************************/
-
+# Setup ROS environment
+source /opt/ros/melodic/setup.bash
 DEBUG=0  # Default value for debug mode (0 = off, 1 = on)
 
 while [[ "$#" -gt 0 ]]; do
@@ -44,6 +45,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 WORKSPACE=$(pwd)
+source "${WORKSPACE}/devel/setup.bash"
 GREEN="\033[1;32m"
 NC="\033[0m" # No Color
 
@@ -57,16 +59,19 @@ debug_print() {
 debug_print "Starting script in debug mode"
 echo -e "${NC}[ ${GREEN}ok ${NC}] Starting ROS Core initializing...."
 
-killall -9 rosmaster > /dev/null 2>&1 &
-rosclean purge > /dev/null 2>&1 &
+# Starting ROS Core
+killall -9 rosmaster > /dev/null 2>&1 &  # Kills any existing rosmaster processes
+rosclean purge > /dev/null 2>&1 &       # Cleans up any log files from previous runs
+
+# Start roscore in the background
 if [[ $DEBUG -eq 1 ]]; then
-    roscore &
+    roscore &  # If debug mode is on, start roscore in the foreground
 else
-    roscore > /dev/null 2>&1 &
+    roscore > /dev/null 2>&1 &  # If not in debug mode, start roscore in the background and suppress output
 fi
 
-ROSCORE_PID=$!
-sleep 1
+ROSCORE_PID=$!  # Stores the PID (Process ID) of the last job run in the background
+sleep 1  # Pauses for a second likely to ensure that roscore is up and running
 
 echo -e "${NC}[ ${GREEN}ok ${NC}] Starting Port initializing...."
 sudo python3 "${WORKSPACE}/ListCOMPorts.py" &
@@ -131,7 +136,25 @@ done
 
 sleep 1
 
+roslaunch ipe ipe.launch > /dev/null 2>&1 &
+
 # echo -e "${NC}[ ${GREEN}ok ${NC}] Starting KETI IPE(Indoor Positioning Engine)...."
 
-roslaunch ipe ipe.launch 
+# check_and_start_ipe() {
+#     while true; do
+#         echo -e "${NC}[ ${GREEN}ok ${NC}] Checking for Bluetooth pairing..."
+#         # 아래는 수정된 Python 스크립트를 실행하는 부분입니다.
+#         sudo python3 "${WORKSPACE}/check_bluetooth_pairing.py"
+#         if [[ $? -eq 0 ]]; then  # Python 스크립트의 실행 결과를 확인합니다.
+#             echo -e "${NC}[ ${GREEN}ok ${NC}] Bluetooth paired successfully. Starting IPE..."
+#             roslaunch ipe ipe.launch &
+#             break  # 성공시 루프 탈출
+#         else
+#             echo -e "${NC}[ ${RED}error ${NC}] Bluetooth pairing failed. Retrying..."
+#             sleep 5  # 5초 대기 후 재시도
+#         fi
+#     done
+# }
+
+# check_and_start_ipe
 
