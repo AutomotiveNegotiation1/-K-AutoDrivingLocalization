@@ -159,9 +159,6 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp) {
 //                double *state_o
 //                double *acc_b_phi
 //                double *acc_b_theta
-    UWBpos6(Ln_tmp, Ln_tmp, Ln_tmp, Ln_tmp, Ln_tmp, RxIDin_tmp, RxIDin_tmp,
-          Ln_tmp, tag_pos_b_tmp, xain_tmp, xain_tmp, tag_pos_b_tmp, Ln_tmp,
-          UWBout);
 
     
 

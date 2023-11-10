@@ -17,7 +17,7 @@
 #include <cstdlib>
 
 // Function Declarations
-extern creal_T fusion2(double kl, const double k0[5],
+extern creal_T fusion2(double kl, const double k0,
                        const creal_T tag_pos_est[4],
                        const creal_T tag_center_vel_est, double cent_pos_est[3],
                        double cent_vel_est[3], double b_acc_o[3],

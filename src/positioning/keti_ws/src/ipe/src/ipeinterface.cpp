@@ -43,7 +43,7 @@ IPEInterface::~IPEInterface()
   }
   m_callbacks.clear();  // 옵션: 리스트를 비운다
   
-  fusion_terminate();
+  fusion2_terminate();
 }
 
 void IPEInterface::registerSubcribers(ros::NodeHandle &node) {
@@ -143,7 +143,7 @@ void IPEInterface::run()
 
     rosbag::Bag bag;
     try {
-        bag.open("/home/keti/rosbag/[zed_f9r]2023-08-31-17-58-37_fast.bag", rosbag::bagmode::Read);
+        bag.open("/home/keti/rosbag/[zed_f9r]2023-08-31-17-56-41_slow.bag", rosbag::bagmode::Read);
     } catch (rosbag::BagException& e) {
         ROS_ERROR("Error opening bag file: %s", e.what());
     }

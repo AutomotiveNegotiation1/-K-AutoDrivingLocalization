@@ -57,7 +57,7 @@ static double kf_phi;
 //                double state_IMU
 // Return Type  : creal_T
 //
-creal_T fusion2(double kl, const double k0[5], const creal_T tag_pos_est[4],
+creal_T fusion2(double kl, const double k0, const creal_T tag_pos_est[4],
                 const creal_T tag_center_vel_est, double cent_pos_est[3],
                 double cent_vel_est[3], double b_acc_o[3], double acc_b_phi,
                 const double[60], const double[60], double kalman_on,
@@ -100,7 +100,7 @@ creal_T fusion2(double kl, const double k0[5], const creal_T tag_pos_est[4],
     IMUposU.re = cosPhi / 20.0;
     IMUposU.im = sinTheta / 20.0;
   }
-  if (k0[4] > 50.0) {
+  if (k0 > 50.0) {
     double cosTheta;
     int UWB_LS_Pos_tmp;
     int UWB_M_Pos_tmp;

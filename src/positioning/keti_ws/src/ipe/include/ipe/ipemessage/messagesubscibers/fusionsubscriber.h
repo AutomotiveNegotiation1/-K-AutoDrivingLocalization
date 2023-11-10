@@ -80,6 +80,7 @@ struct FusionSubscriber {
 
 private:
     IPECallback* m_ipeCallback;
+    creal_T IMUposU;
     double init_flag_;
     double state_IMU;
     double kalman_on = 1;
@@ -122,6 +123,8 @@ public:
     double center_x = 0;
     double center_y = 0;
     double heading = 0;
+    double Acc_Vel[60] = {};
+    double Acc_Pos[60] = {};
 
     
 
@@ -129,6 +132,8 @@ public:
         std::cout << "FUSION test setup starting..." << std::endl;
         socketManager = SocketManager::getInstance(); // <-- Add this line to initialize the socketManager
         socketManager->addClient("192.168.4.178", 54000);
+
+        
 
         // subUWB = node.subscribe<ipe::Uwbpos>("/UWB", 10, _UWB_callback, this);
         // subIMU = node.subscribe<ipe::Imupos>("/IMU", 10, _IMU_callback, this);
@@ -206,7 +211,7 @@ private:
         // fusion_msg.header.frame_id = "Fusions";
 
         if (imucall == true) {
-            sendUDPMessage(cent_pos_est[0], cent_pos_est[1], -kf_psi);
+            // sendUDPMessage(cent_pos_est[0], cent_pos_est[1], -kf_psi);
             // fusion_msg.cent_pos_est.push_back(cent_pos_est[0]);
             // fusion_msg.cent_pos_est.push_back(cent_pos_est[1]);
             // fusion_msg.cent_pos_est.push_back(cent_pos_est[2]);
@@ -214,108 +219,14 @@ private:
             imucall = false;
         }
         else if (uwbcall == true) {
-            creal_T IMUposU;
-// Function Definitions
-//
-// Arguments    : const creal_T *tag_center_vel_est
-//                double state_IMU
-//                double Nanchor
-//                const double b_acc_o[3]
-//                double acc_b_theta
-//                const double *acc_b_phi
-//                double UWBErrSum
-//                double init_flag
-//                double kalman_on
-//                const double k0[5]
-//                double cent_pos_est[3]
-//                double cent_vel_est[3]
-//                double *kf_psi
-//                const creal_T tag_pos_est[4]
-//                double heading_est
-//                double zt_b
-// Return Type  : creal_T
-//
 
-// Arguments    : double kl
-//                const double k0[5]
-//                const creal_T tag_pos_est[4]
-//                const creal_T tag_center_vel_est
-//                double cent_pos_est[3]
-//                double cent_vel_est[3]
-//                double b_acc_o[3]
-//                const double acc_b_phi_data[]   [1]
-//                const int acc_b_phi_size[1]     [2]
-//                const double b_Acc_Pos[60]      [3]
-//                const double b_Acc_Vel[60]      [4]
-//                double kalman_on
-//                double init_flag
-//                double UWBErrSum
-//                double *kf_psi
-//                double *gyro_psi                [5]
-//                double heading_est
-//                double acc_b_theta              [6]
-//                double IMUSel                   [-]
-//                double Nanchor                  [7]
-//                double state_IMU
-
-// Arguments    : double kl
-//                const double k0[5]
-//                const creal_T tag_pos_est[4]
-//                const creal_T tag_center_vel_est
-//                double cent_pos_est[3]
-//                double cent_vel_est[3]
-//                double b_acc_o[3]
-//                double acc_b_phi
-//                const double b_Acc_Pos[60]
-//                const double b_Acc_Vel[60]
-//                double kalman_on
-//                double init_flag
-//                double UWBErrSum
-//                double *kf_psi
-//                double *gyro_psi
-//                double heading_est
-//                double acc_b_theta
-//                double IMUSel
-//                double Nanchor
-//                double state_IMU
-
-            // IMUposU = fusion(&tag_center_vel_est, state_o, Nanchor, b_acc_o,
-            //         acc_b_theta, &acc_b_phi, UWBErrSum, init_flag,
-            //         kalman_on, imuNum, cent_pos_est, cent_vel_est, &kf_psi,
-            //         tag_pos_est, heading_est, zt_b);
 
             IMUposU = fusion2(kl, imuNum, tag_pos_est, tag_center_vel_est, cent_pos_est,
-                    cent_vel_est, b_acc_o, acc_b_phi, [3], [4], kalman_on, init_flag, UWBErrSum, &kf_psi,
-                    &gyro_psi, heading_est, acc_b_theta, IMUSel, [7], state_o);
+                    cent_vel_est, b_acc_o, acc_b_phi, Acc_Pos, Acc_Vel, kalman_on, init_flag, UWBErrSum, &kf_psi,
+                    &gyro_psi, heading_est, acc_b_theta, 2, Nanchor, state_o);
 
-            if (init_flag == 1) {
-                gyro_psi = -heading_est;
-                kf_psi = gyro_psi;
-                cent_pos_est[0] = IMUposU.re;
-                cent_pos_est[1] = IMUposU.im;
-                cent_pos_est[2] = 0; 
-                cent_vel_est[0] = tag_center_vel_est.re;
-                cent_vel_est[1] = tag_center_vel_est.im;
-                cent_vel_est[2] = 0;
-            }
-
-            if (imucall == true && init_flag == 1){
-                init_flag = 2;
-            }
+            
             uwbcall = false;
-
-            std::complex<real_T> j(0, 1); // 복소수 단위
-
-            for (int i = 0; i < 4; ++i) {
-                std::complex<real_T> cent_pos_est_(IMUposU.re, IMUposU.im);
-                std::complex<real_T> current_tag_pos_b(tag_pos_b[i].re, tag_pos_b[i].im);
-                
-                std::complex<real_T> TagPos = cent_pos_est_ + std::exp(j * (-kf_psi)) * (current_tag_pos_b + 0.4 * j);
-                double d = TagPos.real();
-                // fusion_msg.prevTagPos.push_back(TagPos.real());
-                // fusion_msg.prevTagPos.push_back(TagPos.imag());
-            }
-            prevTagHeading = -kf_psi;
 
             // ROS_INFO("TagPos : (%f,%f)",cent_pos_est[0], cent_pos_est[1]);
             // ROS_INFO("Heading : (%f)", prevTagHeading);
@@ -335,7 +246,34 @@ private:
             // fusion_msg.gyro_psi = gyro_psi;
 
         }
-        // pub.publish(fusion_msg);
+        // // pub.publish(fusion_msg);
+
+        if (init_flag == 1) {
+            gyro_psi = -heading_est;
+            kf_psi = gyro_psi;
+            cent_pos_est[0] = IMUposU.re;
+            cent_pos_est[1] = IMUposU.im;
+            cent_pos_est[2] = 0; 
+            cent_vel_est[0] = tag_center_vel_est.re;
+            cent_vel_est[1] = tag_center_vel_est.im;
+            cent_vel_est[2] = 0;
+        }
+
+        if (imucall == true && init_flag == 1){
+            init_flag = 2;
+        }
+        std::complex<real_T> j(0, 1); // 복소수 단위
+
+        for (int i = 0; i < 4; ++i) {
+            std::complex<real_T> cent_pos_est_(IMUposU.re, IMUposU.im);
+            std::complex<real_T> current_tag_pos_b(tag_pos_b[i].re, tag_pos_b[i].im);
+            
+            std::complex<real_T> TagPos = cent_pos_est_ + std::exp(j * (-kf_psi)) * (current_tag_pos_b + 0.4 * j);
+            double d = TagPos.real();
+            // fusion_msg.prevTagPos.push_back(TagPos.real());
+            // fusion_msg.prevTagPos.push_back(TagPos.imag());
+        }
+        prevTagHeading = -kf_psi;
     }
 
 };
