@@ -50,33 +50,21 @@
 #include "ipedatapacket.h"
 #include "posdatapacket.h"
 #include "socketmanager.h"
+#include "fusionsubscriber.h"
 
 #include "UWBpos6.h"
 #include "rt_nonfinite.h"
 
 // Declare Global Variables
-extern std::vector<double> xain_list;
-extern std::vector<double> yain_list;
-extern std::vector<double> xain_difference;
-extern std::vector<double> yain_difference;
-extern double UWBErrSum;
-extern std::vector<std::string> RxID_data_list;
-extern std::vector<int> RxID_list;
-extern bool statusUWB;
-extern std::vector<std::string> difference;
-
-extern creal_T tag_pos_b[4];
-extern creal_T prevTagPos[4];
-extern std::string tagNum;
-extern creal_T tag_pos_est[4];
-extern creal_T tag_pos_est_aver[4];
-extern creal_T tag_center_vel_est;
-extern double heading_est;
-extern double headingest_a_aver_v;
-extern double init_flag;
-extern double Nanchor;
-extern double zt_b;
-extern double prevTagHeading;
+// extern std::vector<double> xain_list;
+// extern std::vector<double> yain_list;
+// extern std::vector<double> xain_difference;
+// extern std::vector<double> yain_difference;
+// extern double UWBErrSum;
+// extern std::vector<std::string> RxID_data_list;
+// extern std::vector<int> RxID_list;
+// extern bool statusUWB;
+// extern std::vector<std::string> difference;
 
 // Declare Initialization Functions
 inline creal_T argInit_creal_T(int idx);
@@ -89,34 +77,37 @@ inline void argInit_1x4_creal_preT(creal_T result[4]);
 class UwbSubscriber : public PacketCallback {
 private:
     // Member Variables
-    ros::Subscriber sub;
-    ros::Subscriber subFusion;
-    ros::Publisher pub;
-    std::string frame_id;
+    ros::Subscriber r_sh_UWB;
+    // ros::Subscriber r_sh_Fusion;
+    // ros::Publisher r_ph_UWB;
+    std::string m_frameId;
     std::ostringstream topic_name_stream;
-    IPECallback* m_ipeCallback;
+
+    FusionSubscriber* o_fusion;
+    IPECallback* o_ipeCallback;
     IPEDataPacket m_ipeDataPacket;
     std::vector<std::function<void(double, std::string&)>> callbacks;
-    std::string uwbNum;
-
-    // creal_T tag_pos_b[4];
-    // creal_T prevTagPos[4];
-    // creal_T tag_pos_est[4];
-    // creal_T tag_pos_est_aver[4];
-    // creal_T tag_center_vel_est;
-    // std::string tagNum;
-    // double UWBErrSum;
-    // double heading_est;
-    // double headingest_a_aver_v;
-    // double init_flag;
-    // double Nanchor;
-    // double zt_b;
-    // double prevTagHeading;
+    std::string m_uwbNum;
         
     // Constants
     const double Ln = 6.0;
     const double Lp = 4.0;
 
+public:
+    creal_T tag_pos_b[4];
+    creal_T prevTagPos[4];
+    std::string tagNum;
+    creal_T tag_pos_est[4];
+    creal_T tag_pos_est_aver[4];
+    creal_T tag_center_vel_est;
+    double heading_est;
+    double headingest_a_aver_v;
+    double init_flag;
+    double Nanchor;
+    double zt_b;
+    double prevTagHeading;
+
+private:
     // Private Member Functions
     void setupSubscriber(ros::NodeHandle& node, const std::string& uwbNum);
     void _callback(const ipe::Anchor::ConstPtr& msg);
@@ -128,14 +119,13 @@ private:
 
 public:
     // Constructor
-    UwbSubscriber(ros::NodeHandle& node, const std::string& uwbNum, IPECallback* ipeCallback);
+    UwbSubscriber(ros::NodeHandle& _node, const std::string& _uwbNum, IPECallback* _ipeCallback, FusionSubscriber* _fusion);
     ~UwbSubscriber();
-    
-    // Operator Overload
-    void operator()(IPEDataPacket &packet, double timestamp);
+
+    void operator()(IPEDataPacket &_packet, double _timestamp);
     
     // Public Member Functions
-    void registerCallback(const std::function<void(double, std::string&)>& callback);
+    void registerCallback(const std::function<void(double, std::string&)>& _callback);
     void sendEvent(double data, std::string& uwbNum);
     std::string getPacketFrameID();
 };

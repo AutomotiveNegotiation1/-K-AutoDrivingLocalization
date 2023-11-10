@@ -35,14 +35,17 @@
 #include "ipeinterface.h"
 
 int main(int argc, char** argv) {
-    ros::init(argc, argv, "rosbag_republisher_node");
+    ros::init(argc, argv, "Indoor Positioning node");
     ros::NodeHandle nh;
 
-    // ROS 처리를 위한 스레드 시작
-    IPEInterface rosThread(nh);
-    
-    rosThread.run();
+    // Get the parameter from the parameter server
+    bool m_test;
+    nh.param("my_bool_param", m_test, true); // Default value is true
 
-    // Qt 이벤트 루프 진입
+    // 이제 myBoolParam을 사용할 수 있습니다.
+    // ROS_INFO_STREAM("Received bool parameter: " << myBoolParam);
+
+    IPEInterface rosThread(nh, m_test);
+
     return 0;
 }
