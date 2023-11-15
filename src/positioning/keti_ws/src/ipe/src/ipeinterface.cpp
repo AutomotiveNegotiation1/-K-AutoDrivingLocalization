@@ -33,117 +33,191 @@
 
 #include "ipeinterface.h"
 
+IPEInterface::IPEInterface(ros::NodeHandle &_nh, bool _test) : r_nh(_nh), m_test(_test) {
+    run();
+}
+
 IPEInterface::~IPEInterface()
 {
   ROS_INFO("Cleaning up ...");
   
   // m_callbacks의 각 요소에 대한 메모리 할당 반환
-  for(auto &cb : m_callbacks) {
+  for(auto &cb : l_callbacks) {
       delete cb;
   }
-  m_callbacks.clear();  // 옵션: 리스트를 비운다
+  l_callbacks.clear();  // 옵션: 리스트를 비운다
   
   fusion2_terminate();
 }
 
-void IPEInterface::registerSubcribers(ros::NodeHandle &node) {
-    bool should_publish;
-    fusion = new FusionSubscriber(node);
+// void IPEInterface::registerSubcribers(ros::NodeHandle &_node) {
+//     bool m_should_publish;
+//     o_fusion = new FusionSubscriber(_node);
+//     std::list<double> totalTag;
+//     if (ros::param::get("/ipe_node/Tag_on", m_should_publish) && m_should_publish) {
+//         if (ros::param::get("/ipe_node/sub_UWB0", m_should_publish) && m_should_publish) {
+//             UwbSubscriber* o_uwb1 = new UwbSubscriber(_node, "0", &o_ipeCallback, o_fusion);
+//             // o_uwb1->registerCallback([this](double value, std::string& value2) { o_fusion->onUWBDataReceived(value, value2); });
+//             registerCallback(o_uwb1);
+//         }
+//         if (ros::param::get("/ipe_node/sub_UWB1", m_should_publish) && m_should_publish) {
+//             UwbSubscriber* o_uwb2 = new UwbSubscriber(_node, "1", &o_ipeCallback, o_fusion);
+//             // o_uwb2->registerCallback([this](double value, std::string& value2) { o_fusion->onUWBDataReceived(value, value2); });
+//             registerCallback(o_uwb2);
+//         }
+//         if (ros::param::get("/ipe_node/sub_UWB2", m_should_publish) && m_should_publish) {
+//             UwbSubscriber* o_uwb3 = new UwbSubscriber(_node, "2", &o_ipeCallback, o_fusion);
+//             // o_uwb3->registerCallback([this](double value, std::string& value2) { o_fusion->onUWBDataReceived(value, value2); });
+//             registerCallback(o_uwb3);
+//         }
+//         if (ros::param::get("/ipe_node/sub_UWB3", m_should_publish) && m_should_publish) {
+//             UwbSubscriber* o_uwb4 = new UwbSubscriber(_node, "3", &o_ipeCallback, o_fusion);
+//             // o_uwb4->registerCallback([this](double value, std::string& value2) { o_fusion->onUWBDataReceived(value, value2); });
+//             registerCallback(o_uwb4);
+//         }
+//     }
+
+//     if (ros::param::get("/ipe_node/IMU_on", m_should_publish) && m_should_publish) {
+//         ImuSubscriber* o_imu = new ImuSubscriber(_node, &o_ipeCallback, o_fusion);
+//         // o_imu->registerCallback([this](double value, std::string& frameID) { o_fusion->onIMUDataReceived(value); });
+
+//         registerCallback(o_imu);
+//     }
+// }
+
+
+void IPEInterface::registerSubcribers(ros::NodeHandle &_node) {
+    bool m_should_publish;
+    o_fusion = new FusionSubscriber(_node);
+    o_uwb = new UwbSubscriber(_node, "0", &o_ipeCallback, o_fusion);
+    o_imu = new ImuSubscriber(_node, &o_ipeCallback, o_fusion);
     std::list<double> totalTag;
-    if (ros::param::get("/ipe_node/Tag_on", should_publish) && should_publish) {
-        if (ros::param::get("/ipe_node/sub_UWB0", should_publish) && should_publish) {
-            UwbSubscriber* uwb1 = new UwbSubscriber(node, "0", &m_ipeCallback);
-            uwb1->registerCallback([this](double value, std::string& value2) { fusion->onUWBDataReceived(value, value2); });
-            registerCallback(uwb1);
+    if (ros::param::get("/ipe_node/Tag_on", m_should_publish) && m_should_publish) {
+        if (ros::param::get("/ipe_node/sub_UWB0", m_should_publish) && m_should_publish) {
+            o_uwb->setupSubscriber("0");
+            registerCallback(o_uwb);
         }
-        if (ros::param::get("/ipe_node/sub_UWB1", should_publish) && should_publish) {
-            UwbSubscriber* uwb2 = new UwbSubscriber(node, "1", &m_ipeCallback);
-            uwb2->registerCallback([this](double value, std::string& value2) { fusion->onUWBDataReceived(value, value2); });
-            registerCallback(uwb2);
+        if (ros::param::get("/ipe_node/sub_UWB1", m_should_publish) && m_should_publish) {
+            o_uwb->setupSubscriber("1");
+            registerCallback(o_uwb);
         }
-        if (ros::param::get("/ipe_node/sub_UWB2", should_publish) && should_publish) {
-            UwbSubscriber* uwb3 = new UwbSubscriber(node, "2", &m_ipeCallback);
-            uwb3->registerCallback([this](double value, std::string& value2) { fusion->onUWBDataReceived(value, value2); });
-            registerCallback(uwb3);
+        if (ros::param::get("/ipe_node/sub_UWB2", m_should_publish) && m_should_publish) {
+            o_uwb->setupSubscriber("2");
+            registerCallback(o_uwb);
         }
-        if (ros::param::get("/ipe_node/sub_UWB3", should_publish) && should_publish) {
-            UwbSubscriber* uwb4 = new UwbSubscriber(node, "3", &m_ipeCallback);
-            uwb4->registerCallback([this](double value, std::string& value2) { fusion->onUWBDataReceived(value, value2); });
-            registerCallback(uwb4);
+        if (ros::param::get("/ipe_node/sub_UWB3", m_should_publish) && m_should_publish) {
+            o_uwb->setupSubscriber("3");
+            registerCallback(o_uwb);
         }
     }
 
-    if (ros::param::get("/ipe_node/IMU_on", should_publish) && should_publish) {
-        ImuSubscriber* imu = new ImuSubscriber(node, &m_ipeCallback);
-        imu->registerCallback([this](double value, std::string& frameID) { fusion->onIMUDataReceived(value); });
-
-        registerCallback(imu);
+    if (ros::param::get("/ipe_node/IMU_on", m_should_publish) && m_should_publish) {
+        registerCallback(o_imu);
     }
 }
 
-void IPEInterface::registerCallback(PacketCallback *cb)  // Make sure PacketCallback is defined
+void IPEInterface::registerCallback(PacketCallback *_cb)  // Make sure PacketCallback is defined
 {
-    m_callbacks.push_back(cb);
+    l_callbacks.push_back(_cb);
 }
 
 
 void IPEInterface::spinFor()
 {
-	RosKapDataPacket rosPacket = m_ipeCallback.next();
+    ImuSubscriber* imuSub;
+    UwbSubscriber* uwbSub;
+
+	RosKapDataPacket rosPacket = o_ipeCallback.next();
     std::string frame_id1 = rosPacket.second.frame_id;
 	if (!rosPacket.second.empty(rosPacket.second.frame_id))
 	{
-        for (auto &cb : m_callbacks)
+        for (auto &cb : l_callbacks)
 		{
-            ImuSubscriber* imuSub = dynamic_cast<ImuSubscriber*>(cb);
+            imuSub = dynamic_cast<ImuSubscriber*>(cb);
+            uwbSub = dynamic_cast<UwbSubscriber*>(cb);
             std::string frame_id = rosPacket.second.frame_id;
             if (rosPacket.second.frame_id == "imu"){
                 if (imuSub){
                     cb->operator()(rosPacket.second, rosPacket.first);
-                    m_ipeCallback.pop();
+                    o_ipeCallback.pop();
                     break;
                 }
             }
             else{
                 if (!imuSub){
                     cb->operator()(rosPacket.second, rosPacket.first);
-                    m_ipeCallback.pop();
+                    o_ipeCallback.pop();
                     break;
                 }
             }
 		}
+        
+        if (o_fusion->init_flag == 1) {
+            o_imu->gyro_psi = -o_fusion->heading_est;
+            o_imu->kf_psi = o_fusion->gyro_psi;
+            o_imu->cent_pos_est[0] = o_fusion->IMUposU.re;
+            o_imu->cent_pos_est[1] = o_fusion->IMUposU.im;
+            o_imu->cent_pos_est[2] = 0; 
+            o_imu->cent_vel_est[0] = o_fusion->tag_center_vel_est.re;
+            o_imu->cent_vel_est[1] = o_fusion->tag_center_vel_est.im;
+            o_imu->cent_vel_est[2] = 0;
+        }
+
+        if (o_fusion->num_ == 1 && o_fusion->init_flag == 1){
+            o_uwb->init_flag = 2;
+        }
+        std::complex<real_T> j(0, 1); // 복소수 단위
+
+        for (int i = 0; i < 4; ++i) {
+            std::complex<real_T> cent_pos_est_(o_fusion->IMUposU.re, o_fusion->IMUposU.im);
+            std::complex<real_T> current_tag_pos_b(o_fusion->tag_pos_b[i].re, o_fusion->tag_pos_b[i].im);
+                    
+            std::complex<real_T> TagPos = cent_pos_est_ + std::exp(j * (-o_fusion->kf_psi)) * (current_tag_pos_b + 0.4 * j);
+            o_uwb->prevTagPos[i].re = 0;
+            o_uwb->prevTagPos[i].im = 0;
+
+
+        }
+        o_uwb->prevTagHeading = -o_fusion->kf_psi;
 
 	}
 }
 
+void IPEInterface::run(){
+    if (m_test == true){
+        testPositioning();
+    }
+    else{
+        Positioning();
+    }
+}
 
-// 2023.10.05
-// void IPEInterface::run()
-// {
-//     try {
-//         registerSubcribers(nh_);
-//     } catch (const std::exception& e) {
-//         ROS_ERROR("%s", e.what());
-//     }
-
-//     while (ros::ok()) {
-//         spinFor();
-//         ros::spinOnce();
-//     }
-// }
-
-// 2023.09.14
-void IPEInterface::run()
+void IPEInterface::Positioning()
 {
     try {
-        registerSubcribers(nh_);
+        registerSubcribers(r_nh);
+    } catch (const std::exception& e) {
+        ROS_ERROR("%s", e.what());
+    }
+
+    while (ros::ok()) {
+        spinFor();
+        ros::spinOnce();
+    }
+}
+
+// 2023.09.14
+void IPEInterface::testPositioning()
+{
+    try {
+        registerSubcribers(r_nh);
     } catch (const std::exception& e) {
         ROS_ERROR("%s", e.what());
     }
 
     rosbag::Bag bag;
     try {
-        bag.open("/home/keti/rosbag/[zed_f9r]2023-08-31-17-56-41_slow.bag", rosbag::bagmode::Read);
+        bag.open("/home/umaps/rosbag/[zed_f9r]2023-08-31-17-56-41_slow.bag", rosbag::bagmode::Read);
     } catch (rosbag::BagException& e) {
         ROS_ERROR("Error opening bag file: %s", e.what());
     }
@@ -160,9 +234,9 @@ void IPEInterface::run()
 
     for (const auto& topic : topics) {
         if (topic == "/zed_f9r/imu") {
-            publishers[topic] = nh_.advertise<sensor_msgs::Imu>(topic, 10);
+            publishers[topic] = r_nh.advertise<sensor_msgs::Imu>(topic, 10);
         } else {
-            publishers[topic] = nh_.advertise<ipe::Anchor>(topic, 10);
+            publishers[topic] = r_nh.advertise<ipe::Anchor>(topic, 10);
         }
     }
 

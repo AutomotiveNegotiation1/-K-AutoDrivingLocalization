@@ -33,10 +33,14 @@
 
 #ifndef IPEINTERFACE_H
 #define IPEINTERFACE_H
+
 #include <ros/ros.h>
 #include <rosbag/bag.h>
 #include <rosbag/view.h>
 #include <ipe/Anchor.h>
+
+#include <complex>
+
 #include <functional>
 #include <vector>
 #include <map>
@@ -45,44 +49,35 @@
 
 #include "ipecallback.h"
 #include "ipedatapacket.h"
-
 #include "packetcallback.h"
 #include "uwbsubscriber.h"
 #include "imusubscriber.h"
 #include "fusionsubscriber.h"
-
 #include "fusion2_terminate.h"
-
-
 
 class PacketCallback;
 
 class IPEInterface {
 
-protected:
-    void registerSubcribers(ros::NodeHandle &nh_);
-    void registerCallback(PacketCallback *cb);
-    double convertToDouble(const ros::Time& time);
+private:
+    void run();
     void spinFor();
-
+    void registerCallback(PacketCallback *_cb);
+    void registerSubcribers(ros::NodeHandle &_node);
+    void testPositioning();
+    void Positioning();
 
 private:
-    int uwbInit = 0;
-    int imuInit = 0;
-    FusionSubscriber* fusion;
-    ros::NodeHandle &nh_;
-    std::list<PacketCallback *> m_callbacks;
-    IPECallback m_ipeCallback;
-    IPEDataPacket m_ipeDatapacket; 
-    PosDataPacket pos;
-
-//2023.09.15
-private:
-    std::function<void(const PosDataPacket&)> callback_;  // Store the callback
+    FusionSubscriber* o_fusion;
+    UwbSubscriber* o_uwb;
+    ImuSubscriber* o_imu;
+    ros::NodeHandle &r_nh;
+    std::list<PacketCallback *> l_callbacks;
+    IPECallback o_ipeCallback;
+    bool m_test;
 
 public:
-    void run();
-    IPEInterface(ros::NodeHandle &nh) : nh_(nh){}
+    IPEInterface(ros::NodeHandle &_nh, bool _test);
     ~IPEInterface();
 };
 
