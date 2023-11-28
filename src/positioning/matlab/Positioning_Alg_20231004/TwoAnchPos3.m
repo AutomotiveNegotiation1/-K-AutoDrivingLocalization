@@ -1,0 +1,65 @@
+function [Pos, Prob] = TwoAnchPos3(Xa, Ya, dist, tag_pos, EstCenter,anch_pos, dist_a)
+% Xa = [0 1];
+% Ya = [0 0];
+% dist = [1 1];
+
+AA  = sqrt((Xa(1)-Xa(2))^2+(Ya(1)-Ya(2))^2);
+B = dist(1);
+C = dist(2);
+% AA = 2;B=1;C=0.9
+s = (AA+B+C)/2;
+temp = s*(s-AA)*(s-B)*(s-C);
+if temp>0
+    S = (sqrt(s*(s-AA)*(s-B)*(s-C)));
+else
+    S = (sqrt(-s*(s-AA)*(s-B)*(s-C)));
+end
+d = 2*S/AA;
+
+% if (B^2-((B^2-C^2+AA^2)/(2*AA))^2) > 0
+%     d = sqrt(B^2-((B^2-C^2+AA^2)/(2*AA))^2);
+% else
+%     d = 0;
+% end
+
+A = [Ya(2)-Ya(1) -(Xa(2)-Xa(1));2*(Xa(2)-Xa(1)) 2*(Ya(2)-Ya(1))];
+Y1 = [d*sqrt((Ya(2)-Ya(1))^2+(Xa(2)-Xa(1))^2)+Xa(1)*Ya(2)-Xa(2)*Ya(1);(-C^2+B^2-Xa(1)^2+Xa(2)^2-Ya(1)^2+Ya(2)^2)];
+Y2 = [-d*sqrt((Ya(2)-Ya(1))^2+(Xa(2)-Xa(1))^2)+Xa(1)*Ya(2)-Xa(2)*Ya(1);(-C^2+B^2-Xa(1)^2+Xa(2)^2-Ya(1)^2+Ya(2)^2)];
+% Y1 = [d*sqrt((Ya(2)-Ya(1))^2+(Xa(2)-Xa(1))^2)+Xa(1)*Ya(2)-Xa(2)*Ya(1);(C^2-B^2-Xa(1)^2+Xa(2)^2-Ya(1)^2+Ya(2)^2)];
+% Y2 = [-d*sqrt((Ya(2)-Ya(1))^2+(Xa(2)-Xa(1))^2)+Xa(1)*Ya(2)-Xa(2)*Ya(1);(C^2-B^2-Xa(1)^2+Xa(2)^2-Ya(1)^2+Ya(2)^2)];
+
+X1 = inv(A'*A)*A'*Y1;
+X2 = inv(A'*A)*A'*Y2;
+
+
+
+X1S = sum(abs(abs(anch_pos-(X1(1)+j*X1(2)))-dist_a'));
+X2S = sum(abs(abs(anch_pos-(X2(1)+j*X2(2)))-dist_a'));
+Y1S = sum((X1-tag_pos').^2);
+Y2S = sum((X2-tag_pos').^2);
+Z1S = abs(sum((X1-EstCenter').^2)-0.5);
+Z2S = abs(sum((X2-EstCenter').^2)-0.5);
+
+
+if (X1S+Y1S)>((X2S+Y2S))
+    Pos = [X2';X1'];
+    Prob = [X2S+Y2S;X1S+Y1S];
+else
+    Pos = [X1';X2'];
+    Prob = [X1S+Y1S;X2S+Y2S];
+end
+% if (X1S+Y1S)-(X2S+Y2S)>0.1
+%     Pos = [X2'];
+% elseif ((X1S+Y1S)-(X2S+Y2S))<-0.1
+%     Pos = [X1'];
+% elseif Z1S < Z2S
+%     Pos = [X1'];
+% else
+%     Pos = [X2'];
+% end
+
+% if sum((X1-EstCenter').^2)>sum((X2-EstCenter').^2)
+%     Pos = [X2'];
+% else
+%     Pos = [X1'];
+% end

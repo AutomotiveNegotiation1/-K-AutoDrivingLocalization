@@ -1,0 +1,203 @@
+clear all;
+% close all;
+% aa = rosbag('2023-07-26-18-35-13.bag');
+% aa = rosbag('2023-08-07-11-03-21.bag');
+% aa = rosbag('2023-08-07-14-34-54.bag');
+aa = rosbag('test_1_2023-08-17-11-34-36.bag');
+
+LenTot = 0;
+for dfe = 1 : 4
+    UWB{dfe} = select(aa,'Topic',['/dwm1001/anchor/ttyUWB',num2str(dfe-1,1)] );
+    LenTot = LenTot + size(UWB{dfe}.MessageList,1);
+    UWBMsg{dfe} = readMessages(UWB{dfe},'DataFormat','struct');
+end
+
+for dfe = 1 : 4
+    UWBTag{dfe} = select(aa,'Topic',['/dwm1001/ttyUWB',num2str(dfe-1,1)] );
+    UWBTagMsg{dfe} = readMessages(UWBTag{dfe},'DataFormat','struct');
+end
+
+IMURoSV = select(aa,'Topic','/imu/angular_velocity');
+IMUVMsg = readMessages(IMURoSV,'DataFormat','struct');
+
+IMURoSA = select(aa,'Topic','/imu/acceleration');
+IMUAMsg = readMessages(IMURoSA,'DataFormat','struct');
+
+IMURoSM = select(aa,'Topic','/imu/mag');
+IMUMMsg = readMessages(IMURoSM,'DataFormat','struct');
+
+LnC = 0;
+Lp = 4;
+Ln = 6;
+kalman_on = 1;
+
+xt_b = [-0.525 0.525 -0.525 0.525];
+yt_b = [0.505 0.505 -0.505 -0.505];
+zt_b = 1.53;
+
+tag_pos_b = xt_b + j*yt_b;
+
+AnchorIDmapH = [];
+AnchorIDmap = [];
+xa = [];
+ya = [];
+za = [];
+k0 = ones(1,5);
+RxDistTot = zeros(1,5);
+
+pos = zeros(3,1); vel = zeros(3,1);
+l = 100;
+m = 100;
+
+Lav = 1;
+
+
+i = 1;
+dT = 0.1;
+dt = 0.01;
+P = 1;
+
+Lv = 10;
+
+kl = 1;
+k = 0;
+
+s_time_prev = 0;
+
+RxIDTot = zeros(1,4);
+cent_vel_est =  zeros(3,1 );
+cent_pos_est =  zeros(3,1 );
+heading_est_t = 0;
+tag_pos_est_t = zeros(1,4);
+
+s_time_prev = 0;
+anch_pos_o  = [-0.01-0.3i	7.85-0.3i	7.84+10.5i	0+15.1i	22.7-4i    24.6+16.3i];
+% anch_pos_o  = [-0.01-0.3i	7.85-0.3i	7.84+10.5i	0+15.1i	22.5-3.9i    24.4+15.3i];
+
+init_flag = 0;
+TagPosBuff = zeros(4,20);
+
+while((length(UWBMsg{1})>=k0(1))&&(length(UWBMsg{2})>=k0(2))&&(length(UWBMsg{3})>=k0(3))&&(length(UWBMsg{4})>=k0(4))&&(length(IMUVMsg)>=k0(5)))
+    k = k + 1;
+    for lk = 1 : 4
+        s_time_a(lk) = double(UWBMsg{lk}{k0(lk)}.Header.Stamp.Sec)+double(UWBMsg{lk}{k0(lk)}.Header.Stamp.Nsec)/10^9;
+        %                 s_time_a(lk) = 100000000000000000000000000;
+    end
+    s_time_a(lk+1) = double(IMUVMsg{k0(lk+1)}.Header.Stamp.Sec)+double(IMUVMsg{k0(lk+1)}.Header.Stamp.Nsec)/10^9;
+    %     s_time_a(lk+1) = 100000000000000000000000000;
+
+    [min_stamp_v, min_stamp_i] = min(s_time_a);
+    s_time = min_stamp_v;
+    RxTimeTot(k) = s_time;
+
+    if min_stamp_i == 5
+        IMUacc_c  = [IMUAMsg{k0(5)}.Vector.X IMUAMsg{k0(5)}.Vector.Y IMUAMsg{k0(5)}.Vector.Z];
+        IMUgyro_c = [IMUVMsg{k0(5)}.Vector.X IMUVMsg{k0(5)}.Vector.Y IMUVMsg{k0(5)}.Vector.Z];
+
+%         [cent_pos_est, cent_vel_est, kf_psi, gyro_psi, b_acc_o, b_gyro, state_IMU, acc_b_phi, acc_b_theta ] = IMUpos(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, 1, kf_psi, gyro_psi, cent_pos_est, cent_vel_est);
+
+        k0(5) = k0(5) + 1;
+
+    elseif min_stamp_i<5
+
+        dt_uwb = s_time - s_time_prev;
+        s_time_prev = s_time;
+        PP = min_stamp_i;
+        RxID = [];
+        TT = UWBMsg{PP}{k0(PP)}.Id;
+        for df = 1 : length(TT)
+            [val,ids] = find(AnchorIDmap == hex2dec(TT{df}));
+            if length(ids)>0
+                RxID(df) = ids;
+
+            else
+                LnC = LnC + 1;
+                AnchorIDmapH{LnC} = TT{df};
+                AnchorIDmap(LnC) = hex2dec(AnchorIDmapH{LnC});
+                RxID(df) = LnC;
+                xa(LnC) = UWBMsg{PP}{k0(PP)}.X(df);
+                ya(LnC) = UWBMsg{PP}{k0(PP)}.Y(df);
+                za(LnC) = UWBMsg{PP}{k0(PP)}.Z(df);
+
+            end
+        end
+
+        RxDistOrig = UWBMsg{PP}{k0(PP)}.DistanceFromTag;
+%         A = [5 1;23 1];
+%         Y = [5.0;23.20];
+%         X = inv(A)*Y;
+%         RxDistOrig = RxDistOrig*X(1)+X(2);
+
+        RxDist = real(sqrt(RxDistOrig.^2-(za(1)-zt_b)^2));
+        RxDist = RxDistOrig;
+        %         RxDistOrigTot(k,:) = zeros(1,6);
+        %         RxDistTot(k,:) = zeros(1,6);
+        %         RxDistOrigTot(k,RxID) = RxDistOrig;
+        %         RxDistTot(k,RxID) = RxDist;
+
+        Nanchor = length(RxID);
+        RxIDUWB = zeros(Ln,1);
+        RxIDUWB(1:Nanchor) = RxID;
+        RxDistUWB = zeros(Ln,1);
+        RxDistUWB(1:Nanchor) = RxDist;
+
+        RxDistTot(RxID,PP,k) = RxDist;
+        
+        
+        xain = zeros(1,Ln);
+        xain(1:LnC) = xa;
+
+        yain = zeros(1,Ln);
+        yain(1:LnC) = ya;
+
+        %% Anchor Position 조정 필요시..
+%         xain(1:LnC) = real(anch_pos_o(1:LnC));
+%         yain(1:LnC) = imag(anch_pos_o(1:LnC));
+        k0(PP) = k0(PP) + 1;
+
+
+        
+
+    end
+end
+
+figure(1);
+for ert = 1 : LnC
+    for erx = 1 : 4
+%         subplot(LnC,4,erx+(ert-1)*4);plot(RxTimeTot,reshape(RxDistTot(ert,erx,:),1,length(RxTimeTot)),'.');
+        Temp0 = reshape(RxDistTot(ert,erx,:),1,size(RxDistTot(ert,erx,:),3));
+        ind1 = find(Temp0~=0);
+        DistT{ert,erx} = Temp0(ind1);
+        TimeT{ert,erx} = RxTimeTot(ind1);
+        mean_dist(ert,erx) = mean(DistT{ert,erx});
+        subplot(LnC,4,erx+(ert-1)*4);plot(TimeT{ert,erx},DistT{ert,erx},'.');
+    end
+end
+        [tag_pos_est1, heading_est1] = GetUWBPos_v2(xain(1:LnC), yain(1:LnC), mean_dist, tag_pos_b);
+        [tag_pos_est2, heading_est2] = GetInitPos(xain(1:LnC),yain(1:LnC), mean_dist,xain(1:LnC)+j*yain(1:LnC),tag_pos_b,4,4);
+
+dist_o1 = [6.42 5.44 6.85 5.94;13.92 13.58 13.00 12.63;3.37 3.98 4.18 4.72;8.27 8.66 7.24 7.70;17.84 18.83 18.29 19.24;0 24.52 23.00 23.85];
+dist_o2 = [22.94 23.93 22.64 23.68;22.54 0 22.94 23.92;0 0 0 0;0 0 0 0;12.05 12.05 11.06 11.23;9 8.67 9.94 9.65];
+
+xt_b = [-0.525 0.525 -0.525 0.525];
+yt_b = [0.505 0.505 -0.505 -0.505];
+zt_b = 1.53;
+
+tag_pos_b = (xt_b)+j*yt_b;
+
+anch_pos_o  = [-0.01-0.3i	0+15.1i	7.85-0.3i	7.84+10.5i	22.7-4i    24.6+16.3i];
+xar = real(anch_pos_o);
+yar = imag(anch_pos_o);
+
+dist_o1 = sqrt(dist_o1.^2-(2.3-1.53)^2);
+dist_o2 = sqrt(dist_o2.^2-(2.3-1.53)^2);
+
+
+[tag_pos_est3, heading_est3] = GetUWBPos_v2(xar, yar, dist_o1, tag_pos_b);
+[tag_pos_est4, heading_est4] = GetInitPos(xar,yar, dist_o1,anch_pos_o,tag_pos_b,LnC,4);
+
+
+figure(3);hold off;plot(tag_pos_est1,'bo');
+hold on;plot(tag_pos_est3,'b*');
+plot(tag_pos_est2,'ro');
+plot(tag_pos_est4,'r*');axis equal

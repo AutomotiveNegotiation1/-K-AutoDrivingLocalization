@@ -33,16 +33,16 @@
 
 #include "imusubscriber.h"
 
-double b_acc_o[3] = {};
-double b_gyro[3] = {};
-double mode = 0;
-double kf_psi = 0;
-double gyro_psi = 0;
-double cent_pos_est[3] = {};
-double cent_vel_est[3] = {};
-double state_o;
-double acc_b_phi;
-double acc_b_theta;
+// double b_acc_o[3] = {};
+// double b_gyro[3] = {};
+// double mode = 0;
+// double kf_psi = 0;
+// double gyro_psi = 0;
+// double cent_pos_est[3] = {};
+// double cent_vel_est[3] = {};
+// double state_o;
+// double acc_b_phi;
+// double acc_b_theta;
 
 static void argInit_1x3_real_T(double result[3]) {
     for (int idx1{0}; idx1 < 3; idx1++) {
@@ -50,10 +50,11 @@ static void argInit_1x3_real_T(double result[3]) {
     }
 }
 
-ImuSubscriber::ImuSubscriber(ros::NodeHandle& node, IPECallback* ipeCallback)
-    : m_ipeCallback(ipeCallback) {
-    setupSubscriber(node);
+ImuSubscriber::ImuSubscriber(ros::NodeHandle& _node, IPECallback* _ipeCallback, FusionSubscriber* _fusion)
+    : m_ipeCallback(_ipeCallback), o_fusion(_fusion) {
+    setupSubscriber(_node);
 }
+
 
 ImuSubscriber::~ImuSubscriber() {}
 
@@ -82,7 +83,7 @@ void ImuSubscriber::setupSubscriber(ros::NodeHandle& node) {
     std::string topic_name = topic_name_stream.str();
     ROS_INFO("topic_name-->%s", topic_name.c_str());
 
-    // pub = node.advertise<ipe::Imupos>("/IMU", 10);
+    pub = node.advertise<ipe::Imupos>("/IMU", 10);
     sub = node.subscribe<sensor_msgs::Imu>(topic_name, 10, &ImuSubscriber::_callback, this);
     // subFusion = node.subscribe<ipe::Fusion>("/Fusion", 10, &ImuSubscriber::_callback_Fusion, this);
 
@@ -145,6 +146,41 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp) {
     IMUpos(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, mode, &kf_psi,
         &gyro_psi, cent_pos_est, cent_vel_est, &state_o, &acc_b_phi,
         &acc_b_theta);
+
+    
+    this->cent_pos_est[0] = cent_pos_est[0];
+    this->cent_pos_est[1] = cent_pos_est[1];
+    this->cent_pos_est[2] = cent_pos_est[2];
+    this->cent_vel_est[0] = cent_vel_est[0];
+    this->cent_vel_est[1] = cent_vel_est[1];
+    this->cent_vel_est[2] = cent_vel_est[2];
+    this->kf_psi = kf_psi;
+    this->gyro_psi = gyro_psi;
+    this->b_acc_o[0] = b_acc_o[0];
+    this->b_acc_o[1] = b_acc_o[1];
+    this->b_acc_o[2] = b_acc_o[2];
+    this->state_o = state_o;
+    this->acc_b_phi = acc_b_phi;
+    this->acc_b_theta = acc_b_theta;
+    
+    o_fusion->cent_pos_est[0] = cent_pos_est[0];
+    o_fusion->cent_pos_est[1] = cent_pos_est[1];
+    o_fusion->cent_pos_est[2] = cent_pos_est[2];
+    o_fusion->cent_vel_est[0] = cent_vel_est[0];
+    o_fusion->cent_vel_est[1] = cent_vel_est[1];
+    o_fusion->cent_vel_est[2] = cent_vel_est[2];
+    o_fusion->kf_psi = kf_psi;
+    o_fusion->gyro_psi = gyro_psi;
+    o_fusion->b_acc_o[0] = b_acc_o[0];
+    o_fusion->b_acc_o[1] = b_acc_o[1];
+    o_fusion->b_acc_o[2] = b_acc_o[2];
+    o_fusion->state_o = state_o;
+    o_fusion->acc_b_phi = acc_b_phi;
+    o_fusion->acc_b_theta = acc_b_theta;
+
+    o_fusion->processPacketData(1);
+
+
 
 // Arguments    : const double IMUacc_c[3]
 //                const double IMUgyro_c[3]

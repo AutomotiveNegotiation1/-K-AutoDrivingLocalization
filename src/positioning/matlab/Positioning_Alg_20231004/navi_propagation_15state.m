@@ -1,0 +1,89 @@
+function [Nav] = navi_propagation_15state( Nav, IMU )
+
+    persistent qua_gyro
+    persistent firstRun
+    
+    if (isempty(firstRun))|| (Nav.output.att == [1 0 0 0]')
+        qua_gyro = [1 0 0 0];
+        firstRun = 0;
+    end
+    dt = IMU.dt;
+    
+    P = Nav.KF.P(1:15,1:15);
+    
+    a_raw = IMU.acc(:,1);
+    w_raw = IMU.gyro(:,1);
+        
+    p_ned = Nav.output.pos;
+    v_ned = Nav.output.vel;
+    x_att = Nav.output.att;
+    
+    C_b2n = Nav.output.C_b2n;
+    C_n2b = Nav.output.C_n2b;    
+    
+    b_acel = Nav.imu_bias.acel;
+    b_gyro = Nav.imu_bias.gyro;
+    
+    %%%%  Kalman Filter Update
+    [p;q;r] = w_raw;
+    
+    AA = eye(4)+dt*1/2*[0 -p -q -r;    p 0 r -q;    q -r 0 p;    r q -p 0    ];
+    qua_gyro = AA*qua_gyro;
+    eurl_gyro= dcm2eulr(qua2dcm(qua_gyro));
+    
+    [phi_org, theta_org] = EulerAcc(ax, ay, az);
+
+    z = EulerToQuaternion(phi_org+phi_bias, theta_org+theta_bias, eurl_gyro(3));
+    [phi, theta, psi] = EulerKalman(AA, z);
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    % Real State Propagation
+    p_ned = p_ned + v_ned*dt + ((C_b2n*(a_raw - b_acel) - [0; 0; -Nav.gravity])*dt^2)/2;
+    v_ned = v_ned + (C_b2n*(a_raw - b_acel) - [0; 0; -Nav.gravity])*dt;
+
+    x_att = Qua_Update(x_att,ang2qua((w_raw - b_gyro)*dt));
+
+    % naviation frame
+    A = zeros(15,15);
+    
+    A(1:3,1:3) = eye(3,3);
+    A(1:3,4:6) = eye(3,3)*dt;
+    A(1:3,7:9) = 0.5*left_cross(C_b2n*(a_raw - b_acel))*dt^2;
+    A(1:3,10:12) = -0.5*C_b2n*dt^2;
+    
+
+    A(4:6,4:6) = eye(3,3);
+    A(4:6,7:9) = left_cross(C_b2n*(a_raw - b_acel))*dt;
+    A(4:6,10:12) = -C_b2n*dt; 
+    
+        
+    % b-Frame Attitude
+    A(7:9,7:9) = eye(3,3);
+    A(7:9,13:15) = -C_b2n*dt; 
+        
+    % Bias & Gravity   
+    A(10:12,10:12) = eye(3,3);
+    A(13:15,13:15) = eye(3,3);
+    
+
+    B = zeros(15,6);
+    B(1:3,1:3) = -0.5*C_b2n*dt^2;
+    B(1:3,4:6) = zeros(3,3); 
+    B(4:6,1:3) = -C_b2n*dt; 
+    B(4:6,4:6) = zeros(3,3); 
+    
+    B(7:9,4:6) = -C_b2n*dt;  
+
+    P = A*P*A' + B*Nav.KF.Q*B';
+    
+    
+    Nav.output.pos = p_ned;
+    Nav.output.vel = v_ned;    
+    Nav.output.att = x_att;
+
+    Nav.output.C_b2n = qua2dcm(x_att);
+    Nav.output.C_n2b = C_b2n';
+
+    Nav.KF.P(1:15,1:15) = P;    
+%     Nav.KF.Pinv = inv(P);
+end

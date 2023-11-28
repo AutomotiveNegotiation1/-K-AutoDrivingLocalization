@@ -43,7 +43,7 @@ typedef std::pair<double, IPEDataPacket> RosKapDataPacket;
 class IPECallback
 {
 public:
-    IPECallback(size_t maxBufferSize = 30);
+    IPECallback(size_t maxBufferSize = 1);
     virtual ~IPECallback() throw();
 
     RosKapDataPacket next();
