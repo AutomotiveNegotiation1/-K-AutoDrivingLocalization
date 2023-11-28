@@ -1,0 +1,261 @@
+clear all;
+
+Kalman_on = 0;
+OverDel = 1;
+InitLeng = 100;
+
+xa = [10 10 -10 -10];
+ya = [10 -10 -10 10];
+
+xt_b = [-0.5 0.5 -0.5 0.5];
+yt_b = [0.5 0.5 -0.5 -0.5];
+xtc_b = xt_b + yt_b*j;
+
+% xt_b = [-0.1 0.5 -0.5 0.5];
+% yt_b = [0.1 0.5 -0.5 -0.5];
+
+Ln = length(xa);
+Lp = length(xt_b);
+
+xt_b_center = mean(xt_b);
+yt_b_center = mean(yt_b);
+angles_from_heading = atan2(yt_b,xt_b);
+rl = sqrt(xt_b.^2+yt_b.^2);
+
+global_coor = [0 0]
+global_radius = 7
+
+tag_center = [0 0];
+heading_init = 90*pi/180;
+
+theta = 0 : 0.01 : 2*pi;   % range of theta from 0 to 2pi
+rho = global_radius * ones(1, length(theta));  % radius is global_radian
+[x, y] = pol2cart(theta, rho);  % convert polar to Cartesian coordinates
+x = x + global_coor(1);  % adjust the x-coordinates by the x-coordinate of global_coor
+y = y + global_coor(2);  % adjust the y-coordinates by the y-coordinate of global_coor
+heading = heading_init+theta;
+
+x = [x(1)*ones(1,InitLeng) x];
+y = [y(1)*ones(1,InitLeng) y];
+heading = [heading(1)*ones(1,InitLeng) heading];
+figure(100)
+plot(x, y)  % plot the circle
+axis equal  % make x and y axis equal
+grid on  % turn on the grid
+% heading = atan2(y - global_coor(2), x - global_coor(1));
+%heading = mod(atan2(y - global_coor(2), x - global_coor(1)) + pi/2, 2*pi);
+
+
+% circle_dist_o = [];
+% di_o = [];
+% di = []
+% flag = 0;
+average_len = 10;
+anch_pos = xa+j*ya;
+s_time = [0:length(x)-1]/10;
+v_pred_x = 0;
+v_pred_y = 0;
+TagDistInit = zeros(Ln,Lp);
+for r = 1 : length(x)
+    %%%%%%%%%% Create ground-truth Tag posigion & distance %%%%%%%%%%
+    tag_pos_b = xt_b + j*yt_b;
+    tag_pos_g = tag_pos_b*exp(j*(heading(r)))+x(r)+j*y(r);
+
+    xt = real(tag_pos_g);
+    yt = imag(tag_pos_g);
+
+    for n = 1 : Ln
+        for p = 1 : Ln
+            dist_o(n,p) = sqrt((xa(n)-xt(p))^2+(ya(n)-yt(p))^2);
+        end
+    end
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%% Create simulation data by distance%%%%%%%%%%%%%%%
+    dist_a = awgn(dist_o,100);
+
+    if r > InitLeng
+        dist = dist_a;
+%         dist(3,1:4) = dist_a(3,1:4)+3;
+        %         dist = dist_a;
+    else
+        dist = dist_a;
+%         dist(2,1:4) = dist_a(2,1:4)+3;
+    end
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    %     dist(1,1:2) = dist_a(1,1:2) + 3;
+    %     if kk > 100
+    %         dist(1,1:2) = dist_a(1,1:2) + 3;
+    %     end
+
+
+    if r < 10*Lp
+        for NN = 1 : Ln
+            for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1
+                TagDistInit(NN,PP) = TagDistInit(NN,PP)*(r-1)/r+dist(NN,PP)/r;
+            end
+        end
+    elseif r == 10*Lp
+        for NN = 1 : Ln
+            for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1
+                TagDistInit(NN,PP) = TagDistInit(NN,PP)*(r-1)/r+dist(NN,PP)/r;
+            end
+        end
+        [tag_pos_est, heading_est] = GetUWBPos_v1(xa, ya, TagDistInit, angles_from_heading);
+
+        s_time_prev = 0;
+        for LLp= 1 : Lp
+            Tag_Pos_List(:,:,LLp) = [s_time(r-2) tag_pos_est(LLp);s_time(r-1) tag_pos_est(LLp);s_time(r) tag_pos_est(LLp)];
+        end
+        
+    else
+%         tag_pos_est = K_tag_pos_est;
+%         heading_est = K_heading_est;
+%         s_time_prev = s_time(r-1);
+    end
+
+if r > 10*Lp
+    for PPC = 1 : Lp
+        [InterpPosition(PPC,1)] = InterpPos(Tag_Pos_List(:,1,PPC),real(Tag_Pos_List(:,2,PPC)),s_time(r));
+        [InterpPosition(PPC,2)] = InterpPos(Tag_Pos_List(:,1,PPC),imag(Tag_Pos_List(:,2,PPC)),s_time(r));
+    end
+    Xt_e = real(tag_pos_est);
+    Yt_e = imag(tag_pos_est);
+    Xt_c_e = mean(Xt_e);
+    Yt_c_e = mean(Yt_e);
+
+    Xt_pred = Xt_c_e + v_pred_x*(s_time(r)-s_time_prev);
+    Yt_pred = Yt_c_e + v_pred_y*(s_time(r)-s_time_prev);
+    Xt_pred_c = Xt_pred+Yt_pred*j;
+    Xt_pred_tag = Xt_pred_c + exp(j*heading_est).*xtc_b;
+    Xt_est_tag = Xt_pred_tag;
+    KK = zeros(6,4);
+
+    %for PP = 1 : Lp
+    PosC = [];
+    PosC_E = [];
+        for PP = mod(r-1,Lp)+1:mod(r-1,Lp)+1
+            
+            for NN = 1 : Ln
+                for MM = NN+1 : Ln
+                    if NN~=MM
+                    %if NN == mod(r-1,Lp)
+                        [Pos2,Prob2]=TwoAnchPos3([xa(NN) xa(MM)], [ya(NN) ya(MM)], [dist(NN,PP) dist(MM,PP)],[real(tag_pos_est(PP)) imag(tag_pos_est(PP))],[Xt_c_e Yt_c_e],anch_pos,dist(:,PP));
+                        Pos2C_1 = Pos2(1,1)+j*Pos2(1,2);
+                        Pos2C_2 = Pos2(2,1)+j*Pos2(2,2);
+%                         Pos2C_1 = Pos2(1,1)+j*Pos2(1,2)-(xt_b(PP)+j*yt_b(PP))*exp(j*heading_est);
+%                         Pos2C_2 = Pos2(2,1)+j*Pos2(2,2)-(xt_b(PP)+j*yt_b(PP))*exp(j*heading_est);
+                        if abs(abs(Pos2C_1-Xt_pred_c)-1) < abs(abs(Pos2C_2-Xt_pred_c)-1)
+                            PosC = [PosC Pos2C_1];
+                            PosC_E = [PosC_E abs(abs(Pos2C_1-Xt_pred_c)-1)^2];
+                        else
+                            PosC = [PosC Pos2C_2];
+                            PosC_E = [PosC_E abs(abs(Pos2C_2-Xt_pred_c)-1)^2];
+                        end
+                    end
+                end
+            end
+            
+            sigma_c = (mean(PosC_E))/3;
+            if sigma_c < 0.20
+                sigma_c = 0.20;
+            end
+            [val,ind] = find(PosC_E<sigma_c);
+            if length(ind)>0
+                PosC_Est = mean(PosC(ind));
+            else
+                [vale,inde] = min(PosC_E); 
+                PosC_Est = PosC(inde);
+            end
+            Xt_est_tag(PP) = PosC_Est;
+            head_me = (Xt_est_tag(PP))/(xtc_b(PP));
+
+        end
+
+%         for kkq = 2 : Lp
+%             head_me(kkq-1) = (Xt_est_tag(kkq-1)-Xt_est_tag(kkq))/(xtc_b(kkq-1)-xtc_b(kkq));
+%         end
+        heading_est = angle((head_me));
+        tag_center_pos_est = mean(Xt_est_tag);
+        
+%         [tag_center_pos_est, heading_est, Xt_c_e, Yt_c_e] = GetUWBPosUpdate_v1(xa, ya, Xt_c_e, Yt_c_e, heading_est, rl, dist_n, angles_from_heading);
+        tag_pos_est = get_tag_pos(tag_center_pos_est, heading_est, tag_pos_b);
+
+        heading_est_a(r) = heading_est;
+        centerest_a(r,:) = [real(tag_center_pos_est) imag(tag_center_pos_est)];
+
+    if (r>(average_len*2))
+        MeanA = mean(centerest_a(r-19:r-10,1)+j*centerest_a(r-19:r-10,2));
+        MeanB = mean(centerest_a(r-9:r,1)+j*centerest_a(r-9:r,2));
+        centerest_a_aver(r,:) = [real(MeanB + (MeanB-MeanA)/2) imag((MeanB + (MeanB-MeanA)/2))] ;
+        MeanA_head = mean(heading_est_a(r-average_len*2+1:r-average_len));
+        MeanB_head = mean(heading_est_a(r-average_len+1:r));
+        headingest_a_aver(r) = [(MeanB_head + (MeanB_head-MeanA_head)/2)] ;
+    else
+        centerest_a_aver(r,:) = [Xt_c_e Yt_c_e];
+        headingest_a_aver(r) = heading_est;
+    end
+
+    tag_pos_est_aver = get_tag_pos(centerest_a_aver(r,1)+j*centerest_a_aver(r,2), headingest_a_aver(r), tag_pos_b);
+        [K_Xt_c_e] = centerest_a_aver(r,1);
+        [K_Yt_c_e] = centerest_a_aver(r,2);
+        K_tag_pos_est = tag_pos_b*exp(j*(headingest_a_aver(r)))+K_Xt_c_e+j*K_Yt_c_e;
+
+        K_heading_est = headingest_a_aver(r);
+        K_centerest_a_aver(r, :) = centerest_a_aver(r,:);
+        K_headingest_a_aver(r) = headingest_a_aver(r);
+
+    figure(1);
+    hold off;
+    plot(xa,ya,'bo');
+    hold on;
+
+    plot(tag_pos_g(1), 'go')
+    plot(tag_pos_g(2), 'g*')
+    plot(tag_pos_g(3), 'gv')
+    plot(tag_pos_g(4), 'g^')
+
+    plot(tag_pos_est(1), 'bo')
+    plot(tag_pos_est(2), 'b*')
+    plot(tag_pos_est(3), 'bv')
+    plot(tag_pos_est(4), 'b^')
+
+    plot(K_tag_pos_est(1), 'ro')
+    plot(K_tag_pos_est(2), 'r*')
+    plot(K_tag_pos_est(3), 'rv')
+    plot(K_tag_pos_est(4), 'r^')
+
+    % 화살표 그리기
+    quiver(x(r), y(r), cos(heading(r)), sin(heading(r)), 'g', 'LineWidth', 1, 'MaxHeadSize', 0.5);
+
+    quiver(Xt_c_e, Yt_c_e, cos(heading_est), sin(heading_est), 'b', 'LineWidth', 1, 'MaxHeadSize', 0.5);
+
+    quiver(K_Xt_c_e, K_Yt_c_e, cos(K_heading_est), sin(K_heading_est), 'r', 'LineWidth', 1, 'MaxHeadSize', 0.5);
+
+    if abs((x(r)+j*y(r))-(Xt_c_e+j*Yt_c_e))>1
+        gg = 1;
+    end
+    end
+end
+
+title('Original(Blue) and estimated(Red) Tag to Anchor distance')
+
+figure(4)
+hold off;
+plot(centerest_a_aver(:,1), centerest_a_aver(:,2), 'bo')
+hold on;
+plot(x(:), y(:), 'g^')
+plot(K_centerest_a_aver(:,1), K_centerest_a_aver(:,2), 'ro')
+plot(centerest_a(:,1), centerest_a(:,2), 'ko')
+
+
+centerpos_error = sqrt(mean((centerest_a_aver(InitLeng+1:end,1)-x(1,InitLeng+1:end,1)').^2+(centerest_a_aver(InitLeng+1:end,2)-y(1,InitLeng+1:end,1)').^2))
+heading_error = mean(abs(heading(InitLeng+1:end)-headingest_a_aver(InitLeng+1:end)))*180/pi
+
+K_centerpos_error = sqrt(mean((K_centerest_a_aver(InitLeng+1:end,1)-x(1,InitLeng+1:end,1)').^2+(K_centerest_a_aver(InitLeng+1:end,2)-y(1,InitLeng+1:end,1)').^2))
+K_heading_error = mean(abs(heading(InitLeng+1:end)-K_headingest_a_aver(InitLeng+1:end)))*180/pi
+
+
+
+
+

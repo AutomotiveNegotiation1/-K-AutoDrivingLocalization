@@ -122,8 +122,8 @@ public:
     double center_x = 0;
     double center_y = 0;
     double heading = 0;
-    double Acc_Vel[60] = {};
-    double Acc_Pos[60] = {};
+    double Acc_Vel[100] = {};
+    double Acc_Pos[100] = {};
 
     
 public:

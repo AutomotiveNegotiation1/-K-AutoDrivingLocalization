@@ -79,7 +79,11 @@ private:
     // Member Variables
     ros::Subscriber r_sh_UWB;
     // ros::Subscriber r_sh_Fusion;
+<<<<<<< HEAD
     // ros::Publisher r_ph_UWB;
+=======
+    ros::Publisher pub;
+>>>>>>> main
     std::string m_frameId;
     ros::NodeHandle &node;
 
@@ -88,18 +92,33 @@ private:
     IPEDataPacket m_ipeDataPacket;
     std::vector<std::function<void(double, std::string&)>> callbacks;
     std::string m_uwbNum;
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
         
     // Constants
     const double Ln = 6.0;
     const double Lp = 4.0;
 
 public:
+<<<<<<< HEAD
+=======
+    std::vector<double> xain_list;
+    std::vector<double> yain_list;
+    std::vector<std::string> RxID_data_list;
+    std::vector<int> RxID_list;
+>>>>>>> main
     creal_T tag_pos_b[4];
     creal_T prevTagPos[4];
     std::string tagNum;
     creal_T tag_pos_est[4];
     creal_T tag_pos_est_aver[4];
     creal_T tag_center_vel_est;
+<<<<<<< HEAD
+=======
+    double UWBErrSum;
+>>>>>>> main
     double heading_est;
     double headingest_a_aver_v;
     double init_flag;

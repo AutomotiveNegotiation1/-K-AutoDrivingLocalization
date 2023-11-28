@@ -68,6 +68,10 @@ private:
     void Positioning();
 
 private:
+<<<<<<< HEAD
+=======
+    int flag2 = 1;
+>>>>>>> main
     FusionSubscriber* o_fusion;
     UwbSubscriber* o_uwb;
     ImuSubscriber* o_imu;

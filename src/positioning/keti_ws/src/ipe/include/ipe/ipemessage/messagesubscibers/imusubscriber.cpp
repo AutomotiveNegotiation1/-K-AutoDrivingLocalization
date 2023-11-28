@@ -83,7 +83,7 @@ void ImuSubscriber::setupSubscriber(ros::NodeHandle& node) {
     std::string topic_name = topic_name_stream.str();
     ROS_INFO("topic_name-->%s", topic_name.c_str());
 
-    // pub = node.advertise<ipe::Imupos>("/IMU", 10);
+    pub = node.advertise<ipe::Imupos>("/IMU", 10);
     sub = node.subscribe<sensor_msgs::Imu>(topic_name, 10, &ImuSubscriber::_callback, this);
     // subFusion = node.subscribe<ipe::Fusion>("/Fusion", 10, &ImuSubscriber::_callback_Fusion, this);
 
@@ -147,12 +147,32 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp) {
         &gyro_psi, cent_pos_est, cent_vel_est, &state_o, &acc_b_phi,
         &acc_b_theta);
 
+<<<<<<< HEAD
+=======
+    
+    this->cent_pos_est[0] = cent_pos_est[0];
+    this->cent_pos_est[1] = cent_pos_est[1];
+    this->cent_pos_est[2] = cent_pos_est[2];
+    this->cent_vel_est[0] = cent_vel_est[0];
+    this->cent_vel_est[1] = cent_vel_est[1];
+    this->cent_vel_est[2] = cent_vel_est[2];
+    this->kf_psi = kf_psi;
+    this->gyro_psi = gyro_psi;
+    this->b_acc_o[0] = b_acc_o[0];
+    this->b_acc_o[1] = b_acc_o[1];
+    this->b_acc_o[2] = b_acc_o[2];
+    this->state_o = state_o;
+    this->acc_b_phi = acc_b_phi;
+    this->acc_b_theta = acc_b_theta;
+    
+>>>>>>> main
     o_fusion->cent_pos_est[0] = cent_pos_est[0];
     o_fusion->cent_pos_est[1] = cent_pos_est[1];
     o_fusion->cent_pos_est[2] = cent_pos_est[2];
     o_fusion->cent_vel_est[0] = cent_vel_est[0];
     o_fusion->cent_vel_est[1] = cent_vel_est[1];
     o_fusion->cent_vel_est[2] = cent_vel_est[2];
+<<<<<<< HEAD
     o_fusion->b_acc_o[0] = b_acc_o[0];
     o_fusion->b_acc_o[1] = b_acc_o[1];
     o_fusion->b_acc_o[2] = b_acc_o[2];
@@ -161,6 +181,16 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp) {
     o_fusion->state_o = state_o;
     o_fusion->gyro_psi = gyro_psi;
     o_fusion->kf_psi = kf_psi;
+=======
+    o_fusion->kf_psi = kf_psi;
+    o_fusion->gyro_psi = gyro_psi;
+    o_fusion->b_acc_o[0] = b_acc_o[0];
+    o_fusion->b_acc_o[1] = b_acc_o[1];
+    o_fusion->b_acc_o[2] = b_acc_o[2];
+    o_fusion->state_o = state_o;
+    o_fusion->acc_b_phi = acc_b_phi;
+    o_fusion->acc_b_theta = acc_b_theta;
+>>>>>>> main
 
     o_fusion->processPacketData(1);
 

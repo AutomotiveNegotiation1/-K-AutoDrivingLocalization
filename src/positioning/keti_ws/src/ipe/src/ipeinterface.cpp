@@ -89,11 +89,15 @@ IPEInterface::~IPEInterface()
 void IPEInterface::registerSubcribers(ros::NodeHandle &_node) {
     bool m_should_publish;
     o_fusion = new FusionSubscriber(_node);
+<<<<<<< HEAD
     o_uwb = new UwbSubscriber(_node, "0", &o_ipeCallback, o_fusion);
+=======
+>>>>>>> main
     o_imu = new ImuSubscriber(_node, &o_ipeCallback, o_fusion);
     std::list<double> totalTag;
     if (ros::param::get("/ipe_node/Tag_on", m_should_publish) && m_should_publish) {
         if (ros::param::get("/ipe_node/sub_UWB0", m_should_publish) && m_should_publish) {
+<<<<<<< HEAD
             o_uwb->setupSubscriber("0");
             registerCallback(o_uwb);
         }
@@ -108,6 +112,26 @@ void IPEInterface::registerSubcribers(ros::NodeHandle &_node) {
         if (ros::param::get("/ipe_node/sub_UWB3", m_should_publish) && m_should_publish) {
             o_uwb->setupSubscriber("3");
             registerCallback(o_uwb);
+=======
+            UwbSubscriber* o_uwb1 = new UwbSubscriber(_node, "0", &o_ipeCallback, o_fusion);
+            o_uwb1->setupSubscriber("0");
+            registerCallback(o_uwb1);
+        }
+        if (ros::param::get("/ipe_node/sub_UWB1", m_should_publish) && m_should_publish) {
+            UwbSubscriber* o_uwb1 = new UwbSubscriber(_node, "1", &o_ipeCallback, o_fusion);
+            o_uwb1->setupSubscriber("1");
+            registerCallback(o_uwb1);
+        }
+        if (ros::param::get("/ipe_node/sub_UWB2", m_should_publish) && m_should_publish) {
+            UwbSubscriber* o_uwb1 = new UwbSubscriber(_node, "2", &o_ipeCallback, o_fusion);
+            o_uwb1->setupSubscriber("2");
+            registerCallback(o_uwb1);
+        }
+        if (ros::param::get("/ipe_node/sub_UWB3", m_should_publish) && m_should_publish) {
+            UwbSubscriber* o_uwb1 = new UwbSubscriber(_node, "3", &o_ipeCallback, o_fusion);
+            o_uwb1->setupSubscriber("3");
+            registerCallback(o_uwb1);
+>>>>>>> main
         }
     }
 
@@ -129,6 +153,7 @@ void IPEInterface::spinFor()
 
 	RosKapDataPacket rosPacket = o_ipeCallback.next();
     std::string frame_id1 = rosPacket.second.frame_id;
+    bool flag = false;
 	if (!rosPacket.second.empty(rosPacket.second.frame_id))
 	{
         for (auto &cb : l_callbacks)
@@ -139,13 +164,29 @@ void IPEInterface::spinFor()
             if (rosPacket.second.frame_id == "imu"){
                 if (imuSub){
                     cb->operator()(rosPacket.second, rosPacket.first);
+<<<<<<< HEAD
+=======
+                    o_imu = imuSub;
+>>>>>>> main
                     o_ipeCallback.pop();
                     break;
                 }
             }
             else{
                 if (!imuSub){
+                    if (flag2 != 1){
+                        uwbSub->xain_list = o_uwb->xain_list;
+                        uwbSub->yain_list = o_uwb->yain_list;
+                        uwbSub->RxID_data_list = o_uwb->RxID_data_list;
+                        uwbSub->RxID_list = o_uwb->RxID_list;
+                    }
+                    flag2 = 2;
                     cb->operator()(rosPacket.second, rosPacket.first);
+<<<<<<< HEAD
+=======
+                    o_uwb = uwbSub;
+                    flag = true;
+>>>>>>> main
                     o_ipeCallback.pop();
                     break;
                 }
@@ -153,7 +194,11 @@ void IPEInterface::spinFor()
 		}
         
         if (o_fusion->init_flag == 1) {
+<<<<<<< HEAD
             o_imu->gyro_psi = -o_fusion->heading_est;
+=======
+            o_imu->gyro_psi = -o_fusion->heading_est; 
+>>>>>>> main
             o_imu->kf_psi = o_fusion->gyro_psi;
             o_imu->cent_pos_est[0] = o_fusion->IMUposU.re;
             o_imu->cent_pos_est[1] = o_fusion->IMUposU.im;
@@ -163,6 +208,7 @@ void IPEInterface::spinFor()
             o_imu->cent_vel_est[2] = 0;
         }
 
+<<<<<<< HEAD
         if (o_fusion->num_ == 1 && o_fusion->init_flag == 1){
             o_uwb->init_flag = 2;
         }
@@ -179,6 +225,43 @@ void IPEInterface::spinFor()
 
         }
         o_uwb->prevTagHeading = -o_fusion->kf_psi;
+=======
+        std::copy(std::begin(o_fusion->b_acc_o), std::end(o_fusion->b_acc_o), std::begin(o_imu->b_acc_o));
+        std::copy(std::begin(o_fusion->cent_pos_est), std::end(o_fusion->cent_pos_est), std::begin(o_imu->cent_pos_est));
+        std::copy(std::begin(o_fusion->cent_vel_est), std::end(o_fusion->cent_vel_est), std::begin(o_imu->cent_vel_est));
+        o_imu->kf_psi = o_fusion->kf_psi;
+        o_imu->gyro_psi = o_fusion->gyro_psi;
+        // o_imu->acc_b_phi = o_fusion->acc_b_phi;
+        // o_imu->acc_b_theta = o_fusion->acc_b_theta;
+
+        if (flag){
+            if (o_fusion->num_ == 1 && o_fusion->init_flag == 1){
+                o_uwb->init_flag = 2;
+            }
+            std::complex<real_T> j(0, 1); // 복소수 단위
+
+            // creal_T cent_pos_est_;
+            creal_T current_tag_pos_b[4];
+            for (int i = 0; i < 4; ++i) {
+                o_imu->cent_pos_est[0] = o_fusion->IMUposU.re;
+                o_imu->cent_pos_est[1] = o_fusion->IMUposU.im;
+                current_tag_pos_b[i].re = o_fusion->tag_pos_b[i].re;
+                current_tag_pos_b[i].im = o_fusion->tag_pos_b[i].im;
+                        
+                std::complex<double> cent_pos_est_c(o_fusion->IMUposU.re, o_fusion->IMUposU.im);
+                std::complex<double> current_tag_pos_b_c(current_tag_pos_b[i].re, current_tag_pos_b[i].im);
+                std::complex<double> TagPos = cent_pos_est_c + std::exp(j * (-o_fusion->kf_psi)) * (current_tag_pos_b_c + 0.4 * j);
+                creal_T TagPos_;
+                TagPos_.re = std::real(TagPos);
+                TagPos_.im = std::imag(TagPos);
+                o_uwb->prevTagPos[i].re = TagPos_.re;
+                o_uwb->prevTagPos[i].im = TagPos_.im;
+            }
+            
+            o_uwb->prevTagHeading = -o_fusion->kf_psi;
+            o_imu->kf_psi = o_fusion->kf_psi;
+        }
+>>>>>>> main
 
 	}
 }
@@ -217,7 +300,12 @@ void IPEInterface::testPositioning()
 
     rosbag::Bag bag;
     try {
+<<<<<<< HEAD
         bag.open("/home/umaps/rosbag/[zed_f9r]2023-08-31-17-56-41_slow.bag", rosbag::bagmode::Read);
+=======
+        // bag.open("/home/umaps/rosbag/[zed_f9r]2023-08-31-17-56-41_slow.bag", rosbag::bagmode::Read);
+        bag.open("/home/umaps/rosbag/test/20231116_fast_inline_2023-11-16-10-34-58.bag", rosbag::bagmode::Read);
+>>>>>>> main
     } catch (rosbag::BagException& e) {
         ROS_ERROR("Error opening bag file: %s", e.what());
     }
@@ -249,7 +337,8 @@ void IPEInterface::testPositioning()
                 if (imu_data != NULL) {
                     publishers[message.getTopic()].publish(imu_data);
                 }
-            } else {
+            } 
+            if (message.getTopic().find("/dwm1001/anchor/ttyUWB") == 0 && message.getTopic().back() >= '0' && message.getTopic().back() <= '3') {
                 ipe::Anchor::ConstPtr uwb_data = message.instantiate<ipe::Anchor>();
                 if (uwb_data != NULL) {
                     publishers[message.getTopic()].publish(uwb_data);

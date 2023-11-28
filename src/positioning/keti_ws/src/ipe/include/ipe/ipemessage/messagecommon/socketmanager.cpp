@@ -84,15 +84,19 @@ bool SocketManager::sendUDPMessage(const std::string& message, const sockaddr_in
 }
 
 bool SocketManager::broadcastUDPMessage(const std::string& message) {
-    bool success = true;
-    std::cout << message << std::endl;
-    for (const auto& pair : clientMap) {
-        const sockaddr_in& clientAddress = pair.first;
-        if (!sendUDPMessage(message, clientAddress)) {
-            success = false;
-        }
+    struct sockaddr_in broadcastAddr;
+    memset(&broadcastAddr, 0, sizeof(broadcastAddr));
+    broadcastAddr.sin_family = AF_INET;
+    broadcastAddr.sin_port = htons(54000); // 브로드캐스트할 포트 지정
+    broadcastAddr.sin_addr.s_addr = htonl(INADDR_BROADCAST); // 브로드캐스트 주소 설정
+
+    int sendResult = sendto(sock, message.c_str(), message.size(), 0, 
+                            (struct sockaddr *)&broadcastAddr, sizeof(broadcastAddr));
+    if (sendResult == -1) {
+        perror("Broadcast message failed");
+        return false;
     }
-    return success;
+    return true;
 }
 
 void SocketManager::initializeSocket() {
@@ -103,8 +107,8 @@ void SocketManager::initializeSocket() {
     }
 
     int opt = 1;
-    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1) {
-        perror("Error setting socket option SO_REUSEADDR");
+    if (setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &opt, sizeof(opt)) == -1) {
+        perror("Error setting socket option SO_BROADCAST");
         close(sock);
         exit(1);
     }

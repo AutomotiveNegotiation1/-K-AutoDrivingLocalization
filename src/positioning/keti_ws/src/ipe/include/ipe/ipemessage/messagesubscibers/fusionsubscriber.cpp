@@ -36,7 +36,11 @@
 FusionSubscriber::FusionSubscriber(ros::NodeHandle& node) {
     std::cout << "FUSION test setup starting..." << std::endl;
     socketManager = SocketManager::getInstance(); // <-- Add this line to initialize the socketManager
+<<<<<<< HEAD
     socketManager->addClient("192.168.4.178", 54000);
+=======
+    // socketManager->addClient("192.168.4.178", 54000);
+>>>>>>> main
 }
 
 void FusionSubscriber::sendUDPMessage(double center_x, double center_y, double heading) {
@@ -69,6 +73,10 @@ void FusionSubscriber::processPacketData(int num) {
                 &gyro_psi, heading_est, acc_b_theta, 2, Nanchor, state_o);
 
         
+<<<<<<< HEAD
+=======
+        
+>>>>>>> main
         uwbcall = false;
 
         // ROS_INFO("TagPos : (%f,%f)",cent_pos_est[0], cent_pos_est[1]);
