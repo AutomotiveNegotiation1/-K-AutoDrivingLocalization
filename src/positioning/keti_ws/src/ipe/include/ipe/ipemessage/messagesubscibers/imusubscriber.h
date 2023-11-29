@@ -49,7 +49,7 @@
 
 #include "IMUpos.h"
 #include "rt_nonfinite.h"
-
+#include "uwbsubscriber.h"
 // Declare Global Variables
 extern double b_acc_o[3];
 extern double b_gyro[3];
@@ -61,8 +61,9 @@ extern double cent_vel_est[3];
 extern double state_o;
 extern double acc_b_phi;
 extern double acc_b_theta;
-extern double signalIMU;
+extern bool signalIMU;
 extern double imuNum;
+extern double min_stamp_i;
 
 class FusionSubscriber;
 
@@ -88,9 +89,6 @@ public:
     ImuSubscriber(ros::NodeHandle& node, IPECallback* ipeCallback);
     ~ImuSubscriber();
     void operator()(IPEDataPacket &packet, double timestamp, FusionSubscriber* _fusionSubscriber);
-    void registerCallback(const std::function<void(int)>& callback);
-    void sendEvent(int data);
-    std::string getPacketFrameID();
 
     void sendUDPMessage(double center_x, double center_y, double heading);
 

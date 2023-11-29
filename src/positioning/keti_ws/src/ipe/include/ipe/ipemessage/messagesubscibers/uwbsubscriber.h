@@ -82,8 +82,10 @@ extern double init_flag;
 extern double Nanchor;
 extern double zt_b;
 extern double prevTagHeading;
+extern double kl;
 
 // Declare Initialization Functions
+inline void computePrevTagPos(real_T cent_pos_est_x, real_T cent_pos_est_y);
 inline creal_T argInit_creal_T(int idx);
 inline void argInit_1x4_creal_T(creal_T result[4]);
 inline creal_T argInit_creal_preT(int idx);
@@ -94,34 +96,27 @@ class FusionSubscriber;
 class UwbSubscriber : public PacketCallback {
 private:
     // Member Variables
-    ros::Subscriber r_sh_UWB;
-    // ros::Subscriber r_sh_Fusion;
-    // ros::Publisher r_ph_UWB;
     ros::Publisher pub;
-    std::string m_frameId;
     ros::NodeHandle &node;
-
+    ros::Subscriber r_sh_UWB;
     IPECallback* o_ipeCallback;
     IPEDataPacket m_ipeDataPacket;
-    std::vector<std::function<void(int)>> callbacks;
     std::string m_uwbNum;
+    std::string m_frameId;
+    std::vector<std::function<void(int)>> callbacks;
         
     // Constants
     const double Ln = 6.0;
     const double Lp = 4.0;
+    double kf_psi_1 = 0;
 
     SocketManager* socketManager;
-    socklen_t clientSize;
-    char buffer[1024];
-    std::string messageToSend = "This is a test message.";
-    std::string muwbNum;
     double center_x = 0;
     double center_y = 0;
     double heading = 0;
-    double Acc_Vel[100] = {};
-    double Acc_Pos[100] = {};
+    double Acc_Vel[60] = {};
+    double Acc_Pos[60] = {};
     double kalman_on = 1;
-    double kl = 0;
 
     creal_T IMUposU;
     
@@ -144,10 +139,6 @@ public:
     void setupSubscriber(const std::string& uwbNum);
     void operator()(IPEDataPacket &_packet, double _timestamp, FusionSubscriber* _fusionSubscriber);
     
-    // Public Member Functions
-    void registerCallback(const std::function<void(int)>& _callback);
-    void sendEvent(int data);
-    std::string getPacketFrameID();
 };
 
 #endif // UWBSUBSCRIBER_H

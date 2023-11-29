@@ -43,7 +43,7 @@ double cent_vel_est[3] = {};
 double state_o;
 double acc_b_phi;
 double acc_b_theta;
-double signalIMU = 0;
+double min_stamp_i = 0;
 double imuNum = 0;
 
 static void argInit_1x3_real_T(double result[3]) {
@@ -65,19 +65,6 @@ void ImuSubscriber::operator()(IPEDataPacket &packet, double timestamp, FusionSu
     processPacketData(packet, timestamp, _fusionSubscriber);
 }
 
-void ImuSubscriber::registerCallback(const std::function<void(int)>& callback) {
-    callbacks.push_back(callback);
-}
-
-void ImuSubscriber::sendEvent(int data) {
-    for (const auto& callback : callbacks) {
-        callback(data);
-    }
-}
-
-std::string ImuSubscriber::getPacketFrameID() {
-    return frame_id;
-}
 
 void ImuSubscriber::setupSubscriber(ros::NodeHandle& node) {
     std::cout << "IMU test setup starting..." << std::endl;
@@ -93,6 +80,7 @@ void ImuSubscriber::setupSubscriber(ros::NodeHandle& node) {
 
 void ImuSubscriber::_callback(const sensor_msgs::Imu::ConstPtr& msg) {
     m_ipeDataPacket = IPEDataPacket(msg);
+    min_stamp_i = 5;
     m_ipeDataPacket.frame_id = "imu";
     if (m_ipeCallback) {
         m_ipeCallback->onLiveDataAvailable(m_ipeDataPacket);
@@ -110,6 +98,7 @@ void ImuSubscriber::sendUDPMessage(double center_x, double center_y, double head
 
 
 void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, FusionSubscriber* _fusionSubscriber) {
+    min_stamp_i = 5;
     double IMUacc_c[3] = {};
     if (!packet.linear_x.empty()) {
         IMUacc_c[0] = packet.linear_x.back();
@@ -147,7 +136,7 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, F
     imuNum++;
 
     // _fusionSubscriber->processPacketData(1);
-    sendEvent(1);
     
-    sendUDPMessage(cent_pos_est[0], cent_pos_est[1], -kf_psi);
+    // sendUDPMessage(cent_pos_est[0], cent_pos_est[1], -kf_psi);
+    
 }

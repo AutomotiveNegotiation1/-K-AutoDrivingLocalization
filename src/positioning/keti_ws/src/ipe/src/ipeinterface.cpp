@@ -189,7 +189,7 @@ void IPEInterface::testPositioning()
     rosbag::Bag bag;
     try {
         // bag.open("/home/umaps/rosbag/[zed_f9r]2023-08-31-17-56-41_slow.bag", rosbag::bagmode::Read);
-        bag.open("/home/umaps/rosbag/test/20231116_fast_inline_2023-11-16-10-34-58.bag", rosbag::bagmode::Read);
+        bag.open("/home/umaps/rosbag/test/20231116_slow_2023-11-16-10-29-35.bag", rosbag::bagmode::Read);
     } catch (rosbag::BagException& e) {
         ROS_ERROR("Error opening bag file: %s", e.what());
     }

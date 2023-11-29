@@ -80,40 +80,40 @@ bool IPECallback::getDataEmpty()
     }
 }
 
-void IPECallback::onLiveDataAvailable(IPEDataPacket packet)
-{
-    // if (m_buffer.size() == m_maxBufferSize)
-    // {
-    //     m_buffer.pop_front();
-    // }
-
-    m_buffer.push_back(RosKapDataPacket(packet.s_time, packet));
-}
-
-// void IPECallback::onLiveDataAvailable(IPEDataPacket packet) {
-//     RosKapDataPacket newPacket(packet.s_time, packet);
-
-//     // 덱이 비어있거나, 새 패킷이 가장 최신일 경우 뒤에 추가한다.
-//     if (m_buffer.empty() || newPacket.first >= m_buffer.back().first) {
-//         m_buffer.push_back(newPacket);
-//     } else {
-//         // 새 패킷이 가장 오래된 것보다 이전 데이터일 경우 앞에 삽입한다.
-//         if (newPacket.first <= m_buffer.front().first) {
-//             m_buffer.push_front(newPacket);
-//         } else {
-//             // 중간에 삽입해야 할 경우, 삽입 위치를 찾는다.
-//             for (auto it = m_buffer.begin(); it != m_buffer.end(); ++it) {
-//                 // 삽입 위치를 찾으면 반복을 중단한다.
-//                 if (newPacket.first < it->first) {
-//                     m_buffer.insert(it, newPacket);
-//                     break;
-//                 }
-//             }
-//         }
-//     }
-
-//     // // 버퍼 사이즈를 확인하고, 필요하면 가장 오래된 데이터를 제거한다.
-//     // while (m_buffer.size() > m_maxBufferSize) {
+// void IPECallback::onLiveDataAvailable(IPEDataPacket packet)
+// {
+//     // if (m_buffer.size() == m_maxBufferSize)
+//     // {
 //     //     m_buffer.pop_front();
 //     // }
+
+//     m_buffer.push_back(RosKapDataPacket(packet.s_time, packet));
 // }
+
+void IPECallback::onLiveDataAvailable(IPEDataPacket packet) {
+    RosKapDataPacket newPacket(packet.s_time, packet);
+
+    // 덱이 비어있거나, 새 패킷이 가장 최신일 경우 뒤에 추가한다.
+    if (m_buffer.empty() || newPacket.first >= m_buffer.back().first) {
+        m_buffer.push_back(newPacket);
+    } else {
+        // 새 패킷이 가장 오래된 것보다 이전 데이터일 경우 앞에 삽입한다.
+        if (newPacket.first <= m_buffer.front().first) {
+            m_buffer.push_front(newPacket);
+        } else {
+            // 중간에 삽입해야 할 경우, 삽입 위치를 찾는다.
+            for (auto it = m_buffer.begin(); it != m_buffer.end(); ++it) {
+                // 삽입 위치를 찾으면 반복을 중단한다.
+                if (newPacket.first < it->first) {
+                    m_buffer.insert(it, newPacket);
+                    break;
+                }
+            }
+        }
+    }
+
+    // 버퍼 사이즈를 확인하고, 필요하면 가장 오래된 데이터를 제거한다.
+    while (m_buffer.size() > m_maxBufferSize) {
+        m_buffer.pop_front();
+    }
+}

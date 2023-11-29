@@ -43,14 +43,8 @@ class FusionSubscriber;
 
 class PacketCallback 
 {
-protected:
-    std::string packetFrameID;
-
 public:
-    virtual std::string getPacketFrameID() = 0;
     virtual void operator()(IPEDataPacket &packet, double timestamp, FusionSubscriber* _fusionSubscriber) = 0;
-    virtual void registerCallback(const std::function<void(int)>& callback) = 0;
-    // In packetcallback.h
 };
 #endif
 
