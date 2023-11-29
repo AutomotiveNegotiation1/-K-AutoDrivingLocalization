@@ -1,0 +1,2 @@
+dwm1001_ros:ipe:ublox_f9r
+-DCATKIN_DEVEL_PREFIX=/home/umaps/Desktop/-K-AutoDrivingLocalization/src/positioning/keti_ws/devel -DCMAKE_INSTALL_PREFIX=/home/umaps/Desktop/-K-AutoDrivingLocalization/src/positioning/keti_ws/install -G Unix Makefiles

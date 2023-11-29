@@ -44,22 +44,28 @@
 #include "ipecallback.h"
 #include "ipedatapacket.h"
 #include "posdatapacket.h"
-#include "fusionsubscriber.h"
+
+#include "socketmanager.h"
 
 #include "IMUpos.h"
 #include "rt_nonfinite.h"
 
 // Declare Global Variables
-// extern double b_acc_o[3];
-// extern double b_gyro[3];
-// extern double mode;
-// extern double kf_psi;
-// extern double gyro_psi;
-// extern double cent_pos_est[3];
-// extern double cent_vel_est[3];
-// extern double state_o;
-// extern double acc_b_phi;
-// extern double acc_b_theta;
+extern double b_acc_o[3];
+extern double b_gyro[3];
+extern double mode;
+extern double kf_psi;
+extern double gyro_psi;
+extern double cent_pos_est[3];
+extern double cent_vel_est[3];
+extern double state_o;
+extern double acc_b_phi;
+extern double acc_b_theta;
+extern double signalIMU;
+extern double imuNum;
+
+class FusionSubscriber;
+
 
 class ImuSubscriber : public PacketCallback {
 private:
@@ -69,40 +75,30 @@ private:
     std::string frame_id = "imu";
     std::ostringstream topic_name_stream;
 
-    FusionSubscriber* o_fusion;
+    SocketManager* socketManager;
+
     IPECallback* m_ipeCallback;
     IPEDataPacket m_ipeDataPacket;
-    std::vector<std::function<void(double, std::string&)>> callbacks;
+    std::vector<std::function<void(int)>> callbacks;
 
     const double Ln = 6.0;
     const double Lp = 4.0;
 
 public:
-    double b_acc_o[3];
-    double b_gyro[3];
-    double mode;
-    double kf_psi;
-    double gyro_psi;
-    double cent_pos_est[3];
-    double cent_vel_est[3];
-    double state_o;
-    double acc_b_phi;
-    double acc_b_theta;
-
-
-public:
-    ImuSubscriber(ros::NodeHandle& node, IPECallback* ipeCallback, FusionSubscriber* _fusion);
+    ImuSubscriber(ros::NodeHandle& node, IPECallback* ipeCallback);
     ~ImuSubscriber();
-    void operator()(IPEDataPacket &packet, double timestamp);
-    void registerCallback(const std::function<void(double, std::string&)>& callback) override;
-    void sendEvent(double data);
+    void operator()(IPEDataPacket &packet, double timestamp, FusionSubscriber* _fusionSubscriber);
+    void registerCallback(const std::function<void(int)>& callback);
+    void sendEvent(int data);
     std::string getPacketFrameID();
+
+    void sendUDPMessage(double center_x, double center_y, double heading);
 
 private:
     void setupSubscriber(ros::NodeHandle& node);
     void _callback(const sensor_msgs::Imu::ConstPtr& msg);
     void _callback_Fusion(const ipe::Fusion::ConstPtr& msg);
-    void processPacketData(IPEDataPacket &packet, double timestamp);
+    void processPacketData(IPEDataPacket &packet, double timestamp, FusionSubscriber* _fusionSubscriber);
 };
 
 #endif // IMUSUBSCRIBER_H

@@ -33,27 +33,27 @@
 
 #include "uwbsubscriber.h"
 
-// std::vector<double> xain_list;
-// std::vector<double> yain_list;
-// std::vector<double> xain_difference;
-// std::vector<double> yain_difference;
-// std::vector<std::string> RxID_data_list;
-// std::vector<int> RxID_list;
-// std::vector<std::string> difference;
-
-// creal_T tag_pos_b[4];
-// creal_T prevTagPos[4];
-// creal_T tag_pos_est[4];
-// creal_T tag_pos_est_aver[4];
-// creal_T tag_center_vel_est;
-// std::string tagNum;
-// double UWBErrSum;
-// double heading_est;
-// double headingest_a_aver_v;
-// double init_flag;
-// double Nanchor;
-// double zt_b;
-// double prevTagHeading;
+std::vector<double> xain_list;
+std::vector<double> yain_list;
+std::vector<double> xain_difference;
+std::vector<double> yain_difference;
+double UWBErrSum;
+std::vector<std::string> RxID_data_list;
+std::vector<int> RxID_list;
+bool statusUWB;
+std::vector<std::string> difference;
+creal_T tag_pos_b[4];
+creal_T prevTagPos[4];
+std::string tagNum;
+creal_T tag_pos_est[4];
+creal_T tag_pos_est_aver[4];
+creal_T tag_center_vel_est;
+double heading_est;
+double headingest_a_aver_v;
+double init_flag;
+double Nanchor;
+double zt_b;
+double prevTagHeading;
 
 inline creal_T argInit_creal_T(int idx)
 {
@@ -98,24 +98,25 @@ inline void argInit_1x4_creal_preT(creal_T result[4])
     }
 };
 
-UwbSubscriber::UwbSubscriber(ros::NodeHandle& _node, const std::string& _uwbNum, IPECallback* _ipeCallback, FusionSubscriber* _fusion)
-: node(_node), o_ipeCallback(_ipeCallback), m_uwbNum(_uwbNum), o_fusion(_fusion) {
+UwbSubscriber::UwbSubscriber(ros::NodeHandle& _node, const std::string& _uwbNum, IPECallback* _ipeCallback)
+: node(_node), o_ipeCallback(_ipeCallback), m_uwbNum(_uwbNum){
+    socketManager = SocketManager::getInstance(); // <-- Add this line to initialize the socketManager
 }
 
 UwbSubscriber::~UwbSubscriber() {
 }
 
-void UwbSubscriber::operator()(IPEDataPacket &_packet, double _timestamp) {
-    processPacketData(_packet, _timestamp);
+void UwbSubscriber::operator()(IPEDataPacket &_packet, double _timestamp, FusionSubscriber* _fusionSubscriber) {
+    processPacketData(_packet, _timestamp, _fusionSubscriber);
 }
 
-void UwbSubscriber::registerCallback(const std::function<void(double, std::string&)>& _callback) {
+void UwbSubscriber::registerCallback(const std::function<void(int)>& _callback) {
     callbacks.push_back(_callback);
 }
 
-void UwbSubscriber::sendEvent(double data, std::string& uwbNum) {
+void UwbSubscriber::sendEvent(int data) {
     for (const auto& callback : callbacks) {
-        callback(data, uwbNum);
+        callback(data);
     }
 }
 
@@ -151,19 +152,6 @@ void UwbSubscriber::_callback(const ipe::Anchor::ConstPtr& msg) {
         ROS_WARN("m_kapCallback is a nullptr!");
     }
 }
-
-// void UwbSubscriber::_callback_Fusion(const ipe::Fusion::ConstPtr& msg) {
-//     if (!msg){
-//         prevTagHeading = msg->prevTagHeading;
-//         init_flag = msg->init_flag;
-//         for(int i=0; i<4;i++){
-//             msg->prevTagPos[i];
-//             prevTagPos[i].re = msg->prevTagPos[i];
-//             prevTagPos[i].im = msg->prevTagPos[i+1];
-//         }
-//     }
-// }
-
 void UwbSubscriber::_setRxid(const ipe::Anchor::ConstPtr& msg) {
     std::vector<std::string> newIds = msg->id;
     std::vector<double> newXs = msg->x;
@@ -226,7 +214,15 @@ double UwbSubscriber::extractNumber(const std::string& input) {
     return value;
 }
 
-void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp) 
+void UwbSubscriber::sendUDPMessage(double center_x, double center_y, double heading) {
+    std::ostringstream oss;
+    oss << center_x << "," << center_y << "," << heading;
+    std::string result = oss.str();
+    socketManager->broadcastUDPMessage(result);
+}
+
+
+void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, FusionSubscriber* _fusionSubscriber) 
 {
     PosDataPacket pos;
     double Ln = 6;
@@ -240,7 +236,6 @@ void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp)
     for (size_t i = 0; i < Nanchor; ++i) {
         auto it = std::find(RxID_data_list.begin(), RxID_data_list.end(), packet.id[i]);
         if (it != RxID_data_list.end()) {
-            // packet.RxID[i] = std::distance(RxID_data_list.begin(), it) + 1;
             packet.RxID[i] = std::distance(RxID_data_list.begin(), it) + 1;
             // packet.RxDist[i] = std::sqrt(std::pow(packet.distanceFromTag[i], 2) - std::pow(packet.z[i]-zt_b, 2));
             packet.RxDist[i] = packet.distanceFromTag[i];
@@ -272,82 +267,120 @@ void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp)
 
         if(isEmpty){
             UWBpos6(Ln, Lp, LnC, TagNum, Nanchor, packet.RxID.data(), packet.RxDist.data(), s_time, tag_pos_b, xain_list.data(), yain_list.data(), prevTagPos, prevTagHeading, UWBout);
-
-            ipe::Uwbpos uwb_pos_msg;
-            uwb_pos_msg.header.stamp = ros::Time::now();
-            uwb_pos_msg.header.frame_id = "UWBPos";
-            
-            // // Assigning UWBout data to pos
-            for (int i = 0; i < 4; i++) {
-                o_fusion->tag_pos_b[i].re = tag_pos_b[i].re;
-                o_fusion->tag_pos_b[i].im = tag_pos_b[i].im;
-                o_fusion->tag_pos_est[i].re = UWBout[i];
-                uwb_pos_msg.tag_pos_est.push_back(tag_pos_est[i].re);
-                o_fusion->tag_pos_est[i].im = UWBout[i + 4];
-                uwb_pos_msg.tag_pos_est.push_back(tag_pos_est[i].im);
-                
-                // uwb_pos_msg.tag_pos_b.push_back(tag_pos_b[i].re);
-                // uwb_pos_msg.tag_pos_b.push_back(tag_pos_b[i].im);
-
-                tag_pos_est_aver[i].re = UWBout[i + 9];
-                tag_pos_est_aver[i].im = UWBout[i + 13];
-            }
-
-            o_fusion->heading_est = UWBout[8];
-            headingest_a_aver_v = UWBout[17];
-
-            for (int i = 0; i < 4; i++) {
-                // pos.tag_pos_est[i] = prevTagPos[i];
-                // pos.tag_pos_est_aver[i] = tag_pos_est_aver[i];
-                this->tag_pos_est[i] = prevTagPos[i];
-                this->tag_pos_est_aver[i] = tag_pos_est_aver[i];
-            }
-
-            this->heading_est = prevTagHeading;
-            this->headingest_a_aver_v = headingest_a_aver_v;
-
-            // for (size_t i = 0; i < yain_list.size(); ++i) {
-            //     this->x[i] = xain_list[i];
-            //     this->y[i] = yain_list[i];
-            // }
-            this->tag_center_vel_est.re = UWBout[18];
-            this->tag_center_vel_est.im = UWBout[19];
-            o_fusion->tag_center_vel_est.re = UWBout[18];
-            o_fusion->tag_center_vel_est.im = UWBout[19];
-
-            this->UWBErrSum = UWBout[20];
-            o_fusion->UWBErrSum = UWBout[20];
-            uwb_pos_msg.UWBErrSum = o_fusion->UWBErrSum;
-            uwb_pos_msg.heading_est = heading_est;
-            uwb_pos_msg.Nanchor = Nanchor;
-            // uwb_pos_msg.zt_b = zt_b;
-
-            if (heading_est != 0 && init_flag == 0) {
-                init_flag = 1;
-            } else if (heading_est != 0 && init_flag ==1) {
-                init_flag = 1;
-            } else if (init_flag == 2) {
-                init_flag = 3;
-            } else if (init_flag == 3) {
-                init_flag = 3;
-            } else {
-                init_flag = 0;
-            }
-            this->init_flag = init_flag;
-            o_fusion->init_flag = init_flag;
-            o_fusion->zt_b = zt_b;
-            o_fusion->Nanchor = Nanchor;
-
-            o_fusion->processPacketData(2);
-            uwb_pos_msg.init_flag = init_flag;
-            
-            uwb_pos_msg.tag_center_vel_est.push_back(tag_center_vel_est.re);
-            uwb_pos_msg.tag_center_vel_est.push_back(tag_center_vel_est.im);
-
-            pub.publish(uwb_pos_msg);
-
         }
     }
+
+    // // Assigning UWBout data to pos
+    for (int i = 0; i < 4; i++) {
+        tag_pos_est[i].re = UWBout[i];
+        tag_pos_est[i].im = UWBout[i + 4];
+
+        tag_pos_est_aver[i].re = UWBout[i + 9];
+        tag_pos_est_aver[i].im = UWBout[i + 13];
+    }
+
+    heading_est = UWBout[8];
+    headingest_a_aver_v = UWBout[17];
+
+    for (int i = 0; i < 4; i++) {
+        pos.tag_pos_est[i] = prevTagPos[i];
+        pos.tag_pos_est_aver[i] = tag_pos_est_aver[i];
+    }
+
+    pos.heading_est = prevTagHeading;
+    pos.headingest_a_aver_v = headingest_a_aver_v;
+
+    for (size_t i = 0; i < yain_list.size(); ++i) {
+        pos.x[i] = xain_list[i];
+        pos.y[i] = yain_list[i];
+    }
+
+    tag_center_vel_est.re = UWBout[18];
+    tag_center_vel_est.im = UWBout[19];
+
+    UWBErrSum = UWBout[20];
+
+    if (heading_est != 0 && init_flag == 0) {
+        init_flag = 1;
+    } else if (heading_est != 0 && init_flag ==1) {
+        init_flag = 1;
+    } else if (init_flag == 2) {
+        init_flag = 3;
+    } else if (init_flag == 3) {
+        init_flag = 3;
+    } else {
+        init_flag = 0;
+    }
+
+    // _fusionSubscriber->processPacketData(2);
+
+    sendEvent(2);
+    // QMetaObject::invokeMethod(this, "emitSignal", Q_ARG(PosDataPacket, pos));
+
+    // callback_(pos);
+
+    // ROS_INFO("tag_pos_est--> (%f,%f), (%f,%f), (%f,%f), (%f,%f)", 
+    //         tag_pos_est[0].re, tag_pos_est[0].im, 
+    //         tag_pos_est[1].re, tag_pos_est[1].im,
+    //         tag_pos_est[2].re, tag_pos_est[2].im, 
+    //         tag_pos_est[3].re, tag_pos_est[3].im);
+
+    // ROS_INFO("tag_pos_est_aver--> (%f,%f), (%f,%f), (%f,%f), (%f,%f)", 
+    //         pos.tag_pos_est_aver[0].re, pos.tag_pos_est_aver[0].im, 
+    //         pos.tag_pos_est_aver[1].re, pos.tag_pos_est_aver[1].im,
+    //         pos.tag_pos_est_aver[2].re, pos.tag_pos_est_aver[2].im, 
+    //         pos.tag_pos_est_aver[3].re, pos.tag_pos_est_aver[3].im);
+
+    // ROS_INFO("heading_est--> %f", pos.heading_est);
+    // ROS_INFO("headingest_a_aver_v--> %f", pos.headingest_a_aver_v);
+    // ROS_INFO("UWB_ERROR_SUM-->%f", UWBout[20]);
+
+    IMUposU = fusion2(kl, imuNum, tag_pos_est, tag_center_vel_est, cent_pos_est,
+                cent_vel_est, b_acc_o, acc_b_phi, Acc_Pos, Acc_Vel, kalman_on, init_flag, UWBErrSum, &kf_psi,
+                &gyro_psi, heading_est, acc_b_theta, 2, Nanchor, state_o);
+
+        
     
-    // sendEvent(init_flag, m_uwbNum);
+    // ROS_INFO("TagPos : (%f,%f)",cent_pos_est[0], cent_pos_est[1]);
+    // ROS_INFO("Heading : (%f)", prevTagHeading);
+
+    if (init_flag == 1){
+        gyro_psi = -heading_est;
+        kf_psi = gyro_psi;
+        cent_pos_est[0] = IMUposU.re;
+        cent_pos_est[1] = IMUposU.im;
+        cent_pos_est[1] = 0;
+        cent_vel_est[0] = tag_center_vel_est.re;
+        cent_vel_est[1] = tag_center_vel_est.im;
+        cent_vel_est[2] = 0;
+    }
+
+    
+    if (init_flag == 1){
+        init_flag = 2;
+    }
+    std::complex<real_T> j(0, 1); // 복소수 단위
+
+    // creal_T cent_pos_est_;
+    creal_T current_tag_pos_b[4];
+    for (int i = 0; i < 4; ++i) {
+        cent_pos_est[0] = IMUposU.re;
+        cent_pos_est[1] = IMUposU.im;
+        current_tag_pos_b[i].re = tag_pos_b[i].re;
+        current_tag_pos_b[i].im = tag_pos_b[i].im;
+                
+        std::complex<double> cent_pos_est_c(IMUposU.re, IMUposU.im);
+        std::complex<double> current_tag_pos_b_c(current_tag_pos_b[i].re, current_tag_pos_b[i].im);
+        std::complex<double> TagPos = cent_pos_est_c + std::exp(j * (-kf_psi)) * (current_tag_pos_b_c + 0.4 * j);
+        creal_T TagPos_;
+        TagPos_.re = std::real(TagPos);
+        TagPos_.im = std::imag(TagPos);
+        prevTagPos[i].re = TagPos_.re;
+        prevTagPos[i].im = TagPos_.im;
+    }
+    
+    prevTagHeading = -kf_psi;
+    kf_psi = kf_psi;
+
+    sendUDPMessage(IMUposU.re, IMUposU.im, -kf_psi);
 }

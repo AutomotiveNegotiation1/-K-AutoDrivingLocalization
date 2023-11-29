@@ -33,16 +33,18 @@
 
 #include "imusubscriber.h"
 
-// double b_acc_o[3] = {};
-// double b_gyro[3] = {};
-// double mode = 0;
-// double kf_psi = 0;
-// double gyro_psi = 0;
-// double cent_pos_est[3] = {};
-// double cent_vel_est[3] = {};
-// double state_o;
-// double acc_b_phi;
-// double acc_b_theta;
+double b_acc_o[3] = {};
+double b_gyro[3] = {};
+double mode = 0;
+double kf_psi = 0;
+double gyro_psi = 0;
+double cent_pos_est[3] = {};
+double cent_vel_est[3] = {};
+double state_o;
+double acc_b_phi;
+double acc_b_theta;
+double signalIMU = 0;
+double imuNum = 0;
 
 static void argInit_1x3_real_T(double result[3]) {
     for (int idx1{0}; idx1 < 3; idx1++) {
@@ -50,26 +52,26 @@ static void argInit_1x3_real_T(double result[3]) {
     }
 }
 
-ImuSubscriber::ImuSubscriber(ros::NodeHandle& _node, IPECallback* _ipeCallback, FusionSubscriber* _fusion)
-    : m_ipeCallback(_ipeCallback), o_fusion(_fusion) {
+ImuSubscriber::ImuSubscriber(ros::NodeHandle& _node, IPECallback* _ipeCallback)
+    : m_ipeCallback(_ipeCallback){
     setupSubscriber(_node);
+    socketManager = SocketManager::getInstance(); // <-- Add this line to initialize the socketManager
 }
 
 
 ImuSubscriber::~ImuSubscriber() {}
 
-void ImuSubscriber::operator()(IPEDataPacket &packet, double timestamp) {
-    processPacketData(packet, timestamp);
+void ImuSubscriber::operator()(IPEDataPacket &packet, double timestamp, FusionSubscriber* _fusionSubscriber) {
+    processPacketData(packet, timestamp, _fusionSubscriber);
 }
 
-void ImuSubscriber::registerCallback(const std::function<void(double, std::string&)>& callback) {
+void ImuSubscriber::registerCallback(const std::function<void(int)>& callback) {
     callbacks.push_back(callback);
 }
 
-void ImuSubscriber::sendEvent(double data) {
+void ImuSubscriber::sendEvent(int data) {
     for (const auto& callback : callbacks) {
-        std::string st = "IMU";
-        callback(data, st);
+        callback(data);
     }
 }
 
@@ -99,20 +101,15 @@ void ImuSubscriber::_callback(const sensor_msgs::Imu::ConstPtr& msg) {
     }
 }
 
-// void ImuSubscriber::_callback_Fusion(const ipe::Fusion::ConstPtr& msg) {
-//     if (!msg){
-//         kf_psi = msg->kf_psi;
-//         gyro_psi = msg->gyro_psi;
-//         acc_b_phi = msg->acc_b_phi;
-//         for(int i=0; i<3;i++){
-//             cent_pos_est[i] = msg->cent_pos_est[i];
-//             cent_vel_est[i] = msg->cent_vel_est[i];
-//         }
-//     }
-// }
+void ImuSubscriber::sendUDPMessage(double center_x, double center_y, double heading) {
+    std::ostringstream oss;
+    oss << center_x << "," << center_y << "," << heading;
+    std::string result = oss.str();
+    socketManager->broadcastUDPMessage(result);
+}
 
 
-void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp) {
+void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, FusionSubscriber* _fusionSubscriber) {
     double IMUacc_c[3] = {};
     if (!packet.linear_x.empty()) {
         IMUacc_c[0] = packet.linear_x.back();
@@ -147,91 +144,10 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp) {
         &gyro_psi, cent_pos_est, cent_vel_est, &state_o, &acc_b_phi,
         &acc_b_theta);
 
+    imuNum++;
+
+    // _fusionSubscriber->processPacketData(1);
+    sendEvent(1);
     
-    this->cent_pos_est[0] = cent_pos_est[0];
-    this->cent_pos_est[1] = cent_pos_est[1];
-    this->cent_pos_est[2] = cent_pos_est[2];
-    this->cent_vel_est[0] = cent_vel_est[0];
-    this->cent_vel_est[1] = cent_vel_est[1];
-    this->cent_vel_est[2] = cent_vel_est[2];
-    this->kf_psi = kf_psi;
-    this->gyro_psi = gyro_psi;
-    this->b_acc_o[0] = b_acc_o[0];
-    this->b_acc_o[1] = b_acc_o[1];
-    this->b_acc_o[2] = b_acc_o[2];
-    this->state_o = state_o;
-    this->acc_b_phi = acc_b_phi;
-    this->acc_b_theta = acc_b_theta;
-    
-    o_fusion->cent_pos_est[0] = cent_pos_est[0];
-    o_fusion->cent_pos_est[1] = cent_pos_est[1];
-    o_fusion->cent_pos_est[2] = cent_pos_est[2];
-    o_fusion->cent_vel_est[0] = cent_vel_est[0];
-    o_fusion->cent_vel_est[1] = cent_vel_est[1];
-    o_fusion->cent_vel_est[2] = cent_vel_est[2];
-    o_fusion->kf_psi = kf_psi;
-    o_fusion->gyro_psi = gyro_psi;
-    o_fusion->b_acc_o[0] = b_acc_o[0];
-    o_fusion->b_acc_o[1] = b_acc_o[1];
-    o_fusion->b_acc_o[2] = b_acc_o[2];
-    o_fusion->state_o = state_o;
-    o_fusion->acc_b_phi = acc_b_phi;
-    o_fusion->acc_b_theta = acc_b_theta;
-
-    o_fusion->processPacketData(1);
-
-
-
-// Arguments    : const double IMUacc_c[3]
-//                const double IMUgyro_c[3]
-//                double s_time
-//                double b_acc_o[3]
-//                double b_gyro[3]
-//                double mode
-//                double *kf_psi
-//                double *gyro_psi
-//                double cent_pos_est[3]
-//                double cent_vel_est[3]
-//                double *state_o
-//                double *acc_b_phi
-//                double *acc_b_theta
-
-    
-
-    // b_gyro[0] = b_gyro[0];
-    // b_gyro[1] = b_gyro[1];
-    // b_gyro[2] = b_gyro[2];
-
-    // ipe::Imupos imu_pos_msg;
-    // imu_pos_msg.header.stamp = ros::Time::now();
-    // imu_pos_msg.header.frame_id = "IMUPos";
-
-    // imu_pos_msg.state_o = state_o;
-    // imu_pos_msg.b_acc_o.push_back(b_acc_o[0]);
-    // imu_pos_msg.b_acc_o.push_back(b_acc_o[1]);
-    // imu_pos_msg.b_acc_o.push_back(b_acc_o[2]);
-
-    // imu_pos_msg.b_acc_o.push_back(b_gyro[0]);
-    // imu_pos_msg.b_acc_o.push_back(b_gyro[1]);
-    // imu_pos_msg.b_acc_o.push_back(b_gyro[2]);
-
-    // imu_pos_msg.acc_b_theta = acc_b_theta;
-    // imu_pos_msg.acc_b_phi = acc_b_phi;
-
-    // imu_pos_msg.gyro_psi = gyro_psi;
-
-    // imu_pos_msg.cent_pos_est.push_back(cent_pos_est[0]);
-    // imu_pos_msg.cent_pos_est.push_back(cent_pos_est[1]);
-    // imu_pos_msg.cent_pos_est.push_back(cent_pos_est[2]);
-
-    // imu_pos_msg.cent_vel_est.push_back(cent_vel_est[0]);
-    // imu_pos_msg.cent_vel_est.push_back(cent_vel_est[1]);
-    // imu_pos_msg.cent_vel_est.push_back(cent_vel_est[2]);
-
-    // imu_pos_msg.kf_psi = kf_psi;
-
-    // pub.publish(imu_pos_msg);
-
-    sendEvent(state_o);
-    
+    sendUDPMessage(cent_pos_est[0], cent_pos_est[1], -kf_psi);
 }
