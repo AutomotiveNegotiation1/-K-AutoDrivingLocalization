@@ -38,16 +38,19 @@
 #include "ipedatapacket.h"
 #include "posdatapacket.h"
 
+
+class FusionSubscriber;
+
 class PacketCallback 
 {
-    protected:
-        std::string packetFrameID;
+protected:
+    std::string packetFrameID;
 
-    public:
-        virtual std::string getPacketFrameID() = 0;
-        virtual void operator()(IPEDataPacket &, double) = 0;
-        virtual void registerCallback(const std::function<void(double, std::string&)>& callback) = 0;
-        // In packetcallback.h
+public:
+    virtual std::string getPacketFrameID() = 0;
+    virtual void operator()(IPEDataPacket &packet, double timestamp, FusionSubscriber* _fusionSubscriber) = 0;
+    virtual void registerCallback(const std::function<void(int)>& callback) = 0;
+    // In packetcallback.h
 };
-
 #endif
+

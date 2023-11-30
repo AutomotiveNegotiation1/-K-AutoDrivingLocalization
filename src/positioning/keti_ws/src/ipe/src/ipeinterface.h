@@ -57,6 +57,11 @@
 
 class PacketCallback;
 
+/**
+ * @brief The IPEInterface class
+ * This class is the main class of the IPE. It is responsible for the initialization of the IPE and the registration of the subscribers.
+ * 
+ */
 class IPEInterface {
 
 private:

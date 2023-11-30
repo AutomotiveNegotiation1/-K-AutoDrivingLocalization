@@ -89,28 +89,28 @@ IPEInterface::~IPEInterface()
 void IPEInterface::registerSubcribers(ros::NodeHandle &_node) {
     bool m_should_publish;
     o_fusion = new FusionSubscriber(_node);
-    o_imu = new ImuSubscriber(_node, &o_ipeCallback, o_fusion);
+    o_imu = new ImuSubscriber(_node, &o_ipeCallback);
     std::list<double> totalTag;
     if (ros::param::get("/ipe_node/Tag_on", m_should_publish) && m_should_publish) {
         if (ros::param::get("/ipe_node/sub_UWB0", m_should_publish) && m_should_publish) {
-            UwbSubscriber* o_uwb1 = new UwbSubscriber(_node, "0", &o_ipeCallback, o_fusion);
+            UwbSubscriber* o_uwb1 = new UwbSubscriber(_node, "0", &o_ipeCallback);
             o_uwb1->setupSubscriber("0");
             registerCallback(o_uwb1);
         }
         if (ros::param::get("/ipe_node/sub_UWB1", m_should_publish) && m_should_publish) {
-            UwbSubscriber* o_uwb1 = new UwbSubscriber(_node, "1", &o_ipeCallback, o_fusion);
-            o_uwb1->setupSubscriber("1");
-            registerCallback(o_uwb1);
+            UwbSubscriber* o_uwb2 = new UwbSubscriber(_node, "1", &o_ipeCallback);
+            o_uwb2->setupSubscriber("1");
+            registerCallback(o_uwb2);
         }
         if (ros::param::get("/ipe_node/sub_UWB2", m_should_publish) && m_should_publish) {
-            UwbSubscriber* o_uwb1 = new UwbSubscriber(_node, "2", &o_ipeCallback, o_fusion);
-            o_uwb1->setupSubscriber("2");
-            registerCallback(o_uwb1);
+            UwbSubscriber* o_uwb3 = new UwbSubscriber(_node, "2", &o_ipeCallback);
+            o_uwb3->setupSubscriber("2");
+            registerCallback(o_uwb3);
         }
         if (ros::param::get("/ipe_node/sub_UWB3", m_should_publish) && m_should_publish) {
-            UwbSubscriber* o_uwb1 = new UwbSubscriber(_node, "3", &o_ipeCallback, o_fusion);
-            o_uwb1->setupSubscriber("3");
-            registerCallback(o_uwb1);
+            UwbSubscriber* o_uwb4 = new UwbSubscriber(_node, "3", &o_ipeCallback);
+            o_uwb4->setupSubscriber("3");
+            registerCallback(o_uwb4);
         }
     }
 
@@ -127,91 +127,29 @@ void IPEInterface::registerCallback(PacketCallback *_cb)  // Make sure PacketCal
 
 void IPEInterface::spinFor()
 {
-    ImuSubscriber* imuSub;
-    UwbSubscriber* uwbSub;
-
 	RosKapDataPacket rosPacket = o_ipeCallback.next();
     std::string frame_id1 = rosPacket.second.frame_id;
-    bool flag = false;
 	if (!rosPacket.second.empty(rosPacket.second.frame_id))
 	{
         for (auto &cb : l_callbacks)
 		{
-            imuSub = dynamic_cast<ImuSubscriber*>(cb);
-            uwbSub = dynamic_cast<UwbSubscriber*>(cb);
+            ImuSubscriber* imuSub = dynamic_cast<ImuSubscriber*>(cb);
             std::string frame_id = rosPacket.second.frame_id;
             if (rosPacket.second.frame_id == "imu"){
                 if (imuSub){
-                    cb->operator()(rosPacket.second, rosPacket.first);
-                    o_imu = imuSub;
+                    cb->operator()(rosPacket.second, rosPacket.first, o_fusion);
                     o_ipeCallback.pop();
                     break;
                 }
             }
             else{
                 if (!imuSub){
-                    if (flag2 != 1){
-                        uwbSub->xain_list = o_uwb->xain_list;
-                        uwbSub->yain_list = o_uwb->yain_list;
-                        uwbSub->RxID_data_list = o_uwb->RxID_data_list;
-                        uwbSub->RxID_list = o_uwb->RxID_list;
-                    }
-                    flag2 = 2;
-                    cb->operator()(rosPacket.second, rosPacket.first);
-                    o_uwb = uwbSub;
-                    flag = true;
+                    cb->operator()(rosPacket.second, rosPacket.first, o_fusion);
                     o_ipeCallback.pop();
                     break;
                 }
             }
 		}
-        
-        if (o_fusion->init_flag == 1) {
-            o_imu->gyro_psi = -o_fusion->heading_est; 
-            o_imu->kf_psi = o_fusion->gyro_psi;
-            o_imu->cent_pos_est[0] = o_fusion->IMUposU.re;
-            o_imu->cent_pos_est[1] = o_fusion->IMUposU.im;
-            o_imu->cent_pos_est[2] = 0; 
-            o_imu->cent_vel_est[0] = o_fusion->tag_center_vel_est.re;
-            o_imu->cent_vel_est[1] = o_fusion->tag_center_vel_est.im;
-            o_imu->cent_vel_est[2] = 0;
-        }
-
-        std::copy(std::begin(o_fusion->b_acc_o), std::end(o_fusion->b_acc_o), std::begin(o_imu->b_acc_o));
-        std::copy(std::begin(o_fusion->cent_pos_est), std::end(o_fusion->cent_pos_est), std::begin(o_imu->cent_pos_est));
-        std::copy(std::begin(o_fusion->cent_vel_est), std::end(o_fusion->cent_vel_est), std::begin(o_imu->cent_vel_est));
-        o_imu->kf_psi = o_fusion->kf_psi;
-        o_imu->gyro_psi = o_fusion->gyro_psi;
-        // o_imu->acc_b_phi = o_fusion->acc_b_phi;
-        // o_imu->acc_b_theta = o_fusion->acc_b_theta;
-
-        if (flag){
-            if (o_fusion->num_ == 1 && o_fusion->init_flag == 1){
-                o_uwb->init_flag = 2;
-            }
-            std::complex<real_T> j(0, 1); // 복소수 단위
-
-            // creal_T cent_pos_est_;
-            creal_T current_tag_pos_b[4];
-            for (int i = 0; i < 4; ++i) {
-                o_imu->cent_pos_est[0] = o_fusion->IMUposU.re;
-                o_imu->cent_pos_est[1] = o_fusion->IMUposU.im;
-                current_tag_pos_b[i].re = o_fusion->tag_pos_b[i].re;
-                current_tag_pos_b[i].im = o_fusion->tag_pos_b[i].im;
-                        
-                std::complex<double> cent_pos_est_c(o_fusion->IMUposU.re, o_fusion->IMUposU.im);
-                std::complex<double> current_tag_pos_b_c(current_tag_pos_b[i].re, current_tag_pos_b[i].im);
-                std::complex<double> TagPos = cent_pos_est_c + std::exp(j * (-o_fusion->kf_psi)) * (current_tag_pos_b_c + 0.4 * j);
-                creal_T TagPos_;
-                TagPos_.re = std::real(TagPos);
-                TagPos_.im = std::imag(TagPos);
-                o_uwb->prevTagPos[i].re = TagPos_.re;
-                o_uwb->prevTagPos[i].im = TagPos_.im;
-            }
-            
-            o_uwb->prevTagHeading = -o_fusion->kf_psi;
-            o_imu->kf_psi = o_fusion->kf_psi;
-        }
 
 	}
 }

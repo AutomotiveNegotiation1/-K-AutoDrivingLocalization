@@ -36,6 +36,9 @@
 #include <ros/ros.h>
 #include <complex>
 #include <vector>
+#include "imusubscriber.h"
+#include "uwbsubscriber.h"
+
 #include <ipe/Imupos.h>
 #include <ipe/Uwbpos.h>
 #include <ipe/Fusion.h>
@@ -90,29 +93,7 @@ public:
     bool imucall = false;
     int num_;
 
-    creal_T tag_center_vel_est;
-    creal_T tag_pos_est[4];
-    creal_T prevTagPos[4];
-    creal_T tag_pos_b[4];
-    double UWBErrSum;
-    double heading_est;
-    double Nanchor;
-    double init_flag;
-    double zt_b;
-    double gyro_psi;
-
-    double state_o;
-    double b_acc_o[3] = {};
-    double acc_b_theta;
-    double acc_b_phi;
-    double cent_pos_est[3] = {};
-    double cent_vel_est[3] = {};
-    double kf_psi;
-    double prevTagHeading;
-
     // UDP Socket Variables
-    ros::Subscriber subUWB;
-    ros::Subscriber subIMU;
     ros::Publisher pub;
     SocketManager* socketManager;
     socklen_t clientSize;
@@ -128,6 +109,8 @@ public:
     
 public:
     FusionSubscriber(ros::NodeHandle& node);
+    void onUWBDataReceived(int data); 
+    void onIMUDataReceived(int data); 
     void processPacketData(int num);
 
 private:

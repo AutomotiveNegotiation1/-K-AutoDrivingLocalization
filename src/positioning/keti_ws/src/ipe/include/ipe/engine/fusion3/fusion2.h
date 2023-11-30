@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: fusion2.h
 //
-// MATLAB Coder version            : 5.6
-// C/C++ source code generated on  : 09-Nov-2023 17:48:28
+// MATLAB Coder version            : 5.4
+// C/C++ source code generated on  : 30-Nov-2023 16:43:53
 //
 
 #ifndef FUSION2_H
