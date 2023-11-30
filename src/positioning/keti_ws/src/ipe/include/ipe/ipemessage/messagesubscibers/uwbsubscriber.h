@@ -118,9 +118,9 @@ private:
     double center_x = 0;
     double center_y = 0;
     double heading = 0;
-    double Acc_Vel[100] = {};
-    double Acc_Pos[100] = {};
-    double kalman_on = 1;
+    double Acc_Vel[60] = {};
+    double Acc_Pos[60] = {};
+    bool kalman_on = true;
     double kl = 0;
 
     creal_T IMUposU;

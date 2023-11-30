@@ -4,17 +4,17 @@
 // government, commercial, or other organizational use.
 // File: fusion2.cpp
 //
-// MATLAB Coder version            : 5.6
-// C/C++ source code generated on  : 09-Nov-2023 17:48:28
+// MATLAB Coder version            : 5.4
+// C/C++ source code generated on  : 30-Nov-2023 16:43:53
 //
 
 // Include Files
 #include "fusion2.h"
 #include "EulerKalman_2.h"
+#include "PosKalman2.h"
 #include "fusion2_data.h"
 #include "fusion2_initialize.h"
 #include "fusion2_rtwutil.h"
-#include "inv.h"
 #include "mod.h"
 #include "rotationVectorToMatrix.h"
 #include "rt_nonfinite.h"
@@ -79,7 +79,6 @@ creal_T fusion2(double kl, const double k0, const creal_T tag_pos_est[4],
                                     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1};
   creal_T IMUposU;
   double b_R[36];
-  double y_tmp[36];
   double cosPhi;
   double sinTheta;
   if (!isInitialized_fusion2) {
@@ -100,7 +99,6 @@ creal_T fusion2(double kl, const double k0, const creal_T tag_pos_est[4],
     IMUposU.im = sinTheta / 20.0;
   }
   if (k0 > 50.0) {
-    double cosTheta;
     int UWB_LS_Pos_tmp;
     int UWB_M_Pos_tmp;
     int i;
@@ -126,19 +124,19 @@ creal_T fusion2(double kl, const double k0, const creal_T tag_pos_est[4],
       double b_sinTheta;
       double cosPhi_tmp;
       double cosPsi;
+      double cosTheta;
       double sinPhi;
       double sinPsi;
       cosPhi = coder::b_mod(-heading_est);
-      sinTheta = cosPhi - *kf_psi;
-      cosTheta = std::round(std::abs(sinTheta) / 6.2831853071795862);
-      if (cosTheta < 2.147483648E+9) {
-        i = static_cast<int>(cosTheta);
-      } else if (cosTheta >= 2.147483648E+9) {
+      sinTheta = std::round(std::abs(cosPhi - *kf_psi) / 6.2831853071795862);
+      if (sinTheta < 2.147483648E+9) {
+        i = static_cast<int>(sinTheta);
+      } else if (sinTheta >= 2.147483648E+9) {
         i = MAX_int32_T;
       } else {
         i = 0;
       }
-      if (sinTheta > 3.1415926535897931) {
+      if (coder::b_mod(-heading_est) - *kf_psi > 3.1415926535897931) {
         cosPhi -= 6.2831853071795862 * static_cast<double>(i);
       } else {
         cosPhi += 6.2831853071795862 * static_cast<double>(i);
@@ -146,32 +144,32 @@ creal_T fusion2(double kl, const double k0, const creal_T tag_pos_est[4],
       sinPhi = std::sin(acc_b_phi / 2.0);
       b_cosPhi = std::cos(acc_b_phi / 2.0);
       b_sinTheta = std::sin(acc_b_theta / 2.0);
-      b_cosTheta = std::cos(acc_b_theta / 2.0);
+      cosTheta = std::cos(acc_b_theta / 2.0);
       sinPsi = std::sin(cosPhi / 2.0);
       cosPsi = std::cos(cosPhi / 2.0);
       b_sinPhi = std::sin(kf_phi / 2.0);
       cosPhi = std::cos(kf_phi / 2.0);
       sinTheta = std::sin(kf_theta / 2.0);
-      cosTheta = std::cos(kf_theta / 2.0);
+      b_cosTheta = std::cos(kf_theta / 2.0);
       b_sinPsi = std::sin(*kf_psi / 2.0);
       b_cosPsi = std::cos(*kf_psi / 2.0);
-      cosPhi_tmp = cosPhi * cosTheta;
+      cosPhi_tmp = cosPhi * b_cosTheta;
       b_cosPhi_tmp = b_sinPhi * sinTheta;
       c_cosPhi[0] = cosPhi_tmp * b_cosPsi + b_cosPhi_tmp * b_sinPsi;
       sinTheta *= cosPhi;
-      cosPhi = b_sinPhi * cosTheta;
+      cosPhi = b_sinPhi * b_cosTheta;
       c_cosPhi[1] = cosPhi * b_cosPsi - sinTheta * b_sinPsi;
       c_cosPhi[2] = sinTheta * b_cosPsi + cosPhi * b_sinPsi;
       c_cosPhi[3] = cosPhi_tmp * b_sinPsi - b_cosPhi_tmp * b_cosPsi;
-      cosPhi_tmp = b_cosPhi * b_cosTheta;
+      cosPhi_tmp = b_cosPhi * cosTheta;
       b_cosPhi_tmp = sinPhi * b_sinTheta;
       d_cosPhi[0] = cosPhi_tmp * cosPsi + b_cosPhi_tmp * sinPsi;
       sinTheta = b_cosPhi * b_sinTheta;
-      cosPhi = sinPhi * b_cosTheta;
+      cosPhi = sinPhi * cosTheta;
       d_cosPhi[1] = cosPhi * cosPsi - sinTheta * sinPsi;
       d_cosPhi[2] = sinTheta * cosPsi + cosPhi * sinPsi;
       d_cosPhi[3] = cosPhi_tmp * sinPsi - b_cosPhi_tmp * cosPsi;
-      kf_phi = EulerKalman_2(c_cosPhi, dv1, d_cosPhi, kf_theta, kf_psi);
+      EulerKalman_2(c_cosPhi, dv1, d_cosPhi, &kf_phi, &kf_theta, kf_psi);
       *gyro_psi = *kf_psi;
     }
     if (kl > 20.0) {
@@ -217,14 +215,12 @@ creal_T fusion2(double kl, const double k0, const creal_T tag_pos_est[4],
       UWB_M_Vel[59] = 0.0;
     }
     if ((kalman_on == true) && (init_flag > 2.0) && (UWBErrSum < 1.0)) {
-      
       double A[144];
       double x[12];
       double Cb2n[9];
       double a_tmp[9];
       double b_dv[3];
       int A_tmp;
-      int i4;
       // x = [cent_pos_est;cent_vel_est(1:2);0;TEMP;TEMP_bias];
       x[9] = b_acc_o[0];
       x[10] = b_acc_o[1];
@@ -244,10 +240,11 @@ creal_T fusion2(double kl, const double k0, const creal_T tag_pos_est[4],
         i1 = iv1[i];
         i2 = iv1[i + 3];
         i3 = iv1[i + 6];
-        for (i4 = 0; i4 < 3; i4++) {
-          Cb2n[i + 3 * i4] = (static_cast<double>(i1) * a_tmp[i4] +
-                              static_cast<double>(i2) * a_tmp[i4 + 3]) +
-                             static_cast<double>(i3) * a_tmp[i4 + 6];
+        for (UWB_LS_Pos_tmp = 0; UWB_LS_Pos_tmp < 3; UWB_LS_Pos_tmp++) {
+          Cb2n[i + 3 * UWB_LS_Pos_tmp] =
+              (static_cast<double>(i1) * a_tmp[UWB_LS_Pos_tmp] +
+               static_cast<double>(i2) * a_tmp[UWB_LS_Pos_tmp + 3]) +
+              static_cast<double>(i3) * a_tmp[UWB_LS_Pos_tmp + 6];
         }
       }
       for (i = 0; i < 144; i++) {
@@ -275,23 +272,19 @@ creal_T fusion2(double kl, const double k0, const creal_T tag_pos_est[4],
         A_tmp = 12 * (i + 6);
         A[A_tmp + 3] = Cb2n[3 * i] * 0.01;
         A[UWB_M_Pos_tmp + 3] = sinTheta * 0.01;
-        i4 = 3 * i + 1;
-        sinTheta = a_tmp[i4];
+        UWB_LS_Pos_tmp = 3 * i + 1;
+        sinTheta = a_tmp[UWB_LS_Pos_tmp];
         A[UWB_M_Pos_tmp + 1] = sinTheta * 0.0001 / 2.0;
-        A[A_tmp + 4] = Cb2n[i4] * 0.01;
+        A[A_tmp + 4] = Cb2n[UWB_LS_Pos_tmp] * 0.01;
         A[UWB_M_Pos_tmp + 4] = sinTheta * 0.01;
-        i4 = 3 * i + 2;
-        sinTheta = a_tmp[i4];
+        UWB_LS_Pos_tmp = 3 * i + 2;
+        sinTheta = a_tmp[UWB_LS_Pos_tmp];
         A[UWB_M_Pos_tmp + 2] = sinTheta * 0.0001 / 2.0;
-        A[A_tmp + 5] = Cb2n[i4] * 0.01;
+        A[A_tmp + 5] = Cb2n[UWB_LS_Pos_tmp] * 0.01;
         A[UWB_M_Pos_tmp + 5] = sinTheta * 0.01;
       }
       if (rt_hypotd_snf(UWB_M_Pos[57] - cent_pos_est[0],
                         UWB_M_Pos[58] - cent_pos_est[1]) < 2.0) {
-        double Pp[144];
-        double b_A[144];
-        double dv4[36];
-        double xp[12];
         if (IMUSel == 1.0) {
           for (i = 0; i < 36; i++) {
             b_R[i] = b_iv[i];
@@ -299,204 +292,24 @@ creal_T fusion2(double kl, const double k0, const creal_T tag_pos_est[4],
         } else {
           std::copy(&dv3[0], &dv3[36], &b_R[0]);
         }
-        //  12x1,
-        for (i = 0; i < 12; i++) {
-          xp[i] = 0.0;
-          for (i4 = 0; i4 < 12; i4++) {
-            UWB_LS_Pos_tmp = i + 12 * i4;
-            xp[i] += A[UWB_LS_Pos_tmp] * x[i4];
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  A[i + 12 * UWB_M_Pos_tmp] * b_P[UWB_M_Pos_tmp + 12 * i4];
-            }
-            b_A[UWB_LS_Pos_tmp] = sinTheta;
-          }
-          for (i4 = 0; i4 < 12; i4++) {
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  b_A[i + 12 * UWB_M_Pos_tmp] * A[i4 + 12 * UWB_M_Pos_tmp];
-            }
-            UWB_LS_Pos_tmp = i + 12 * i4;
-            Pp[UWB_LS_Pos_tmp] = sinTheta + b_Q[UWB_LS_Pos_tmp];
-          }
-        }
         for (i = 0; i < 3; i++) {
-          for (i4 = 0; i4 < 12; i4++) {
-            UWB_LS_Pos_tmp = i + 3 * i4;
-            y_tmp[i4 + 12 * i] = b_H[UWB_LS_Pos_tmp];
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  b_H[i + 3 * UWB_M_Pos_tmp] * Pp[UWB_M_Pos_tmp + 12 * i4];
-            }
-            dv4[UWB_LS_Pos_tmp] = sinTheta;
-          }
+          a_tmp[3 * i] = b_R[6 * i];
+          a_tmp[3 * i + 1] = b_R[6 * i + 1];
+          a_tmp[3 * i + 2] = b_R[6 * i + 2];
         }
-        for (i = 0; i < 3; i++) {
-          for (i4 = 0; i4 < 3; i4++) {
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  dv4[i + 3 * UWB_M_Pos_tmp] * y_tmp[UWB_M_Pos_tmp + 12 * i4];
-            }
-            Cb2n[i + 3 * i4] = sinTheta + b_R[i + 6 * i4];
-          }
-        }
-        coder::inv(Cb2n, a_tmp);
-        for (i = 0; i < 12; i++) {
-          for (i4 = 0; i4 < 3; i4++) {
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  Pp[i + 12 * UWB_M_Pos_tmp] * y_tmp[UWB_M_Pos_tmp + 12 * i4];
-            }
-            b_R[i + 12 * i4] = sinTheta;
-          }
-        }
-        for (i = 0; i < 12; i++) {
-          sinTheta = b_R[i];
-          cosTheta = b_R[i + 12];
-          cosPhi = b_R[i + 24];
-          for (i4 = 0; i4 < 3; i4++) {
-            y_tmp[i + 12 * i4] =
-                (sinTheta * a_tmp[3 * i4] + cosTheta * a_tmp[3 * i4 + 1]) +
-                cosPhi * a_tmp[3 * i4 + 2];
-          }
-        }
-        std::copy(&y_tmp[0], &y_tmp[36], &b_R[0]);
-        for (i = 0; i < 3; i++) {
-          sinTheta = 0.0;
-          for (i4 = 0; i4 < 12; i4++) {
-            sinTheta += b_H[i + 3 * i4] * xp[i4];
-          }
-          b_dv[i] = UWB_M_Pos[i + 57] - sinTheta;
-        }
-        for (i = 0; i < 12; i++) {
-          sinTheta = b_R[i + 12];
-          cosTheta = b_R[i + 24];
-          x[i] = xp[i] +
-                 ((b_R[i] * b_dv[0] + sinTheta * b_dv[1]) + cosTheta * b_dv[2]);
-          for (i4 = 0; i4 < 12; i4++) {
-            A[i + 12 * i4] =
-                (b_R[i] * b_H[3 * i4] + sinTheta * b_H[3 * i4 + 1]) +
-                cosTheta * b_H[3 * i4 + 2];
-          }
-          for (i4 = 0; i4 < 12; i4++) {
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  A[i + 12 * UWB_M_Pos_tmp] * Pp[UWB_M_Pos_tmp + 12 * i4];
-            }
-            UWB_LS_Pos_tmp = i + 12 * i4;
-            b_P[UWB_LS_Pos_tmp] = Pp[UWB_LS_Pos_tmp] - sinTheta;
-          }
-        }
+        PosKalman2(x, A, *(double(*)[3]) & UWB_M_Pos[57], a_tmp);
       } else {
-        double Pp[144];
-        double b_A[144];
-        double dv4[36];
-        double xp[12];
         if (IMUSel == 1.0) {
           std::copy(&dv3[0], &dv3[36], &b_R[0]);
         } else {
           std::copy(&dv2[0], &dv2[36], &b_R[0]);
         }
-        //  12x1,
-        for (i = 0; i < 12; i++) {
-          xp[i] = 0.0;
-          for (i4 = 0; i4 < 12; i4++) {
-            UWB_LS_Pos_tmp = i + 12 * i4;
-            xp[i] += A[UWB_LS_Pos_tmp] * x[i4];
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  A[i + 12 * UWB_M_Pos_tmp] * b_P[UWB_M_Pos_tmp + 12 * i4];
-            }
-            b_A[UWB_LS_Pos_tmp] = sinTheta;
-          }
-          for (i4 = 0; i4 < 12; i4++) {
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  b_A[i + 12 * UWB_M_Pos_tmp] * A[i4 + 12 * UWB_M_Pos_tmp];
-            }
-            UWB_LS_Pos_tmp = i + 12 * i4;
-            Pp[UWB_LS_Pos_tmp] = sinTheta + b_Q[UWB_LS_Pos_tmp];
-          }
-        }
         for (i = 0; i < 3; i++) {
-          for (i4 = 0; i4 < 12; i4++) {
-            UWB_LS_Pos_tmp = i + 3 * i4;
-            y_tmp[i4 + 12 * i] = b_H[UWB_LS_Pos_tmp];
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  b_H[i + 3 * UWB_M_Pos_tmp] * Pp[UWB_M_Pos_tmp + 12 * i4];
-            }
-            dv4[UWB_LS_Pos_tmp] = sinTheta;
-          }
+          a_tmp[3 * i] = b_R[6 * i];
+          a_tmp[3 * i + 1] = b_R[6 * i + 1];
+          a_tmp[3 * i + 2] = b_R[6 * i + 2];
         }
-        for (i = 0; i < 3; i++) {
-          for (i4 = 0; i4 < 3; i4++) {
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  dv4[i + 3 * UWB_M_Pos_tmp] * y_tmp[UWB_M_Pos_tmp + 12 * i4];
-            }
-            Cb2n[i + 3 * i4] = sinTheta + b_R[i + 6 * i4];
-          }
-        }
-        coder::inv(Cb2n, a_tmp);
-        for (i = 0; i < 12; i++) {
-          for (i4 = 0; i4 < 3; i4++) {
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  Pp[i + 12 * UWB_M_Pos_tmp] * y_tmp[UWB_M_Pos_tmp + 12 * i4];
-            }
-            b_R[i + 12 * i4] = sinTheta;
-          }
-        }
-        for (i = 0; i < 12; i++) {
-          sinTheta = b_R[i];
-          cosTheta = b_R[i + 12];
-          cosPhi = b_R[i + 24];
-          for (i4 = 0; i4 < 3; i4++) {
-            y_tmp[i + 12 * i4] =
-                (sinTheta * a_tmp[3 * i4] + cosTheta * a_tmp[3 * i4 + 1]) +
-                cosPhi * a_tmp[3 * i4 + 2];
-          }
-        }
-        std::copy(&y_tmp[0], &y_tmp[36], &b_R[0]);
-        for (i = 0; i < 3; i++) {
-          sinTheta = 0.0;
-          for (i4 = 0; i4 < 12; i4++) {
-            sinTheta += b_H[i + 3 * i4] * xp[i4];
-          }
-          b_dv[i] = UWB_M_Pos[i + 57] - sinTheta;
-        }
-        for (i = 0; i < 12; i++) {
-          sinTheta = b_R[i + 12];
-          cosTheta = b_R[i + 24];
-          x[i] = xp[i] +
-                 ((b_R[i] * b_dv[0] + sinTheta * b_dv[1]) + cosTheta * b_dv[2]);
-          for (i4 = 0; i4 < 12; i4++) {
-            A[i + 12 * i4] =
-                (b_R[i] * b_H[3 * i4] + sinTheta * b_H[3 * i4 + 1]) +
-                cosTheta * b_H[3 * i4 + 2];
-          }
-          for (i4 = 0; i4 < 12; i4++) {
-            sinTheta = 0.0;
-            for (UWB_M_Pos_tmp = 0; UWB_M_Pos_tmp < 12; UWB_M_Pos_tmp++) {
-              sinTheta +=
-                  A[i + 12 * UWB_M_Pos_tmp] * Pp[UWB_M_Pos_tmp + 12 * i4];
-            }
-            UWB_LS_Pos_tmp = i + 12 * i4;
-            b_P[UWB_LS_Pos_tmp] = Pp[UWB_LS_Pos_tmp] - sinTheta;
-          }
-        }
+        PosKalman2(x, A, *(double(*)[3]) & UWB_M_Pos[57], a_tmp);
         //                          z = [UWB_M_Pos(:,end);UWB_M_Vel(:,end)];
         //                          x_n = PosKalman(x,A,z,R);
         x[0] = UWB_M_Pos[57];

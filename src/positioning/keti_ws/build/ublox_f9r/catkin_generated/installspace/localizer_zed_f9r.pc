@@ -1,8 +1,0 @@
-prefix=/home/umaps/Desktop/-K-AutoDrivingLocalization/src/positioning/keti_ws/install
-
-Name: localizer_zed_f9r
-Description: Description of localizer_zed_f9r
-Version: 0.0.0
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib 
-Requires: 

@@ -35,7 +35,7 @@
 
 double b_acc_o[3] = {};
 double b_gyro[3] = {};
-double mode = 0;
+double mode = 2;
 double kf_psi = 0;
 double gyro_psi = 0;
 double cent_pos_est[3] = {};
@@ -136,9 +136,9 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, F
     
 
     // argInit_1x3_real_T(cent_pos_est);
-    b_gyro[0] = b_acc_o[0];
-    b_gyro[1] = b_acc_o[1];
-    b_gyro[2] = b_acc_o[2];
+    // b_gyro[0] = b_acc_o[0];
+    // b_gyro[1] = b_acc_o[1];
+    // b_gyro[2] = b_acc_o[2];
 
     IMUpos(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, mode, &kf_psi,
         &gyro_psi, cent_pos_est, cent_vel_est, &state_o, &acc_b_phi,
@@ -148,6 +148,22 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, F
 
     // _fusionSubscriber->processPacketData(1);
     sendEvent(1);
+
+    std::complex<real_T> j(0, 1); // 복소수 단위
+
+    // creal_T cent_pos_est_;
+    creal_T current_tag_pos_b[4];
+    for (int i = 0; i < 4; ++i) {                    
+        std::complex<double> cent_pos_est_c(cent_pos_est[0], cent_pos_est[1]);
+        std::complex<double> current_tag_pos_b_c(tag_pos_b[i].re, tag_pos_b[i].im);
+        std::complex<double> TagPos = cent_pos_est_c + std::exp(j * (-kf_psi)) * (current_tag_pos_b_c + 0.4 * j);
+        creal_T TagPos_;
+        TagPos_.re = std::real(TagPos);
+        TagPos_.im = std::imag(TagPos);
+        prevTagPos[i].re = TagPos_.re;
+        prevTagPos[i].im = TagPos_.im;
+    }
     
     sendUDPMessage(cent_pos_est[0], cent_pos_est[1], -kf_psi);
+
 }

@@ -44,6 +44,7 @@
 #include "ipecallback.h"
 #include "ipedatapacket.h"
 #include "posdatapacket.h"
+#include "uwbsubscriber.h"
 
 #include "socketmanager.h"
 
