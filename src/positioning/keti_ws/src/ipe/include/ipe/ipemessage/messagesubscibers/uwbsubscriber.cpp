@@ -249,8 +249,8 @@ void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, F
             packet.RxID[i] = std::distance(RxID_data_list.begin(), it) + 1;
             
         }
-        // packet.RxDist[i] = packet.distanceFromTag[i];
-        packet.RxDist[i] = std::real(std::sqrt(std::pow(packet.distanceFromTag[i], 2) - std::pow(packet.z[i] - zt_b, 2)));
+        packet.RxDist[i] = packet.distanceFromTag[i];
+        // packet.RxDist[i] = std::real(std::sqrt(std::pow(packet.distanceFromTag[i], 2) - std::pow(packet.z[i] - zt_b, 2)));
         // Filling in the data for arrays
     }
 
@@ -324,13 +324,13 @@ void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, F
 
         }
     }
-    kl++;
+    // kl++;
     std::complex<real_T> j(0, 1); // 복소수 단위
 
     // creal_T cent_pos_est_;
     creal_T current_tag_pos_b[4];
     for (int i = 0; i < 4; ++i) {                    
-        std::complex<double> cent_pos_est_c(cent_pos_est[0], cent_pos_est[1]);
+        std::complex<double> cent_pos_est_c(IMUposU.re, IMUposU.im);
         std::complex<double> current_tag_pos_b_c(tag_pos_b[i].re, tag_pos_b[i].im);
         std::complex<double> TagPos = cent_pos_est_c + std::exp(j * (-kf_psi)) * (current_tag_pos_b_c + 0.4 * j);
         creal_T TagPos_;
