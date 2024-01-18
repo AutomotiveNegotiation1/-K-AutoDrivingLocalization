@@ -1,9 +1,0 @@
-std_msgs/Header header
-float64[] tag_center_vel_est
-float64[] tag_pos_est
-float64[] tag_pos_b
-float64 UWBErrSum
-float64 heading_est
-float64 Nanchor
-float64 init_flag
-float64 zt_b
