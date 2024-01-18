@@ -48,14 +48,11 @@
 #include "ipedatapacket.h"
 #include "socketmanager.h"
 #include "imusubscriber.h"
+#include "sensordata.h"
 
 #include "UWBpos6.h"
-#include "rt_nonfinite.h"
-
 #include "fusion2.h"
-#include "fusion2_terminate.h"
 #include "rt_nonfinite.h"
-#include "sensordata.h"
 
 // Declare Global Variables
 extern std::vector<double> xain_list;

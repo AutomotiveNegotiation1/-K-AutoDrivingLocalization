@@ -38,8 +38,6 @@
 #include <ros/time.h>
 #include <ipe/Anchor.h>
 #include <sensor_msgs/Imu.h>
-#include "rtwtypes.h"
-#include "rt_nonfinite.h"
 #include <iomanip>
 
 struct IPEDataPacket

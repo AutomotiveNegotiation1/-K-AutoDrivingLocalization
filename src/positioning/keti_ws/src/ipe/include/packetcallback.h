@@ -34,9 +34,7 @@
 #ifndef PACKETCALLBACK_H
 #define PACKETCALLBACK_H
 
-#include <ros/ros.h>
-#include "ipedatapacket.h"
-#include "sensordata.h"
+class IPEDataPacket;
 
 struct SensorData;
 

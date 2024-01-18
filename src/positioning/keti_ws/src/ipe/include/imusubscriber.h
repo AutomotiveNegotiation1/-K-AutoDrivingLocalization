@@ -38,16 +38,16 @@
 #include <ros/ros.h>
 #include <sensor_msgs/Imu.h>
 #include <functional>
+
 #include "packetcallback.h"
 #include "ipecallback.h"
 #include "ipedatapacket.h"
 #include "uwbsubscriber.h"
-
 #include "socketmanager.h"
+#include "sensordata.h"
 
 #include "IMUpos.h"
 #include "rt_nonfinite.h"
-#include "sensordata.h"
 
 // Declare Global Variables
 extern double b_acc_o[3];
