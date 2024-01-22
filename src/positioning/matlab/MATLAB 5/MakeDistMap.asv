@@ -1,0 +1,34 @@
+function [DistMap, StimeMap, NumTags, PosHMap] = MakeDistMap(s_time, Lanchor, RxDistUWB, RxIDUWB, SensorNum, PosH)
+
+persistent s_time_map DistMapR NumTagsR PosHR
+
+if isempty(s_time_map)
+    s_time_map = zeros(4,2);
+    DistMapR = zeros(4,30,2);   %%%%%%%%%%% 총 앵커의 갯수를 첫번째 필드에 입력해줘야함
+    NumTagsR = 0;
+    PosHR = zeros(4,2);
+end
+
+s_time_last_1 = max((s_time_map(:,1)));
+
+if (s_time - s_time_last_1)>0.02
+    s_time_map(:,2) = s_time_map(:,1);
+    s_time_map(:,1) = 0;
+    s_time_map(SensorNum,1) = s_time;
+    DistMapR(:,:,2) = DistMapR(:,:,1);
+    DistMapR(:,:,1) = 0;
+    DistMapR(SensorNum,RxIDUWB,1) = RxDistUWB;
+    NumTagsR = 1;
+    PosHR(:,2) = PosHR(:,1);
+    PosHR(:,1) = 0;
+    PosHR(SensorNum,1) = PosH;
+else
+    s_time_map(SensorNum,1) = s_time;
+    DistMapR(SensorNum,RxIDUWB,1) = RxDistUWB;
+    NumTagsR = NumTagsR + 1;
+end
+
+DistMap = DistMapR(:,1:Lanchor,:);
+StimeMap = s_time_map;
+NumTags = NumTagsR;
+
