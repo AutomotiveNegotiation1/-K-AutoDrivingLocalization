@@ -1,3 +1,6 @@
 [submodule "src/positioning/monocula_slam"]
 	path = src/positioning/monocula_slam
 	url = https://github.com/lee35460/STURDeCAM21_visual_slam.git
+[submodule "src/positioning/nfs_test_install"]
+	path = src/positioning/nfs_test_install
+	url = https://github.com/lee35460/nfs_test_install.git
