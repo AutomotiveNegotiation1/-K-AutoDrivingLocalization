@@ -40,7 +40,7 @@ signal.signal(signal.SIGINT, shutdown)
 
 # log_file_path = "/srv/nfs_client/logfile.log"
 log_file_name = "logfile.log"
-file_path = "/home/umaps/nfs_client"
+file_path = "/mnt/nfs_client"
 log_file_path = os.path.join(file_path, log_file_name)
 
 # 파일이 없는 경우 파일을 생성합니다.
@@ -205,14 +205,14 @@ def create_log():
 
 # Function to play a bag file
 def play_bag():
-    bag_files = [f for f in os.listdir("/home/umaps/rosbag/") if f.endswith(".bag")]
+    bag_files = [f for f in os.listdir("./rosbag/") if f.endswith(".bag")]
     bag_files.append("back")
     selected_bag = handle_selection(play_selected_bag, bag_files)
 
 def play_selected_bag(bag_file):
     if bag_file == "back":
         return
-    rosplay_process = subprocess.Popen(["rosbag", "play", f"/home/umaps/rosbag/{bag_file}"])
+    rosplay_process = subprocess.Popen(["rosbag", "play", f"./rosbag/{bag_file}"])
 
 def handle_selection(func, items):
     for i, item in enumerate(items):
