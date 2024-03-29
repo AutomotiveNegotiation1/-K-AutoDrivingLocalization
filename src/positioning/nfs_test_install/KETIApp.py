@@ -13,8 +13,8 @@ import threading
 #     4: {}
 # }
 
-username = "umaps"
-groupname = "umaps"
+username = "keti"
+groupname = "keti"
 
 
 # 로그 파일에 쓰기 위한 락 객체
@@ -29,7 +29,7 @@ def is_interactive():
     return hasattr(sys.stdin, 'isatty') and sys.stdin.isatty()
 
 # Start roscore in the background
-os.system('source /opt/ros/noetic/setup.bash')  # noetic은 ROS 버전에 따라 변경될 수 있습니다.
+os.system('source /opt/ros/melodic/setup.bash')  # noetic은 ROS 버전에 따라 변경될 수 있습니다.
 roscore_process = subprocess.Popen(['roscore'])
 ros_pid = roscore_process.pid
 
