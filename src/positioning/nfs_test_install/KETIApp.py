@@ -40,7 +40,7 @@ signal.signal(signal.SIGINT, shutdown)
 
 # log_file_path = "/srv/nfs_client/logfile.log"
 log_file_name = "logfile.log"
-file_path = "/mnt/nfs_client"
+file_path = "/mnt/nfs_share"
 log_file_path = os.path.join(file_path, log_file_name)
 
 # 파일이 없는 경우 파일을 생성합니다.
