@@ -131,9 +131,9 @@ int main(int argc, char *argv[])
     gtk_widget_show(gApp);
     gtk_widget_show(GTK_WIDGET(drawingArea));
     g_thread_new("uwb_thread", uwb_thread_run, NULL);
-    g_thread_new("cctv_thread", cctv_thread_run, NULL);
+    //g_thread_new("cctv_thread", cctv_thread_run, NULL);
 
-    g_timeout_add(1000, callback_timer, NULL);
+    // g_timeout_add(1000, callback_timer, NULL);
 
     gtk_main();
     fclose(f);
@@ -144,8 +144,8 @@ int main(int argc, char *argv[])
 gint callback_timer(gpointer argv)
 {
     gint x, y;
-    //gtk_widget_get_pointer(gApp, &x, &y);
-    //printf("mouse position :: x = %d, y = %d\n", x, y);
+    gtk_widget_get_pointer(gApp, &x, &y);
+    printf("mouse position :: x = %d, y = %d\n", x, y);
 
     return TRUE;
 }
@@ -364,7 +364,7 @@ gboolean manually_draw()
         {
             if (uwb_x > 1450 || uwb_y < 0 || uwb_y > 1027)
             {
-                printf("out of bound\n");
+//                printf("out of bound\n");
             }
             else
             {
@@ -372,6 +372,7 @@ gboolean manually_draw()
                 if (result == 0)
                 {
                     draw_car(drawingContext, uwb_x, uwb_y, uwb_angle, FROM_UWB);
+                    printf("draw car %f,%f,%f\n", uwb_y, uwb_x, uwb_angle);
                 } else {
                     draw_car(drawingContext, current_x, current_y, current_angle, current_paint);
                 }
@@ -412,8 +413,10 @@ void position_offset_uwb(double *x, double *y)
 {
     *x *= 20;
     *y *= 20;
-    *x += 375;
-    *y += 8;
+    // *x += 375;
+    // *y += 8;
+    *x += 98;
+    // *y += 0;
 }
 
 void position_offset_cctv(double *x, double *y)
@@ -538,7 +541,7 @@ void draw_car(GdkDrawingContext *_drawingContext, double _x, double _y, double _
     }
     if (isUpdate)
     {
-        add_point(_x, _y);
+        //add_point(_x, _y);
         isUpdate = FALSE;
         current_x = _x;
         current_y = _y;
@@ -546,7 +549,7 @@ void draw_car(GdkDrawingContext *_drawingContext, double _x, double _y, double _
         current_angle = _angle;
         current_paint = _paint;
     }
-    draw_point_on_fixed(gFixed, current_x, current_y);
+    //draw_point_on_fixed(gFixed, current_x, current_y);
     cairo_paint(cr);
 }
 
