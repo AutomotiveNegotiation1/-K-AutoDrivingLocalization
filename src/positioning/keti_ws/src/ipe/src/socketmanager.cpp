@@ -89,12 +89,13 @@ bool SocketManager::broadcastUDPMessage(const std::string& message) {
     broadcastAddr.sin_family = AF_INET;
     broadcastAddr.sin_port = htons(5000); // 브로드캐스트할 포트 지정
     // broadcastAddr.sin_addr.s_addr = htonl(INADDR_BROADCAST); // 브로드캐스트 주소 설정
-    broadcastAddr.sin_addr.s_addr = inet_addr("192.168.3.242");
+    // broadcastAddr.sin_addr.s_addr = inet_addr("192.168.2.79");
+    broadcastAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
 
     int sendResult = sendto(sock, message.c_str(), message.size(), 0, 
                             (struct sockaddr *)&broadcastAddr, sizeof(broadcastAddr));
-    if (sendResult == -1) {
+    if (sendResult == -1) { 
         perror("Broadcast message failed");
         return false;
     }

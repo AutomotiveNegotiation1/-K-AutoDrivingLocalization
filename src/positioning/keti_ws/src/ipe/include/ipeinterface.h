@@ -52,7 +52,7 @@
 #include "packetcallback.h"
 #include "uwbsubscriber.h"
 #include "imusubscriber.h"
-#include "fusion2_terminate.h"
+// #include "fusion2_terminate.h"
 #include "sensordata.h"
 
 class PacketCallback;

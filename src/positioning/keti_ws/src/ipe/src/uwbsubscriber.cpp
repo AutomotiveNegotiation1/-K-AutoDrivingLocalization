@@ -30,11 +30,11 @@
 * this Software without prior written authorization from KETI.
 *
 ******************************************************************************/
-
 #include "uwbsubscriber.h"
 
 std::vector<double> xain_list;
 std::vector<double> yain_list;
+std::vector<double> zain_list;
 std::vector<double> xain_difference;
 std::vector<double> yain_difference;
 double UWBErrSum;
@@ -55,11 +55,17 @@ double Nanchor;
 double zt_b;
 double prevTagHeading;
 
+
 inline creal_T argInit_creal_T(int idx)
 {
     creal_T result;
-    std::vector<double> xt_b = {-0.525, 0.525, -0.525, 0.525};
-    std::vector<double> yt_b = {0.505, 0.505, -0.505, -0.505};
+    // std::vector<double> xt_b = {-0.525, 0.525, -0.525, 0.525};
+    //std::vector<double> xt_b = {-0.525, 0.525, 0.525, -0.525};
+    //std::vector<double> yt_b = {0.505, 0.505, -0.505, -0.505};
+	// carnival
+    std::vector<double> xt_b = {-0.595, 0.595, -0.595, 0.595};
+    std::vector<double> yt_b = {0.74, 0.74, -0.74, -0.74};
+	
 
     if (idx < xt_b.size()) {
         result.re = xt_b[idx];
@@ -126,7 +132,7 @@ void UwbSubscriber::setupSubscriber(const std::string& uwbNum) {
     int temp = std::stoi(uwbNum) + 1;
     m_frameId = "tag" + std::to_string(temp);
     std::ostringstream topic_name_stream;
-    topic_name_stream << "/dwm1001/anchor/tag" << uwbNum;
+    topic_name_stream << "/dwm1001/anchor/ttyUWB" << uwbNum;
 
     std::string topic_name = topic_name_stream.str();
 
@@ -151,6 +157,7 @@ void UwbSubscriber::_setRxid(const ipe::Anchor::ConstPtr& msg) {
     std::vector<std::string> newIds = msg->id;
     std::vector<double> newXs = msg->x;
     std::vector<double> newYs = msg->y;
+    std::vector<double> newZs = msg->z;
 
     // Check for new IDs and update RxID_data_list
     for (const auto& newId : newIds) {
@@ -159,6 +166,7 @@ void UwbSubscriber::_setRxid(const ipe::Anchor::ConstPtr& msg) {
             // Add default values for new IDs to xain and yain lists
             xain_list.push_back(0.0);
             yain_list.push_back(0.0);
+            zain_list.push_back(0.0);
         }
     }
 
@@ -168,6 +176,7 @@ void UwbSubscriber::_setRxid(const ipe::Anchor::ConstPtr& msg) {
         if (idIndex < RxID_data_list.size()) {
             xain_list[idIndex] = newXs[i];
             yain_list[idIndex] = newYs[i];
+            zain_list[idIndex] = newZs[i];
         }
     }
 
@@ -193,201 +202,84 @@ void UwbSubscriber::sendUDPMessage(double center_x, double center_y, double head
     std::ostringstream oss;
     oss << center_x << "," << center_y << "," << heading;
     std::string result = oss.str();
-    ROS_INFO("positioning-->%s", result.c_str());
     socketManager->broadcastUDPMessage(result);
 }
 
 
 void UwbSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, SensorData* newUWBData) 
 {
-    double Ln = 6;
+    double Ln = 8;
     double Lp = 4;
     double LnC = static_cast<double>(RxID_data_list.size());
     double TagNum = extractNumber(packet.frame_id);
     Nanchor = packet.id.size();
-
-    ROS_INFO("---------------------------------------------------");
-    ROS_INFO("Tag Number: %f", TagNum);
-    ROS_INFO("Sequence: %d", packet.seq);
-
-    std::ostringstream anchor_info;
-    for (int i = 0; i < Nanchor; ++i) {
-        anchor_info << "AN" << (i + 1) << ": " << packet.id[i] << " - " << packet.distanceFromTag[i];
-        if (i < Nanchor - 1) {
-            anchor_info << " = ";
-        }
-    }
-    ROS_INFO("%s", anchor_info.str().c_str());
-
     
-    std::vector<double> newXs = packet.x;
-    newXs.push_back(0);
-    newXs.push_back(0);
-    std::vector<double> newYs = packet.y;
-    newYs.push_back(0);
-    newYs.push_back(0);
+    double PositionVector_data[100] = {};
+    int PositionVector_size[2];
+    
+    // double PositionOut[7]; // PositioningSystem_V2_1 version (maintained before 2024.03.28, jang.sh)
+    double PositionOut[10]; // PositioningSystem_V2_2 version (after 2024.03.28, jang.sh)
+    
+    PositionVector_data[0] = packet.s_time;
+    PositionVector_data[1] = TagNum;
+    PositionVector_data[2] = Ln;
+    PositionVector_data[3] = LnC;
+    PositionVector_data[4] = Nanchor;
+
+//    ROS_INFO("---------------------------------------------------");
+  //  ROS_INFO("Tag Number: %f", TagNum);
+    // ROS_INFO("");
 
     // Process the Nanchor data in a single loop
-    zt_b = 1.53;
+    //zt_b = 1.53;
+    //carnival
+    // zt_b = 2.3;
+    zt_b = 0.4;
+    int index = 5 + (int)Ln;
     for (size_t i = 0; i < Nanchor; ++i) {
         auto it = std::find(RxID_data_list.begin(), RxID_data_list.end(), packet.id[i]);
         if (it != RxID_data_list.end()) {
-            packet.RxID[i] = std::distance(RxID_data_list.begin(), it) + 1;
-            
+            PositionVector_data[5 + i] = std::distance(RxID_data_list.begin(), it) + 1;         // 5 6 7 8
         }
-        // packet.RxDist[i] = packet.distanceFromTag[i];
-        packet.RxDist[i] = std::real(std::sqrt(std::pow(packet.distanceFromTag[i], 2) - std::pow(packet.z[i] - zt_b, 2)));
-        // Filling in the data for arrays
+        PositionVector_data[index + i] = packet.distanceFromTag[i];                             // 13,14,15,16
     }
 
-    double s_time = timestamp;
-    double UWBout[21];
+
+
+    index = (int)Ln + 9;
+    for (size_t i = 0; i < LnC; ++i) {
+        PositionVector_data[index + i] = xain_list[i];
+        PositionVector_data[index + i + (int)LnC] = yain_list[i];
+        PositionVector_data[index + i + (int)LnC * 2] = zain_list[i];
+    }
+
+    
+    index = (int)Ln + 3 * (int)LnC + 9;
+    for (size_t i = 0; i < 4; ++i) {
+        PositionVector_data[index + i] = tag_pos_b[i].re;
+        PositionVector_data[index + i + 4] = tag_pos_b[i].im;
+        PositionVector_data[index + i + 8] = zt_b;
+    }
 
     bool isEmpty = true;
-
+    
+    index = 5 + (int)Ln;
     if (Nanchor > 1) {
         for(int i=0; i < (int)Nanchor; i++){
-            if(packet.RxDist.data()[i] == 0){
+            if(PositionVector_data[index + i] == 0){
                 isEmpty = false;
                 break;
             }
         }
 
         if(isEmpty){
-            newUWBData->Ln = Ln;
-            newUWBData->Lp = Lp;
-            newUWBData->LnC = LnC;
-            newUWBData->PP = TagNum;
-            newUWBData->Nanchor = Nanchor;
-            newUWBData->RxIDUWB1 = packet.RxID[0];
-            newUWBData->RxIDUWB2 = packet.RxID[1];
-            newUWBData->RxIDUWB3 = packet.RxID[2];
-            newUWBData->RxIDUWB4 = packet.RxID[3];
-            newUWBData->RxIDUWB5 = packet.RxID[4];
-            newUWBData->RxIDUWB6 = packet.RxID[5];
-            newUWBData->RxDistUWB1 = packet.RxDist[0];
-            newUWBData->RxDistUWB2 = packet.RxDist[1];
-            newUWBData->RxDistUWB3 = packet.RxDist[2];
-            newUWBData->RxDistUWB4 = packet.RxDist[3];
-            newUWBData->RxDistUWB5 = packet.RxDist[4];
-            newUWBData->RxDistUWB6 = packet.RxDist[5];
-            newUWBData->s_time = s_time; 
-            newUWBData->real_tag_pos_b1 = tag_pos_est[0].re;
-            newUWBData->imag_tag_pos_b1 = tag_pos_est[0].im;
-            newUWBData->real_tag_pos_b2 = tag_pos_est[1].re;
-            newUWBData->imag_tag_pos_b2 = tag_pos_est[1].im;
-            newUWBData->real_tag_pos_b3 = tag_pos_est[2].re;
-            newUWBData->imag_tag_pos_b3 = tag_pos_est[2].im;
-            newUWBData->real_tag_pos_b4 = tag_pos_est[3].re;
-            newUWBData->imag_tag_pos_b4 = tag_pos_est[3].im;
-            newUWBData->xain1 = xain_list[0];
-            newUWBData->xain2 = xain_list[1];
-            newUWBData->xain3 = xain_list[2];
-            newUWBData->xain4 = xain_list[3];
-            newUWBData->xain5 = xain_list[4];
-            newUWBData->xain6 = xain_list[5];
-            newUWBData->yain1 = yain_list[0];
-            newUWBData->yain2 = yain_list[1];
-            newUWBData->yain3 = yain_list[2];
-            newUWBData->yain4 = yain_list[3];
-            newUWBData->yain5 = yain_list[4];
-            newUWBData->yain6 = yain_list[5];
-            newUWBData->real_TagPos1 = prevTagPos[0].re;
-            newUWBData->imag_TagPos1 = prevTagPos[0].im;
-            newUWBData->real_TagPos2 = prevTagPos[1].re;
-            newUWBData->imag_TagPos2 = prevTagPos[1].im;
-            newUWBData->real_TagPos3 = prevTagPos[2].re;
-            newUWBData->imag_TagPos3 = prevTagPos[2].im;
-            newUWBData->real_TagPos4 = prevTagPos[3].re;
-            newUWBData->imag_TagPos4 = prevTagPos[3].im;
-            newUWBData->kf_psi = kf_psi;
+            // PositioningSystem_V2_1(PositionVector_data, PositionVector_size, PositionOut); // before 2024.03.28 (written by jang.sh)
+            // PositioningSystem_V2_2(PositionVector_data, PositionVector_size, PositionOut); // before 2024.03.28 (written by jang.sh)
+            PositioningSystem_V2_3(PositionVector_data, PositionVector_size, PositionOut); //  Changed 2024.04.01 (ahn.jw)
+            //ROS_INFO("---------------------------------------------------");
 
-            ROS_INFO("yain6: %f", yain_list[5]);
-            if (RxID_data_list.size() > 5) { // Checks if there are at least 6 elements
-                ROS_INFO("yain6 ID: %s", RxID_data_list[5].c_str());
-            }
-
-            
-            UWBpos6(Ln, Lp, LnC, TagNum, Nanchor, packet.RxID.data(), packet.RxDist.data(), s_time, tag_pos_b, xain_list.data(), yain_list.data(), prevTagPos, -kf_psi, UWBout);
-            // // Assigning UWBout data to pos
-            for (int i = 0; i < 4; i++) {
-                tag_pos_est[i].re = UWBout[i];
-                tag_pos_est[i].im = UWBout[i + 4];
-
-                tag_pos_est_aver[i].re = UWBout[i + 9];
-                tag_pos_est_aver[i].im = UWBout[i + 13];
-            }
-
-            heading_est = UWBout[8];
-            headingest_a_aver_v = UWBout[17];
-
-
-            tag_center_vel_est.re = UWBout[18];
-            tag_center_vel_est.im = UWBout[19];
-
-            UWBErrSum = UWBout[20];
-
-            if (heading_est != 0 && init_flag == 0) {
-                init_flag = 1;
-            } else if (heading_est != 0 && init_flag ==1) {
-                init_flag = 1;
-            } else if (init_flag == 2) {
-                init_flag = 3;
-            } else if (init_flag == 3) {
-                init_flag = 3;
-            } else {
-                init_flag = 0;
-            }
-            // kf_psi = -kf_psi;
-
-            IMUposU = fusion2(kl, imuNum, tag_pos_est, tag_center_vel_est, cent_pos_est,
-                        cent_vel_est, b_acc_o, acc_b_phi, kalman_on, init_flag, UWBErrSum, &kf_psi,
-                        &gyro_psi, heading_est, acc_b_theta, 2, Nanchor, state_o);
-            // kf_psi = -kf_psi;
-            // ROS_INFO("b_acc_o1 : %f", b_acc_o[0]);
-            // ROS_INFO("b_acc_o2 : %f", b_acc_o[1]);
-            // ROS_INFO("b_acc_o3 : %f", b_acc_o[2]);
-            if (init_flag == 1){
-                gyro_psi = -heading_est;
-                kf_psi = gyro_psi;
-                cent_pos_est[0] = IMUposU.re;
-                cent_pos_est[1] = IMUposU.im;
-                cent_pos_est[1] = 0;
-                cent_vel_est[0] = tag_center_vel_est.re;
-                cent_vel_est[1] = tag_center_vel_est.im;
-                cent_vel_est[2] = 0;
-            }
-
-            
-            if (init_flag == 1){
-                init_flag = 2;
-            }
-            kl++;
-
-            sendUDPMessage(cent_pos_est[0], cent_pos_est[1], kf_psi);
-
-            ROS_INFO("---------------------------------------------------");
-
+        } else {
+            //ROS_INFO("-------------is empty--------------------");
         }
     }
-    // kl++;
-    std::complex<real_T> j(0, 1); // 복소수 단위
-
-    // creal_T cent_pos_est_;
-    creal_T current_tag_pos_b[4];
-    for (int i = 0; i < 4; ++i) {                    
-        std::complex<double> cent_pos_est_c(IMUposU.re, IMUposU.im);
-        std::complex<double> current_tag_pos_b_c(tag_pos_b[i].re, tag_pos_b[i].im);
-        std::complex<double> TagPos = cent_pos_est_c + std::exp(j * (-kf_psi)) * (current_tag_pos_b_c + 0.4 * j);
-        creal_T TagPos_;
-        TagPos_.re = std::real(TagPos);
-        TagPos_.im = std::imag(TagPos);
-        prevTagPos[i].re = TagPos_.re;
-        prevTagPos[i].im = TagPos_.im;
-    }
-    // ROS_INFO("kf_psi-->%f", state_o);
-
-
-
-
 }

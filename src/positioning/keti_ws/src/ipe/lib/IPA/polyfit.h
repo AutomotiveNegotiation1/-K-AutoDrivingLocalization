@@ -1,12 +1,12 @@
 /*
- * inv.h
+ * polyfit.h
  *
- * Code generation for function 'inv'
+ * Code generation for function 'polyfit'
  *
  */
 
-#ifndef INV_H
-#define INV_H
+#ifndef POLYFIT_H
+#define POLYFIT_H
 
 /* Include files */
 #include "rtwtypes.h"
@@ -18,11 +18,11 @@ extern "C" {
 #endif
 
 /* Function Declarations */
-void inv(const double x[4], double y[4]);
+void polyfit(const double x[10], const double y[10], double p[3]);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-/* End of code generation (inv.h) */
+/* End of code generation (polyfit.h) */

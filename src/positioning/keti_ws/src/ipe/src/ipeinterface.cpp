@@ -52,7 +52,7 @@ IPEInterface::~IPEInterface()
   }
   l_callbacks.clear();  // 옵션: 리스트를 비운다
   
-  fusion2_terminate();
+//   fusion2_terminate();
 }
 
 
@@ -236,91 +236,9 @@ void IPEInterface::spinFor()
 		{
             ImuSubscriber* imuSub = dynamic_cast<ImuSubscriber*>(cb);
             std::string frame_id = rosPacket.second.frame_id;
-            std::cout<<rosPacket.second.frame_id<<std::endl;
+//            std::cout<<rosPacket.second.frame_id<<std::endl;
 
-            // 모든 필드를 NaN으로 초기화
-            newData.Tag1 = std::numeric_limits<double>::quiet_NaN();
-            newData.Tag2 = std::numeric_limits<double>::quiet_NaN();
-            newData.Tag3 = std::numeric_limits<double>::quiet_NaN();
-            newData.Tag4 = std::numeric_limits<double>::quiet_NaN();
-            newData.IMU = std::numeric_limits<double>::quiet_NaN();
-
-            newUWBData.Ln  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.Lp = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.LnC = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.PP  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.Nanchor  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxIDUWB1  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxIDUWB2  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxIDUWB3  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxIDUWB4  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxIDUWB5  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxIDUWB6  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxDistUWB1 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxDistUWB2  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxDistUWB3  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxDistUWB4  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxDistUWB5  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.RxDistUWB6  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.s_time  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.real_tag_pos_b1  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.imag_tag_pos_b1  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.real_tag_pos_b2  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.imag_tag_pos_b2  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.real_tag_pos_b3  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.imag_tag_pos_b3  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.real_tag_pos_b4  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.imag_tag_pos_b4  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.xain1  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.xain2  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.xain3  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.xain4  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.xain5  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.xain6  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.yain1  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.yain2  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.yain3  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.yain4  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.yain5  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.yain6  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.real_TagPos1  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.imag_TagPos1  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.real_TagPos2  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.imag_TagPos2  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.real_TagPos3  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.imag_TagPos3  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.real_TagPos4  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.imag_TagPos4  = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.kf_psi = std::numeric_limits<double>::quiet_NaN();
             
-            
-            newUWBData.IMUacc_c1 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.IMUacc_c2 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.IMUacc_c3 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.IMUgyro_c1 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.IMUgyro_c2 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.IMUgyro_c3 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.s_time = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.b_acc_o1 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.b_acc_o2 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.b_acc_o3 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.b_gyro1 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.b_gyro2 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.b_gyro3 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.IMUSel = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.kf_psi = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.gyro_psi = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.cent_pos_est1 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.cent_pos_est2 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.cent_pos_est3 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.cent_vel_est1 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.cent_vel_est2 = std::numeric_limits<double>::quiet_NaN();
-            newUWBData.cent_vel_est3 = std::numeric_limits<double>::quiet_NaN();
-
-            std::cout << std::fixed << std::setprecision(9);
-            std::cout << "sec + nsec: " << rosPacket.first << std::endl;
-            
-
             if (rosPacket.second.frame_id == "imu"){
                 if (imuSub){
                     cb->operator()(rosPacket.second, rosPacket.first, &newUWBData);
@@ -335,19 +253,19 @@ void IPEInterface::spinFor()
                     cb->operator()(rosPacket.second, rosPacket.first, &newUWBData);
                     if (rosPacket.second.frame_id == "tag1") {
                         newData.Tag1 = rosPacket.first;
-                        std::cout<<"Tag1---"<<std::endl;
+                        //std::cout<<"Tag1---"<<std::endl;
                     } 
                     if (rosPacket.second.frame_id == "tag2") {
                         newData.Tag2 = rosPacket.first;
-                        std::cout<<"Tag2---"<<std::endl;
+                        //std::cout<<"Tag2---"<<std::endl;
                     }
                     if (rosPacket.second.frame_id == "tag3") {
                         newData.Tag3 = rosPacket.first;
-                        std::cout<<"Tag3---"<<std::endl;
+                        //std::cout<<"Tag3---"<<std::endl;
                     }
                     if (rosPacket.second.frame_id == "tag4") {
                         newData.Tag4 = rosPacket.first;
-                        std::cout<<"Tag4---"<<std::endl;
+                        //std::cout<<"Tag4---"<<std::endl;
                     }
                     no++;
                     o_ipeCallback.pop();
@@ -357,11 +275,11 @@ void IPEInterface::spinFor()
 
             
 		}
-        data.push_back(newData);
-        uwbdata.push_back(newUWBData);
+        //data.push_back(newData);
+        //uwbdata.push_back(newUWBData);
         // saveDataToFile(data, "/home/ubuntu/ros_delivery_workspace/-K-AutoDrivingLocalization/src/positioning/sensor_data.csv");
-        saveUWBDataToFile(uwbdata, "/home/ubuntu/ros_delivery_workspace/-K-AutoDrivingLocalization/src/positioning/uwbsensor_data.csv");
-        saveIMUDataToFile(uwbdata, "/home/ubuntu/ros_delivery_workspace/-K-AutoDrivingLocalization/src/positioning/imusensor_data.csv");
+        //saveUWBDataToFile(uwbdata, "/home/keti/Document/JW/-K-AutoDrivingLocalization/src/positioning/uwbsensor_data.csv");
+        //saveIMUDataToFile(uwbdata, "/home/keti/Document/JW/-K-AutoDrivingLocalization/src/positioning/imusensor_data.csv");
 
 	}
 }
@@ -371,7 +289,7 @@ void IPEInterface::run(){
         testPositioning();
     }
     else{
-        // Positioning();
+        Positioning();
     }
 }
 
@@ -401,26 +319,31 @@ void IPEInterface::testPositioning()
     rosbag::Bag bag;
     try {
         // bag.open("/home/umaps/rosbag/[zed_f9r]2023-08-31-17-56-41_slow.bag", rosbag::bagmode::Read);
-        bag.open("/home/ubuntu/ros_delivery_workspace/-K-AutoDrivingLocalization/src/positioning/matlab/Positioning_Alg_20231004/2023-12-05-18-16-11.bag", rosbag::bagmode::Read);
+//        bag.open("/home/keti/Documents/JW/-K-AutoDrivingLocalization-main/src/positioning/keti_ws/2024-02-16-16-18-43.bag", rosbag::bagmode::Read);
+//        bag.open("/home/keti/Documents/JW/-K-AutoDrivingLocalization-main/rosbag/2024-02-20-17-03-24.bag", rosbag::bagmode::Read);
+        // bag.open("/home/keti/Documents/JW/-K-AutoDrivingLocalization-main/rosbag/2024-03-05-17-19-02.bag", rosbag::bagmode::Read);
+        bag.open("/home/keti/Documents/JW/-K-AutoDrivingLocalization-main/rosbag/2024-04-01-16-48-31.bag", rosbag::bagmode::Read);
+        // bag.open("/home/keti/Documents/JW/-K-AutoDrivingLocalization-main/rosbag/2024-03-21-16-55-51.bag", rosbag::bagmode::Read);
+//        bag.open("/home/keti/Documents/JW/-K-AutoDrivingLocalization-main/src/positioning/matlab/Positioning_Alg_20231004/2023-12-05-18-16-11.bag", rosbag::bagmode::Read);
     } catch (rosbag::BagException& e) {
         ROS_ERROR("Error opening bag file: %s", e.what());
     }
 
-    // std::vector<std::string> topics = {
-    //     "/dwm1001/anchor/ttyUWB0",
-    //     "/dwm1001/anchor/ttyUWB1",
-    //     "/dwm1001/anchor/ttyUWB2",
-    //     "/dwm1001/anchor/ttyUWB3",
-    //     "/zed_f9r/imu"
-    // };
+     std::vector<std::string> topics = {
+         "/dwm1001/anchor/ttyUWB0",
+         "/dwm1001/anchor/ttyUWB1",
+         "/dwm1001/anchor/ttyUWB2",
+         "/dwm1001/anchor/ttyUWB3",
+         "/zed_f9r/imu"
+     };
 
-    std::vector<std::string> topics = {
-        "/dwm1001/anchor/tag0",
-        "/dwm1001/anchor/tag1",
-        "/dwm1001/anchor/tag2",
-        "/dwm1001/anchor/tag3",
-        "/zed_f9r/imu"
-    };
+//    std::vector<std::string> topics = {
+  //      "/dwm1001/anchor/tag0",
+  //      "/dwm1001/anchor/tag1",
+  //      "/dwm1001/anchor/tag2",
+    //    "/dwm1001/anchor/tag3",
+    //    "/zed_f9r/imu"
+    //};
 
     std::map<std::string, ros::Publisher> publishers;
 
@@ -442,13 +365,13 @@ void IPEInterface::testPositioning()
                     publishers[message.getTopic()].publish(imu_data);
                 }
             } 
-            if (message.getTopic().find("/dwm1001/anchor/tag") == 0 && message.getTopic().back() >= '0' && message.getTopic().back() <= '3') {
+            if (message.getTopic().find("/dwm1001/anchor/ttyUWB") == 0 && message.getTopic().back() >= '0' && message.getTopic().back() <= '3') {
                 ipe::Anchor::ConstPtr uwb_data = message.instantiate<ipe::Anchor>();
                 if (uwb_data != NULL) {
                     publishers[message.getTopic()].publish(uwb_data);
                 }
             }
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(3));
             spinFor();  // Assuming that 'spinFor()' is some kind of sleep/delay function. If not, please clarify.
             ros::spinOnce();
         }

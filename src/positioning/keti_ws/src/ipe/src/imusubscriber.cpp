@@ -46,6 +46,8 @@ double acc_b_theta;
 double signalIMU = 0;
 double imuNum = 0;
 
+
+
 static void argInit_1x3_real_T(double result[3]) {
     for (int idx1{0}; idx1 < 3; idx1++) {
         result[idx1] = 0.0;
@@ -103,90 +105,69 @@ void ImuSubscriber::sendUDPMessage(double center_x, double center_y, double head
     std::ostringstream oss;
     oss << center_x << "," << center_y << "," << heading;
     std::string result = oss.str();
+    ROS_INFO("positioning-->%s", result.c_str());
     socketManager->broadcastUDPMessage(result);
 }
 
 
 void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp,  SensorData* data) {
-    double IMUacc_c[3] = {};
+    // double PositionVector_data[8] = {};
+    std::vector<double> PositionVector_data;
+    int PositionVector_size[2];
+    
+    // double PositionOut[7]; // PositioningSystem_V2_1 version (maintained before 2024.03.28, jang.sh)
+    double PositionOut[10]; // PositioningSystem_V2_2 version (after 2024.03.28, jang.sh)
+
+    double acc_y = packet.linear_y.back();
+    double acc_z = packet.linear_z.back();
+    double gyro_y = packet.angular_y.back();
+    double gyro_z = packet.angular_z.back();
+    if(acc_z > 0) {
+        acc_y *= -1;
+        acc_z *= -1;
+        gyro_y *= -1;
+        gyro_z *= -1;
+    }
+
+    PositionVector_data.push_back(packet.s_time);
+    PositionVector_data.push_back(5.0);
     if (!packet.linear_x.empty()) {
-        IMUacc_c[0] = packet.linear_x.back();
+        PositionVector_data.push_back(packet.linear_x.back());
+    } else {
+        PositionVector_data.push_back(0);
     }
     if (!packet.linear_y.empty()) {
-        IMUacc_c[1] = packet.linear_y.back();
+        PositionVector_data.push_back(acc_y);
+    } else {
+        PositionVector_data.push_back(0);
     }
     if (!packet.linear_z.empty()) {
-        IMUacc_c[2] = packet.linear_z.back();
+        PositionVector_data.push_back(acc_z);
+    } else {
+        PositionVector_data.push_back(0);
     }
 
-    double IMUgyro_c[3] = {};
     if (!packet.angular_x.empty()) {
-        IMUgyro_c[0] = packet.angular_x.back();
+        PositionVector_data.push_back(packet.angular_x.back());
+    } else {
+        PositionVector_data.push_back(0);
     }
     if (!packet.angular_y.empty()) {
-        IMUgyro_c[1] = packet.angular_y.back();
+        PositionVector_data.push_back(gyro_y);
+    } else {
+        PositionVector_data.push_back(0);
     }
     if (!packet.angular_z.empty()) {
-        IMUgyro_c[2] = packet.angular_z.back();
+        PositionVector_data.push_back(gyro_z);
+    } else {
+        PositionVector_data.push_back(0);
     }
 
-    double s_time = packet.s_time;
+    // PositioningSystem_V2_1(PositionVector_data.data(), PositionVector_size, PositionOut); // before 2024.03.28 (written by jang.sh)
+    // PositioningSystem_V2_2(PositionVector_data.data(), PositionVector_size, PositionOut); // before 2024.03.28 (written by jang.sh)
+    PositioningSystem_V2_3(PositionVector_data.data(), PositionVector_size, PositionOut); //  Changed 2024.04.01 (ahn.jw)
+    sendUDPMessage(PositionOut[0], PositionOut[1], PositionOut[3]); // Kalman result (jang.sh)
+    // sendUDPMessage(PositionOut[7], PositionOut[8], PositionOut[9]); // UWB result (jang.sh)
 
-    data->IMUacc_c1 = IMUacc_c[0];
-    data->IMUacc_c2 = IMUacc_c[1];
-    data->IMUacc_c3 = IMUacc_c[2];
-    data->IMUgyro_c1 = IMUgyro_c[0];
-    data->IMUgyro_c2 = IMUgyro_c[1];
-    data->IMUgyro_c3 = IMUgyro_c[2];
-    data->s_time = s_time;
-    data->b_acc_o1 = b_acc_o[0];
-    data->b_acc_o2 = b_acc_o[1];
-    data->b_acc_o3 = b_acc_o[2];
-    data->b_gyro1 = b_gyro[0];
-    data->b_gyro2 = b_gyro[1];
-    data->b_gyro3 = b_gyro[2];
-    data->IMUSel = mode;
-    data->kf_psi = kf_psi;
-    data->gyro_psi = gyro_psi;
-    data->cent_pos_est1 = cent_pos_est[0];
-    data->cent_pos_est2 = cent_pos_est[1];
-    data->cent_pos_est3 = cent_pos_est[2];
-    data->cent_vel_est1 = cent_vel_est[0];
-    data->cent_vel_est2 = cent_vel_est[1];
-    data->cent_vel_est3 = cent_vel_est[2];
-
-    
-
-    // argInit_1x3_real_T(cent_pos_est);
-    b_gyro[0] = b_acc_o[0];
-    b_gyro[1] = b_acc_o[1];
-    b_gyro[2] = b_acc_o[2];
-    
-    ROS_INFO("b_acc_o1 : %f", b_acc_o[0]);
-    ROS_INFO("b_acc_o2 : %f", b_acc_o[1]);
-    ROS_INFO("b_acc_o3 : %f", b_acc_o[2]);
-    IMUpos(IMUacc_c, IMUgyro_c, s_time, b_acc_o, b_gyro, mode, &kf_psi,
-        &gyro_psi, cent_pos_est, cent_vel_est, &state_o, &acc_b_phi,
-        &acc_b_theta);
-
-    imuNum++;
-
-    // _fusionSubscriber->processPacketData(1);
-    std::complex<real_T> j(0, 1); // 복소수 단위
-
-    // creal_T cent_pos_est_;
-    creal_T current_tag_pos_b[4];
-    for (int i = 0; i < 4; ++i) {                    
-        std::complex<double> cent_pos_est_c(cent_pos_est[0], cent_pos_est[1]);
-        std::complex<double> current_tag_pos_b_c(tag_pos_b[i].re, tag_pos_b[i].im);
-        std::complex<double> TagPos = cent_pos_est_c + std::exp(j * (-kf_psi)) * (current_tag_pos_b_c + 0.4 * j);
-        creal_T TagPos_;
-        TagPos_.re = std::real(TagPos);
-        TagPos_.im = std::imag(TagPos);
-        prevTagPos[i].re = TagPos_.re;
-        prevTagPos[i].im = TagPos_.im;
-    }
-    
-    sendUDPMessage(cent_pos_est[0], cent_pos_est[1], kf_psi);
 
 }

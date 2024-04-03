@@ -1,39 +1,29 @@
-//
-// Academic License - for use in teaching, academic research, and meeting
-// course requirements at degree granting institutions only.  Not for
-// government, commercial, or other organizational use.
-// File: sortIdx.h
-//
-// MATLAB Coder version            : 5.4
-// C/C++ source code generated on  : 30-Nov-2023 16:43:53
-//
+/*
+ * sortIdx.h
+ *
+ * Code generation for function 'sortIdx'
+ *
+ */
 
 #ifndef SORTIDX_H
 #define SORTIDX_H
 
-// Include Files
+/* Include files */
 #include "rtwtypes.h"
-#include "coder_array.h"
-#include <cstddef>
-#include <cstdlib>
+#include <stddef.h>
+#include <stdlib.h>
 
-// Function Declarations
-namespace coder {
-namespace internal {
-void merge(int idx[16], double x[16], int offset, int np, int nq, int iwork[16],
-           double xwork[16]);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-void merge_block(::coder::array<int, 1U> &idx, ::coder::array<double, 1U> &x,
-                 int offset, int n, int preSortLevel,
-                 ::coder::array<int, 1U> &iwork,
-                 ::coder::array<double, 1U> &xwork);
+/* Function Declarations */
+void merge_block(int idx[20000], double x[20000], int offset, int n,
+                 int preSortLevel, int iwork[20000], double xwork[20000]);
 
-} // namespace internal
-} // namespace coder
+#ifdef __cplusplus
+}
+#endif
 
 #endif
-//
-// File trailer for sortIdx.h
-//
-// [EOF]
-//
+/* End of code generation (sortIdx.h) */

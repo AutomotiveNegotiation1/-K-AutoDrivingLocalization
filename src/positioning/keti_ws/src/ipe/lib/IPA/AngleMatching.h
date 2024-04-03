@@ -1,12 +1,12 @@
 /*
- * inv.h
+ * AngleMatching.h
  *
- * Code generation for function 'inv'
+ * Code generation for function 'AngleMatching'
  *
  */
 
-#ifndef INV_H
-#define INV_H
+#ifndef ANGLEMATCHING_H
+#define ANGLEMATCHING_H
 
 /* Include files */
 #include "rtwtypes.h"
@@ -18,11 +18,11 @@ extern "C" {
 #endif
 
 /* Function Declarations */
-void inv(const double x[4], double y[4]);
+void AngleMatching(double RefAng, double *TargetAng);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-/* End of code generation (inv.h) */
+/* End of code generation (AngleMatching.h) */

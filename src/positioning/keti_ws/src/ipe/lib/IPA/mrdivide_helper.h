@@ -1,12 +1,12 @@
 /*
- * inv.h
+ * mrdivide_helper.h
  *
- * Code generation for function 'inv'
+ * Code generation for function 'mrdivide_helper'
  *
  */
 
-#ifndef INV_H
-#define INV_H
+#ifndef MRDIVIDE_HELPER_H
+#define MRDIVIDE_HELPER_H
 
 /* Include files */
 #include "rtwtypes.h"
@@ -18,11 +18,11 @@ extern "C" {
 #endif
 
 /* Function Declarations */
-void inv(const double x[4], double y[4]);
+void mrdiv(double A[90], const double B[36]);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-/* End of code generation (inv.h) */
+/* End of code generation (mrdivide_helper.h) */

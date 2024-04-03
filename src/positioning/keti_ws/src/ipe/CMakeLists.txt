@@ -39,7 +39,7 @@ include_directories(
 )
 
 ## Declare a C++ library
-file(GLOB IPA_SOURCES "lib/IPA/*.cpp")  # Automatically include all cpp files in lib/IPA
+file(GLOB IPA_SOURCES "lib/IPA/*.c")  # Automatically include all cpp files in lib/IPA
 add_library(${PROJECT_NAME}
   src/ipeinterface.cpp
   src/imusubscriber.cpp

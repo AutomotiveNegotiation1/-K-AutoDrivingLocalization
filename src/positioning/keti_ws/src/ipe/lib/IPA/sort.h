@@ -1,35 +1,28 @@
-//
-// Academic License - for use in teaching, academic research, and meeting
-// course requirements at degree granting institutions only.  Not for
-// government, commercial, or other organizational use.
-// File: sort.h
-//
-// MATLAB Coder version            : 5.4
-// C/C++ source code generated on  : 30-Nov-2023 16:43:53
-//
+/*
+ * sort.h
+ *
+ * Code generation for function 'sort'
+ *
+ */
 
 #ifndef SORT_H
 #define SORT_H
 
-// Include Files
+/* Include files */
 #include "rtwtypes.h"
-#include "coder_array.h"
-#include <cstddef>
-#include <cstdlib>
+#include <stddef.h>
+#include <stdlib.h>
 
-// Function Declarations
-namespace coder {
-namespace internal {
-void sort(::coder::array<double, 1U> &x, ::coder::array<int, 1U> &idx);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-void sort(double x[16], int idx[16]);
+/* Function Declarations */
+void sort(double x[20000], int idx[20000]);
 
-} // namespace internal
-} // namespace coder
+#ifdef __cplusplus
+}
+#endif
 
 #endif
-//
-// File trailer for sort.h
-//
-// [EOF]
-//
+/* End of code generation (sort.h) */
