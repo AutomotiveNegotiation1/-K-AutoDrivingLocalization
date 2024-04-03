@@ -85,7 +85,7 @@ class zed_f9r_localizer:
         # os.popen("sudo chmod 777 /dev/ttyACM0", "w")
 
         # initialize ros rate 100hz
-        self.rate = rospy.Rate(100)
+        self.rate = rospy.Rate(33)
 
         self.serialReadLine = ""
         # For dynamic configuration
@@ -102,7 +102,6 @@ class zed_f9r_localizer:
             stopbits   = SYS_DEFS.stopbits,
             bytesize   = SYS_DEFS.bytesize
         )
-
         # initialize the variation
         self.imuData = imu_data()
         self.gnssData = gnss_data()
@@ -123,11 +122,11 @@ class zed_f9r_localizer:
         #TODO implemnt functionality dynamic configuration
         #updateDynamicConfiguration_SERIALPORT()
         # close the serial port in case the previous run didn't closed it properly
-        self.serialPortZED_F9R.close()
+    #    self.serialPortZED_F9R.close()
         # sleep for one sec
-        time.sleep(1)
+        time.sleep(3)
         # open serial port
-        self.serialPortZED_F9R.open()
+     #   self.serialPortZED_F9R.open()
 
         # check if the serial port is opened
         if(self.serialPortZED_F9R.isOpen()):
@@ -141,14 +140,12 @@ class zed_f9r_localizer:
 
             while not rospy.is_shutdown():
                 # just read everything from serial port
-                serialReadLine = self.serialPortZED_F9R.read()
-
+                
                 try:
                     self.pubblishCoordinatesIntoTopics(self.serialPortZED_F9R)
 
                 except IndexError:
                     rospy.loginfo("Found index error in the network array!DO SOMETHING!")
-
 
 
         except KeyboardInterrupt:
@@ -221,7 +218,7 @@ class zed_f9r_localizer:
 
                         # rospy.loginfo("imuMsg :" + str(imuMsg))
                         pub_imu.publish(imuMsg)
-
+                        # self.rate.sleep()
                     elif (ClassID == ZED_F9R_API_MESSAGES.UBX_NAV_PVT):
                         pub_gnss = rospy.Publisher('/zed_f9r/gnss_pvt', GNSS, queue_size=10, latch=True)
                         gnssMsg = GNSS()

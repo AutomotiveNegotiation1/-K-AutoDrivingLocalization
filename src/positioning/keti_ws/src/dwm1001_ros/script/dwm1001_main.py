@@ -106,11 +106,11 @@ class dwm1001_localizer:
         #TODO implemnt functionality dynamic configuration
         #updateDynamicConfiguration_SERIALPORT()
         # close the serial port in case the previous run didn't closed it properly
-        self.serialPortDWM1001.close()
+        #self.serialPortDWM1001.close()
         # sleep for one sec
         time.sleep(1)
         # open serial port
-        self.serialPortDWM1001.open()
+        #self.serialPortDWM1001.open()
 
         # check if the serial port is opened
         if(self.serialPortDWM1001.isOpen()):
@@ -220,6 +220,7 @@ class dwm1001_localizer:
                                     + str(anchor.distanceFromTag))
 
             elif 'POS' in network:
+
                 # publish tag
                 # construct the object for the tag
 
