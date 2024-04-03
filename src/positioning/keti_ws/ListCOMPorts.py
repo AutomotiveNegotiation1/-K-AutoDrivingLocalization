@@ -67,7 +67,9 @@ def reload_udev_rules():
     subprocess.run(['udevadm', 'trigger'])
 
 def list_com_ports(verbose, vid, pid):
-    serial_order = ['000760178940', '000760179526', '000760009648', '000760009277'] # The desired order of serial numbers
+    serial_order = ['000760178940', '000760178867', '000760009277', '000760009648'] # The desired order of serial numbers
+ #   serial_order = ['000760178940', '000760179526', '000760009277', '000760009648'] # The desired order of serial numbers
+#    serial_order = ['000760178940', '000760179526', '000760009648', '000760009277'] # The desired order of serial numbers
     baud_rate_mapping = {'ttyUWB0': 115200, 'ttyUWB1': 115200, 'ttyUWB2': 115200, 'ttyUWB3': 115200, 'ttyIMU': 230400} # add other ports and their baud rates here
 
     if verbose:

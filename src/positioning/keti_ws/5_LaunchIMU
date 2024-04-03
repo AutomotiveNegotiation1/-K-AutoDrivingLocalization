@@ -1,0 +1,3 @@
+#!/bin/bash
+
+roslaunch localizer_zed_f9r zed_f9r.launch
