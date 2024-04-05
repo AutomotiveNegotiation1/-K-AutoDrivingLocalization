@@ -89,7 +89,6 @@ struct IPEDataPacket
         // for (const auto& val : id) {
         //     std::cout << val << " ";
         // }
-        std::cout << std::endl;
         x.assign(msg->x.begin(), msg->x.end());
         y.assign(msg->y.begin(), msg->y.end());
         z.assign(msg->z.begin(), msg->z.end());

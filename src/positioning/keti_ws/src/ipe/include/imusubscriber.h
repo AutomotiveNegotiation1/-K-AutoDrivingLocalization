@@ -45,6 +45,7 @@
 #include "uwbsubscriber.h"
 #include "socketmanager.h"
 #include "sensordata.h"
+#include "geometry_msgs/PoseStamped.h"
 
 // #include "IMUpos.h"
 // #include "PositioningSystem_V2_1.h" // Changed 2024.03.28 (jang.sh)
@@ -96,7 +97,9 @@ public:
 
 private:
     void setupSubscriber(ros::NodeHandle& node);
+    void _callback_lidarpose(const geometry_msgs::PoseStamped::ConstPtr& msg);
     void _callback(const sensor_msgs::Imu::ConstPtr& msg);
+    void rviz_match();
     void processPacketData(IPEDataPacket &packet, double timestamp,  SensorData* data);
 };
 
