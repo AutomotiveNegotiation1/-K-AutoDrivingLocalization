@@ -45,3 +45,17 @@ sub_UWB3: true
 
 IMU_on: true
 
+test_on: false
+
+# predefined or manual
+init_pos:
+  method: predefined
+  uwb_start_x: 33.5378781376
+  uwb_start_y: 4.5057112656
+  uwb_end_x: 12.1565322779
+  uwb_end_y: 18.1184008833
+  lidar_start_x: 2.9616985321
+  lidar_start_y: 0.1997436881
+  lidar_end_x: -18.4953937530
+  lidar_end_y: 13.7914628982
+  start_angle: 1.56043

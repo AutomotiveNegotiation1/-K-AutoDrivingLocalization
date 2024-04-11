@@ -46,6 +46,8 @@
 #include "socketmanager.h"
 #include "sensordata.h"
 #include "geometry_msgs/PoseStamped.h"
+#include "std_msgs/String.h"
+// #include "nav_msgs/Path.h"
 
 // #include "IMUpos.h"
 // #include "PositioningSystem_V2_1.h" // Changed 2024.03.28 (jang.sh)
@@ -71,8 +73,11 @@ extern double imuNum;
 class ImuSubscriber : public PacketCallback {
 private:
     ros::Publisher pub;
+    ros::Publisher pub_origin;
+    // ros::Publisher pub_trajectory;
     ros::Subscriber sub;
     ros::Subscriber subFusion;
+    ros::Subscriber sub_control;
     std::string frame_id = "imu";
     std::ostringstream topic_name_stream;
 
@@ -99,6 +104,7 @@ private:
     void setupSubscriber(ros::NodeHandle& node);
     void _callback_lidarpose(const geometry_msgs::PoseStamped::ConstPtr& msg);
     void _callback(const sensor_msgs::Imu::ConstPtr& msg);
+    void _callback_control(const std_msgs::String::ConstPtr& msg);
     void rviz_match();
     void processPacketData(IPEDataPacket &packet, double timestamp,  SensorData* data);
 };

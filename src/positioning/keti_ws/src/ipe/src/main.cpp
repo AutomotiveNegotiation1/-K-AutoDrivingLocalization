@@ -40,8 +40,7 @@ int main(int argc, char** argv) {
 
     // Get the parameter from the parameter server
     bool m_test;
-    nh.param("my_bool_param", m_test, true); // Default value is true
-
+    ros::param::get("/ipe_node/test_on", m_test); 
     // 이제 myBoolParam을 사용할 수 있습니다.
     // ROS_INFO_STREAM("Received bool parameter: " << myBoolParam);
 

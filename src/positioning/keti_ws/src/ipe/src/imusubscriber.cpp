@@ -46,29 +46,22 @@ double acc_b_theta;
 double signalIMU = 0;
 double imuNum = 0;
 
+// subscribe lidar pose
 double lidar_x, lidar_y, lidar_z;
 double lidar_q[4];
 
 double PositionOut[10];
+double start_angle;
+// nav_msgs::Path trajectory;
+int trajectory_index = 0;
 
-double start_x = 32.8000087333;
-double start_y = -4.3550085624;
-double end_x = 36.0328132588;
-double end_y = -4.7361490070;
-double start_x2 = 0.5715455412;
-double start_y2 = -0.4677960276;
-double end_x2 = 3.9188332557;
-double end_y2 = 0.0377253293;
-double diff_x = end_x - start_x;
-double diff_y = end_y - start_y;
-double diff_x2 = end_x2 - start_x2;
-double diff_y2 = end_y2 - start_y2;
-// (diff_x + diff_yi) / (diff_x2 + diff_y2i)
-double result_x = ((diff_x * diff_x2) + (diff_y * diff_y2)) / (pow(diff_x2, 2) + pow(diff_y2, 2));
-double result_y = ((diff_y * diff_x2) - (diff_x * diff_y2)) / (pow(diff_x2, 2) + pow(diff_y2, 2));
-double abs_result = sqrt(pow(result_x, 2) + pow(result_y, 2));
-double norm_result_x = result_x / abs(result_x);
-double norm_result_y = result_y / abs(result_y);
+typedef struct
+{
+    double real;
+    double img;
+} complex;
+
+complex uwb_pos_first, lidar_pos_first, uwb_pos_end, lidar_pos_end, ReNewMat;
 
 static void argInit_1x3_real_T(double result[3]) {
     for (int idx1{0}; idx1 < 3; idx1++) {
@@ -124,16 +117,6 @@ static void quatinv(double *q)
     q[3] = -1 * q[3] * inv_norm;
 }
 
-
-static void calc_rotate(double *_x, double *_y)
-{
-    double __x = *_x - start_x;
-    double __y = *_y - start_y;
-    double rotated_x = __x / norm_result_x;
-    double rotated_y = __y / norm_result_y;
-    *_x = rotated_x + start_x2;
-    *_y = rotated_y + start_y2;
-}
 static void rotate_pose(double *a, double *b, double angle)
 {
     double v1 = *a;
@@ -142,32 +125,84 @@ static void rotate_pose(double *a, double *b, double angle)
     *b = v1 * sin(angle) + v2 * cos(angle);
 }
 
+static void set_init_pos(complex *_pos, double _real, double _img)
+{
+    _pos->real = _real;
+    _pos->img = _img;
+}
+
+/*  ReNewMat = (uwb_org_pos(end) - uwb_org_pos(20)) / (lidar_org_pos(end) - lidar_org_pos(20));
+    ReNewMat = ReNewMat ./ abs(ReNewMat); */
+static void init_ReNewMat()
+{
+    complex uwb_pos_diff, lidar_pos_diff;
+    uwb_pos_diff.real = uwb_pos_end.real - uwb_pos_first.real;
+    uwb_pos_diff.img = uwb_pos_end.img - uwb_pos_first.img;
+    lidar_pos_diff.real = lidar_pos_end.real - lidar_pos_first.real;
+    lidar_pos_diff.img = lidar_pos_end.img - lidar_pos_first.img;
+
+    /* uwb_pos_diff ./ lidar_pos_diff */
+    ReNewMat.real = uwb_pos_diff.real / lidar_pos_diff.real;
+    ReNewMat.img = uwb_pos_diff.img / lidar_pos_diff.img;
+    
+    // ReNewMat ./ abs(ReNewMat)
+    // ReNewMat.real = ReNewMat.real / abs(ReNewMat.real);
+    // ReNewMat.img = ReNewMat.img / abs(ReNewMat.img);
+}
+
+// uwb_org_pos_re = (uwb_org_pos - uwb_org_pos(20)) ./ ReNewMat + lidar_org_pos(20);
+static void _rviz_match(complex *_org_pos)
+{
+    if(ReNewMat.real != 0 && ReNewMat.img != 0) {
+        _org_pos->real = ((_org_pos->real - uwb_pos_first.real) / ReNewMat.real) + lidar_pos_first.real;
+        _org_pos->img = ((_org_pos->img - uwb_pos_first.img) / ReNewMat.img) + lidar_pos_first.img;   
+    }
+}
 
 void ImuSubscriber::rviz_match()
 {
-    double input_x = PositionOut[0];
-    double input_y = -1 * PositionOut[1];
+    complex org_pos;
+    org_pos.real = PositionOut[0];
+    org_pos.img = PositionOut[1];
 
-    calc_rotate(&input_x, &input_y);
+    _rviz_match(&org_pos);
     geometry_msgs::PoseStamped ps;
-
-    euler_to_quaternion(&ps.pose.orientation.x, &ps.pose.orientation.y, &ps.pose.orientation.z, &ps.pose.orientation.w, 0, 0 ,PositionOut[3] - 1.57);
+    euler_to_quaternion(&ps.pose.orientation.x, &ps.pose.orientation.y, &ps.pose.orientation.z, &ps.pose.orientation.w, 0, 0 ,PositionOut[3] - start_angle);
     ps.header.frame_id = "map";
-    ps.pose.position.x = input_x;
-    ps.pose.position.y = input_y;
+    ps.pose.position.x = org_pos.real;
+    ps.pose.position.y = org_pos.img;
     ps.pose.position.z = 0;
 
     pub.publish(ps);
-    
 }
 
 ImuSubscriber::ImuSubscriber(ros::NodeHandle& _node, IPECallback* _ipeCallback)
-    : m_ipeCallback(_ipeCallback){
+    : m_ipeCallback(_ipeCallback)
+{
     setupSubscriber(_node);
     pub = _node.advertise<geometry_msgs::PoseStamped>("/ipe/pose", 10);
+    // pub_trajectory = _node.advertise<nav_msgs::Path>("/ipe/path", 10);
+    pub_origin = _node.advertise<geometry_msgs::PoseStamped>("/ipe/pose_origin", 10);
     
     socketManager = SocketManager::getInstance(); // <-- Add this line to initialize the socketManager
+
+    std::string init_method;
+    ros::param::get("/ipe_node/init_pos/method", init_method);
+    if(init_method == "predefined") {
+        ros::param::get("/ipe_node/init_pos/uwb_start_x", uwb_pos_first.real);
+        ros::param::get("/ipe_node/init_pos/uwb_start_y", uwb_pos_first.img);
+        ros::param::get("/ipe_node/init_pos/uwb_end_x", uwb_pos_end.real);
+        ros::param::get("/ipe_node/init_pos/uwb_end_y", uwb_pos_end.img);
+        ros::param::get("/ipe_node/init_pos/lidar_start_x", lidar_pos_first.real);
+        ros::param::get("/ipe_node/init_pos/lidar_start_y", lidar_pos_first.img);
+        ros::param::get("/ipe_node/init_pos/lidar_end_x", lidar_pos_end.real);
+        ros::param::get("/ipe_node/init_pos/lidar_end_y", lidar_pos_end.img);
+        ros::param::get("/ipe_node/init_pos/start_angle", start_angle);
+        init_ReNewMat();
+    }
+
 }
+
 
 
 ImuSubscriber::~ImuSubscriber() {}
@@ -198,19 +233,47 @@ void ImuSubscriber::setupSubscriber(ros::NodeHandle& node) {
 
     sub = node.subscribe<sensor_msgs::Imu>(topic_name, 10, &ImuSubscriber::_callback, this);
     subFusion = node.subscribe<geometry_msgs::PoseStamped>("/kdlidar_ros_pcl/pose", 1, &ImuSubscriber::_callback_lidarpose, this);
+    sub_control = node.subscribe<std_msgs::String>("/ipe/control", 1, &ImuSubscriber::_callback_control, this);
+
+    // trajectory.header.frame_id = "map";
+
+}
+
+void ImuSubscriber::_callback_control(const std_msgs::String::ConstPtr& msg) {
+    if(msg->data == "start") {
+        // second 2024-04-08
+        set_init_pos(&uwb_pos_first, PositionOut[0], PositionOut[1]);
+        set_init_pos(&lidar_pos_first, lidar_x, lidar_y);
+        start_angle = PositionOut[3];
+
+        ros::param::set("/ipe_node/init_pos/uwb_start_x", uwb_pos_first.real);
+        ros::param::set("/ipe_node/init_pos/uwb_start_y", uwb_pos_first.img);
+        ros::param::set("/ipe_node/init_pos/lidar_start_x", lidar_pos_first.real);
+        ros::param::set("/ipe_node/init_pos/lidar_start_y", lidar_pos_first.img);
+        ros::param::set("/ipe_node/init_pos/start_angle", start_angle);
+
+        std::cout << "start angle : "<< start_angle << std::endl;
+        std::cout << "uwb_pos_first" << uwb_pos_first.real << ", " << uwb_pos_first.img << std::endl;
+        std::cout << "lidar_pos_first" << lidar_pos_first.real << ", " << lidar_pos_first.img << std::endl; 
+    } else if(msg->data == "end") {
+        std::cout << *msg << std::endl;
+        set_init_pos(&uwb_pos_end, PositionOut[0], PositionOut[1]);
+        set_init_pos(&lidar_pos_end, lidar_x, lidar_y);
+        ros::param::set("/ipe_node/init_pos/uwb_end_x", uwb_pos_end.real);
+        ros::param::set("/ipe_node/init_pos/uwb_end_y", uwb_pos_end.img);
+        ros::param::set("/ipe_node/init_pos/lidar_end_x", lidar_pos_end.real);
+        ros::param::set("/ipe_node/init_pos/lidar_end_y", lidar_pos_end.img);
+        std::cout << "uwb_pos_end" << uwb_pos_end.real << ", " << uwb_pos_end.img << std::endl;
+        std::cout << "lidar_pos_end" << lidar_pos_end.real << ", " << lidar_pos_end.img << std::endl;
+        init_ReNewMat();
+    }
 
 }
 
 void ImuSubscriber::_callback_lidarpose(const geometry_msgs::PoseStamped::ConstPtr& msg) {
-    
-    lidar_q[0] = msg->pose.orientation.w;
-    lidar_q[1] = msg->pose.orientation.x;
-    lidar_q[2] = msg->pose.orientation.y;
-    lidar_q[3] = msg->pose.orientation.z;
-    // euler_from_quaternion(msg->pose.orientation.x, msg->pose.orientation.y, msg->pose.orientation.z, msg->pose.orientation.w, &lidar_roll, &lidar_pitch, &lidar_yaw);
     lidar_x = msg->pose.position.x;
     lidar_y = msg->pose.position.y;
-    lidar_z = msg->pose.position.z;    
+    lidar_z = msg->pose.position.z;
 }
 
 void ImuSubscriber::_callback(const sensor_msgs::Imu::ConstPtr& msg) {
@@ -294,9 +357,8 @@ void ImuSubscriber::processPacketData(IPEDataPacket &packet, double timestamp,  
     // Send Result
     sendUDPMessage(PositionOut[0], PositionOut[1], PositionOut[3]); // Kalman result (jang.sh)
     // sendUDPMessage(PositionOut[7], PositionOut[8], PositionOut[9]); // UWB result (jang.sh)
-    // matching_func1();
-    // matching_func2();
     rviz_match();
+
     
     
 }
