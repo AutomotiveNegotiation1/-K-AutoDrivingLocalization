@@ -116,6 +116,7 @@ int main(int argc, char *argv[])
     gFixed = GTK_FIXED(gtk_builder_get_object(gBuilder, "ID_FIXED"));
     drawingArea = GTK_DRAWING_AREA(gtk_builder_get_object(gBuilder, "ID_DRAWINGAREA"));
     
+    gtk_widget_set_size_request(GTK_WIDGET(drawingArea), 200, 200);
     time_t t;
     char fname[256];  // 버퍼 크기 증가
     time(&t);
@@ -218,6 +219,9 @@ gpointer uwb_thread_run(gpointer data)
         {
             isUpdate = TRUE;
         }
+        // if(calculate_diff(current_x, current_y, uwb_x, uwb_y) != 0) {
+            gtk_widget_queue_draw(GTK_WIDGET(drawingArea));
+        // }
         //        gtk_fixed_move(gFixed, GTK_WIDGET(drawingArea), x - area_offset, y - area_offset);
     }
 
@@ -339,55 +343,19 @@ gboolean manually_draw()
 
     GdkDrawingContext *drawingContext = gdk_window_begin_draw_frame(draw_window, cairoRegion);
 
+    if (current_mstime - uwb_mstime >= 0 && current_mstime - uwb_mstime < 400)
     {
-        // if (current_mstime - cctv_mstime > 0 && current_mstime - cctv_mstime < 400)
-        // {
-        //     printf("cctv paint\n");
-        //     if (cctv_x > 1450 || cctv_y < 0 || cctv_y > 1027)
-        //     {
-        //         printf("out of bound\n");
-        //     }
-        //     else
-        //     {
-        //         int result = calculate_diff(current_x, current_y, cctv_x, cctv_y);
-        //         if (result == 0)
-        //         {
-        //             draw_car(drawingContext, cctv_x, cctv_y, cctv_angle, FROM_CCTV);
-        //         } else {
-        //             draw_car(drawingContext, current_x, current_y, current_angle, current_paint);
-        //         }
-                
-        //     }
-        // }
-        if (current_mstime - uwb_mstime > 0 && current_mstime - uwb_mstime < 400)
-        {
-            if (uwb_x > 1450 || uwb_y < 0 || uwb_y > 1027)
-            {
-//                printf("out of bound\n");
-            }
-            else
-            {
-                int result = calculate_diff(current_x, current_y, uwb_x, uwb_y);
-                if (result == 0)
-                {
-                    draw_car(drawingContext, uwb_x, uwb_y, uwb_angle, FROM_UWB);
-                    printf("draw car %f,%f,%f\n", uwb_y, uwb_x, uwb_angle);
-                } else {
-                    draw_car(drawingContext, current_x, current_y, current_angle, current_paint);
-                }
-            }
-        }
-        else
-        {
-            // printf("out of time\n");
-            //            gtk_widget_set_size_request(GTK_WIDGET(drawingArea), 0, 0);
-        }
-
-        gtk_widget_queue_draw(GTK_WIDGET(drawingArea));
-
-        // say: "I'm finished drawing
-        gdk_window_end_draw_frame(draw_window, drawingContext);
+        if(uwb_x < 1855 && uwb_x > 0 && uwb_y > 0 && uwb_y < 1027) {
+            // if(result != -1) {
+                draw_car(drawingContext, uwb_x, uwb_y, uwb_angle, FROM_UWB);
+            // } else {
+            //     draw_car(drawingContext, current_x, current_y, uwb_angle, current_paint);
+            // }
+        } 
     }
+    // say: "I'm finished drawing
+    gdk_window_end_draw_frame(draw_window, drawingContext);
+    
 
     return FALSE;
 }
@@ -478,15 +446,15 @@ void add_anchor(int x, int y)
 
 int calculate_diff(double before_x, double before_y, double after_x, double after_y)
 {
-    // double result = pow(after_x - before_x, 2) + pow(after_y - before_y, 2);
-    // if (result < 25)
-    // {
-    //     return -1;
-    // }
-    // else
-    // {
-    //     return 0;
-    // }
+    double result = pow(after_x - before_x, 2) + pow(after_y - before_y, 2);
+    if (result < 2)
+    {
+        return -1;
+    }
+    else
+    {
+        return 0;
+    }
     return 0;
 }
 
@@ -503,14 +471,14 @@ void draw_car(GdkDrawingContext *_drawingContext, double _x, double _y, double _
     cairo_translate(cr, (-1 * rotate_x) + area_offset, (-1 * rotate_y) + area_offset);
     cairo_rotate(cr, _angle);
     cairo_scale(cr, car_width / w, car_height / h);
-    if (!isStart)
-    {
-        gtk_widget_set_size_request(GTK_WIDGET(drawingArea), 0, 0);
-    }
-    else
-    {
-        gtk_widget_set_size_request(GTK_WIDGET(drawingArea), 200, 200);
-    }
+    // if (!isStart)
+    // {
+    //     gtk_widget_set_size_request(GTK_WIDGET(drawingArea), 0, 0);
+    // }
+    // else
+    // {
+    //     gtk_widget_set_size_request(GTK_WIDGET(drawingArea), 200, 200);
+    // }
     if(_paint == FROM_UWB) {
         cairo_set_source_surface(cr, cst_uwb, 30, 30);
     } else if(_paint == FROM_CCTV) {
