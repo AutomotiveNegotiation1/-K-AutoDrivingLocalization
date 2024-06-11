@@ -186,7 +186,7 @@ gpointer uwb_thread_run(gpointer data)
         gettimeofday(&uwb_tv, NULL);
         buff[rx_leng] = 0;
         // fprintf(f, "UWB buff : %s\n", buff);
-        printf("UWB buff : %s\n", buff);
+        // printf("UWB buff : %s\n", buff);
         isStart = TRUE;
 
         char *p;
@@ -342,11 +342,9 @@ gboolean manually_draw()
     current_mstime = current_tv.tv_sec * 1000 + current_tv.tv_usec / 1000;
     uwb_mstime = uwb_tv.tv_sec * 1000 + uwb_tv.tv_usec / 1000;
     cctv_mstime = cctv_tv.tv_sec * 1000 + cctv_tv.tv_usec / 1000;
-
     GdkDrawingContext *drawingContext = gdk_window_begin_draw_frame(draw_window, cairoRegion);
-
-        
-    if (current_mstime - uwb_mstime > 0 && current_mstime - uwb_mstime < 400)
+    
+    if (current_mstime - uwb_mstime >= 0 && current_mstime - uwb_mstime < 400)
     {
         if (uwb_x > 0 && uwb_x < 1450 && uwb_y > 0 && uwb_y < 1027)
         {
@@ -510,6 +508,7 @@ void draw_car(GdkDrawingContext *_drawingContext, double _x, double _y, double _
         current_paint = _paint;
     }
     //draw_point_on_fixed(gFixed, current_x, current_y);
+    
     cairo_paint(cr);
 }
 
