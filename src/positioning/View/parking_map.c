@@ -18,7 +18,7 @@
 #include <cairo.h>
 
 #define max(a, b) a > b ? a : b
-#define ROTATION_WINDOW 2
+#define ROTATION_WINDOW 20
 
 enum PAINT
 {
@@ -30,6 +30,7 @@ struct POINT
 {
     double x;
     double y;
+    struct timeval time;
     struct POINT *prev;
     struct POINT *next;
 };
@@ -45,9 +46,14 @@ cairo_surface_t *cst_cctv;
 GdkWindow *draw_window;
 cairo_region_t *cairoRegion;
 bool first = TRUE;
+bool abnormal = FALSE;
+bool initializing = TRUE;
+int initial_cnt = 1;
 
 pthread_t uwb_thread;
 pthread_t cctv_thread;
+GMutex gmutex;
+
 double uwb_x = 100.0;
 double uwb_y = 100.0;
 double uwb_angle = 0;
@@ -77,11 +83,10 @@ struct POINT *point_list = NULL;
 int list_cnt = 0;
 struct timeval uwb_tv, cctv_tv;
 
-int valid_cctv_zone(double x, double y);
 void draw_car(GdkDrawingContext *_drawingContext, double _x, double _y, double _angle, enum PAINT _paint);
-int calculate_diff(double before_x, double before_y, double after_x, double after_y);
+double calculate_diff(double before_x, double before_y, double after_x, double after_y);
 void add_point(double x, double y);
-void set_mode(double x, double y);
+void set_mode(double _uwb_x, double _uwb_y, double _cctv_x, double _cctv_y);
 void position_offset_uwb(double *x, double *y);
 void position_offset_cctv(double *x, double *y);
 gint callback_timer(gpointer argv);
@@ -93,11 +98,10 @@ gboolean manually_draw();
 gboolean on_draw(GtkWidget *widget, GdkEventExpose *event, gpointer data);
 FILE *f;
 
-void draw_point_on_fixed(GtkFixed *fixed, double x, double y);
-static gboolean draw_circle_callback(GtkWidget *widget, cairo_t *cr, gpointer data);
 
 int main(int argc, char *argv[])
 {
+    
     point_list = (struct POINT *)malloc(sizeof(struct POINT));
     point_list->prev = point_list;
     point_list->next = point_list;
@@ -128,13 +132,14 @@ int main(int argc, char *argv[])
         fprintf(stderr, "fopen error\n");
         return EXIT_FAILURE;  // 파일 열기 실패 처리
     }
+    g_mutex_init(&gmutex);
 
     gtk_widget_show(gApp);
     gtk_widget_show(GTK_WIDGET(drawingArea));
     g_thread_new("uwb_thread", uwb_thread_run, NULL);
-    //g_thread_new("cctv_thread", cctv_thread_run, NULL);
+    g_thread_new("cctv_thread", cctv_thread_run, NULL);
 
-    g_timeout_add(1000, callback_timer, NULL);
+    g_timeout_add(10, callback_timer, NULL);
 
     gtk_main();
     fclose(f);
@@ -146,6 +151,7 @@ gint callback_timer(gpointer argv)
 {
     gint x, y;
     gtk_widget_get_pointer(gApp, &x, &y);
+    gtk_widget_queue_draw(GTK_WIDGET(drawingArea));
     // printf("mouse position :: x = %d, y = %d\n", x, y);
 
     return TRUE;
@@ -183,9 +189,12 @@ gpointer uwb_thread_run(gpointer data)
     {
         adr_sz = sizeof(from_adr);
         rx_leng = recvfrom(sock, buff, 1024, 0, (struct sockaddr *)&from_adr, &adr_sz);
+
+        g_mutex_lock(&gmutex);
+
         gettimeofday(&uwb_tv, NULL);
+
         buff[rx_leng] = 0;
-        // fprintf(f, "UWB buff : %s\n", buff);
         // printf("UWB buff : %s\n", buff);
         isStart = TRUE;
 
@@ -214,20 +223,24 @@ gpointer uwb_thread_run(gpointer data)
             p = strtok(NULL, ",");
         }
         position_offset_uwb(&uwb_x, &uwb_y);
-        set_mode(uwb_x, uwb_y);
-
-        if (cur_paint == FROM_UWB)
-        {
-            isUpdate = TRUE;
-        }
-        // if(calculate_diff(current_x, current_y, uwb_x, uwb_y != 0)) {
-            gtk_widget_queue_draw(GTK_WIDGET(drawingArea));
-        // }
-        //        gtk_fixed_move(gFixed, GTK_WIDGET(drawingArea), x - area_offset, y - area_offset);
+        g_mutex_unlock(&gmutex);
+        
+        // isUpdate = TRUE;
+        // gtk_widget_queue_draw(GTK_WIDGET(drawingArea));
     }
 
     close(sock);
     return NULL;
+}
+
+void position_offset_uwb(double *x, double *y)
+{
+    *x *= 20;
+    *y *= 20;
+    // *x += 375;
+    // *y += 8;
+    *x += 98;
+    // *y += 0;
 }
 
 gpointer cctv_thread_run(gpointer data)
@@ -253,9 +266,12 @@ gpointer cctv_thread_run(gpointer data)
     {
         adr_sz = sizeof(from_adr);
         rx_leng = recvfrom(sock, buff, 1024, 0, (struct sockaddr *)&from_adr, &adr_sz);
+        
+        g_mutex_lock(&gmutex);
+        gettimeofday(&cctv_tv, NULL);
         buff[rx_leng] = 0;
         // fprintf(f, "CCTV buff : %s\n", buff);
-        printf("CCTV buff : %s\n", buff);
+        // printf("CCTV buff : %s\n", buff);
         isStart = TRUE;
         char *p;
         int phase = 1;
@@ -281,13 +297,7 @@ gpointer cctv_thread_run(gpointer data)
             p = strtok(NULL, ",");
         }
         position_offset_cctv(&cctv_x, &cctv_y);
-        if (valid_cctv_zone(cctv_x, cctv_y) == 1)
-        {
-            gettimeofday(&cctv_tv, NULL);
-            cur_paint = FROM_CCTV;
-            isUpdate = TRUE;
-        }
-        // printf("x : %f, y : %f\n", cctv_x, cctv_y);
+        isUpdate = TRUE;
 
         if (list_cnt >= ROTATION_WINDOW)
         {
@@ -308,14 +318,35 @@ gpointer cctv_thread_run(gpointer data)
                 cctv_angle += G_PI;
             }
             printf("diff_x : %f, diff_y : %f, _x : %f, cctv_angle : %f\n", diff_x, diff_y, _x, cctv_angle);
+        } else {
+            cctv_angle = uwb_angle;
+            printf("cctv_angle : %f\n", cctv_angle);
         }
+        g_mutex_unlock(&gmutex);
         
-
+        // gtk_widget_queue_draw(GTK_WIDGET(drawingArea));
         // gtk_fixed_move(gFixed, GTK_WIDGET(drawingArea), x - area_offset, y - area_offset);
     }
 
     close(sock);
     return NULL;
+}
+
+void position_offset_cctv(double *x, double *y)
+{
+    // 기둥 20픽셀 : 100cm, 약 140픽셀 : 705cm 1픽셀 당 약 5cm
+    // 122픽셀 -> 약 610cm -> 608cm
+    // 픽셀의 수 : 그리드 수 = n'픽셀 : n칸
+    // *x = *x * pixel_x / measurement_x;
+    //    *y = *y * pixel_y / measurement_y;
+    // (0,0) offset
+    *x *= 20;
+    *y *= 20;
+
+    // *x += 375;
+    // *y += 8;
+    *x += 98;
+    // *y += 0;
 }
 
 gboolean on_draw(GtkWidget *widget,
@@ -336,24 +367,48 @@ gboolean on_draw(GtkWidget *widget,
 
 gboolean manually_draw()
 {
+
+    g_mutex_lock(&gmutex);
     struct timeval current_tv;
     gettimeofday(&current_tv, NULL);
     double current_mstime, uwb_mstime, cctv_mstime;
     current_mstime = current_tv.tv_sec * 1000 + current_tv.tv_usec / 1000;
     uwb_mstime = uwb_tv.tv_sec * 1000 + uwb_tv.tv_usec / 1000;
     cctv_mstime = cctv_tv.tv_sec * 1000 + cctv_tv.tv_usec / 1000;
+    // printf("start currnet_mstime : %f\n", current_mstime);
     GdkDrawingContext *drawingContext = gdk_window_begin_draw_frame(draw_window, cairoRegion);
-    
-    if (current_mstime - uwb_mstime >= 0 && current_mstime - uwb_mstime < 400)
+
+    set_mode(uwb_x, uwb_y, cctv_x, cctv_y);
+
+    if (cur_paint == FROM_UWB && current_mstime - uwb_mstime >= 0 && current_mstime - uwb_mstime < 400)
     {
-        if (uwb_x > 0 && uwb_x < 1450 && uwb_y > 0 && uwb_y < 1027)
-        {
-            draw_car(drawingContext, uwb_x, uwb_y, uwb_angle, FROM_UWB);
+        if (uwb_x > 0 && uwb_x < 1450 && uwb_y > 0 && uwb_y < 1027) {
+            if(abnormal) {
+                draw_car(drawingContext, current_x, current_y, current_angle, current_paint);
+            } else {
+                draw_car(drawingContext, uwb_x, uwb_y, uwb_angle, cur_paint);
+            }
+        } else {
+            initial_cnt++;
+        }
+    } 
+    else if (cur_paint == FROM_CCTV && current_mstime - cctv_mstime >= 0 && current_mstime - cctv_mstime < 400)
+    {
+        if (cctv_x > 0 && cctv_x < 1450 && cctv_y > 0 && cctv_y < 1027) {
+            if(abnormal) {
+                draw_car(drawingContext, current_x, current_y, current_angle, current_paint);
+            } else {
+                draw_car(drawingContext, cctv_x, cctv_y, cctv_angle, cur_paint);
+            }
+        } else {
+            initial_cnt++;
         }
     }
+
     // say: "I'm finished drawing
     gdk_window_end_draw_frame(draw_window, drawingContext);
     
+    g_mutex_unlock(&gmutex);
 
     return FALSE;
 }
@@ -365,74 +420,82 @@ void rotate_point(double _angle, double *new_x, double *new_y)
 }
 
 
-// void rotate_point(double _angle, double *new_x, double *new_y)
-// {
-//     double temp_x = *new_x;
-//     double temp_y = *new_y;
-
-//     *new_x = temp_x * cos(_angle) + temp_y * sin(_angle);
-//     *new_y = -temp_x * sin(_angle) + temp_y * cos(_angle);
-// }
-
-void position_offset_uwb(double *x, double *y)
+void set_mode(double _uwb_x, double _uwb_y, double _cctv_x, double _cctv_y)
 {
-    *x *= 20;
-    *y *= 20;
-    // *x += 375;
-    // *y += 8;
-    *x += 98;
-    // *y += 0;
-}
-
-void position_offset_cctv(double *x, double *y)
-{
-    // 기둥 20픽셀 : 100cm, 약 140픽셀 : 705cm 1픽셀 당 약 5cm
-    // 122픽셀 -> 약 610cm -> 608cm
-    // 픽셀의 수 : 그리드 수 = n'픽셀 : n칸
-    // *x = *x * pixel_x / measurement_x;
-    //    *y = *y * pixel_y / measurement_y;
-    // (0,0) offset
-    *x *= 20;
-    *y *= 20;
-
-    *x += 375;
-    *y += 8;
-}
-
-void set_mode(double x, double y)
-{
-    //
+    double diff;
+    // 1안 : 특정 영역에서만 CCTV 좌표 출력
     /* **********************************************
         CCTV ZONE : 380,0 => 1100,140
     ************************************************/
-    // if (y < 140.0 && x > 500.0 && x < 1100.0)
-    // {
-    //     cur_paint = FROM_CCTV;
-    //     // change_cnt = 10;
-    // }
-    // else
-    // {
-    //     cur_paint = FROM_UWB;
-    //     // change_cnt = 10;
-    // }
-    cur_paint = FROM_UWB;
-}
-int valid_cctv_zone(double x, double y)
-{
-    //
-    /* **********************************************
-        CCTV ZONE : 380,0 => 1100,140
-    ************************************************/
-    if (y < 140.0 && x > 500.0 && x < 1100.0)
+    if (_uwb_y < 130.0 && _uwb_x > 98.0 && _uwb_x < 558.0)
     {
         cur_paint = FROM_CCTV;
-        return 1;
     }
-    return 0;
+    else
+    {
+        cur_paint = FROM_UWB;
+    }
+    // 2안 : 특정 영역 + 기존 좌표와의 거리 비교
+    if(cur_paint == FROM_CCTV) {
+        diff = calculate_diff(current_x, current_y, _cctv_x, _cctv_y);
+    } else if(cur_paint == FROM_UWB) {
+        diff = calculate_diff(current_x, current_y, _uwb_x, _uwb_y);
+    }
+    
+    if(initializing) {
+        if(initial_cnt > 60) {
+            printf("finisg init\n");
+            initializing = FALSE;
+            initial_cnt = 0;
+        }
+        if(diff > 100) {
+            initial_cnt = 0;
+        } else {
+            initial_cnt++;
+        }
+        abnormal = FALSE;
+    } else {
+        if(diff > 100) { 
+            initial_cnt++;
+            abnormal = TRUE;
+        } else {
+            abnormal = FALSE;
+            initial_cnt = 0;
+        }
+        if(initial_cnt > 180) {
+            printf("initializing\n");
+            initializing = TRUE;
+            initial_cnt = 0;
+        } 
+    }
+    // 3안 : 기존 좌표 기반 
+    //
+    // if(debug_cn % 100 == 0) {
+    //     if(cur_paint == FROM_CCTV) {
+    //         cur_paint = FROM_UWB;
+    //     } else if(cur_paint == FROM_UWB) {
+    //         cur_paint = FROM_CCTV;
+    //     }
+    // }
+    
+
+}
+void remove_all_points()
+{
+    struct POINT *remove_point;
+    while(point_list->next != point_list) {
+        remove_point = point_list->next;
+        point_list->next = remove_point->next;
+        point_list->next->prev = point_list;
+        free(remove_point);
+        list_cnt--;
+    }
 }
 
 void add_point(double x, double y)
 {
+    double new_mstime = cctv_tv.tv_sec * 1000 + cctv_tv.tv_usec / 1000;
+    double last_mstime;
     struct POINT *new_point = (struct POINT *)malloc(sizeof(struct POINT));
     if (new_point == NULL) {
         fprintf(stderr, "Memory allocation failed for new point\n");
@@ -440,6 +503,12 @@ void add_point(double x, double y)
     }
     new_point->x = x;
     new_point->y = y;
+    new_point->time = cctv_tv;
+
+    last_mstime = point_list->prev->time.tv_sec * 1000 + point_list->prev->time.tv_usec / 1000;
+    if(new_mstime - last_mstime > 1000) {
+        remove_all_points();
+    }
 
     if (list_cnt >= ROTATION_WINDOW)
     {
@@ -456,27 +525,15 @@ void add_point(double x, double y)
     list_cnt++;
 }
 
-void add_anchor(int x, int y)
-{
-    GtkImage *gImage2 = GTK_IMAGE(gtk_image_new());
-    gtk_image_set_from_icon_name(gImage2, "gtk-media-record", GTK_ICON_SIZE_BUTTON);
-    gtk_fixed_put(gFixed, GTK_WIDGET(gImage2), x, y);
-    gtk_widget_show(GTK_WIDGET(gImage2));
-}
 
-int calculate_diff(double before_x, double before_y, double after_x, double after_y)
+
+double calculate_diff(double before_x, double before_y, double after_x, double after_y)
 {
     double result = pow(after_x - before_x, 2) + pow(after_y - before_y, 2);
-    if (result < 2)
-    {
-        return -1;
-    }
-    else
-    {
-        return 0;
-    }
-    return 0;
+    
+    return result;
 }
+
 
 void draw_car(GdkDrawingContext *_drawingContext, double _x, double _y, double _angle, enum PAINT _paint)
 {
@@ -496,42 +553,20 @@ void draw_car(GdkDrawingContext *_drawingContext, double _x, double _y, double _
         cairo_set_source_surface(cr, cst_uwb, 30, 30);
     } else if(_paint == FROM_CCTV) {
         cairo_set_source_surface(cr, cst_cctv, 30, 30);
+        if (isUpdate && !abnormal)
+        {
+            add_point(_x, _y);
+            isUpdate = FALSE;
+        }
     }
-    if (isUpdate)
-    {
-        //add_point(_x, _y);
-        isUpdate = FALSE;
-        current_x = _x;
-        current_y = _y;
-
-        current_angle = _angle;
-        current_paint = _paint;
-    }
-    //draw_point_on_fixed(gFixed, current_x, current_y);
     
+    current_x = _x;
+    current_y = _y;
+    current_angle = _angle;
+    current_paint = _paint;
+    //draw_point_on_fixed(gFixed, current_x, current_y);
     cairo_paint(cr);
 }
 
-void draw_point_on_fixed(GtkFixed *fixed, double x, double y)
-{
-    GtkWidget *drawing_area = gtk_drawing_area_new();
-    gtk_widget_set_size_request(drawing_area, 10, 10); // 원의 크기 설정
-    gtk_fixed_put(fixed, drawing_area, x, y);
 
-    // 원 그리기에 대한 콜백 함수 연결
-    g_signal_connect(G_OBJECT(drawing_area), "draw", G_CALLBACK(draw_circle_callback), NULL);
-    gtk_widget_show(drawing_area);
-}
-
-static gboolean draw_circle_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
-{
-    cairo_set_line_width(cr, 2);
-    cairo_set_source_rgb(cr, 1, 0, 0); // 적색 원
-
-    // 원 그리기 (중앙 위치, 반지름 5)
-    cairo_arc(cr, 5, 5, 2, 0, 2 * G_PI);
-    cairo_fill(cr);
-
-    return FALSE;
-}
 
