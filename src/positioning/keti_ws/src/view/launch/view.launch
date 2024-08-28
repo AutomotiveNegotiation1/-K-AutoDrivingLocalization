@@ -1,0 +1,9 @@
+<launch>
+    <!-- Use groups if you want to launch several nodes for multiple devices. -->
+    <!-- <group ns="sensor_1"> -->
+    <node name="view_node" pkg="view" type="view_node" output="screen">
+        <rosparam command="load" file="$(find view)/param/view_node.yaml" />
+    </node>
+    <!-- </group> -->
+</launch>
+ 
