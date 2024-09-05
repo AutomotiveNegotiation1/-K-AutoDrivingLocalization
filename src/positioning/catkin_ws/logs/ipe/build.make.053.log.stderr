@@ -1,0 +1,8 @@
+[01m[K/home/keti/catkin_ws/src/ipe_v5_1/src/imusubscriber.cpp:[m[K In member function ‘[01m[Kvoid ImuSubscriber::processPacketData(IPEDataPacket&, double, SensorData*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/ipe_v5_1/src/imusubscriber.cpp:360:5:[m[K [01;31m[Kerror: [m[K‘[01m[KsendUDPMessage[m[K’ was not declared in this scope
+  360 |     [01;31m[KsendUDPMessage[m[K(PositionOut[0], PositionOut[1], PositionOut[3]); // Kalman result (jang.sh)
+      |     [01;31m[K^~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/ipe.dir/build.make:76: CMakeFiles/ipe.dir/src/imusubscriber.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [CMakeFiles/Makefile2:1166: CMakeFiles/ipe.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

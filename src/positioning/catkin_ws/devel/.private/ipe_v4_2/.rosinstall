@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/keti/catkin_ws/devel/.private/ipe_v4_2/setup.sh

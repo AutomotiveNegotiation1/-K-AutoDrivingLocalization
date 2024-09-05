@@ -1,0 +1,14 @@
+[31m[1mCMake Error[0m at /home/keti/catkin_ws/src/ipe/CMakeLists.txt:43 (add_library):
+  Cannot find source file:
+
+    src/slamsubscriber.cpp
+
+  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .m .M .mm .h .hh .h++ .hm
+  .hpp .hxx .in .txx
+
+
+[31m[1mCMake Error[0m at /home/keti/catkin_ws/src/ipe/CMakeLists.txt:43 (add_library):
+  No SOURCES given to target: ipe
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.

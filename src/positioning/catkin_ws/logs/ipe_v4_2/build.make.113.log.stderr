@@ -1,0 +1,13 @@
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/slamsubscriber_ipe_v4_2.cpp:[m[K In constructor ‘[01m[KSlamSubscriber::SlamSubscriber(ros::NodeHandle&, IPECallback*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/slamsubscriber_ipe_v4_2.cpp:12:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kpub_ipe[m[K’ was not declared in this scope; did you mean ‘[01m[Kpipe[m[K’?
+   12 |     [01;31m[Kpub_ipe[m[K = _node.advertise<nav_msgs::Path>("/ipe/ipe_track", 10);
+      |     [01;31m[K^~~~~~~[m[K
+      |     [32m[Kpipe[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/slamsubscriber_ipe_v4_2.cpp:[m[K In member function ‘[01m[Kvoid SlamSubscriber::processPacketData(IPEDataPacket&, double, SensorData*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/slamsubscriber_ipe_v4_2.cpp:172:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kpub_ipe[m[K’ was not declared in this scope; did you mean ‘[01m[Kpipe[m[K’?
+  172 |     [01;31m[Kpub_ipe[m[K.pubslish(ipe_pth)
+      |     [01;31m[K^~~~~~~[m[K
+      |     [32m[Kpipe[m[K
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:128: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

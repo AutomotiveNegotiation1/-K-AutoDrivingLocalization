@@ -1,0 +1,8 @@
+prefix=/home/keti/catkin_ws/src/ipe_v4_2/build/devel
+
+Name: ipe_v4_2
+Description: Description of ipe_v4_2
+Version: 0.0.0
+Cflags: -I/home/keti/catkin_ws/src/ipe_v4_2/build/devel/include -I/home/keti/catkin_ws/src/ipe_v4_2/include
+Libs: -L${prefix}/lib -lipe_v4_2
+Requires: roscpp std_msgs

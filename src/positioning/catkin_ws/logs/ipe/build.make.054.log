@@ -1,0 +1,48 @@
+[  0%] Built target std_srvs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target rosgraph_msgs_generate_messages_eus
+[  0%] Built target topic_tools_generate_messages_eus
+[  0%] Built target roscpp_generate_messages_nodejs
+[  0%] Built target topic_tools_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target roscpp_generate_messages_cpp
+[  0%] Built target topic_tools_generate_messages_py
+[  0%] Built target roscpp_generate_messages_py
+[  0%] Built target _ipe_generate_messages_check_deps_Anchor
+[  0%] Built target rosgraph_msgs_generate_messages_lisp
+[  0%] Built target rosgraph_msgs_generate_messages_py
+[  0%] Built target roscpp_generate_messages_lisp
+[  0%] Built target roscpp_generate_messages_eus
+[  0%] Built target topic_tools_generate_messages_nodejs
+[  0%] Built target rosgraph_msgs_generate_messages_nodejs
+[  0%] Built target topic_tools_generate_messages_lisp
+[  0%] Built target std_srvs_generate_messages_eus
+[  0%] Built target std_srvs_generate_messages_cpp
+[  0%] Built target std_srvs_generate_messages_lisp
+[  0%] Built target std_srvs_generate_messages_nodejs
+[  0%] Built target rosgraph_msgs_generate_messages_cpp
+[ 10%] Built target ipe_generate_messages_cpp
+[ 10%] Built target ipe_generate_messages_lisp
+[ 12%] Built target ipe_generate_messages_py
+[ 12%] Built target ipe_generate_messages_eus
+[ 14%] Built target ipe_generate_messages_nodejs
+[ 14%] Built target ipe_generate_messages
+[35m[1mScanning dependencies of target ipe[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/main.cpp.o[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/ipeinterface.cpp.o[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/slamsubscriber.cpp.o[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/uwbsubscriber.cpp.o[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/imusubscriber.cpp.o[0m
+[ 27%] [32m[1mLinking CXX shared library /home/keti/catkin_ws/devel/.private/ipe/lib/libipe.so[0m
+[ 95%] Built target ipe
+[35m[1mScanning dependencies of target ipe_node[0m
+[ 97%] [32mBuilding CXX object CMakeFiles/ipe_node.dir/src/main.cpp.o[0m
+[100%] [32m[1mLinking CXX executable /home/keti/catkin_ws/devel/.private/ipe/lib/ipe/ipe_node[0m
+/usr/bin/ld: /home/keti/catkin_ws/devel/.private/ipe/lib/libipe.so: undefined reference to `ImuSubscriber::sendUDPMessage(double, double, double)'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/ipe_node.dir/build.make:115: /home/keti/catkin_ws/devel/.private/ipe/lib/ipe/ipe_node] Error 1
+make[1]: *** [CMakeFiles/Makefile2:210: CMakeFiles/ipe_node.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

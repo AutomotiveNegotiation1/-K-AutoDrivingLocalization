@@ -1,0 +1,37 @@
+<launch>
+    <!-- Declare debug argument -->
+    <arg name="debug_output" default="log"/>
+
+    <!-- Extract info from dwm1001 dev boards, filter them and publish them into topics -->
+    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_01" output="$(arg debug_output)">
+
+        <param name="port"      value="ttyUWB0" />
+        <param name="baud_rate" value="115200" />
+        <param name="frame_id"  value="tag1" />
+
+    </node>
+
+    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_02" output="$(arg debug_output)">
+
+        <param name="port"      value="ttyUWB1" />
+        <param name="baud_rate" value="115200" />
+        <param name="frame_id"  value="tag2" />
+
+    </node>
+
+    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_03" output="$(arg debug_output)">
+
+        <param name="port"      value="ttyUWB2" />
+        <param name="baud_rate" value="115200" />
+        <param name="frame_id"  value="tag3" />
+
+    </node>
+
+    <node pkg="localizer_dwm1001" type="dwm1001_main.py" name="dwm1001_04" output="$(arg debug_output)">
+
+        <param name="port"      value="ttyUWB3" />
+        <param name="baud_rate" value="115200" />
+        <param name="frame_id"  value="tag4" />
+
+    </node>
+</launch>

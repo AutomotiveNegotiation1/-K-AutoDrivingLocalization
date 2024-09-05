@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -g  -shared -Wl,-soname,libview.so -o devel/lib/libview.so CMakeFiles/view.dir/src/parking_map.c.o CMakeFiles/view.dir/src/resource.c.o 

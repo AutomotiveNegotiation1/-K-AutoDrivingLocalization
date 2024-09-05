@@ -1,0 +1,7 @@
+set(uwb_analysis_SETUP_PY_SETUP_MODULE "distutils.core")
+set(uwb_analysis_SETUP_PY_VERSION "0.0.0")
+set(uwb_analysis_SETUP_PY_SCRIPTS "")
+set(uwb_analysis_SETUP_PY_PACKAGES "uwb_analysis")
+set(uwb_analysis_SETUP_PY_PACKAGE_DIRS "src/uwb_analysis")
+set(uwb_analysis_SETUP_PY_MODULES "")
+set(uwb_analysis_SETUP_PY_MODULE_DIRS "")

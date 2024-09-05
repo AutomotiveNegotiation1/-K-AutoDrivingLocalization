@@ -1,0 +1,62 @@
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipecallback.h:39[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipecallback.cpp:34[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipedatapacket.h:40:10:[m[K [01;31m[Kfatal error: [m[Kipe/Anchor.h: No such file or directory
+   40 | #include [01;31m[K<ipe/Anchor.h>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~[m[K
+compilation terminated.
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:44:10:[m[K [01;31m[Kfatal error: [m[Kipe/Anchor.h: No such file or directory
+   44 | #include [01;31m[K<ipe/Anchor.h>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~[m[K
+compilation terminated.
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipecallback.h:39[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/slamsubscriber_ipe_v4_2.h:9[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/slamsubscriber_ipe_v4_2.cpp:2[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipedatapacket.h:40:10:[m[K [01;31m[Kfatal error: [m[Kipe/Anchor.h: No such file or directory
+   40 | #include [01;31m[K<ipe/Anchor.h>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~[m[K
+compilation terminated.
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:76: CMakeFiles/ipe_v4_2.dir/src/ipecallback.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:115: CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o] Error 1
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:128: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o] Error 1
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/main.cpp:35[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipeinterface.h:41:10:[m[K [01;31m[Kfatal error: [m[Kipe/Anchor.h: No such file or directory
+   41 | #include [01;31m[K<ipe/Anchor.h>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~[m[K
+compilation terminated.
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:34[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipeinterface.h:41:10:[m[K [01;31m[Kfatal error: [m[Kipe/Anchor.h: No such file or directory
+   41 | #include [01;31m[K<ipe/Anchor.h>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~[m[K
+compilation terminated.
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:89: CMakeFiles/ipe_v4_2.dir/src/main.cpp.o] Error 1
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:63: CMakeFiles/ipe_v4_2.dir/src/ipeinterface.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

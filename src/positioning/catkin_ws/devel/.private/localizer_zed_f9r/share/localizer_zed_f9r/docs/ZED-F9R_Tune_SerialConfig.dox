@@ -1,0 +1,11 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~serial_port" : \b [str] A string parameter min: , default: , max: 
+- \b "~open_port" : \b [bool] Open serial port min: False, default: False, max: True
+- \b "~close_port" : \b [bool] Close serial port min: False, default: False, max: True
+- \b "~zed_f9r_network_info" : \b [str] A string parameter min: , default: , max: 
+- \b "~quit_zed_f9r_api" : \b [bool] Quit ZED-F9R API min: False, default: False, max: True
+- \b "~exit" : \b [bool] Exit ROS min: False, default: False, max: True
+

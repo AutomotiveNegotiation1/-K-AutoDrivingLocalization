@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: ipe_v4_2
+Description: Description of ipe_v4_2
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lipe_v4_2
+Requires: roscpp std_msgs

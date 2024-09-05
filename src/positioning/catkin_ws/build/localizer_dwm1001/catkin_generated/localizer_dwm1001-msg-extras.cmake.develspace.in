@@ -1,0 +1,2 @@
+set(localizer_dwm1001_MESSAGE_FILES "/home/keti/catkin_ws/src/dwm1001_ros/msg/Anchor.msg;/home/keti/catkin_ws/src/dwm1001_ros/msg/Tag.msg")
+set(localizer_dwm1001_SERVICE_FILES "/home/keti/catkin_ws/src/dwm1001_ros/srv/Anchor_0.srv;/home/keti/catkin_ws/src/dwm1001_ros/srv/Anchor_1.srv;/home/keti/catkin_ws/src/dwm1001_ros/srv/Anchor_2.srv;/home/keti/catkin_ws/src/dwm1001_ros/srv/Anchor_3.srv;/home/keti/catkin_ws/src/dwm1001_ros/srv/Tag_srv.srv")

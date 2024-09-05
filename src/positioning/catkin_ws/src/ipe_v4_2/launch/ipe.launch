@@ -1,0 +1,8 @@
+<launch>
+    <!-- Use groups if you want to launch several nodes for multiple devices. -->
+    <!-- <group ns="sensor_1"> -->
+    <node name="ipe_v4_2_node" pkg="ipe_v4_2" type="ipe_v4_2_node" output="screen">
+        <rosparam command="load" file="$(find ipe_v4_2)/param/ipe_node.yaml" />
+    </node>
+    <!-- </group> -->
+</launch>

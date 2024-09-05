@@ -1,0 +1,116 @@
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:3:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble s[m[K’
+    3 | double [01;31m[Ks[m[K = 3.7138;
+      |        [01;31m[K^[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:3:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double s[m[K’
+    3 | extern const double [01;36m[Ks[m[K;
+      |                     [01;36m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:4:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble roll[m[K’
+    4 | double [01;31m[Kroll[m[K = 0.012;
+      |        [01;31m[K^~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:4:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double roll[m[K’
+    4 | extern const double [01;36m[Kroll[m[K;
+      |                     [01;36m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:5:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble pitch[m[K’
+    5 | double [01;31m[Kpitch[m[K = 4.722;
+      |        [01;31m[K^~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:5:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double pitch[m[K’
+    5 | extern const double [01;36m[Kpitch[m[K;
+      |                     [01;36m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:6:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble yaw[m[K’
+    6 | double [01;31m[Kyaw[m[K = -0.0216;
+      |        [01;31m[K^~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:6:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double yaw[m[K’
+    6 | extern const double [01;36m[Kyaw[m[K;
+      |                     [01;36m[K^~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:8:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble sA_00[m[K’
+    8 | double [01;31m[KsA_00[m[K = -0.035;
+      |        [01;31m[K^~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:8:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double sA_00[m[K’
+    8 | extern const double [01;36m[KsA_00[m[K;
+      |                     [01;36m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:9:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble sA_01[m[K’
+    9 | double [01;31m[KsA_01[m[K = -3.701;
+      |        [01;31m[K^~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:9:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double sA_01[m[K’
+    9 | extern const double [01;36m[KsA_01[m[K;
+      |                     [01;36m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:10:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble sA_02[m[K’
+   10 | double [01;31m[KsA_02[m[K = 0.0456;
+      |        [01;31m[K^~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:10:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double sA_02[m[K’
+   10 | extern const double [01;36m[KsA_02[m[K;
+      |                     [01;36m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:11:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble sA_10[m[K’
+   11 | double [01;31m[KsA_10[m[K = 3.6505;
+      |        [01;31m[K^~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:11:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double sA_10[m[K’
+   11 | extern const double [01;36m[KsA_10[m[K;
+      |                     [01;36m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:12:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble sA_11[m[K’
+   12 | double [01;31m[KsA_11[m[K = 0.1008;
+      |        [01;31m[K^~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:12:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double sA_11[m[K’
+   12 | extern const double [01;36m[KsA_11[m[K;
+      |                     [01;36m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:13:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble sA_12[m[K’
+   13 | double [01;31m[KsA_12[m[K = -0.0801;
+      |        [01;31m[K^~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:13:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double sA_12[m[K’
+   13 | extern const double [01;36m[KsA_12[m[K;
+      |                     [01;36m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:14:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble sA_20[m[K’
+   14 | double [01;31m[KsA_20[m[K = 0.0216;
+      |        [01;31m[K^~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:14:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double sA_20[m[K’
+   14 | extern const double [01;36m[KsA_20[m[K;
+      |                     [01;36m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:15:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble sA_21[m[K’
+   15 | double [01;31m[KsA_21[m[K = 0.0121;
+      |        [01;31m[K^~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:15:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double sA_21[m[K’
+   15 | extern const double [01;36m[KsA_21[m[K;
+      |                     [01;36m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:16:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble sA_22[m[K’
+   16 | double [01;31m[KsA_22[m[K = 0.9997;
+      |        [01;31m[K^~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:16:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double sA_22[m[K’
+   16 | extern const double [01;36m[KsA_22[m[K;
+      |                     [01;36m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:18:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble SLAMposInit_0[m[K’
+   18 | double [01;31m[KSLAMposInit_0[m[K = 3.9997;
+      |        [01;31m[K^~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:18:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double SLAMposInit_0[m[K’
+   18 | extern const double [01;36m[KSLAMposInit_0[m[K;
+      |                     [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:19:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble SLAMposInit_1[m[K’
+   19 | double [01;31m[KSLAMposInit_1[m[K = 77.71;
+      |        [01;31m[K^~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:19:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double SLAMposInit_1[m[K’
+   19 | extern const double [01;36m[KSLAMposInit_1[m[K;
+      |                     [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:20:8:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[Kdouble SLAMposInit_2[m[K’
+   20 | double [01;31m[KSLAMposInit_2[m[K = 0.0;
+      |        [01;31m[K^~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:1[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/map_param_chungra.h:20:21:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kconst double SLAMposInit_2[m[K’
+   20 | extern const double [01;36m[KSLAMposInit_2[m[K;
+      |                     [01;36m[K^~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:141: CMakeFiles/ipe_v4_2.dir/src/map_param_chungra.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

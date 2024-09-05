@@ -1,0 +1,7 @@
+[01m[K/home/keti/catkin_ws/src/ipe/src/ipeinterface.cpp:[m[K In member function ‘[01m[Kvoid IPEInterface::spinFor()[m[K’:
+[01m[K/home/keti/catkin_ws/src/ipe/src/ipeinterface.cpp:269:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kelse[m[K’ without a previous ‘[01m[Kif[m[K’
+  269 |             [01;31m[Kelse[m[K if(rosPacket.second.frame_id == "slam"){
+      |             [01;31m[K^~~~[m[K
+make[2]: *** [CMakeFiles/ipe.dir/build.make:63: CMakeFiles/ipe.dir/src/ipeinterface.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:1166: CMakeFiles/ipe.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

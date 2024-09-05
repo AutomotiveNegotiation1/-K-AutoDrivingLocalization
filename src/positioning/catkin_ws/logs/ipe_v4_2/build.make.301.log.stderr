@@ -1,0 +1,5 @@
+/usr/bin/ld: /home/keti/catkin_ws/devel/.private/ipe_v4_2/lib/libipe_v4_2.so: undefined reference to `PositioningSystem_V5_1'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/ipe_v4_2_node.dir/build.make:115: /home/keti/catkin_ws/devel/.private/ipe_v4_2/lib/ipe_v4_2/ipe_v4_2_node] Error 1
+make[1]: *** [CMakeFiles/Makefile2:377: CMakeFiles/ipe_v4_2_node.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

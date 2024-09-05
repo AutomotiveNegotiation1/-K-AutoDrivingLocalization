@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC   -shared -Wl,-soname,libview.so -o /home/keti/catkin_ws/devel/.private/view/lib/libview.so CMakeFiles/view.dir/src/parking_map.c.o CMakeFiles/view.dir/src/resource.c.o 

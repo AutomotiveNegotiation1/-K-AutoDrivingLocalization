@@ -1,0 +1,30 @@
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:65:10:[m[K [01;31m[Kfatal error: [m[KPositioningSystem_V5_1.h: No such file or directory
+   65 | #include [01;31m[K"PositioningSystem_V5_1.h"[m[K // Changed 2024.06.17 (joo.hy)
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:115: CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/slamsubscriber_ipe_v4_2.h:11[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/slamsubscriber_ipe_v4_2.cpp:2[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:65:10:[m[K [01;31m[Kfatal error: [m[KPositioningSystem_V5_1.h: No such file or directory
+   65 | #include [01;31m[K"PositioningSystem_V5_1.h"[m[K // Changed 2024.06.17 (joo.hy)
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:128: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o] Error 1
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipeinterface.h:56[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:34[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:65:10:[m[K [01;31m[Kfatal error: [m[KPositioningSystem_V5_1.h: No such file or directory
+   65 | #include [01;31m[K"PositioningSystem_V5_1.h"[m[K // Changed 2024.06.17 (joo.hy)
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipeinterface.h:56[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/main.cpp:35[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:65:10:[m[K [01;31m[Kfatal error: [m[KPositioningSystem_V5_1.h: No such file or directory
+   65 | #include [01;31m[K"PositioningSystem_V5_1.h"[m[K // Changed 2024.06.17 (joo.hy)
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:63: CMakeFiles/ipe_v4_2.dir/src/ipeinterface.cpp.o] Error 1
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:89: CMakeFiles/ipe_v4_2.dir/src/main.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

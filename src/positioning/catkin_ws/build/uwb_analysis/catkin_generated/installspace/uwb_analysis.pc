@@ -1,0 +1,8 @@
+prefix=/home/keti/catkin_ws/install
+
+Name: uwb_analysis
+Description: Description of uwb_analysis
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: rospy std_msgs

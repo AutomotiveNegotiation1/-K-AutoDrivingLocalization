@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="glade">
+        <file preprocess="xml-stripblanks">parking_map.glade</file>
+        <file>full.png</file>
+        <file>target.png</file>
+        <file>target_zoom.png</file>
+        <file>target_color_1452_1026.png</file>
+        <file>B1.png</file>
+        <file>B1_906_1026.png</file>
+        <file>B1_1451_1643.png</file>
+        <file>car.png</file>
+        <file>yellow_car.png</file>
+    </gresource>
+</gresources>

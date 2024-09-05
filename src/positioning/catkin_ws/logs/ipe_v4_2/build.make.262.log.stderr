@@ -1,0 +1,21 @@
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:55:1:[m[K [01;31m[Kerror: [m[K‘[01m[KMapParam[m[K’ does not name a type
+   55 | [01;31m[KMapParam[m[K->s = 4.6857;
+      | [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:56:22:[m[K [01;31m[Kerror: [m[Kexpected initializer before ‘[01m[K->[m[K’ token
+   56 | const double MapParam[01;31m[K->[m[KsA = {-0.1791, -4.7018, 0.1343, 4.6391, -0.0002, -0.1005,  0.0216 , 0.0277, 0.9994 };
+      |                      [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:57:22:[m[K [01;31m[Kerror: [m[Kexpected initializer before ‘[01m[K->[m[K’ token
+   57 | const double MapParam[01;31m[K->[m[Kroll = 0.0277;
+      |                      [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:58:22:[m[K [01;31m[Kerror: [m[Kexpected initializer before ‘[01m[K->[m[K’ token
+   58 | const double MapParam[01;31m[K->[m[Kpitch = 4.7510;
+      |                      [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:59:22:[m[K [01;31m[Kerror: [m[Kexpected initializer before ‘[01m[K->[m[K’ token
+   59 | const double MapParam[01;31m[K->[m[Kyaw = -0.0216;
+      |                      [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:61:22:[m[K [01;31m[Kerror: [m[Kexpected initializer before ‘[01m[K->[m[K’ token
+   61 | const double MapParam[01;31m[K->[m[KSLAMposInit = {2.7476, 77.4887, 0.0};
+      |                      [01;31m[K^~[m[K
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:141: CMakeFiles/ipe_v4_2.dir/src/map_param_chungra.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

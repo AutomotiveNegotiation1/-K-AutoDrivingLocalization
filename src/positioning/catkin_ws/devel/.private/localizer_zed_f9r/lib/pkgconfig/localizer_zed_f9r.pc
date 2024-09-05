@@ -1,0 +1,8 @@
+prefix=/home/keti/catkin_ws/devel/.private/localizer_zed_f9r
+
+Name: localizer_zed_f9r
+Description: Description of localizer_zed_f9r
+Version: 0.0.0
+Cflags: -I/home/keti/catkin_ws/devel/.private/localizer_zed_f9r/include
+Libs: -L${prefix}/lib 
+Requires: 

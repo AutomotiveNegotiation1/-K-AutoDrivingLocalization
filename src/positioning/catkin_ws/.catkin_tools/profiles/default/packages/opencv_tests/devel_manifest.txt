@@ -1,0 +1,5 @@
+vision_opencv-opencv4/opencv_tests
+/home/keti/catkin_ws/devel/.private/opencv_tests/cmake.lock /home/keti/catkin_ws/devel/./cmake.lock
+/home/keti/catkin_ws/devel/.private/opencv_tests/share/opencv_tests/cmake/opencv_testsConfig.cmake /home/keti/catkin_ws/devel/share/opencv_tests/cmake/opencv_testsConfig.cmake
+/home/keti/catkin_ws/devel/.private/opencv_tests/share/opencv_tests/cmake/opencv_testsConfig-version.cmake /home/keti/catkin_ws/devel/share/opencv_tests/cmake/opencv_testsConfig-version.cmake
+/home/keti/catkin_ws/devel/.private/opencv_tests/lib/pkgconfig/opencv_tests.pc /home/keti/catkin_ws/devel/lib/pkgconfig/opencv_tests.pc

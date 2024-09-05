@@ -1,0 +1,420 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "devel/lib/libview.so"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"add_dependencies",
+			"add_compile_options",
+			"add_definitions",
+			"include",
+			"find_package",
+			"configure_shared_library_build_settings",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt",
+			"/opt/ros/noetic/share/rosconsole/cmake/rosconsole-extras.cmake",
+			"/opt/ros/noetic/share/rosconsole/cmake/rosconsoleConfig.cmake",
+			"/opt/ros/noetic/share/roscpp/cmake/roscppConfig.cmake",
+			"/opt/ros/noetic/share/catkin/cmake/catkinConfig.cmake",
+			"/opt/ros/noetic/share/catkin/cmake/tools/libraries.cmake",
+			"/opt/ros/noetic/share/catkin/cmake/all.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 34,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 40,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 33,
+				"parent" : 0
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 7,
+				"parent" : 0
+			},
+			{
+				"file" : 4,
+				"parent" : 4
+			},
+			{
+				"command" : 5,
+				"file" : 4,
+				"line" : 76,
+				"parent" : 5
+			},
+			{
+				"file" : 3,
+				"parent" : 6
+			},
+			{
+				"command" : 5,
+				"file" : 3,
+				"line" : 197,
+				"parent" : 7
+			},
+			{
+				"file" : 2,
+				"parent" : 8
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 222,
+				"parent" : 9
+			},
+			{
+				"file" : 1,
+				"parent" : 10
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 12,
+				"parent" : 11
+			},
+			{
+				"command" : 4,
+				"file" : 4,
+				"line" : 20,
+				"parent" : 5
+			},
+			{
+				"file" : 6,
+				"parent" : 13
+			},
+			{
+				"command" : 6,
+				"file" : 6,
+				"line" : 174,
+				"parent" : 14
+			},
+			{
+				"command" : 3,
+				"file" : 5,
+				"line" : 18,
+				"parent" : 15
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 8,
+				"parent" : 11
+			},
+			{
+				"command" : 7,
+				"file" : 0,
+				"line" : 29,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -fPIC  "
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-pthread"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 12,
+					"define" : "ROSCONSOLE_BACKEND_LOG4CXX"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "ROS_BUILD_SHARED_LIBS=1"
+				},
+				{
+					"backtrace" : 17,
+					"define" : "ROS_PACKAGE_NAME=\"view\""
+				},
+				{
+					"define" : "view_EXPORTS"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 18,
+					"path" : "/home/keti/catkin_ws/src/view/include"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/opt/ros/noetic/include"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/gtk-3.0"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/at-spi2-atk/2.0"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/at-spi-2.0"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/dbus-1.0"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/lib/aarch64-linux-gnu/dbus-1.0/include"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/gio-unix-2.0"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/cairo"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/pango-1.0"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/fribidi"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/harfbuzz"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/atk-1.0"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/pixman-1"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/uuid"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/freetype2"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/libpng16"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/gdk-pixbuf-2.0"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/libmount"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/blkid"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/include/glib-2.0"
+				},
+				{
+					"backtrace" : 18,
+					"path" : "/usr/lib/aarch64-linux-gnu/glib-2.0/include"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				0,
+				1
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "rosgraph_msgs_generate_messages_eus::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "topic_tools_generate_messages_eus::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "roscpp_generate_messages_nodejs::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "std_msgs_generate_messages_eus::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "topic_tools_generate_messages_cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "roscpp_generate_messages_cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "topic_tools_generate_messages_py::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "roscpp_generate_messages_py::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "rosgraph_msgs_generate_messages_py::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "rosgraph_msgs_generate_messages_lisp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "std_msgs_generate_messages_lisp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "roscpp_generate_messages_lisp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "roscpp_generate_messages_eus::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "topic_tools_generate_messages_nodejs::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "rosgraph_msgs_generate_messages_nodejs::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "topic_tools_generate_messages_lisp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "std_srvs_generate_messages_cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "std_msgs_generate_messages_cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "std_msgs_generate_messages_nodejs::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "std_msgs_generate_messages_py::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "std_srvs_generate_messages_eus::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "std_srvs_generate_messages_lisp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "std_srvs_generate_messages_nodejs::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "rosgraph_msgs_generate_messages_cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "std_srvs_generate_messages_py::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "view::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "",
+				"role" : "flags"
+			}
+		],
+		"language" : "C"
+	},
+	"name" : "view",
+	"nameOnDisk" : "libview.so",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/parking_map.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/resource.c",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "SHARED_LIBRARY"
+}

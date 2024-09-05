@@ -1,0 +1,321 @@
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/slamsubscriber_ipe_v4_2.h:11[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/slamsubscriber_ipe_v4_2.cpp:2[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:26:[m[K [01;31m[Kerror: [m[K‘[01m[Kipe[m[K’ does not name a type
+  127 |     void _callback(const [01;31m[Kipe[m[K::Anchor::ConstPtr& msg);
+      |                          [01;31m[K^~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:37:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K::[m[K’ token
+  127 |     void _callback(const ipe::Anchor[01;31m[K::[m[KConstPtr& msg);
+      |                                     [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:37:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K::[m[K’ token
+  127 |     void _callback[34m[K([m[Kconst ipe::Anchor[01;31m[K:[m[K[32m[K:[m[KConstPtr& msg);
+      |                   [34m[K~[m[K                 [01;31m[K^[m[K[32m[K~[m[K
+      |                                     [32m[K)[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:31:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+  127 |     void _callback(const ipe::[01;31m[KAnchor[m[K::ConstPtr& msg);
+      |                               [01;31m[K^~~~~~[m[K
+      |                                     [32m[K;[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:39:[m[K [01;31m[Kerror: [m[K‘[01m[KConstPtr[m[K’ in namespace ‘[01m[K::[m[K’ does not name a type
+  127 |     void _callback(const ipe::Anchor::[01;31m[KConstPtr[m[K& msg);
+      |                                       [01;31m[K^~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:26:[m[K [01;31m[Kerror: [m[K‘[01m[Kipe[m[K’ does not name a type
+  127 |     void _callback(const [01;31m[Kipe[m[K::Anchor::ConstPtr& msg);
+      |                          [01;31m[K^~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:37:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K::[m[K’ token
+  127 |     void _callback(const ipe::Anchor[01;31m[K::[m[KConstPtr& msg);
+      |                                     [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:37:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K::[m[K’ token
+  127 |     void _callback[34m[K([m[Kconst ipe::Anchor[01;31m[K:[m[K[32m[K:[m[KConstPtr& msg);
+      |                   [34m[K~[m[K                 [01;31m[K^[m[K[32m[K~[m[K
+      |                                     [32m[K)[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:31:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+  127 |     void _callback(const ipe::[01;31m[KAnchor[m[K::ConstPtr& msg);
+      |                               [01;31m[K^~~~~~[m[K
+      |                                     [32m[K;[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:25:[m[K [01;31m[Kerror: [m[K‘[01m[Kipe[m[K’ does not name a type
+  128 |     void _setRxid(const [01;31m[Kipe[m[K::Anchor::ConstPtr& msg);
+      |                         [01;31m[K^~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:36:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K::[m[K’ token
+  128 |     void _setRxid(const ipe::Anchor[01;31m[K::[m[KConstPtr& msg);
+      |                                    [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:36:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K::[m[K’ token
+  128 |     void _setRxid[34m[K([m[Kconst ipe::Anchor[01;31m[K:[m[K[32m[K:[m[KConstPtr& msg);
+      |                  [34m[K~[m[K                 [01;31m[K^[m[K[32m[K~[m[K
+      |                                    [32m[K)[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:30:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+  128 |     void _setRxid(const ipe::[01;31m[KAnchor[m[K::ConstPtr& msg);
+      |                              [01;31m[K^~~~~~[m[K
+      |                                    [32m[K;[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:39:[m[K [01;31m[Kerror: [m[K‘[01m[KConstPtr[m[K’ in namespace ‘[01m[K::[m[K’ does not name a type
+  127 |     void _callback(const ipe::Anchor::[01;31m[KConstPtr[m[K& msg);
+      |                                       [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:38:[m[K [01;31m[Kerror: [m[K‘[01m[KConstPtr[m[K’ in namespace ‘[01m[K::[m[K’ does not name a type
+  128 |     void _setRxid(const ipe::Anchor::[01;31m[KConstPtr[m[K& msg);
+      |                                      [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:25:[m[K [01;31m[Kerror: [m[K‘[01m[Kipe[m[K’ does not name a type
+  128 |     void _setRxid(const [01;31m[Kipe[m[K::Anchor::ConstPtr& msg);
+      |                         [01;31m[K^~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:36:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K::[m[K’ token
+  128 |     void _setRxid(const ipe::Anchor[01;31m[K::[m[KConstPtr& msg);
+      |                                    [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:36:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K::[m[K’ token
+  128 |     void _setRxid[34m[K([m[Kconst ipe::Anchor[01;31m[K:[m[K[32m[K:[m[KConstPtr& msg);
+      |                  [34m[K~[m[K                 [01;31m[K^[m[K[32m[K~[m[K
+      |                                    [32m[K)[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:30:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+  128 |     void _setRxid(const ipe::[01;31m[KAnchor[m[K::ConstPtr& msg);
+      |                              [01;31m[K^~~~~~[m[K
+      |                                    [32m[K;[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:38:[m[K [01;31m[Kerror: [m[K‘[01m[KConstPtr[m[K’ in namespace ‘[01m[K::[m[K’ does not name a type
+  128 |     void _setRxid(const ipe::Anchor::[01;31m[KConstPtr[m[K& msg);
+      |                                      [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:[m[K In member function ‘[01m[Kvoid UwbSubscriber::setupSubscriber(const string&)[m[K’:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:143:48:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[Kros::NodeHandle::subscribe<ipe_v4_2::Anchor>(std::string&, int, void (UwbSubscriber::*)(...), UwbSubscriber*)[m[K’
+  143 |     r_sh_UWB = [01;31m[Knode.subscribe<ipe_v4_2::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this)[m[K;
+      |                [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:42[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:402:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M, class T> ros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, void (T::*)(M), T*, const ros::TransportHints&)[m[K’
+  402 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size, void(T::*fp)(M), T* obj,
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:402:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:143:48:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 1 provided
+  143 |     r_sh_UWB = [01;36m[Knode.subscribe<ipe_v4_2::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this)[m[K;
+      |                [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:42[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:413:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M, class T> ros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, void (T::*)(M) const, T*, const ros::TransportHints&)[m[K’
+  413 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size, void(T::*fp)(M) const, T* obj,
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:413:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:143:48:[m[K [01;36m[Knote: [m[K  types ‘[01m[Kvoid (T::)(ipe_v4_2::Anchor_<std::allocator<void> >) const[m[K’ and ‘[01m[Kvoid (UwbSubscriber::)(...)[m[K’ have incompatible cv-qualifiers
+  143 |     r_sh_UWB = [01;36m[Knode.subscribe<ipe_v4_2::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this)[m[K;
+      |                [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:42[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:465:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M, class T> ros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, void (T::*)(const boost::shared_ptr<const M>&), T*, const ros::TransportHints&)[m[K’
+  465 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size,
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:465:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:143:48:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 1 provided
+  143 |     r_sh_UWB = [01;36m[Knode.subscribe<ipe_v4_2::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this)[m[K;
+      |                [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:42[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:475:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M, class T> ros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, void (T::*)(const boost::shared_ptr<const M>&) const, T*, const ros::TransportHints&)[m[K’
+  475 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size,
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:475:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:143:48:[m[K [01;36m[Knote: [m[K  types ‘[01m[Kvoid (T::)(const boost::shared_ptr<const ipe_v4_2::Anchor_<std::allocator<void> > >&) const[m[K’ and ‘[01m[Kvoid (UwbSubscriber::)(...)[m[K’ have incompatible cv-qualifiers
+  143 |     r_sh_UWB = [01;36m[Knode.subscribe<ipe_v4_2::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this)[m[K;
+      |                [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:42[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:529:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M, class T> ros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, void (T::*)(M), const boost::shared_ptr<U>&, const ros::TransportHints&)[m[K’
+  529 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size, void(T::*fp)(M),
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:529:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:143:48:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 1 provided
+  143 |     r_sh_UWB = [01;36m[Knode.subscribe<ipe_v4_2::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this)[m[K;
+      |                [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:42[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:540:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M, class T> ros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, void (T::*)(M) const, const boost::shared_ptr<U>&, const ros::TransportHints&)[m[K’
+  540 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size, void(T::*fp)(M) const,
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:540:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:143:48:[m[K [01;36m[Knote: [m[K  types ‘[01m[Kvoid (T::)(ipe_v4_2::Anchor_<std::allocator<void> >) const[m[K’ and ‘[01m[Kvoid (UwbSubscriber::)(...)[m[K’ have incompatible cv-qualifiers
+  143 |     r_sh_UWB = [01;36m[Knode.subscribe<ipe_v4_2::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this)[m[K;
+      |                [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:42[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:594:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M, class T> ros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, void (T::*)(const boost::shared_ptr<const M>&), const boost::shared_ptr<U>&, const ros::TransportHints&)[m[K’
+  594 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size,
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:594:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:143:48:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 1 provided
+  143 |     r_sh_UWB = [01;36m[Knode.subscribe<ipe_v4_2::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this)[m[K;
+      |                [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:42[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:605:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M, class T> ros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, void (T::*)(const boost::shared_ptr<const M>&) const, const boost::shared_ptr<U>&, const ros::TransportHints&)[m[K’
+  605 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size,
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:605:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:143:48:[m[K [01;36m[Knote: [m[K  types ‘[01m[Kvoid (T::)(const boost::shared_ptr<const ipe_v4_2::Anchor_<std::allocator<void> > >&) const[m[K’ and ‘[01m[Kvoid (UwbSubscriber::)(...)[m[K’ have incompatible cv-qualifiers
+  143 |     r_sh_UWB = [01;36m[Knode.subscribe<ipe_v4_2::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this)[m[K;
+      |                [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:42[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:656:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, void (*)(M), const ros::TransportHints&) [with M = ipe_v4_2::Anchor_<std::allocator<void> >; std::string = std::__cxx11::basic_string<char>; uint32_t = unsigned int][m[K’
+  656 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size, void(*fp)(M), const TransportHints& transport_hints = TransportHints())
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:656:77:[m[K [01;36m[Knote: [m[K  no known conversion for argument 3 from ‘[01m[Kvoid (UwbSubscriber::*)(...)[m[K’ to ‘[01m[Kvoid (*)(ipe_v4_2::Anchor_<std::allocator<void> >)[m[K’
+  656 |   Subscriber subscribe(const std::string& topic, uint32_t queue_size, [01;36m[Kvoid(*fp)(M)[m[K, const TransportHints& transport_hints = TransportHints())
+      |                                                                       [01;36m[K~~~~~~^~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:704:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, void (*)(const boost::shared_ptr<const M>&), const ros::TransportHints&) [with M = ipe_v4_2::Anchor_<std::allocator<void> >; std::string = std::__cxx11::basic_string<char>; uint32_t = unsigned int][m[K’
+  704 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size, void(*fp)(const boost::shared_ptr<M const>&), const TransportHints& transport_hints = TransportHints())
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:704:77:[m[K [01;36m[Knote: [m[K  no known conversion for argument 3 from ‘[01m[Kvoid (UwbSubscriber::*)(...)[m[K’ to ‘[01m[Kvoid (*)(const boost::shared_ptr<const ipe_v4_2::Anchor_<std::allocator<void> > >&)[m[K’
+  704 |   Subscriber subscribe(const std::string& topic, uint32_t queue_size, [01;36m[Kvoid(*fp)(const boost::shared_ptr<M const>&)[m[K, const TransportHints& transport_hints = TransportHints())
+      |                                                                       [01;36m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:750:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, const boost::function<void(const boost::shared_ptr<const M>&)>&, const VoidConstPtr&, const ros::TransportHints&) [with M = ipe_v4_2::Anchor_<std::allocator<void> >; std::string = std::__cxx11::basic_string<char>; uint32_t = unsigned int; ros::VoidConstPtr = boost::shared_ptr<const void>][m[K’
+  750 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size, const boost::function<void (const boost::shared_ptr<M const>&)>& callback,
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:751:50:[m[K [01;36m[Knote: [m[K  no known conversion for argument 4 from ‘[01m[KUwbSubscriber*[m[K’ to ‘[01m[Kconst VoidConstPtr&[m[K’ {aka ‘[01m[Kconst boost::shared_ptr<const void>&[m[K’}
+  751 |                              [01;36m[Kconst VoidConstPtr& tracked_object = VoidConstPtr()[m[K, const TransportHints& transport_hints = TransportHints())
+      |                              [01;36m[K~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:799:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M, class C> ros::Subscriber ros::NodeHandle::subscribe(const string&, uint32_t, const boost::function<void(C)>&, const VoidConstPtr&, const ros::TransportHints&)[m[K’
+  799 |   Subscriber [01;36m[Ksubscribe[m[K(const std::string& topic, uint32_t queue_size, const boost::function<void (C)>& callback,
+      |              [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:799:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:143:48:[m[K [01;36m[Knote: [m[K  mismatched types ‘[01m[Kconst boost::function<void(C)>[m[K’ and ‘[01m[Kvoid (UwbSubscriber::*)(...)[m[K’
+  143 |     r_sh_UWB = [01;36m[Knode.subscribe<ipe_v4_2::Anchor>(topic_name, 10, &UwbSubscriber::_callback, this)[m[K;
+      |                [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:[m[K At global scope:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:147:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid UwbSubscriber::_callback(const ConstPtr&)[m[K’
+  147 | void [01;31m[KUwbSubscriber[m[K::_callback(const ipe_v4_2::Anchor::ConstPtr& msg) {
+      |      [01;31m[K^~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:10:[m[K [01;36m[Knote: [m[Kcandidate is: ‘[01m[Kvoid UwbSubscriber::_callback(...)[m[K’
+  127 |     void [01;36m[K_callback[m[K(const ipe::Anchor::ConstPtr& msg);
+      |          [01;36m[K^~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:95:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass UwbSubscriber[m[K’ defined here
+   95 | class [01;36m[KUwbSubscriber[m[K : public PacketCallback {
+      |       [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:158:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid UwbSubscriber::_setRxid(const ConstPtr&)[m[K’
+  158 | void [01;31m[KUwbSubscriber[m[K::_setRxid(const ipe_v4_2::Anchor::ConstPtr& msg) {
+      |      [01;31m[K^~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:10:[m[K [01;36m[Knote: [m[Kcandidate is: ‘[01m[Kvoid UwbSubscriber::_setRxid(...)[m[K’
+  128 |     void [01;36m[K_setRxid[m[K(const ipe::Anchor::ConstPtr& msg);
+      |          [01;36m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:95:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass UwbSubscriber[m[K’ defined here
+   95 | class [01;36m[KUwbSubscriber[m[K : public PacketCallback {
+      |       [01;36m[K^~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:115: CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:128: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o] Error 1
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipeinterface.h:56[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/main.cpp:35[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:26:[m[K [01;31m[Kerror: [m[K‘[01m[Kipe[m[K’ does not name a type
+  127 |     void _callback(const [01;31m[Kipe[m[K::Anchor::ConstPtr& msg);
+      |                          [01;31m[K^~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:37:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K::[m[K’ token
+  127 |     void _callback(const ipe::Anchor[01;31m[K::[m[KConstPtr& msg);
+      |                                     [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:37:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K::[m[K’ token
+  127 |     void _callback[34m[K([m[Kconst ipe::Anchor[01;31m[K:[m[K[32m[K:[m[KConstPtr& msg);
+      |                   [34m[K~[m[K                 [01;31m[K^[m[K[32m[K~[m[K
+      |                                     [32m[K)[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:31:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+  127 |     void _callback(const ipe::[01;31m[KAnchor[m[K::ConstPtr& msg);
+      |                               [01;31m[K^~~~~~[m[K
+      |                                     [32m[K;[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:39:[m[K [01;31m[Kerror: [m[K‘[01m[KConstPtr[m[K’ in namespace ‘[01m[K::[m[K’ does not name a type
+  127 |     void _callback(const ipe::Anchor::[01;31m[KConstPtr[m[K& msg);
+      |                                       [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:25:[m[K [01;31m[Kerror: [m[K‘[01m[Kipe[m[K’ does not name a type
+  128 |     void _setRxid(const [01;31m[Kipe[m[K::Anchor::ConstPtr& msg);
+      |                         [01;31m[K^~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:36:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K::[m[K’ token
+  128 |     void _setRxid(const ipe::Anchor[01;31m[K::[m[KConstPtr& msg);
+      |                                    [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:36:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K::[m[K’ token
+  128 |     void _setRxid[34m[K([m[Kconst ipe::Anchor[01;31m[K:[m[K[32m[K:[m[KConstPtr& msg);
+      |                  [34m[K~[m[K                 [01;31m[K^[m[K[32m[K~[m[K
+      |                                    [32m[K)[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:30:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+  128 |     void _setRxid(const ipe::[01;31m[KAnchor[m[K::ConstPtr& msg);
+      |                              [01;31m[K^~~~~~[m[K
+      |                                    [32m[K;[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:38:[m[K [01;31m[Kerror: [m[K‘[01m[KConstPtr[m[K’ in namespace ‘[01m[K::[m[K’ does not name a type
+  128 |     void _setRxid(const ipe::Anchor::[01;31m[KConstPtr[m[K& msg);
+      |                                      [01;31m[K^~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipeinterface.h:56[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:34[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:26:[m[K [01;31m[Kerror: [m[K‘[01m[Kipe[m[K’ does not name a type
+  127 |     void _callback(const [01;31m[Kipe[m[K::Anchor::ConstPtr& msg);
+      |                          [01;31m[K^~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:37:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K::[m[K’ token
+  127 |     void _callback(const ipe::Anchor[01;31m[K::[m[KConstPtr& msg);
+      |                                     [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:37:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K::[m[K’ token
+  127 |     void _callback[34m[K([m[Kconst ipe::Anchor[01;31m[K:[m[K[32m[K:[m[KConstPtr& msg);
+      |                   [34m[K~[m[K                 [01;31m[K^[m[K[32m[K~[m[K
+      |                                     [32m[K)[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:31:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+  127 |     void _callback(const ipe::[01;31m[KAnchor[m[K::ConstPtr& msg);
+      |                               [01;31m[K^~~~~~[m[K
+      |                                     [32m[K;[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:127:39:[m[K [01;31m[Kerror: [m[K‘[01m[KConstPtr[m[K’ in namespace ‘[01m[K::[m[K’ does not name a type
+  127 |     void _callback(const ipe::Anchor::[01;31m[KConstPtr[m[K& msg);
+      |                                       [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:25:[m[K [01;31m[Kerror: [m[K‘[01m[Kipe[m[K’ does not name a type
+  128 |     void _setRxid(const [01;31m[Kipe[m[K::Anchor::ConstPtr& msg);
+      |                         [01;31m[K^~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:36:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K::[m[K’ token
+  128 |     void _setRxid(const ipe::Anchor[01;31m[K::[m[KConstPtr& msg);
+      |                                    [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:36:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K::[m[K’ token
+  128 |     void _setRxid[34m[K([m[Kconst ipe::Anchor[01;31m[K:[m[K[32m[K:[m[KConstPtr& msg);
+      |                  [34m[K~[m[K                 [01;31m[K^[m[K[32m[K~[m[K
+      |                                    [32m[K)[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:30:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+  128 |     void _setRxid(const ipe::[01;31m[KAnchor[m[K::ConstPtr& msg);
+      |                              [01;31m[K^~~~~~[m[K
+      |                                    [32m[K;[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:128:38:[m[K [01;31m[Kerror: [m[K‘[01m[KConstPtr[m[K’ in namespace ‘[01m[K::[m[K’ does not name a type
+  128 |     void _setRxid(const ipe::Anchor::[01;31m[KConstPtr[m[K& msg);
+      |                                      [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:[m[K In member function ‘[01m[Kvoid IPEInterface::testPositioning()[m[K’:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:250:48:[m[K [01;31m[Kerror: [m[K‘[01m[Kipe[m[K’ was not declared in this scope; did you mean ‘[01m[Kpipe[m[K’?
+  250 |             publishers[topic] = r_nh.advertise<[01;31m[Kipe[m[K::Anchor>(topic, 10);
+      |                                                [01;31m[K^~~[m[K
+      |                                                [32m[Kpipe[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:250:38:[m[K [01;31m[Kerror: [m[Kparse error in template argument list
+  250 |             publishers[topic] = r_nh.[01;31m[Kadvertise<ipe::Anchor>[m[K(topic, 10);
+      |                                      [01;31m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:250:60:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[Kros::NodeHandle::advertise<<expression error> >(const std::__cxx11::basic_string<char>&, int)[m[K’
+  250 |             publishers[topic] = [01;31m[Kr_nh.advertise<ipe::Anchor>(topic, 10)[m[K;
+      |                                 [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipeinterface.h:37[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:34[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:249:15:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M> ros::Publisher ros::NodeHandle::advertise(const string&, uint32_t, bool)[m[K’
+  249 |     Publisher [01;36m[Kadvertise[m[K(const std::string& topic, uint32_t queue_size, bool latch = false)
+      |               [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:249:15:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:250:60:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+  250 |             publishers[topic] = [01;31m[Kr_nh.advertise<ipe::Anchor>(topic, 10)[m[K;
+      |                                 [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:45[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipeinterface.h:37[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:34[m[K:
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:315:13:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class M> ros::Publisher ros::NodeHandle::advertise(const string&, uint32_t, const SubscriberStatusCallback&, const SubscriberStatusCallback&, const VoidConstPtr&, bool)[m[K’
+  315 |   Publisher [01;36m[Kadvertise[m[K(const std::string& topic, uint32_t queue_size,
+      |             [01;36m[K^~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/node_handle.h:315:13:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:250:60:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+  250 |             publishers[topic] = [01;31m[Kr_nh.advertise<ipe::Anchor>(topic, 10)[m[K;
+      |                                 [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:267:17:[m[K [01;31m[Kerror: [m[K‘[01m[Kipe[m[K’ has not been declared
+  267 |                 [01;31m[Kipe[m[K::Anchor::ConstPtr uwb_data = message.instantiate<ipe::Anchor>();
+      |                 [01;31m[K^~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:268:21:[m[K [01;31m[Kerror: [m[K‘[01m[Kuwb_data[m[K’ was not declared in this scope; did you mean ‘[01m[Kuwbdata[m[K’?
+  268 |                 if ([01;31m[Kuwb_data[m[K != NULL) {
+      |                     [01;31m[K^~~~~~~~[m[K
+      |                     [32m[Kuwbdata[m[K
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:89: CMakeFiles/ipe_v4_2.dir/src/main.cpp.o] Error 1
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:63: CMakeFiles/ipe_v4_2.dir/src/ipeinterface.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

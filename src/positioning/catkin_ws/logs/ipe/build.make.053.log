@@ -1,0 +1,47 @@
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target std_srvs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target rosgraph_msgs_generate_messages_eus
+[  0%] Built target topic_tools_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target topic_tools_generate_messages_cpp
+[  0%] Built target roscpp_generate_messages_nodejs
+[  0%] Built target roscpp_generate_messages_cpp
+[  0%] Built target roscpp_generate_messages_py
+[  0%] Built target topic_tools_generate_messages_py
+[  0%] Built target rosgraph_msgs_generate_messages_lisp
+[  0%] Built target _ipe_generate_messages_check_deps_Anchor
+[  0%] Built target roscpp_generate_messages_lisp
+[  0%] Built target rosgraph_msgs_generate_messages_py
+[  0%] Built target topic_tools_generate_messages_nodejs
+[  0%] Built target roscpp_generate_messages_eus
+[  0%] Built target topic_tools_generate_messages_lisp
+[  0%] Built target rosgraph_msgs_generate_messages_nodejs
+[  0%] Built target std_srvs_generate_messages_cpp
+[  0%] Built target std_srvs_generate_messages_eus
+[  0%] Built target std_srvs_generate_messages_nodejs
+[  0%] Built target std_srvs_generate_messages_lisp
+[  4%] Built target ipe_generate_messages_py
+[  4%] Built target rosgraph_msgs_generate_messages_cpp
+[ 10%] Built target ipe_generate_messages_lisp
+[ 10%] Built target ipe_generate_messages_eus
+[ 14%] Built target ipe_generate_messages_cpp
+[ 14%] Built target ipe_generate_messages_nodejs
+[35m[1mScanning dependencies of target ipe[0m
+[ 14%] Built target ipe_generate_messages
+[ 27%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/ipecallback.cpp.o[0m
+[ 27%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/ipeinterface.cpp.o[0m
+[ 27%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/slamsubscriber.cpp.o[0m
+[ 27%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/uwbsubscriber.cpp.o[0m
+[ 27%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/imusubscriber.cpp.o[0m
+[ 27%] [32mBuilding CXX object CMakeFiles/ipe.dir/src/main.cpp.o[0m
+[01m[K/home/keti/catkin_ws/src/ipe_v5_1/src/imusubscriber.cpp:[m[K In member function ‘[01m[Kvoid ImuSubscriber::processPacketData(IPEDataPacket&, double, SensorData*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/ipe_v5_1/src/imusubscriber.cpp:360:5:[m[K [01;31m[Kerror: [m[K‘[01m[KsendUDPMessage[m[K’ was not declared in this scope
+  360 |     [01;31m[KsendUDPMessage[m[K(PositionOut[0], PositionOut[1], PositionOut[3]); // Kalman result (jang.sh)
+      |     [01;31m[K^~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/ipe.dir/build.make:76: CMakeFiles/ipe.dir/src/imusubscriber.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [CMakeFiles/Makefile2:1166: CMakeFiles/ipe.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

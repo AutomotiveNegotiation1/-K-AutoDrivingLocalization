@@ -1,0 +1,89 @@
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:216:[m[K [01;35m[Kwarning: [m[K"CIRCLE_ENTRY_X" redefined
+  216 | #define CIRCLE_ENTRY_X 1550
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:30:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+   30 | #define CIRCLE_ENTRY_X 1474
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:217:[m[K [01;35m[Kwarning: [m[K"CIRCLE_TOP_Y" redefined
+  217 | #define CIRCLE_TOP_Y 486.25
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:31:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+   31 | #define CIRCLE_TOP_Y 447
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:[m[K In function ‘[01m[Kvoid trafficlight_init()[m[K’:
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:164:45:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[KGtkWidget*[m[K’ {aka ‘[01m[K_GtkWidget*[m[K’} to ‘[01m[KGtkImage*[m[K’ {aka ‘[01m[K_GtkImage*[m[K’} in assignment
+  164 |     tlgImage_usd = [01;31m[Kgtk_image_new_from_pixbuf(tlpixbuf_usd)[m[K;
+      |                    [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+      |                                             [01;31m[K|[m[K
+      |                                             [01;31m[KGtkWidget* {aka _GtkWidget*}[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:165:45:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[KGtkWidget*[m[K’ {aka ‘[01m[K_GtkWidget*[m[K’} to ‘[01m[KGtkImage*[m[K’ {aka ‘[01m[K_GtkImage*[m[K’} in assignment
+  165 |     tlgImage_ccw = [01;31m[Kgtk_image_new_from_pixbuf(tlpixbuf_ccw)[m[K;
+      |                    [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+      |                                             [01;31m[K|[m[K
+      |                                             [01;31m[KGtkWidget* {aka _GtkWidget*}[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:166:51:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[KGtkWidget*[m[K’ {aka ‘[01m[K_GtkWidget*[m[K’} to ‘[01m[KGtkImage*[m[K’ {aka ‘[01m[K_GtkImage*[m[K’} in assignment
+  166 |     tlgImage_green_usd = [01;31m[Kgtk_image_new_from_pixbuf(tlpixbuf_green_usd)[m[K;
+      |                          [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~[m[K
+      |                                                   [01;31m[K|[m[K
+      |                                                   [01;31m[KGtkWidget* {aka _GtkWidget*}[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:167:51:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[KGtkWidget*[m[K’ {aka ‘[01m[K_GtkWidget*[m[K’} to ‘[01m[KGtkImage*[m[K’ {aka ‘[01m[K_GtkImage*[m[K’} in assignment
+  167 |     tlgImage_green_ccw = [01;31m[Kgtk_image_new_from_pixbuf(tlpixbuf_green_ccw)[m[K;
+      |                          [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~[m[K
+      |                                                   [01;31m[K|[m[K
+      |                                                   [01;31m[KGtkWidget* {aka _GtkWidget*}[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:170:27:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[KGtkImage*[m[K’ {aka ‘[01m[K_GtkImage*[m[K’} to ‘[01m[KGtkWidget*[m[K’ {aka ‘[01m[K_GtkWidget*[m[K’}
+  170 |     gtk_fixed_put(gFixed, [01;31m[KtlgImage_usd[m[K, 1007, 604);
+      |                           [01;31m[K^~~~~~~~~~~~[m[K
+      |                           [01;31m[K|[m[K
+      |                           [01;31m[KGtkImage* {aka _GtkImage*}[m[K
+In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:14[m[K:
+[01m[K/usr/include/gtk-3.0/gtk/gtkfixed.h:83:57:[m[K [01;36m[Knote: [m[K  initializing argument 2 of ‘[01m[Kvoid gtk_fixed_put(GtkFixed*, GtkWidget*, gint, gint)[m[K’
+   83 |                                         [01;36m[KGtkWidget      *widget[m[K,
+      |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:171:27:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[KGtkImage*[m[K’ {aka ‘[01m[K_GtkImage*[m[K’} to ‘[01m[KGtkWidget*[m[K’ {aka ‘[01m[K_GtkWidget*[m[K’}
+  171 |     gtk_fixed_put(gFixed, [01;31m[KtlgImage_green_usd[m[K, 1007, 604);
+      |                           [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+      |                           [01;31m[K|[m[K
+      |                           [01;31m[KGtkImage* {aka _GtkImage*}[m[K
+In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:14[m[K:
+[01m[K/usr/include/gtk-3.0/gtk/gtkfixed.h:83:57:[m[K [01;36m[Knote: [m[K  initializing argument 2 of ‘[01m[Kvoid gtk_fixed_put(GtkFixed*, GtkWidget*, gint, gint)[m[K’
+   83 |                                         [01;36m[KGtkWidget      *widget[m[K,
+      |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:172:27:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[KGtkImage*[m[K’ {aka ‘[01m[K_GtkImage*[m[K’} to ‘[01m[KGtkWidget*[m[K’ {aka ‘[01m[K_GtkWidget*[m[K’}
+  172 |     gtk_fixed_put(gFixed, [01;31m[KtlgImage_ccw[m[K, 936, 510);
+      |                           [01;31m[K^~~~~~~~~~~~[m[K
+      |                           [01;31m[K|[m[K
+      |                           [01;31m[KGtkImage* {aka _GtkImage*}[m[K
+In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:14[m[K:
+[01m[K/usr/include/gtk-3.0/gtk/gtkfixed.h:83:57:[m[K [01;36m[Knote: [m[K  initializing argument 2 of ‘[01m[Kvoid gtk_fixed_put(GtkFixed*, GtkWidget*, gint, gint)[m[K’
+   83 |                                         [01;36m[KGtkWidget      *widget[m[K,
+      |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:173:27:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[KGtkImage*[m[K’ {aka ‘[01m[K_GtkImage*[m[K’} to ‘[01m[KGtkWidget*[m[K’ {aka ‘[01m[K_GtkWidget*[m[K’}
+  173 |     gtk_fixed_put(gFixed, [01;31m[KtlgImage_green_ccw[m[K, 936, 510);
+      |                           [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+      |                           [01;31m[K|[m[K
+      |                           [01;31m[KGtkImage* {aka _GtkImage*}[m[K
+In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:14[m[K:
+[01m[K/usr/include/gtk-3.0/gtk/gtkfixed.h:83:57:[m[K [01;36m[Knote: [m[K  initializing argument 2 of ‘[01m[Kvoid gtk_fixed_put(GtkFixed*, GtkWidget*, gint, gint)[m[K’
+   83 |                                         [01;36m[KGtkWidget      *widget[m[K,
+      |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:[m[K In function ‘[01m[Kgint callback_timer(gpointer)[m[K’:
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:184:27:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid gtk_widget_get_pointer(GtkWidget*, gint*, gint*)[m[K’ is deprecated: Use 'gdk_window_get_device_position' instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+  184 |     [01;35m[Kgtk_widget_get_pointer(gApp, &x, &y)[m[K;
+      |     [01;35m[K~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+In file included from [01m[K/usr/include/gtk-3.0/gtk/gtkapplication.h:27[m[K,
+                 from [01m[K/usr/include/gtk-3.0/gtk/gtkwindow.h:33[m[K,
+                 from [01m[K/usr/include/gtk-3.0/gtk/gtkdialog.h:32[m[K,
+                 from [01m[K/usr/include/gtk-3.0/gtk/gtkaboutdialog.h:30[m[K,
+                 from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:31[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/view/src/parking_map.cpp:14[m[K:
+[01m[K/usr/include/gtk-3.0/gtk/gtkwidget.h:1121:14:[m[K [01;36m[Knote: [m[Kdeclared here
+ 1121 | void         [01;36m[Kgtk_widget_get_pointer[m[K     (GtkWidget      *widget,
+      |              [01;36m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/view.dir/build.make:63: CMakeFiles/view.dir/src/parking_map.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:243: CMakeFiles/view.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

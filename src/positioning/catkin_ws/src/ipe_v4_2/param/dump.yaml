@@ -1,0 +1,21 @@
+IMU_on: true
+Tag_on: true
+frame_id: pos_link
+init_pos:
+  lidar_end_x: 11.458118438720703
+  lidar_end_y: 9.440443992614746
+  lidar_start_x: 2.960461139678955
+  lidar_start_y: 0.20006929337978363
+  method: manual
+  start_angle: 1.5770267580114103
+  uwb_end_x: 41.64131847830207
+  uwb_end_y: 13.674795358623857
+  uwb_start_x: 33.42849032641445
+  uwb_start_y: 4.419004208699191
+my_bool_param: true
+sub_UWB0: true
+sub_UWB1: true
+sub_UWB2: true
+sub_UWB3: true
+test_on: false
+testpublisher_queue_size: 5

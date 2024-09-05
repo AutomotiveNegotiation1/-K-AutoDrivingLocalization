@@ -1,0 +1,8 @@
+prefix=/home/keti/catkin_ws/devel/.private/localizer_dwm1001
+
+Name: localizer_dwm1001
+Description: Description of localizer_dwm1001
+Version: 1.0.0
+Cflags: -I/home/keti/catkin_ws/devel/.private/localizer_dwm1001/include
+Libs: -L${prefix}/lib 
+Requires: 

@@ -1,0 +1,20 @@
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x0): multiple definition of `s'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x0): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x8): multiple definition of `roll'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x8): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x10): multiple definition of `pitch'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x10): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x18): multiple definition of `yaw'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x18): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x20): multiple definition of `sA_00'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x20): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x28): multiple definition of `sA_01'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x28): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x30): multiple definition of `sA_02'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x30): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x38): multiple definition of `sA_10'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x38): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x40): multiple definition of `sA_11'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x40): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x48): multiple definition of `sA_12'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x48): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x50): multiple definition of `sA_20'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x50): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x58): multiple definition of `sA_21'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x58): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x60): multiple definition of `sA_22'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x60): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x68): multiple definition of `SLAMposInit_0'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x68): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.data+0x70): multiple definition of `SLAMposInit_1'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.data+0x70): first defined here
+/usr/bin/ld: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o:(.bss+0x0): multiple definition of `SLAMposInit_2'; CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o:(.bss+0x0): first defined here
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:564: /home/keti/catkin_ws/devel/.private/ipe_v4_2/lib/libipe_v4_2.so] Error 1
+make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

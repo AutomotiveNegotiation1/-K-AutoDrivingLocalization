@@ -1,0 +1,85 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# System config
+#--------------------------------------------------------------------------------------------
+
+# When the variables are commented, the system doesn't load a previous session or not store the current one
+
+# If the LoadFile doesn't exist, the system give a message and create a new Atlas from scratch
+#System.LoadAtlasFromFile: "Session_ORIN_globalB1f_Mono_2K_nf5000"
+# Map Path: ~/.ros/{map_file_name}
+#System.LoadAtlasFromFile: "Session_ORIN_globalB1f_CamFixed_Mono_1K_nf5000"
+
+# The store file is created from the current session, if a file with the same name exists it is deleted
+
+#System.LoadAtlasFromFile: "Session_ORIN_globalB1f_CamFixed_Mono_1K_nf5000"
+
+#System.LoadAtlasFromFile: "Session_ORIN_global_Rear_0717_v1" 
+
+#System.LoadAtlasFromFile: "Session_ORIN_Chungra_Rear_0828_v2" 
+
+System.LoadAtlasFromFile: "Session_ORIN_Chungra_Rear_0823_v4" 
+#System.LoadAtlasFromFile: "Session_ORIN_Chungra_Rear_0904_v1" 
+
+#System.SaveAtlasToFile: "Session_ORIN_Chungra_Rear_0904_v1"  
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters. Adjust them!
+#--------------------------------------------------------------------------------------------
+File.version: "1.0"
+
+Camera.type: "PinHole"
+
+# Camera calibration and distortion parameters (OpenCV) 
+Camera1.fx: 521.909223
+Camera1.fy: 523.418625
+Camera1.cx: 546.2846133
+Camera1.cy: 308.7434753
+
+Camera1.k1: -0.0056295451
+Camera1.k2: 0.00367181598
+Camera1.p1: 0.00260013358
+Camera1.p2: 0.00075694309
+
+Camera.width: 1104
+Camera.height: 621
+
+
+# Camera frames per second 
+Camera.fps: 15
+
+# Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
+Camera.RGB: 1
+
+#--------------------------------------------------------------------------------------------
+# ORB Parameters
+#--------------------------------------------------------------------------------------------
+
+# ORB Extractor: Number of features per image
+ORBextractor.nFeatures: 3000
+
+# ORB Extractor: Scale factor between levels in the scale pyramid 	
+ORBextractor.scaleFactor: 1.2
+
+# ORB Extractor: Number of levels in the scale pyramid	
+ORBextractor.nLevels: 8
+
+# ORB Extractor: Fast thresholdFileave low contrast			
+ORBextractor.iniThFAST: 20
+ORBextractor.minThFAST: 7
+
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters
+#---------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.05
+Viewer.KeyFrameLineWidth: 1.0
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize: 2.0
+Viewer.CameraSize: 0.08
+Viewer.CameraLineWidth: 3.0
+Viewer.ViewpointX: 0.0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -1.8
+Viewer.ViewpointF: 500.0
+

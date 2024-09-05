@@ -1,0 +1,51 @@
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_4.c:18:10:[m[K [01;31m[Kfatal error: [m[Kemmintrin.h: No such file or directory
+   18 | #include [01;31m[K<emmintrin.h>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~[m[K
+compilation terminated.
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:141: CMakeFiles/ipe_v4_2.dir/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_4.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/PositioningSystem_V5_1.c:25:10:[m[K [01;31m[Kfatal error: [m[Kemmintrin.h: No such file or directory
+   25 | #include [01;31m[K<emmintrin.h>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~[m[K
+compilation terminated.
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:[m[K In function ‘[01m[KEKF_UWB_SLAM_IMU_1[m[K’:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:52:3:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[K__m128d[m[K’
+   52 |   [01;31m[K__m128d[m[K r;
+      |   [01;31m[K^~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:53:3:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[K__m128d[m[K’
+   53 |   [01;31m[K__m128d[m[K r1;
+      |   [01;31m[K^~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:54:3:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[K__m128d[m[K’
+   54 |   [01;31m[K__m128d[m[K r2;
+      |   [01;31m[K^~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:55:3:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[K__m128d[m[K’
+   55 |   [01;31m[K__m128d[m[K r3;
+      |   [01;31m[K^~~~~~~[m[K
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:167: CMakeFiles/ipe_v4_2.dir/lib/PositioningSystem_V5_1_pkg_4/PositioningSystem_V5_1.c.o] Error 1
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:56:3:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[K__m128d[m[K’
+   56 |   [01;31m[K__m128d[m[K r4;
+      |   [01;31m[K^~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:112:7:[m[K [01;35m[Kwarning: [m[Kimplicit declaration of function ‘[01m[K_mm_loadu_pd[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration-Wimplicit-function-declaration]8;;[m[K]
+  112 |   r = [01;35m[K_mm_loadu_pd[m[K(&RotMat[0]);
+      |       [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:113:8:[m[K [01;35m[Kwarning: [m[Kimplicit declaration of function ‘[01m[K_mm_mul_pd[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration-Wimplicit-function-declaration]8;;[m[K]
+  113 |   r1 = [01;35m[K_mm_mul_pd[m[K(_mm_set1_pd(0.5), r);
+      |        [01;35m[K^~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:113:19:[m[K [01;35m[Kwarning: [m[Kimplicit declaration of function ‘[01m[K_mm_set1_pd[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration-Wimplicit-function-declaration]8;;[m[K]
+  113 |   r1 = _mm_mul_pd([01;35m[K_mm_set1_pd[m[K(0.5), r);
+      |                   [01;35m[K^~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:118:8:[m[K [01;35m[Kwarning: [m[Kimplicit declaration of function ‘[01m[K_mm_add_pd[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration-Wimplicit-function-declaration]8;;[m[K]
+  118 |   r1 = [01;35m[K_mm_add_pd[m[K(r1, r3);
+      |        [01;35m[K^~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c:124:3:[m[K [01;35m[Kwarning: [m[Kimplicit declaration of function ‘[01m[K_mm_storeu_pd[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration-Wimplicit-function-declaration]8;;[m[K]
+  124 |   [01;35m[K_mm_storeu_pd[m[K(&albega[0], r1);
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:154: CMakeFiles/ipe_v4_2.dir/lib/PositioningSystem_V5_1_pkg_4/EKF_UWB_SLAM_IMU_1.c.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

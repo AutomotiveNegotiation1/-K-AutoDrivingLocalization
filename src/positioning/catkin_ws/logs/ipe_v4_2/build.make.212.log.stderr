@@ -1,0 +1,87 @@
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+[01m[Kcc1:[m[K [01;35m[Kwarning: [m[Kcommand-line option ‘[01m[K-std=c++11[m[K’ is valid for C++/ObjC++ but not for C
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/EKF_UWB_SLAM_4.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/EKF_UWB_SLAM_4.c:9[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/rtwtypes.h:38:10:[m[K [01;31m[Kfatal error: [m[Ktmwtypes.h: No such file or directory
+   38 | #include [01;31m[K"tmwtypes.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_types.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_emxutil.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_emxutil.c:9[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/rtwtypes.h:38:10:[m[K [01;31m[Kfatal error: [m[Ktmwtypes.h: No such file or directory
+   38 | #include [01;31m[K"tmwtypes.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_initialize.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_initialize.c:9[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/rtwtypes.h:38:10:[m[K [01;31m[Kfatal error: [m[Ktmwtypes.h: No such file or directory
+   38 | #include [01;31m[K"tmwtypes.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_data.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_data.c:9[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/rtwtypes.h:38:10:[m[K [01;31m[Kfatal error: [m[Ktmwtypes.h: No such file or directory
+   38 | #include [01;31m[K"tmwtypes.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~[m[K
+compilation terminated.
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_rtwutil.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_rtwutil.c:9[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/rtwtypes.h:38:10:[m[K [01;31m[Kfatal error: [m[Ktmwtypes.h: No such file or directory
+   38 | #include [01;31m[K"tmwtypes.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~[m[K
+compilation terminated.
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1.c:9[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/rtwtypes.h:38:10:[m[K [01;31m[Kfatal error: [m[Ktmwtypes.h: No such file or directory
+   38 | #include [01;31m[K"tmwtypes.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~[m[K
+compilation terminated.
+compilation terminated.
+compilation terminated.
+compilation terminated.
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:167: CMakeFiles/ipe_v4_2.dir/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_data.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:180: CMakeFiles/ipe_v4_2.dir/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_emxutil.c.o] Error 1
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:154: CMakeFiles/ipe_v4_2.dir/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1.c.o] Error 1
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:206: CMakeFiles/ipe_v4_2.dir/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_rtwutil.c.o] Error 1
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:141: CMakeFiles/ipe_v4_2.dir/lib/PositioningSystem_V5_1_pkg_16/EKF_UWB_SLAM_4.c.o] Error 1
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:193: CMakeFiles/ipe_v4_2.dir/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1_initialize.c.o] Error 1
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:65[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/uwbsubscriber.cpp:33[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/rtwtypes.h:38:10:[m[K [01;31m[Kfatal error: [m[Ktmwtypes.h: No such file or directory
+   38 | #include [01;31m[K"tmwtypes.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~[m[K
+compilation terminated.
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:115: CMakeFiles/ipe_v4_2.dir/src/uwbsubscriber.cpp.o] Error 1
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:65[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/slamsubscriber_ipe_v4_2.h:11[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/slamsubscriber_ipe_v4_2.cpp:2[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/rtwtypes.h:38:10:[m[K [01;31m[Kfatal error: [m[Ktmwtypes.h: No such file or directory
+   38 | #include [01;31m[K"tmwtypes.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~[m[K
+compilation terminated.
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:128: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o] Error 1
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:65[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipeinterface.h:56[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/main.cpp:35[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/rtwtypes.h:38:10:[m[K [01;31m[Kfatal error: [m[Ktmwtypes.h: No such file or directory
+   38 | #include [01;31m[K"tmwtypes.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/PositioningSystem_V5_1.h:12[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/uwbsubscriber.h:65[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/include/ipeinterface.h:56[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/ipeinterface.cpp:34[m[K:
+[01m[K/home/keti/catkin_ws/src/ipe_v4_2/lib/PositioningSystem_V5_1_pkg_16/rtwtypes.h:38:10:[m[K [01;31m[Kfatal error: [m[Ktmwtypes.h: No such file or directory
+   38 | #include [01;31m[K"tmwtypes.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~[m[K
+compilation terminated.
+compilation terminated.
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:63: CMakeFiles/ipe_v4_2.dir/src/ipeinterface.cpp.o] Error 1
+make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:89: CMakeFiles/ipe_v4_2.dir/src/main.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

@@ -1,0 +1,2 @@
+vision_opencv-opencv4/vision_opencv
+/home/keti/catkin_ws/devel/.private/vision_opencv/cmake.lock /home/keti/catkin_ws/devel/./cmake.lock
