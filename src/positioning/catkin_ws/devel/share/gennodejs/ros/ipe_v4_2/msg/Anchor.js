@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/ipe_v4_2/share/gennodejs/ros/ipe_v4_2/msg/Anchor.js

@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/localizer_zed_f9r/share/common-lisp/ros/localizer_zed_f9r/msg/localizer_zed_f9r-msg.asd

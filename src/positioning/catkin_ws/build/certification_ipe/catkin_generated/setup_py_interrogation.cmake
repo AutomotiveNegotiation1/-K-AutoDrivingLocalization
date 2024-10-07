@@ -1,0 +1,7 @@
+set(certification_ipe_SETUP_PY_SETUP_MODULE "distutils.core")
+set(certification_ipe_SETUP_PY_VERSION "0.0.0")
+set(certification_ipe_SETUP_PY_SCRIPTS "")
+set(certification_ipe_SETUP_PY_PACKAGES "certification_ipe")
+set(certification_ipe_SETUP_PY_PACKAGE_DIRS "src/certification_ipe")
+set(certification_ipe_SETUP_PY_MODULES "")
+set(certification_ipe_SETUP_PY_MODULE_DIRS "")

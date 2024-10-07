@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/ipe_v4_2/share/ipe_v4_2/cmake/ipe_v4_2Config-version.cmake

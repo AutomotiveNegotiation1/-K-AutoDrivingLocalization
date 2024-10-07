@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/orb_slam3_ros/share/common-lisp/ros/orb_slam3_ros/srv/orb_slam3_ros-srv.asd

@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/ipe_v4_2/share/common-lisp/ros/ipe_v4_2/msg/_package.lisp

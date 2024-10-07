@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/ipe_v4_2/lib/python3/dist-packages/ipe_v4_2/msg/__init__.py

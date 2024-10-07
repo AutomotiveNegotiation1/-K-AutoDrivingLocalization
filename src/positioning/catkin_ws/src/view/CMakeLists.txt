@@ -34,9 +34,10 @@ add_compile_options(${GTK3_CFLAGS_OTHER})
 add_library(${PROJECT_NAME}
   src/parking_map.c
   src/resource.c
+
 )
 target_include_directories(${PROJECT_NAME} PUBLIC )
-set(SOURCES src/main.cpp src/resource.c src/parking_map.c)
+set(SOURCES src/main.cpp src/resource.c src/parking_map.c src/ramp_pp.cpp)
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_executable(${PROJECT_NAME}_node ${SOURCES})
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME})

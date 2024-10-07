@@ -16,6 +16,7 @@
 #include <cairo.h>
 #include "parking_map.h"
 #include "main.h"
+#include "ramp_pp.h"
 #include <math.h>
 
 #define TRAFFICLIGHT_TEST
@@ -50,6 +51,7 @@
 #define origin_map_x_leng origin_map_x_z - origin_map_x_a // 1784
 
 #define max(a, b) a > b ? a : b
+#define ADAPTIVE_SCALE
 
 enum PAINT
 {
@@ -258,8 +260,8 @@ void set_lidar(double _x, double _y, double _angle)
 
     uwb_y = _x;
     uwb_x = _y;
-    uwb_angle  = _angle+(3.141592653589793/2);
-
+    uwb_angle  = _angle + (G_PI);
+    // printf("x : %f, y : %f, angle : %f\n", _x, _y, _angle); 
     position_offset_lidar(&uwb_x, &uwb_y);
     g_mutex_unlock(&gmutex);
     
@@ -272,6 +274,48 @@ void set_lidar(double _x, double _y, double _angle)
 #define CIRCLE_Y 630
 #define RADIUS 143.75
 
+typedef struct euler_point { 
+    double roll; 
+    double pitch; 
+    double yaw; 
+} ;
+
+struct euler_point euler_from_quaternion(double x, double y, double z, double w) {
+    double sinr_cosp, cosr_cosp, sinp, siny_cosp, cosy_cosp;
+
+    sinr_cosp = 2 * (w * x + y * z);
+    cosr_cosp = 1 - 2 * (x * x + y * y);
+    double roll = atan2(sinr_cosp, cosr_cosp);
+
+    sinp = 2 * (w * y - z * x);
+    double pitch = asin(sinp);
+    
+    siny_cosp = 2 * (w * z + x * y);
+    cosy_cosp = 1 - 2 * (y * y + z * z);
+    double yaw = atan2(siny_cosp, cosy_cosp);
+    struct euler_point ret; 
+    ret.roll = roll;
+    ret.pitch = pitch; 
+    ret.yaw = yaw; 
+    return ret; 
+}
+
+void set_slam_orientation(double pitch) 
+{
+
+    g_mutex_lock(&gmutex);
+
+    gettimeofday(&uwb_tv, NULL);
+
+    uwb_angle  = pitch - 3.1415926535; 
+
+    g_mutex_unlock(&gmutex);
+
+    isUpdate_uwb = TRUE;
+
+    return; 
+}
+
 void set_uwb(double _x, double _y, double _angle)
 {
  
@@ -281,7 +325,7 @@ void set_uwb(double _x, double _y, double _angle)
 
     uwb_y = _x;
     uwb_x = _y;
-    uwb_angle  = _angle+(G_PI/2);
+    //uwb_angle  = _angle+(G_PI/2);
 
     position_offset_uwb(&uwb_x, &uwb_y);
     g_mutex_unlock(&gmutex);
@@ -291,17 +335,19 @@ void set_uwb(double _x, double _y, double _angle)
 
     
     if(ramp_match){
-        //if ((uwb_x > 1514) && (uwb_y> 513)){
-        if ((uwb_x > 1500) && (uwb_y> 513)){    
-            printf("RAMP PP\n");
-            struct RAMP_PP_DATA ramp_pp_data = ramp_post_process(uwb_x, uwb_y);
+        // if ((uwb_x > 1520)){
+            post_process(&uwb_x, &uwb_y, &uwb_angle);
+        // //if ((uwb_x > 1514) && (uwb_y> 513)){
+        // if ((uwb_x > 1500) && (uwb_y> 513)){    
+        //     printf("RAMP PP\n");
+        //     struct RAMP_PP_DATA ramp_pp_data = ramp_post_process(uwb_x, uwb_y);
 
-            uwb_x = ramp_pp_data.new_x ;
-            uwb_y = ramp_pp_data.new_y ;
+        //     uwb_x = ramp_pp_data.new_x ;
+        //     uwb_y = ramp_pp_data.new_y ;
             
-            printf("uwb_x : %f\n", uwb_x);
-            printf("uwb_y : %f\n", uwb_y);
-        }
+        //     printf("uwb_x : %f\n", uwb_x);
+        //     printf("uwb_y : %f\n", uwb_y);
+        // } 
     }
     /*
     if(ramp_match) {
@@ -405,11 +451,89 @@ void position_offset_lidar(double *x, double *y)
     if(site == GLOBAL) {
         *x *= 20;
         *y *= 20;
-        // TODO
+        *x += 98;
     } else if(site == ROBO) {
-        *x *= 16.1;
-        *y *= 16.1;
-        // TODO
+#ifdef ADAPTIVE_SCALE
+        if(*x <= 8.1 && *x >= 0) {
+            *x *= 13.7;
+            *x += 185;
+        } else if(*x > 8.1 && *x <= 24.3) {
+            *x -= 8.1;
+            *x *= 13.95;
+            *x += 296;
+        } else if(*x > 24.3 && *x <= 32.4) {
+            *x -= 24.3;
+            *x *= 13.82;
+            *x += 522;
+        } else if(*x > 32.4 && *x <= 48.6) {
+            *x -= 32.4;
+            *x *= 13.95;
+            *x += 634;
+        } else if(*x > 48.6 && *x <= 56.7) {
+            *x -= 48.6;
+            *x *= 13.82;
+            *x += 860;
+        } else if(*x > 56.7 && *x <= 64.8) {
+            *x -= 56.7;
+            *x *= 13.95;
+            *x += 972;
+        } else if(*x > 64.8 && *x <= 75.6) {
+            *x -= 64.8;
+            *x *= 13.61;
+            *x += 1085;
+        } else if(*x > 75.6 && *x <= 83.7) {
+            *x -= 75.6;
+            *x *= 14.44;
+            *x += 1232;
+        } else if(*x > 83.7 && *x <= 89.1) {
+            *x -= 83.7;
+            *x *= 12.96;
+            *x += 1349;
+        } else if(*x > 89.1 && *x <= 111.25) {
+            *x -= 89.1;
+            *x *= 14.45;
+            *x += 1419;
+        } else {
+            *x *= 13.88;
+            *x += 185;
+        }
+
+
+
+
+        if(*y <= 7.5 && *y >= 0) {
+            *y *= 12.93;
+            *y += 233;
+        } else if(*y > 7.5 && *y <= 15.6) {
+            *y -= 7.5;
+            *y *= 14.94;
+            *y += 330;
+        } else if(*y > 15.6 && *y <= 22.6) {
+            *y -= 15.6;
+            *y *= 14.66;
+            *y += 451;
+        } else if(*y > 22.6 && *y <= 27.7) {
+            *y -= 22.6;
+            *y *= 12.94;
+            *y += 553;
+        } else if(*y > 27.7 && *y <= 35.8) {
+            *y -= 27.7;
+            *y *= 13.95;
+            *y += 619;
+        } else if(*y > 35.8 && *y <= 43.9) {
+            *y -= 35.8;
+            *y *= 14.07;
+            *y += 731;
+        } else {
+            *y *= 13.79;
+            *y += 233;
+        }
+#else
+        *x *= 14.25;
+        *y *= 13.8;
+        *x += 190; 
+        *y += 233; //317 ;
+#endif        
     }
 }
 void position_offset_uwb(double *x, double *y)
@@ -420,10 +544,87 @@ void position_offset_uwb(double *x, double *y)
         *x += 98;
     } else if(site == ROBO) {
         
+        #ifdef ADAPTIVE_SCALE
+        if(*x <= 8.1 && *x >= 0) {
+            *x *= 13.7;
+            *x += 185;
+        } else if(*x > 8.1 && *x <= 24.3) {
+            *x -= 8.1;
+            *x *= 13.95;
+            *x += 296;
+        } else if(*x > 24.3 && *x <= 32.4) {
+            *x -= 24.3;
+            *x *= 13.82;
+            *x += 522;
+        } else if(*x > 32.4 && *x <= 48.6) {
+            *x -= 32.4;
+            *x *= 13.95;
+            *x += 634;
+        } else if(*x > 48.6 && *x <= 56.7) {
+            *x -= 48.6;
+            *x *= 13.82;
+            *x += 860;
+        } else if(*x > 56.7 && *x <= 64.8) {
+            *x -= 56.7;
+            *x *= 13.95;
+            *x += 972;
+        } else if(*x > 64.8 && *x <= 75.6) {
+            *x -= 64.8;
+            *x *= 13.61;
+            *x += 1085;
+        } else if(*x > 75.6 && *x <= 83.7) {
+            *x -= 75.6;
+            *x *= 14.44;
+            *x += 1232;
+        } else if(*x > 83.7 && *x <= 89.1) {
+            *x -= 83.7;
+            *x *= 12.96;
+            *x += 1349;
+        } else if(*x > 89.1 && *x <= 111.25) {
+            *x -= 89.1;
+            *x *= 14.45;
+            *x += 1419;
+        } else {
+            *x *= 13.88;
+            *x += 185;
+        }
+
+
+
+
+        if(*y <= 7.5 && *y >= 0) {
+            *y *= 12.93;
+            *y += 233;
+        } else if(*y > 7.5 && *y <= 15.6) {
+            *y -= 7.5;
+            *y *= 14.94;
+            *y += 330;
+        } else if(*y > 15.6 && *y <= 22.6) {
+            *y -= 15.6;
+            *y *= 14.66;
+            *y += 451;
+        } else if(*y > 22.6 && *y <= 27.7) {
+            *y -= 22.6;
+            *y *= 12.94;
+            *y += 553;
+        } else if(*y > 27.7 && *y <= 35.8) {
+            *y -= 27.7;
+            *y *= 13.95;
+            *y += 619;
+        } else if(*y > 35.8 && *y <= 43.9) {
+            *y -= 35.8;
+            *y *= 14.07;
+            *y += 731;
+        } else {
+            *y *= 13.79;
+            *y += 233;
+        }
+#else
         *x *= 14.25;
         *y *= 13.8;
         *x += 190; 
         *y += 233; //317 ;
+#endif        
         
     }
 }

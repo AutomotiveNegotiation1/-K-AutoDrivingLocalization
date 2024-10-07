@@ -37,7 +37,8 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   #lib/PositioningSystem_V4_2_pkg_4 # Include IPA library headers
-  lib/PositioningSystem_V5_1_pkg_19 # Include IPA library headers
+  #lib/PositioningSystem_V5_1_pkg_19 # Include IPA library headers
+  lib/PositioningSystem_V5_1_pkg_19
 )
 
 ## Declare a C++ library

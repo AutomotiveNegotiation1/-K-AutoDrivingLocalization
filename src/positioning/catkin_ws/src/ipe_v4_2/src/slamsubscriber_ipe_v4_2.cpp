@@ -53,12 +53,40 @@ void SlamSubscriber::_callback(const geometry_msgs::PoseStamped::ConstPtr& msg) 
     }
 }
 
-void SlamSubscriber::sendUDPMessage(double center_x, double center_y, double heading) {
+void SlamSubscriber::sendUDPMessage(double center_x, double center_y, double heading, std::string in_out) {
     std::ostringstream oss;
-    oss << center_x << "," << center_y << "," << heading;
+
+    oss << in_out<<","<<center_x << "," << center_y << "," << heading;
     std::string result = oss.str();
     
     socketManager->broadcastUDPMessage(result);
+}
+
+std::string determine_Indoor(double pose_x, double pose_y, double pose_z) {
+    if (pose_y > 82){
+        if (pose_z> 0.0) {
+            if(pose_x>19 && pose_y >93){
+                //std::cout << "RAMP!" << pose_x << " " <<pose_y << std::endl;  
+                std::cout << "RAMP!" << std::endl; 
+                return "O";
+            }
+            else{
+                //std::cout << "OUTDOOR! "<< pose_x <<" "<< pose_y << std::endl; 
+                std::cout << "OUTDOOR! "<< std::endl; 
+                return "X";
+            }
+        
+        }
+        else{
+            //std::cout <<"Indoor!" << pose_x <<" "<< pose_y << std::endl;
+            std::cout <<"INDOOR!" << std::endl;
+            return "O";
+        }
+    }  
+    else{
+        std::cout <<"INDOOR!" <<std::endl;
+        return "O";
+    } 
 }
 
 
@@ -153,24 +181,23 @@ void SlamSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, 
     //PositioningSystem_V5_1(PositionVector_data.data(), PositionVector_size, PositionOut); 
 
     
-    //std::cout <<"Hello" << std::endl;
-    
     PositioningSystem_V5_1(PositionVector_data.data(), PositionVector_size, PositionOut); //  Changed 2024.06.17 (joo.hy)
     //PositioningSystem_V5_1(PositionVector_data.data(), PositionVector_size, MapParam, PositionOut);  // changed by joo(24.08.21, pkg_5.1.16 ~) 
-
-    sendUDPMessage(PositionOut[0], PositionOut[1], PositionOut[3]); //  result (joo.hy)
 
     geometry_msgs::PoseStamped ps;
   
     ps.header.frame_id = "map";
     ps.pose.position.x = PositionOut[0];
     ps.pose.position.y = PositionOut[1];
-    ps.pose.position.z = 0;
+    //ps.pose.position.z = 0;
+    ps.pose.position.z = (-1)*PositionVector_data[3] ;  //packet.slam_pos_y.back()
+    std::string in_out = determine_Indoor(ps.pose.position.x, ps.pose.position.y, ps.pose.position.z) ; 
 
+    // orginal theta 
     ps.pose.orientation.x = PositionOut[3];
-    
     pub_slam.publish(ps);
 
+    sendUDPMessage(PositionOut[0], PositionOut[1], PositionOut[3], in_out); //  result (joo.hy)
 
     nav_msgs::Path ipe_pth; 
     ipe_pth.header.frame_id = "map";

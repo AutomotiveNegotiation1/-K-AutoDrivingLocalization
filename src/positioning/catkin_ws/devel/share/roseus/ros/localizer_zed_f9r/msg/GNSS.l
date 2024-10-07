@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/localizer_zed_f9r/share/roseus/ros/localizer_zed_f9r/msg/GNSS.l

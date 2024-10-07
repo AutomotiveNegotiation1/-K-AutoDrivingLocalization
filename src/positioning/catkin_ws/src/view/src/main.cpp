@@ -1,6 +1,9 @@
 #include <string>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <math.h>
+#include <stdio.h> 
+#include <cmath>
 #include "parking_map.h"
 #include "main.h"
 #include "ros/ros.h"
@@ -11,6 +14,24 @@
 #define SERVER_PORT 51000
 
 using namespace std; 
+
+
+
+
+void euler_from_quaternion2(double x, double y, double z, double w, double *roll, double *pitch, double *yaw) {
+    double sinr_cosp, cosr_cosp, sinp, siny_cosp, cosy_cosp;
+
+    sinr_cosp = 2 * (w * x + y * z);
+    cosr_cosp = 1 - 2 * (x * x + y * y);
+    *roll = atan2(sinr_cosp, cosr_cosp);
+
+    sinp = 2 * (w * y - z * x);
+    *pitch = asin(sinp);
+    
+    siny_cosp = 2 * (w * z + x * y);
+    cosy_cosp = 1 - 2 * (y * y + z * z);
+    *yaw = atan2(siny_cosp, cosy_cosp);
+}
 
 void uwbCallback(const geometry_msgs::PoseStamped::ConstPtr& msg)
 {
@@ -23,11 +44,100 @@ void uwbCallback(const geometry_msgs::PoseStamped::ConstPtr& msg)
 }
 
 void lidarCallback(const geometry_msgs::PoseStamped::ConstPtr& msg)
-{
-    set_lidar(msg->pose.position.x, msg->pose.position.y, msg->pose.orientation.x);
+{    double roll, pitch, yaw, pos_x, pos_y;
+    euler_from_quaternion2(msg->pose.orientation.x, msg->pose.orientation.y, msg->pose.orientation.z, -1 * msg->pose.orientation.w, &roll, &pitch, &yaw);
+
+    // tf2::Quaternion new_ori(msg->pose.orientation.x, msg->pose.orientation.y, msg->pose.orientation.z, msg->pose.orientation.w);
+    // tf2::Matrix3x3 m(new_ori);
+    double offset_angle = 0.03;//-0.018
+    double offset_x = (78.815) * cos(offset_angle) - (-0.12913) * sin(offset_angle);
+    double offset_y = (78.815) * sin(offset_angle) + (-0.12913) * cos(offset_angle);
+
+    double new_x = (msg->pose.position.y) * cos(offset_angle) - (msg->pose.position.x) * sin(offset_angle);
+    double new_y = (msg->pose.position.y) * sin(offset_angle) + (msg->pose.position.x) * cos(offset_angle);
+    
+    set_lidar(new_y + offset_y, new_x + offset_x, yaw);
+
 
     return;
 }
+
+
+typedef struct euler_point { 
+    double roll; 
+    double pitch; 
+    double yaw; 
+} ;
+
+struct euler_point euler_from_quaternion(double x, double y, double z, double w) {
+    double sinr_cosp, cosr_cosp, sinp, siny_cosp, cosy_cosp;
+
+    sinr_cosp = 2 * (w * x + y * z);
+    cosr_cosp = 1 - 2 * (x * x + y * y);
+    double roll = atan2(sinr_cosp, cosr_cosp);
+
+    sinp = 2 * (w * y - z * x);
+    double pitch = asin(sinp);
+    
+    siny_cosp = 2 * (w * z + x * y);
+    cosy_cosp = 1 - 2 * (y * y + z * z);
+    double yaw = atan2(siny_cosp, cosy_cosp);
+    struct euler_point ret; 
+    ret.roll = roll;
+    ret.pitch = pitch; 
+    ret.yaw = yaw;
+
+    //printf("r: %f p:%f y:%f\n", roll, pitch, yaw );
+
+    return ret; 
+}
+
+
+struct euler_point euler_from_quaternion_modified(double x, double y, double z, double w) {
+    double sinr_cosp, cosr_cosp, sinp, cosp, siny_cosp, cosy_cosp;
+
+    sinr_cosp = 2 * (w * x + y * z);
+    cosr_cosp = 1 - 2 * (x * x + y * y);
+    double roll = atan2(sinr_cosp, cosr_cosp);
+
+    sinp = sqrt(1 + 2 * ( w * y - x * z));
+    cosp = sqrt(1 - 2 * ( w * y - x * z)); 
+    double pitch = 2 * atan2(sinp, cosp) - 3.141592 / 2;
+    
+    // sinp = 2 * (w * y - z * x);
+    // double pitch = asin(sinp);
+    
+    siny_cosp = 2 * (w * z + x * y);
+    cosy_cosp = 1 - 2 * (y * y + z * z);
+
+    double yaw = atan2(siny_cosp, cosy_cosp);
+    struct euler_point ret; 
+    ret.roll = roll;
+    ret.pitch = pitch; 
+    ret.yaw = yaw;
+
+    //printf("r: %f p:%f y:%f\n", roll, pitch, yaw );
+
+    return ret; 
+}
+
+
+void slamCallback(const geometry_msgs::PoseStamped::ConstPtr& msg)
+{
+    double slam_x = msg->pose.orientation.x;
+    double slam_y = msg->pose.orientation.y;
+    double slam_z = msg->pose.orientation.z;
+    double slam_w = msg->pose.orientation.w;
+    
+
+    struct euler_point ep = euler_from_quaternion(slam_x, slam_z, -slam_y, -slam_w);
+    double pitch = ep.yaw;
+    
+    set_slam_orientation(pitch);
+    //printf("r: %f p:%f y:%f\n", ep.roll, pitch, ep.yaw);
+    return;
+}
+
 
 void *spinfor(void *data)
 {
@@ -36,17 +146,21 @@ void *spinfor(void *data)
     bool use_ipe;
     ros::Subscriber ipe_sub;
     ros::Subscriber lidar_sub;
+    ros::Subscriber slam_sub; 
 
     ros::param::get("/view_node/use_lidar", use_lidar);
     ros::param::get("/view_node/use_ipe", use_ipe);
     if(use_ipe) {
         ipe_sub = nh.subscribe<geometry_msgs::PoseStamped>("/ipe/slam_added_pose", 10, uwbCallback);
+        slam_sub = nh.subscribe<geometry_msgs::PoseStamped>("/orb_slam3/camera_pose", 10, slamCallback);
+
     }
     
     if(use_lidar) {
         lidar_sub = nh.subscribe<geometry_msgs::PoseStamped>("/kdlidar_ros_pcl/pose", 10, lidarCallback);
     } 
 
+    
     ros::Publisher viewer_pub = nh.advertise<geometry_msgs::PoseStamped>("/view_node/viewer_pose", 10);
 
     while (nh.ok()) {

@@ -35,6 +35,7 @@
 #define SOCKETMANAGER_H
 
 #include <iostream>
+#include <ros/ros.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -59,7 +60,9 @@ private:
     sockaddr_in serverAddress;
     std::map<sockaddr_in, bool, sockaddr_in_compare> clientMap; // 비교 함수 사용
     static SocketManager* instance;
-
+    std::string kanavi_ip;
+    int kanavi_port;
+    
     SocketManager();
 
 public:

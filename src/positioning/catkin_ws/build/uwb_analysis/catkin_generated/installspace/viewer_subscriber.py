@@ -112,18 +112,19 @@ if __name__ == "__main__":
         pickle.dump(y_points, f, pickle.HIGHEST_PROTOCOL) 
     """
 
-    with open('/home/keti/catkin_ws/src/uwb_analysis/x_trj.pickle', 'rb') as rf: 
+    with open('/home/keti/catkin_ws/src/uwb_analysis/x_trj_chungra.pickle', 'rb') as rf: 
         x_points = pickle.load(rf) 
     
-    with open('/home/keti/catkin_ws/src/uwb_analysis/y_trj.pickle', 'rb') as rf: 
+    with open('/home/keti/catkin_ws/src/uwb_analysis/y_trj_chungra.pickle', 'rb') as rf: 
         y_points = pickle.load(rf) 
 
 
     #draw_scatter(x_points, y_points) 
     
     L = len(x_points)
-    #x_points = x_points[:int(L/3)]
-    #y_points = y_points[:int(L/3)]
+    print(L)
+    x_points = x_points[:int(L/3)]
+    y_points = y_points[:int(L/3)]
 
 
     for i, x_pt in enumerate(x_points): 

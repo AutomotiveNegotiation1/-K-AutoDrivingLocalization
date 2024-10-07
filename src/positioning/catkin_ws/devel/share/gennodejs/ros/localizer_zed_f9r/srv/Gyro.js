@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/localizer_zed_f9r/share/gennodejs/ros/localizer_zed_f9r/srv/Gyro.js

@@ -31,7 +31,7 @@
 # 
 # *****************************************************************************/
 
-testpublisher_queue_size: 10
+testpublisher_queue_size: 5
 
 frame_id: "pos_link"
 
@@ -47,9 +47,8 @@ IMU_on: true
 
 test_on: false
 
-bagfile_path: "/media/keti/xavier_SSD/Datasets/bagfiles/global_0614_track8_noImage.bag"
-
-Slam_on: true
+kanavi_ip : "192.168.50.112"
+kanavi_port : 5000
 
 # predefined or manual
 init_pos:

@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/view/share/view/cmake/viewConfig.cmake

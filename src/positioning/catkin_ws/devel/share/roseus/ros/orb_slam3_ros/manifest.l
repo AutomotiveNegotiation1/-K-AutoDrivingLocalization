@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/orb_slam3_ros/share/roseus/ros/orb_slam3_ros/manifest.l

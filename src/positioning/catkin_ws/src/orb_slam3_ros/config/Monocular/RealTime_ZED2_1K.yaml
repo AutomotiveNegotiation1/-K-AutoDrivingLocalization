@@ -19,10 +19,9 @@
 
 #System.LoadAtlasFromFile: "Session_ORIN_Chungra_Rear_0828_v2" 
 
-System.LoadAtlasFromFile: "Session_ORIN_Chungra_Rear_0823_v4" 
-#System.LoadAtlasFromFile: "Session_ORIN_Chungra_Rear_0904_v1" 
+System.LoadAtlasFromFile: "Session_ORIN_Chungra_Rear_0927_v1" 
 
-#System.SaveAtlasToFile: "Session_ORIN_Chungra_Rear_0904_v1"  
+#System.SaveAtlasToFile: "Session_ORIN_Chungra_Rear_0927_v1"  
 
 #--------------------------------------------------------------------------------------------
 # Camera Parameters. Adjust them!
@@ -57,7 +56,7 @@ Camera.RGB: 1
 #--------------------------------------------------------------------------------------------
 
 # ORB Extractor: Number of features per image
-ORBextractor.nFeatures: 3000
+ORBextractor.nFeatures: 4000
 
 # ORB Extractor: Scale factor between levels in the scale pyramid 	
 ORBextractor.scaleFactor: 1.2

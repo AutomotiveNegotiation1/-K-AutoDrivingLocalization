@@ -4,6 +4,7 @@
 CMakeFiles/view.dir/src/parking_map.c.o
  /home/keti/catkin_ws/src/view/include/main.h
  /home/keti/catkin_ws/src/view/include/parking_map.h
+ /home/keti/catkin_ws/src/view/include/ramp_pp.h
  /home/keti/catkin_ws/src/view/src/parking_map.c
  /usr/include/atk-1.0/atk/atk-enum-types.h
  /usr/include/atk-1.0/atk/atk.h

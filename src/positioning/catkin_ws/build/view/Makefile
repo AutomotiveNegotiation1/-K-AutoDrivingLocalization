@@ -692,6 +692,33 @@ src/parking_map.c.s:
 	$(MAKE) -f CMakeFiles/view.dir/build.make CMakeFiles/view.dir/src/parking_map.c.s
 .PHONY : src/parking_map.c.s
 
+src/ramp_pp.o: src/ramp_pp.cpp.o
+
+.PHONY : src/ramp_pp.o
+
+# target to build an object file
+src/ramp_pp.cpp.o:
+	$(MAKE) -f CMakeFiles/view_node.dir/build.make CMakeFiles/view_node.dir/src/ramp_pp.cpp.o
+.PHONY : src/ramp_pp.cpp.o
+
+src/ramp_pp.i: src/ramp_pp.cpp.i
+
+.PHONY : src/ramp_pp.i
+
+# target to preprocess a source file
+src/ramp_pp.cpp.i:
+	$(MAKE) -f CMakeFiles/view_node.dir/build.make CMakeFiles/view_node.dir/src/ramp_pp.cpp.i
+.PHONY : src/ramp_pp.cpp.i
+
+src/ramp_pp.s: src/ramp_pp.cpp.s
+
+.PHONY : src/ramp_pp.s
+
+# target to generate assembly for a file
+src/ramp_pp.cpp.s:
+	$(MAKE) -f CMakeFiles/view_node.dir/build.make CMakeFiles/view_node.dir/src/ramp_pp.cpp.s
+.PHONY : src/ramp_pp.cpp.s
+
 src/resource.o: src/resource.c.o
 
 .PHONY : src/resource.o
@@ -777,6 +804,9 @@ help:
 	@echo "... src/parking_map.o"
 	@echo "... src/parking_map.i"
 	@echo "... src/parking_map.s"
+	@echo "... src/ramp_pp.o"
+	@echo "... src/ramp_pp.i"
+	@echo "... src/ramp_pp.s"
 	@echo "... src/resource.o"
 	@echo "... src/resource.i"
 	@echo "... src/resource.s"

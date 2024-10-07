@@ -155,6 +155,22 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/uwb_analysis" TYPE PROGRAM FILES "/home/keti/catkin_ws/build/uwb_analysis/catkin_generated/installspace/viewer_subscriber.py")
 endif()
 
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/uwb_analysis" TYPE PROGRAM FILES "/home/keti/catkin_ws/build/uwb_analysis/catkin_generated/installspace/lidar2slam_transform.py")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/uwb_analysis" TYPE PROGRAM FILES "/home/keti/catkin_ws/build/uwb_analysis/catkin_generated/installspace/lidar2ipe_transform_paper.py")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/uwb_analysis" TYPE PROGRAM FILES "/home/keti/catkin_ws/build/uwb_analysis/catkin_generated/installspace/lidar2ipe_transform_viewer.py")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/uwb_analysis" TYPE PROGRAM FILES "/home/keti/catkin_ws/build/uwb_analysis/catkin_generated/installspace/determine_in_out.py")
+endif()
+
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/keti/catkin_ws/build/uwb_analysis/gtest/cmake_install.cmake")

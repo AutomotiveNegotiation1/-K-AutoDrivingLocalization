@@ -4,6 +4,7 @@
 CMakeFiles/view_node.dir/src/parking_map.c.o
  /home/keti/catkin_ws/src/view/include/main.h
  /home/keti/catkin_ws/src/view/include/parking_map.h
+ /home/keti/catkin_ws/src/view/include/ramp_pp.h
  /home/keti/catkin_ws/src/view/src/parking_map.c
  /usr/include/atk-1.0/atk/atk-enum-types.h
  /usr/include/atk-1.0/atk/atk.h
@@ -988,3 +989,6 @@ CMakeFiles/view_node.dir/src/main.cpp.o
  /opt/ros/noetic/include/std_msgs/String.h
  /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
  /opt/ros/noetic/include/xmlrpcpp/XmlRpcValue.h
+CMakeFiles/view_node.dir/src/ramp_pp.cpp.o
+ /home/keti/catkin_ws/src/view/include/ramp_pp.h
+ /home/keti/catkin_ws/src/view/src/ramp_pp.cpp

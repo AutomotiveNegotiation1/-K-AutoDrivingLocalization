@@ -61,7 +61,7 @@ public:
     //void sendEvent(int data);
     std::string getPacketFrameID();
 
-    void sendUDPMessage(double center_x, double center_y, double heading);
+    void sendUDPMessage(double center_x, double center_y, double heading, std::string in_out);
 
 private:
     void setupSubscriber(ros::NodeHandle& node);

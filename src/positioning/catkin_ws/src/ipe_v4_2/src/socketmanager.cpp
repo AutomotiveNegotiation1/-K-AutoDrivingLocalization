@@ -85,12 +85,14 @@ bool SocketManager::sendUDPMessage(const std::string& message, const sockaddr_in
 
 bool SocketManager::broadcastUDPMessage(const std::string& message) {
     struct sockaddr_in broadcastAddr;
+
+    ros::param::get("/ipe_v4_2_node/kanavi_ip", kanavi_ip); 
+    ros::param::get("/ipe_v4_2_node/kanavi_port", kanavi_port); 
+
     memset(&broadcastAddr, 0, sizeof(broadcastAddr));
     broadcastAddr.sin_family = AF_INET;
-    broadcastAddr.sin_port = htons(5000); // 브로드캐스트할 포트 지정
-    // broadcastAddr.sin_addr.s_addr = htonl(INADDR_BROADCAST); // 브로드캐스트 주소 설정
-    // broadcastAddr.sin_addr.s_addr = inet_addr("192.168.2.79");
-    broadcastAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    broadcastAddr.sin_port = htons(kanavi_port);
+    broadcastAddr.sin_addr.s_addr = inet_addr(kanavi_ip.c_str());
 
 
     int sendResult = sendto(sock, message.c_str(), message.size(), 0, 

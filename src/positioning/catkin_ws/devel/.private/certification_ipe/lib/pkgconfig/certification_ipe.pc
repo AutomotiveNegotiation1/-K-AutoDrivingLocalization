@@ -1,0 +1,8 @@
+prefix=/home/keti/catkin_ws/devel/.private/certification_ipe
+
+Name: certification_ipe
+Description: Description of certification_ipe
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: rospy std_msgs
