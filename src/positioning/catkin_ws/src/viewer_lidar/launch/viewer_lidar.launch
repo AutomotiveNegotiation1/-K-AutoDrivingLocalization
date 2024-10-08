@@ -1,0 +1,9 @@
+<launch>
+    <!-- Use groups if you want to launch several nodes for multiple devices. -->
+    <!-- <group ns="sensor_1"> -->
+    <node name="viewer_lidar_node" pkg="viewer_lidar" type="viewer_lidar_node" output="screen">
+        <rosparam command="load" file="$(find viewer_lidar)/param/viewer_lidar.yaml" />
+    </node>
+    <!-- </group> -->
+</launch>
+ 
