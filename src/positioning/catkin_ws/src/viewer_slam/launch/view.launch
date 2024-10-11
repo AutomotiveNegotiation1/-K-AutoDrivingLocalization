@@ -1,0 +1,9 @@
+<launch>
+    <!-- Use groups if you want to launch several nodes for multiple devices. -->
+    <!-- <group ns="sensor_1"> -->
+    <node name="viewer_slam_node" pkg="viewer_slam" type="viewer_slam_node" output="screen">
+        <rosparam command="load" file="$(find viewer_slam)/param/view_node.yaml" />
+    </node>
+    <!-- </group> -->
+</launch>
+ 
