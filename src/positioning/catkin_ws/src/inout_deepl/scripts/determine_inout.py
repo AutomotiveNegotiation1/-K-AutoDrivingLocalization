@@ -10,6 +10,7 @@ import cv2
 from PIL import Image as PIL_Image
 import numpy as np 
 
+
 def callback(msg): 
     bridge = CvBridge() 
     cv_img = bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
