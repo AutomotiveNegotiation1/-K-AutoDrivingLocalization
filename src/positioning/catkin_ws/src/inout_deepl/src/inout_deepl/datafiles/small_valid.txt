@@ -1,0 +1,14 @@
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/indoor/1720061561100754438.png	indoor
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/indoor/1720061503112947408.png	indoor
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/indoor/1720061575131682958.png	indoor
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/indoor/1720061493716375437.png	indoor
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/outdoor/1720061619888282754.png	outdoor
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/outdoor/1720061652533092805.png	outdoor
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/outdoor/1720061621487298368.png	outdoor
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/outdoor/1720061612151895148.png	outdoor
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/outdoor/1720061640416207535.png	outdoor
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/outdoor/1720061650065415635.png	outdoor
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/ramp/1720061659418314895.png	ramp
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/ramp/1720061662061188469.png	ramp
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/ramp/1720061599552982494.png	ramp
+/media/keti/xavier_SSD/Datasets/bagfiles/inout_ai_images/valid/2024-07-04-track_2/ramp/1720061599218110169.png	ramp

@@ -1,0 +1,55 @@
+{
+    "file_path": {
+        "train_path": "../../datafiles/train.txt",
+        "val_path": "../../datafiles/valid.txt",
+        "test_path": "../src/inout_deepl/datafiles/test.txt",
+        "label_path": "../src/inout_deepl/labels.txt"
+    },
+    "data_path": {
+        "image_pkl_path": "../../data/records/fer2013.pkl"
+    },
+    "train_param": {
+        "batch_size": 350
+    },
+    "lr_param": {
+        "optimizer": "sgd",
+        "max_epoch": 200,
+        "lr_scheduler": "step",
+        "init_lr": 0.005,
+        "lr_decay_factor": 0.4,
+        "epochs_before_decay": 25
+    },
+    "model_param": {
+        "model_type": "efficientnet-b1",
+        "image_size": -1,
+        "log_dir": "/mnt/ssd1T/deepLearning/inout/inout-eff-b1",
+        "pretrained_path": "../../pretrained/",
+        "resume": 2,
+        "resume_path": "/mnt/ssd1T/deepLearning/model_ckpt_8.pth"
+    },
+    "augmentation_param": {
+        "Resize": "Resize",
+        "Horizontal_Flip": 1,
+        "ColorJitter": 1,
+        "ColorJitter_Param": {
+            "brightness": 0.1,
+            "contrast": 0.1,
+            "saturation": 0.05,
+            "hue": 0.05
+        },
+        "Affine": 1,
+        "Affine_Param": {
+            "degree": 0.0,
+            "translate": [],
+            "scales": [
+                0.9,
+                1.0
+            ],
+            "fillcolor": [
+                255,
+                255,
+                255
+            ]
+        }
+    }
+}

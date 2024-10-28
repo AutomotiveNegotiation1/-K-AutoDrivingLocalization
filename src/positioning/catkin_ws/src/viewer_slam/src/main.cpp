@@ -10,6 +10,10 @@
 #include "geometry_msgs/PoseStamped.h"
 #include "std_msgs/String.h"
 
+#include "socketmanager.h"
+#include <thread> 
+#include <chrono>
+
 #define SERVER_ADDR "221.140.137.186"
 #define SERVER_PORT 51000
 
@@ -54,15 +58,20 @@ void slamCallback(const geometry_msgs::PoseStamped::ConstPtr& msg)
 
     double slam_pos_x = msg->pose.position.x; 
     double slam_pos_z = msg->pose.position.z; 
-    
+    // hy.joo (24.10.15)
+    double slam_pos_y = msg->pose.position.y;     
 
     struct euler_point ep = euler_from_quaternion(slam_x, slam_z, -slam_y, -slam_w);
     double pitch = ep.yaw;
     
     set_slam_orientation(pitch);
     set_slam_position(slam_pos_x, (-1)*slam_pos_z) ;
-    //printf("r: %f p:%f y:%f\n", ep.roll, pitch, ep.yaw);
-    return;
+    
+    double in_out = determine_indoor(slam_pos_x, (-1)*slam_pos_z, (-1)*slam_pos_y);  // in_out == -1 : indoor & in_out == 1 : outdoor 
+
+    //set_kanavi_msg(in_out, slam_pos_x, (-1)*slam_pos_z); 
+    //set_kanavi_msg(in_out, vt_uwb_x, vt_uwb_y); 
+    
 }
 
 
@@ -73,18 +82,55 @@ void *spinfor(void *data)
     
     slam_sub = nh.subscribe<geometry_msgs::PoseStamped>("/orb_slam3/camera_pose", 10, slamCallback);
 
-    ros::Publisher viewer_pub = nh.advertise<geometry_msgs::PoseStamped>("/viewer_slam_node/viewer_pose", 10);
+    ros::Publisher viewer_pub = nh.advertise<geometry_msgs::PoseStamped>("/viewer_slam_node/viewer_pose", 3);
+    //ros::Publisher kanavi_pub = nh.advertise<geometry_msgs::PoseStamped>("/viewer_slam_node/kanavi_msg", 10); //in_out , x, y ,theta : Move tho sendtoKanavi thread 
+    
+    // add (24.10.15, hy.joo) -> move to kanavi_sendto 
+    //SocketManager* socketManager = SocketManager::getInstance(); // <-- Add this line to initialize the socketManager
+
 
     while (nh.ok()) {
         ros::spinOnce();
 
+        //viewer INFO publish 
         geometry_msgs::PoseStamped viewer_pose;
         viewer_pose.header.frame_id = "map";
         viewer_pose.pose.position.x = vt_uwb_x;
+        //viewer_pose.pose.position.x = uwb_x;
         viewer_pose.pose.position.y = vt_uwb_y;
-        viewer_pose.pose.position.z = 0;
+        //viewer_pose.pose.position.y = uwb_y;
+        viewer_pose.pose.position.z = kanavi_inout;
+        viewer_pose.pose.orientation.x = vt_heading;
 
         viewer_pub.publish(viewer_pose);
+
+        /*
+        //kanavi MSG publish 
+        geometry_msgs::PoseStamped kanavi_msg;
+        kanavi_msg.header.frame_id = "map";
+        kanavi_msg.pose.position.x = kanavi_x;
+        kanavi_msg.pose.position.y = kanavi_y;
+        kanavi_msg.pose.position.z = kanavi_inout;
+        kanavi_msg.pose.orientation.x = kanavi_heading; 
+
+        kanavi_pub.publish(kanavi_msg);
+        */
+
+        /*
+        std::ostringstream oss;
+        std::string inout_ox; 
+        if (kanavi_inout == -1){ //indoor 
+            inout_ox = 'O';
+        }
+        else if (kanavi_inout == 1){ //outdoor 
+            inout_ox = 'X';
+        }
+        
+        oss << inout_ox <<","<< kanavi_x << "," << kanavi_y << "," << kanavi_heading;
+        std::string result = oss.str();
+        socketManager->broadcastUDPMessage(result);
+        */
+        
     }
 }
 
@@ -108,13 +154,18 @@ void *rx_cctv(void *data)
         printf("connect() error\n");
     }
 
-    sprintf(buff, "%s", "subscribe");
+    sprintf(buff, "%s", "carnival");
     write(sock, buff, 30);
     read(sock, &buff, sizeof(buff));
 
     while(nh.ok()) {
         rx_leng = read(sock, buff, sizeof(buff) - 1);
         buff[rx_leng] = '\0';
+        if(strncmp(buff, "IONIC_GO", 8) == 0) {
+            set_cctv_tl(true);
+            continue;
+        }
+
 
         for(i = 0; i < rx_leng - 3; i++) {
             if(buff[i] == 0x05 && buff[i + 1] == 0x05 && buff[i + 2] == 0x05 && buff[i + 3] == 0x05) {
@@ -144,15 +195,43 @@ void *rx_cctv(void *data)
 
         geometry_msgs::PoseStamped new_pose;
         new_pose.header.frame_id = "map";
-        new_pose.pose.position.x = cctv_x;
-        new_pose.pose.position.y = cctv_y;
+        new_pose.pose.position.x = cctv_y;
+        new_pose.pose.position.y = cctv_x;
         new_pose.pose.position.z = 0;
 
         cctv_pub.publish(new_pose);
         set_cctv(cctv_x, cctv_y);
     }
 }
+//Add 24.10.23 (send to Kanavi Message Thread)
+void *sendto_kanavi(void *data)
+{
+    // Moved @ (24.10.23, hy.joo)
+    SocketManager* socketManager = SocketManager::getInstance(); // <-- Add this line to initialize the socketManager
 
+    while(true) {
+ 
+        //kanavi MSG publish 
+
+        std::ostringstream oss;
+        std::string inout_ox; 
+        
+        if (kanavi_inout == -1){ //indoor 
+            inout_ox = 'O';
+        }
+        else if (kanavi_inout == 1){ //outdoor 
+            inout_ox = 'X';
+        }
+        
+        oss << inout_ox <<","<< vt_uwb_x << "," << vt_uwb_y << "," << vt_heading;
+        std::string result = oss.str();
+        std::cout << "kanavi msg: " << result << std::endl;
+        socketManager->broadcastUDPMessage(result);
+        
+        std::this_thread::sleep_for(std::chrono::milliseconds(200)); 
+        
+    }
+}
 
 int main(int argc, char **argv)
 {
@@ -172,8 +251,15 @@ int main(int argc, char **argv)
     ros::param::get("/viewer_slam_node/use_cctv", use_cctv);
     ros::param::get("/viewer_slam_node/ramp_match", ramp_match);
 
-    float vt_uwb_x = -1;
-    float vt_uwb_y = -1; 
+    //float vt_uwb_x = -1;
+    //float vt_uwb_y = -1; 
+
+    //double kanavi_x = -1; 
+    //double kanavi_y = -1; 
+    //double kanavi_heading = -1;
+    
+    double kanavi_inout = -1; 
+
 
     if(site.compare("robo") == 0) {
         set_rosparam(ROBO, use_traffic_light, use_ipe, use_lidar, use_cctv, ramp_match);

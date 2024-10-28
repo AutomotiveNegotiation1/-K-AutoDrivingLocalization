@@ -21,14 +21,6 @@
 
 #define TRAFFICLIGHT_TEST
 
-/*
-#define CIRCLE_ENTRY_X 1550
-#define CIRCLE_TOP_Y 486.25
-#define CIRCLE_BOTTOM_Y 773.25
-#define CIRCLE_X 1610
-#define CIRCLE_Y 630
-#define RADIUS 143.75
-*/
 #define CIRCLE_ENTRY_X 1474
 #define CIRCLE_TOP_Y 447
 #define CIRCLE_BOTTOM_Y 773.25
@@ -98,6 +90,8 @@ cairo_surface_t *cst_cctv;
 GdkWindow *draw_window;
 cairo_region_t *cairoRegion;
 bool first = TRUE;
+bool carnival_on = FALSE;
+bool cctv_off = FALSE;
 bool cctv_on = FALSE;
 
 GMutex gmutex;
@@ -114,8 +108,6 @@ double cctv_y = 100.0;
 double cctv_angle = 270;
 bool isUpdate_uwb = FALSE;
 bool isUpdate_cctv = FALSE;
-
-bool isUpdate_slam= FALSE;
 
 // origin => 2519, 3984
 //  target_zoom
@@ -151,6 +143,12 @@ gboolean on_draw(GtkWidget *widget, GdkEventExpose *event, gpointer data);
 
 float vt_uwb_x; 
 float vt_uwb_y;
+float vt_heading; 
+
+//double kanavi_x; 
+//double kanavi_y;
+//double kanavi_heading;
+double kanavi_inout;
 
 struct RAMP_PP_DATA{
     float new_x; 
@@ -208,9 +206,9 @@ void trafficlight_init()
         return;
     }
     
-    GdkPixbuf *tlpixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_red.png", 72, 18, TRUE, NULL);
-    GdkPixbuf *tlpixbuf_green = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_up.png", 72, 18, TRUE, NULL);
-    GdkPixbuf *tlpixbuf_left = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_left.png", 72, 18, TRUE, NULL);
+    GdkPixbuf *tlpixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_red.png", 86, 22, TRUE, NULL);
+    GdkPixbuf *tlpixbuf_green = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_up.png", 86, 22, TRUE, NULL);
+    GdkPixbuf *tlpixbuf_left = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_left.png", 86, 22, TRUE, NULL);
     // GdkPixbuf *tlpixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_red.png", 100, 25, TRUE, NULL);
     // GdkPixbuf *tlpixbuf_green = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_up.png", 100, 25, TRUE, NULL);
     // GdkPixbuf *tlpixbuf_left = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_left.png", 100, 25, TRUE, NULL);
@@ -227,10 +225,10 @@ void trafficlight_init()
     tlgImage_green_ccw = gtk_image_new_from_pixbuf(tlpixbuf_green_ccw);
 
 
-    gtk_fixed_put(gFixed, tlgImage_usd, 1007, 604);
-    gtk_fixed_put(gFixed, tlgImage_green_usd, 1007, 604);
-    gtk_fixed_put(gFixed, tlgImage_ccw, 936, 510);
-    gtk_fixed_put(gFixed, tlgImage_green_ccw, 936, 510);
+    gtk_fixed_put(gFixed, tlgImage_usd, 1264, 589);
+    gtk_fixed_put(gFixed, tlgImage_green_usd, 1264, 589);
+    gtk_fixed_put(gFixed, tlgImage_ccw, 1170, 464);
+    gtk_fixed_put(gFixed, tlgImage_green_ccw, 1170, 464);
     // gtk_fixed_put(gFixed, tlgImage_usd, 1350 - 50, 570 - 10);
     // gtk_fixed_put(gFixed, tlgImage_green_usd, 1350 - 50, 570 - 10);
     // gtk_fixed_put(gFixed, tlgImage_ccw, 1210, 420);
@@ -244,7 +242,7 @@ gint callback_timer(gpointer argv)
     gtk_widget_get_pointer(gApp, &x, &y);
     gtk_widget_queue_draw(GTK_WIDGET(drawingArea));
     
-    //printf("mouse position :: x = %d, y = %d\n", x, y);
+    // printf("mouse position :: x = %d, y = %d\n", x, y);
 
     return TRUE;
 }
@@ -258,23 +256,7 @@ void set_rosparam(SITE _site, bool _use_traffic_light, bool _use_ipe, bool _use_
     use_cctv = _use_cctv;
     ramp_match = _ramp_match;
 }
-/*
-void set_lidar(double _x, double _y, double _angle)
-{
-    g_mutex_lock(&gmutex);
 
-    gettimeofday(&uwb_tv, NULL);
-
-    uwb_y = _x;
-    uwb_x = _y;
-    uwb_angle  = _angle + (G_PI);
-    // printf("x : %f, y : %f, angle : %f\n", _x, _y, _angle); 
-    position_offset_lidar(&uwb_x, &uwb_y);
-    g_mutex_unlock(&gmutex);
-    
-    isUpdate_uwb = TRUE;
-}
-*/
 #define CIRCLE_ENTRY_X 1550
 #define CIRCLE_TOP_Y 486.25
 #define CIRCLE_BOTTOM_Y 773.25
@@ -318,6 +300,7 @@ void set_slam_orientation(double pitch)
     uwb_angle  = pitch - 3.1415926535; 
 
     g_mutex_unlock(&gmutex);
+    vt_heading = uwb_angle;
 
     isUpdate_uwb = TRUE;
 
@@ -332,19 +315,89 @@ void set_slam_position(double _x, double _y) {
     uwb_x = _x;
     uwb_y = _y;
 
-    //slam_x = _x; 
-    //slam_y = _y; 
-
     position_offset_slam(&uwb_x, &uwb_y);
     g_mutex_unlock(&gmutex);
 
     vt_uwb_x = uwb_x; 
     vt_uwb_y = uwb_y; 
-
-
+    if(use_traffic_light) {
+        if((uwb_x > 1270 && uwb_x < 1400) && (uwb_y > 158 && uwb_y < 500)) {
+        // if((uwb_x > 978.92 && uwb_x < 1071.94) && (uwb_y > 317.71 && uwb_y < 516.36)) {
+            if(cctv_on) {
+                gtk_widget_hide(GTK_WIDGET(tlgImage_green_usd));
+                gtk_widget_show(GTK_WIDGET(tlgImage_usd));
+            } else if(carnival_on) {
+                gtk_widget_hide(GTK_WIDGET(tlgImage_usd));
+                gtk_widget_show(GTK_WIDGET(tlgImage_green_usd));
+            } else {
+                gtk_widget_hide(GTK_WIDGET(tlgImage_green_usd));
+                gtk_widget_show(GTK_WIDGET(tlgImage_usd));
+            }
+        } else {
+            carnival_on = false;
+            gtk_widget_hide(GTK_WIDGET(tlgImage_usd));
+            gtk_widget_hide(GTK_WIDGET(tlgImage_green_usd));
+        }
+    }
     isUpdate_uwb = TRUE; 
+    return;
 }
 
+/*
+void set_kanavi_msg(double in_out, double _x, double _y)
+{    
+    //[[ 0.09177623  4.40955783  3.63392082]
+    //[ 4.23448731 -0.2350489  78.45529541]]
+    /* SLAM 2 IPE Parmeters */
+    /*
+    double a = 0.09177623;
+    double b = 4.40955783; 
+    double c = 4.23448731;
+    double d = -0.2350489 ; 
+
+    double e = 3.63392082;
+    double f = 78.45529541; 
+    
+  
+    kanavi_inout = in_out;
+    kanavi_x = a*(_x) + b*(_y) + e;  
+    kanavi_y = c*(_x) + d*(_y) + f; 
+    kanavi_heading = uwb_angle; 
+    
+
+    kanavi_inout = in_out; 
+    kanavi_x = _x ; 
+    kanavi_y = _y ; 
+    kanavi_heading = uwb_angle;
+    return;
+} 
+*/
+
+
+double determine_indoor(double pose_x, double pose_y, double pose_z) {
+  
+    if (pose_z> 1.0) {
+        //printf("%f : OUTDOOR!\n", pose_z); 
+        
+        kanavi_inout = 1.0 ; 
+        
+        return 1.0; 
+        }
+    else{
+        //printf("%f : INDOOR!\n", pose_z); 
+        kanavi_inout = -1.0;
+        return -1.0; 
+    }
+}
+
+void set_cctv_tl(bool _on) {
+    if(cctv_on && !_on) {
+        carnival_on = true;
+        cctv_off = true;
+    }
+    cctv_on = _on;
+    printf("set cctv : %s\n", _on ? "True" : "False");
+}
 
 void set_cctv(double _x, double _y)
 {
@@ -361,11 +414,7 @@ void set_cctv(double _x, double _y)
     
     isUpdate_cctv = TRUE;
     
-    
-#ifdef TRAFFICLIGHT_TEST
-    cctv_x += 107;
-    // cctv_x += 150;
-#endif
+
     if(site == GLOBAL) {
         if(cctv_x > 150 && cctv_x < 440)
         {
@@ -373,20 +422,23 @@ void set_cctv(double _x, double _y)
             gtk_fixed_move(gFixed, GTK_WIDGET(gImage), cctv_x - center_offset_y, 80 - center_offset_x);
         }
     } else if(site == ROBO) {
-        // printf("cctv : %f\n", cctv_x);
-        // if(cctv_x > 1000.0 && cctv_x < 1550.0) {
-        if(cctv_x > 785.73 && cctv_x < 1179.27) {
-            // if(cctv_x < 1240.0) {
-            if(cctv_x < 957.46) {
-                gtk_widget_hide(GTK_WIDGET(tlgImage_green_ccw));
-                cctv_on = FALSE;
+        if(!cctv_off) {
+
+            if(cctv_x > 1200.0 && cctv_x < 1550.0) {
+                if(cctv_on) {
+                    gtk_widget_hide(GTK_WIDGET(tlgImage_ccw));  
+                    gtk_widget_show(GTK_WIDGET(tlgImage_green_ccw));
+                } else {
+                    gtk_widget_hide(GTK_WIDGET(tlgImage_green_ccw)); 
+                    gtk_widget_show(GTK_WIDGET(tlgImage_ccw));
+                }      
             } else {
-                gtk_widget_show(GTK_WIDGET(tlgImage_green_ccw));
-                cctv_on = TRUE;
+                set_cctv_tl(false);
+                gtk_widget_hide(GTK_WIDGET(tlgImage_ccw));  
+                gtk_widget_hide(GTK_WIDGET(tlgImage_green_ccw));  
             }
             gtk_widget_show(GTK_WIDGET(gImage));
-            // gtk_fixed_move(gFixed, GTK_WIDGET(gImage), cctv_x - center_offset_x, 470 - center_offset_y);
-            gtk_fixed_move(gFixed, GTK_WIDGET(gImage), cctv_x - center_offset_x, 540 - center_offset_y);
+            gtk_fixed_move(gFixed, GTK_WIDGET(gImage), cctv_x - center_offset_y, 480 - center_offset_x);
         }
     }
 
@@ -456,11 +508,12 @@ gboolean manually_draw()
     
     GdkDrawingContext *drawingContext = gdk_window_begin_draw_frame(draw_window, cairoRegion);
 
-    if (current_mstime - cctv_mstime >= 1000)
+    if (current_mstime - cctv_mstime >= 750)
     {
         gtk_widget_hide(GTK_WIDGET(gImage));
         if(use_traffic_light) {
             gtk_widget_hide(GTK_WIDGET(tlgImage_green_ccw));
+            gtk_widget_hide(GTK_WIDGET(tlgImage_ccw));
         
         }
         
@@ -471,9 +524,9 @@ gboolean manually_draw()
         }
     // } else if(site == ROBO && !(cctv_x > 1000.0 && cctv_x < 1550.0)) {
     } else if(site == ROBO && !(cctv_x > 785.73 && cctv_x < 1179.27)) {
-        gtk_widget_hide(GTK_WIDGET(gImage));
+        // gtk_widget_hide(GTK_WIDGET(gImage));
         if(use_traffic_light) {
-            gtk_widget_hide(GTK_WIDGET(tlgImage_green_ccw));
+            // gtk_widget_hide(GTK_WIDGET(tlgImage_green_ccw));
         }
     }
 
@@ -487,21 +540,7 @@ gboolean manually_draw()
             if(uwb_x < 1855 && uwb_x > 0 && uwb_y > 0 && uwb_y < 1027) {
             // if(uwb_x < 1397.5 && uwb_x > 70 && uwb_y > 205.15 && uwb_y < 936.8) {
                 draw_car(drawingContext, uwb_x, uwb_y, uwb_angle, FROM_UWB);
-                if(use_traffic_light) {
-                    if((uwb_x > 1270 && uwb_x < 1400) && (uwb_y > 158 && uwb_y < 500)) {
-                    // if((uwb_x > 978.92 && uwb_x < 1071.94) && (uwb_y > 317.71 && uwb_y < 516.36)) {
-                        if(cctv_on) {
-                            gtk_widget_hide(GTK_WIDGET(tlgImage_green_usd));
-                            gtk_widget_show(GTK_WIDGET(tlgImage_usd));
-                        } else {
-                            gtk_widget_hide(GTK_WIDGET(tlgImage_usd));
-                            gtk_widget_show(GTK_WIDGET(tlgImage_green_usd));
-                        }
-                    } else {
-                        gtk_widget_hide(GTK_WIDGET(tlgImage_usd));
-                        gtk_widget_hide(GTK_WIDGET(tlgImage_green_usd));
-                    }
-                }
+                
                 
             }
         }
@@ -553,6 +592,82 @@ void position_offset_cctv(double *x, double *y)
         *y *= 20;
         *x += 98;
     } else if(site == ROBO) {
+#ifdef ADAPTIVE_SCALE
+        if(*x <= 8.1 && *x >= 0) {
+            *x *= 13.7;
+            *x += 185;
+        } else if(*x > 8.1 && *x <= 24.3) {
+            *x -= 8.1;
+            *x *= 13.95;
+            *x += 296;
+        } else if(*x > 24.3 && *x <= 32.4) {
+            *x -= 24.3;
+            *x *= 13.82;
+            *x += 522;
+        } else if(*x > 32.4 && *x <= 48.6) {
+            *x -= 32.4;
+            *x *= 13.95;
+            *x += 634;
+        } else if(*x > 48.6 && *x <= 56.7) {
+            *x -= 48.6;
+            *x *= 13.82;
+            *x += 860;
+        } else if(*x > 56.7 && *x <= 64.8) {
+            *x -= 56.7;
+            *x *= 13.95;
+            *x += 972;
+        } else if(*x > 64.8 && *x <= 75.6) {
+            *x -= 64.8;
+            *x *= 13.61;
+            *x += 1085;
+        } else if(*x > 75.6 && *x <= 83.7) {
+            *x -= 75.6;
+            *x *= 14.44;
+            *x += 1232;
+        } else if(*x > 83.7 && *x <= 89.1) {
+            *x -= 83.7;
+            *x *= 12.96;
+            *x += 1349;
+        } else if(*x > 89.1 && *x <= 111.25) {
+            *x -= 89.1;
+            *x *= 14.45;
+            *x += 1419;
+        } else {
+            *x *= 13.88;
+            *x += 185;
+        }
+
+
+
+
+        if(*y <= 7.5 && *y >= 0) {
+            *y *= 12.93;
+            *y += 233;
+        } else if(*y > 7.5 && *y <= 15.6) {
+            *y -= 7.5;
+            *y *= 14.94;
+            *y += 330;
+        } else if(*y > 15.6 && *y <= 22.6) {
+            *y -= 15.6;
+            *y *= 14.66;
+            *y += 451;
+        } else if(*y > 22.6 && *y <= 27.7) {
+            *y -= 22.6;
+            *y *= 12.94;
+            *y += 553;
+        } else if(*y > 27.7 && *y <= 35.8) {
+            *y -= 27.7;
+            *y *= 13.95;
+            *y += 619;
+        } else if(*y > 35.8 && *y <= 43.9) {
+            *y -= 35.8;
+            *y *= 14.07;
+            *y += 731;
+        } else {
+            *y *= 13.79;
+            *y += 233;
+        }
+#else
         *x *= 11.52;
         *y *= 11.47;
         *x += 116;
@@ -561,6 +676,7 @@ void position_offset_cctv(double *x, double *y)
         // *y *= 16.1;
         // *x += 64;
         // *y += 8;
+        #endif
     }
 
 }
@@ -610,6 +726,7 @@ int map_init(int argc, char **argv)
     gtk_widget_hide(GTK_WIDGET(gImage));
 
     g_thread_new("ros_thread", spinfor, NULL);
+    g_thread_new("kanavi_thread", sendto_kanavi, NULL);
     if(use_cctv) {
         g_thread_new("get_cctv", rx_cctv, NULL);
     }

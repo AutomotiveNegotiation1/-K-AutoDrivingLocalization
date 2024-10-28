@@ -38,7 +38,10 @@ site: robo
 use_ipe: true
 use_traffic_light: false
 use_lidar: false
-use_cctv: true
+use_cctv: false
 ramp_match: true
+
+kanavi_ip: "192.168.123.200"
+kanavi_port: 5000
 
 

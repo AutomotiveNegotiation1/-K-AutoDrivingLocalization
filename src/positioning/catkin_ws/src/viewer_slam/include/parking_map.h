@@ -13,8 +13,14 @@ extern "C" {
     //void set_lidar(double _x, double _y, double _angle);
     void set_slam_orientation(double pitch); 
     void set_slam_position(double _x, double _y); 
+    //void set_kanavi_msg(double in_out, double _x, double _y);
+    void set_cctv_tl(bool _on);
     void set_cctv(double _x, double _y);
     void set_rosparam(SITE _site, bool _use_traffic_light, bool _use_ipe, bool _use_lidar, bool _use_cctv, bool _ramp_match);
+    double determine_indoor(double pose_x, double pose_y, double pose_z);
+
+
+
 #ifdef __cplusplus
 }
 #endif
