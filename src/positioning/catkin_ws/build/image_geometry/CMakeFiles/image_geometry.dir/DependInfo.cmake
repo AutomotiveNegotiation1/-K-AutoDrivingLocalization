@@ -19,7 +19,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/keti/catkin_ws/src/vision_opencv-opencv4/image_geometry/include"
   "/opt/ros/noetic/include"
-  "/usr/local/include/opencv4"
+  "/usr/include/opencv4"
   )
 
 # Targets to which this target links.

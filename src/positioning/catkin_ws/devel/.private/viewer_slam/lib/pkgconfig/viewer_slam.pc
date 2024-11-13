@@ -1,0 +1,8 @@
+prefix=/home/keti/catkin_ws/devel/.private/viewer_slam
+
+Name: viewer_slam
+Description: Description of viewer_slam
+Version: 0.0.0
+Cflags: -I/home/keti/catkin_ws/src/viewer_slam/include
+Libs: -L${prefix}/lib -lviewer_slam
+Requires: roscpp std_msgs

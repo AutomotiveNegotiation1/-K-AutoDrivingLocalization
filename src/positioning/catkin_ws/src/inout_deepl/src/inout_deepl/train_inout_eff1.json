@@ -22,10 +22,10 @@
     "model_param": {
         "model_type": "efficientnet-b1",
         "image_size": -1,
-        "log_dir": "/mnt/ssd1T/deepLearning/inout/inout-eff-b1",
+        "log_dir": "/media/keti/xavier_SSD/Datasets/deepLearning/inout/inout-eff-b1",
         "pretrained_path": "../../pretrained/",
         "resume": 2,
-        "resume_path": "/mnt/ssd1T/deepLearning/model_ckpt_8.pth"
+        "resume_path": "/media/keti/xavier_SSD/Datasets/deepLearning/inout/inout-eff-b1/model_ckpt_8.pth"
     },
     "augmentation_param": {
         "Resize": "Resize",

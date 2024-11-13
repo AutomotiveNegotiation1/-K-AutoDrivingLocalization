@@ -63,12 +63,13 @@ void SlamSubscriber::sendUDPMessage(double center_x, double center_y, double hea
 }
 
 std::string determine_Indoor(double pose_x, double pose_y, double pose_z) {
+    
     if (pose_y > 82){
-        if (pose_z> 0.0) {
+        if (pose_z> 0.8) {
             if(pose_x>19 && pose_y >93){
                 //std::cout << "RAMP!" << pose_x << " " <<pose_y << std::endl;  
-                std::cout << "RAMP!" << std::endl; 
-                return "O";
+                std::cout << "OUTDOOR!" << std::endl; 
+                return "X";
             }
             else{
                 //std::cout << "OUTDOOR! "<< pose_x <<" "<< pose_y << std::endl; 
@@ -84,8 +85,14 @@ std::string determine_Indoor(double pose_x, double pose_y, double pose_z) {
         }
     }  
     else{
-        std::cout <<"INDOOR!" <<std::endl;
-        return "O";
+        if (pose_z > 0.8) { 
+            std::cout << "OUTDOOR!" << std::endl; 
+            return "X"; 
+        }
+        else{  
+            std::cout <<"INDOOR!" <<std::endl;
+            return "O"; 
+        }
     } 
 }
 
@@ -197,7 +204,7 @@ void SlamSubscriber::processPacketData(IPEDataPacket &packet, double timestamp, 
     ps.pose.orientation.x = PositionOut[3];
     pub_slam.publish(ps);
 
-    sendUDPMessage(PositionOut[0], PositionOut[1], PositionOut[3], in_out); //  result (joo.hy)
+    //sendUDPMessage(PositionOut[0], PositionOut[1], PositionOut[3], in_out); //  result (joo.hy)
 
     nav_msgs::Path ipe_pth; 
     ipe_pth.header.frame_id = "map";

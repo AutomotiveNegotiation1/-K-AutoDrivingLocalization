@@ -21,6 +21,9 @@ new_y_else = list()
 new_2_x_points = list() 
 new_2_y_points = list() 
 
+new_3_x_points = list() 
+new_3_y_points = list() 
+
 
 test_theta = list() 
 
@@ -97,6 +100,12 @@ def post_process_2(x,y):
         new_2_x_points.append(new_x)
         new_2_y_points.append(new_y) 
 
+def post_process_3(x,y):
+    # determine Indoor / Outdoor 
+    new_3_x_points.append(x) 
+    new_3_y_points.append(y) 
+    
+
 if __name__ == "__main__":
     
     """
@@ -112,19 +121,18 @@ if __name__ == "__main__":
         pickle.dump(y_points, f, pickle.HIGHEST_PROTOCOL) 
     """
 
-    with open('/home/keti/catkin_ws/src/uwb_analysis/x_trj_chungra.pickle', 'rb') as rf: 
+    with open('/home/keti/catkin_ws/src/uwb_analysis/x_trj.pickle', 'rb') as rf: 
         x_points = pickle.load(rf) 
     
-    with open('/home/keti/catkin_ws/src/uwb_analysis/y_trj_chungra.pickle', 'rb') as rf: 
+    with open('/home/keti/catkin_ws/src/uwb_analysis/y_trj.pickle', 'rb') as rf: 
         y_points = pickle.load(rf) 
 
 
     #draw_scatter(x_points, y_points) 
     
     L = len(x_points)
-    print(L)
-    x_points = x_points[:int(L/3)]
-    y_points = y_points[:int(L/3)]
+    #x_points = x_points[:int(L/3)]
+    #y_points = y_points[:int(L/3)]
 
 
     for i, x_pt in enumerate(x_points): 
@@ -138,6 +146,8 @@ if __name__ == "__main__":
             if(y_pt>716 and y_pt<762):
                 post_process_2(x_pt, y_pt)
 
+        if (x_pt >1370 and y_pt<628) : 
+            post_process_3(x_pt, y_pt) 
             
         #else : 
         new_x_else.append(x_pt) 
@@ -163,6 +173,8 @@ if __name__ == "__main__":
     plt.axis('equal')
 
     plt.scatter(new_2_x_points, new_2_y_points)
+
+    plt.scatter(new_3_x_points, new_3_y_points)
     
     plt.show()
     '''

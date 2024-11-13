@@ -27,7 +27,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/keti/catkin_ws/src/vision_opencv-opencv4/cv_bridge/src/."
   "/usr/include/python3.8"
   "/home/keti/.local/lib/python3.8/site-packages/numpy/core/include"
-  "/usr/local/include/opencv4"
+  "/usr/include/opencv4"
   )
 
 # Targets to which this target links.

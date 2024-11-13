@@ -1,10 +1,10 @@
 
 "use strict";
 
-let Tag = require('./Tag.js');
 let Anchor = require('./Anchor.js');
+let Tag = require('./Tag.js');
 
 module.exports = {
-  Tag: Tag,
   Anchor: Anchor,
+  Tag: Tag,
 };

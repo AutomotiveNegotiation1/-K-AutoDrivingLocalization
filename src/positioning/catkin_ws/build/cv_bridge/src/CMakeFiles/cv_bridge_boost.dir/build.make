@@ -121,9 +121,9 @@ cv_bridge_boost_EXTERNAL_OBJECTS =
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so: /usr/lib/aarch64-linux-gnu/libboost_system.so.1.71.0
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so: /usr/lib/aarch64-linux-gnu/libboost_thread.so.1.71.0
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so: /usr/lib/aarch64-linux-gnu/libconsole_bridge.so.0.4
-/home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so: /usr/local/lib/libopencv_imgcodecs.so.4.6.0
-/home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so: /usr/local/lib/libopencv_imgproc.so.4.6.0
-/home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so: /usr/local/lib/libopencv_core.so.4.6.0
+/home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so: /usr/lib/aarch64-linux-gnu/libopencv_imgcodecs.so.4.2.0
+/home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so: /usr/lib/aarch64-linux-gnu/libopencv_imgproc.so.4.2.0
+/home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so: /usr/lib/aarch64-linux-gnu/libopencv_core.so.4.2.0
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so: src/CMakeFiles/cv_bridge_boost.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/keti/catkin_ws/build/cv_bridge/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX shared library /home/keti/catkin_ws/devel/.private/cv_bridge/lib/python3/dist-packages/cv_bridge/boost/cv_bridge_boost.so"
 	cd /home/keti/catkin_ws/build/cv_bridge/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/cv_bridge_boost.dir/link.txt --verbose=$(VERBOSE)

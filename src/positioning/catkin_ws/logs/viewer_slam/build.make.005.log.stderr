@@ -1,0 +1,11 @@
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:21:1:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktypedef[m[K’ was ignored in this declaration
+   21 | [01;35m[Ktypedef[m[K struct euler_point {
+      | [01;35m[K^~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* spinfor(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:138:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  138 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* rx_cctv(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:203:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  203 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K

@@ -1,6 +1,6 @@
 Not searching for unused variables given on the command line.
-[36m--[0m The C compiler identification is GNU 11.4.0
-[36m--[0m The CXX compiler identification is GNU 11.4.0
+[36m--[0m The C compiler identification is GNU 9.4.0
+[36m--[0m The CXX compiler identification is GNU 9.4.0
 [36m--[0m Check for working C compiler: /usr/bin/cc
 [36m--[0m Check for working C compiler: /usr/bin/cc -- works
 [36m--[0m Detecting C compiler ABI info
@@ -32,22 +32,8 @@ Not searching for unused variables given on the command line.
 [36m--[0m Using Python nosetests: /usr/bin/nosetests3
 [36m--[0m catkin 0.8.10
 [36m--[0m BUILD_SHARED_LIBS is on
-[33m[1mCMake Warning[0m at /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:166 (message):
-  catkin_package() DEPENDS on 'system_lib' but neither
-  'system_lib_INCLUDE_DIRS' nor 'system_lib_LIBRARIES' is defined.
-[36mCall Stack (most recent call first):[0m
-  /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
-  CMakeLists.txt:9 (catkin_package)
-
-
-[31m[1mCMake Error[0m at /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:305 (message):
-  catkin_package() include dir 'include' does not exist relative to
-  '/home/keti/catkin_ws/src/uwb_analysis'
-[36mCall Stack (most recent call first):[0m
-  /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
-  CMakeLists.txt:9 (catkin_package)
-
-
-[36m--[0m Configuring incomplete, errors occurred!
-See also "/home/keti/catkin_ws/build/uwb_analysis/CMakeFiles/CMakeOutput.log".
-See also "/home/keti/catkin_ws/build/uwb_analysis/CMakeFiles/CMakeError.log".
+[36m--[0m Installing devel-space wrapper /home/keti/catkin_ws/src/uwb_analysis/scripts/uwb_subscriber.py to /home/keti/catkin_ws/devel/.private/uwb_analysis/lib/uwb_analysis
+[36m--[0m Installing devel-space wrapper /home/keti/catkin_ws/src/uwb_analysis/scripts/viewer_subscriber.py to /home/keti/catkin_ws/devel/.private/uwb_analysis/lib/uwb_analysis
+[36m--[0m Configuring done
+[36m--[0m Generating done
+[36m--[0m Build files have been written to: /home/keti/catkin_ws/build/uwb_analysis

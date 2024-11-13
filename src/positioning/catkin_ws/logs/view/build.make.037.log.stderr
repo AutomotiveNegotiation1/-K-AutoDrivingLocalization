@@ -1,0 +1,14 @@
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:[m[K In function ‘[01m[Kvoid* spinfor(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:76:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+   76 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:[m[K In function ‘[01m[Kvoid* rx_cctv(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:141:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  141 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+/usr/bin/ld: CMakeFiles/view_node.dir/src/parking_map.c.o: in function `set_cpose':
+parking_map.c:(.text+0x73c): undefined reference to `print'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/view_node.dir/build.make:145: /home/keti/catkin_ws/devel/.private/view/lib/view/view_node] Error 1
+make[1]: *** [CMakeFiles/Makefile2:192: CMakeFiles/view_node.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

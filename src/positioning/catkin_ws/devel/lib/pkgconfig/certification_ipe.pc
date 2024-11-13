@@ -1,1 +1,0 @@
-/home/keti/catkin_ws/devel/.private/certification_ipe/lib/pkgconfig/certification_ipe.pc

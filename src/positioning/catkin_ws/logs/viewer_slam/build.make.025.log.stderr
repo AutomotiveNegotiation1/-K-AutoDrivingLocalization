@@ -1,0 +1,29 @@
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:23:1:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktypedef[m[K’ was ignored in this declaration
+   23 | [01;35m[Ktypedef[m[K struct euler_point {
+      | [01;35m[K^~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* spinfor(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:130:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  130 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* rx_cctv(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:200:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  200 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* sendto_kanavi(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:215:9:[m[K [01;31m[Kerror: [m[K‘[01m[Krate[m[K’ was not declared in this scope
+  215 |         [01;31m[Krate[m[K = rospy.Rate(2) //500ms
+      |         [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:215:16:[m[K [01;31m[Kerror: [m[K‘[01m[Krospy[m[K’ was not declared in this scope; did you mean ‘[01m[Kros[m[K’?
+  215 |         rate = [01;31m[Krospy[m[K.Rate(2) //500ms
+      |                [01;31m[K^~~~~[m[K
+      |                [32m[Kros[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:218:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kkanavi_msg[m[K’ was not declared in this scope; did you mean ‘[01m[Kkanavi_pub[m[K’?
+  218 |         [01;31m[Kkanavi_msg[m[K.header.frame_id = "map";
+      |         [01;31m[K^~~~~~~~~~[m[K
+      |         [32m[Kkanavi_pub[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:240:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  240 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+make[2]: *** [CMakeFiles/viewer_slam_node.dir/build.make:63: CMakeFiles/viewer_slam_node.dir/src/main.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:192: CMakeFiles/viewer_slam_node.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

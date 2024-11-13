@@ -38,14 +38,10 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
   "COMPILEDWITHC11"
-  "HAVE_EIGEN"
-  "HAVE_GLEW"
-  "PANGO_DEFAULT_WIN_URI=\"wayland\""
   "ROSCONSOLE_BACKEND_LOG4CXX"
   "ROS_BUILD_SHARED_LIBS=1"
   "ROS_PACKAGE_NAME=\"orb_slam3_ros\""
   "UNIX"
-  "_LINUX_"
   "orb_slam3_ros_EXPORTS"
   )
 
@@ -66,7 +62,9 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/keti/catkin_ws/src/orb_slam3_ros/orb_slam3/Thirdparty/g2o/g2o/types"
   "/home/keti/catkin_ws/src/orb_slam3_ros/orb_slam3/Thirdparty/g2o/g2o/stuff"
   "/usr/include/eigen3"
-  "/usr/local/include/opencv4"
+  "/home/keti/repos/Pangolin/include"
+  "/home/keti/repos/Pangolin/build/src/include"
+  "/usr/include/opencv4"
   )
 
 # Targets to which this target links.

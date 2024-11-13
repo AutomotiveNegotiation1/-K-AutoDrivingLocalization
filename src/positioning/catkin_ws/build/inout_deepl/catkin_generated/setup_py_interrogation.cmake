@@ -1,0 +1,7 @@
+set(inout_deepl_SETUP_PY_SETUP_MODULE "distutils.core")
+set(inout_deepl_SETUP_PY_VERSION "0.0.0")
+set(inout_deepl_SETUP_PY_SCRIPTS "")
+set(inout_deepl_SETUP_PY_PACKAGES "inout_deepl")
+set(inout_deepl_SETUP_PY_PACKAGE_DIRS "src/inout_deepl")
+set(inout_deepl_SETUP_PY_MODULES "")
+set(inout_deepl_SETUP_PY_MODULE_DIRS "")

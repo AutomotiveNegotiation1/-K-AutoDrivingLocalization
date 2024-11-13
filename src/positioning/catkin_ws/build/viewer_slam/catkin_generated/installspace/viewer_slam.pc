@@ -1,0 +1,8 @@
+prefix=/home/keti/catkin_ws/install
+
+Name: viewer_slam
+Description: Description of viewer_slam
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lviewer_slam
+Requires: roscpp std_msgs

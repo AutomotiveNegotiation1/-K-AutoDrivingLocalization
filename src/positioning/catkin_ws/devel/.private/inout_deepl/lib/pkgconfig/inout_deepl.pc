@@ -1,0 +1,8 @@
+prefix=/home/keti/catkin_ws/devel/.private/inout_deepl
+
+Name: inout_deepl
+Description: Description of inout_deepl
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: rospy std_msgs

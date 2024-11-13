@@ -10,6 +10,10 @@
 #include "geometry_msgs/PoseStamped.h"
 #include "std_msgs/String.h"
 
+#include "socketmanager.h"
+#include <thread> 
+#include <chrono>
+
 #define SERVER_ADDR "221.140.137.186"
 #define SERVER_PORT 51000
 
@@ -128,13 +132,20 @@ void slamCallback(const geometry_msgs::PoseStamped::ConstPtr& msg)
     double slam_y = msg->pose.orientation.y;
     double slam_z = msg->pose.orientation.z;
     double slam_w = msg->pose.orientation.w;
+
+    double slam_pos_x = msg->pose.position.x; 
+    double slam_pos_z = msg->pose.position.z; 
+    // hy.joo (24.10.15)
+    double slam_pos_y = msg->pose.position.y;     
     
 
     struct euler_point ep = euler_from_quaternion(slam_x, slam_z, -slam_y, -slam_w);
     double pitch = ep.yaw;
     
     set_slam_orientation(pitch);
-    //printf("r: %f p:%f y:%f\n", ep.roll, pitch, ep.yaw);
+    
+    double in_out = determine_indoor(slam_pos_x, (-1)*slam_pos_z, (-1)*slam_pos_y);  // in_out == -1 : indoor & in_out == 1 : outdoor 
+    
     return;
 }
 
@@ -170,8 +181,9 @@ void *spinfor(void *data)
         viewer_pose.header.frame_id = "map";
         viewer_pose.pose.position.x = vt_uwb_x;
         viewer_pose.pose.position.y = vt_uwb_y;
-        viewer_pose.pose.position.z = 0;
+        viewer_pose.pose.position.z = kanavi_inout;
 
+        viewer_pose.pose.orientation.x = vt_heading;
         viewer_pub.publish(viewer_pose);
     }
 }
@@ -240,6 +252,38 @@ void *rx_cctv(void *data)
         set_cctv(cctv_x, cctv_y);
     }
 }
+
+//Add 24.10.23 (send to Kanavi Message Thread)
+void *sendto_kanavi(void *data)
+{
+    // Moved @ (24.10.23, hy.joo)
+    SocketManager* socketManager = SocketManager::getInstance(); // <-- Add this line to initialize the socketManager
+
+    while(true) {
+ 
+        //kanavi MSG publish 
+
+        std::ostringstream oss;
+        std::string inout_ox; 
+        
+        if (kanavi_inout == -1){ //indoor 
+            inout_ox = 'O';
+        }
+        else if (kanavi_inout == 1){ //outdoor 
+            inout_ox = 'X';
+        }
+        
+        oss << inout_ox <<","<< vt_uwb_x << "," << vt_uwb_y << "," << vt_heading;
+        std::string result = oss.str();
+        std::cout << "kanavi msg: " << result << std::endl;
+        socketManager->broadcastUDPMessage(result);
+        
+        std::this_thread::sleep_for(std::chrono::milliseconds(500)); 
+        
+    }
+}
+
+
 
 
 int main(int argc, char **argv)

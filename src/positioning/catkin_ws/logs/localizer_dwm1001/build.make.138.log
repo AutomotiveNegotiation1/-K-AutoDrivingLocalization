@@ -1,0 +1,19 @@
+[  2%] Built target localizer_dwm1001_gencfg
+[  2%] Built target _localizer_dwm1001_generate_messages_check_deps_Anchor
+[  2%] Built target _localizer_dwm1001_generate_messages_check_deps_Anchor_2
+[  2%] Built target _localizer_dwm1001_generate_messages_check_deps_Anchor_1
+[  2%] Built target _localizer_dwm1001_generate_messages_check_deps_Tag_srv
+[  2%] Built target std_msgs_generate_messages_eus
+[  2%] Built target _localizer_dwm1001_generate_messages_check_deps_Anchor_0
+[  2%] Built target _localizer_dwm1001_generate_messages_check_deps_Anchor_3
+[  2%] Built target std_msgs_generate_messages_lisp
+[  2%] Built target std_msgs_generate_messages_py
+[  2%] Built target std_msgs_generate_messages_cpp
+[  2%] Built target std_msgs_generate_messages_nodejs
+[  2%] Built target _localizer_dwm1001_generate_messages_check_deps_Tag
+[ 23%] Built target localizer_dwm1001_generate_messages_eus
+[ 43%] Built target localizer_dwm1001_generate_messages_cpp
+[ 71%] Built target localizer_dwm1001_generate_messages_py
+[ 82%] Built target localizer_dwm1001_generate_messages_nodejs
+[100%] Built target localizer_dwm1001_generate_messages_lisp
+[100%] Built target localizer_dwm1001_generate_messages

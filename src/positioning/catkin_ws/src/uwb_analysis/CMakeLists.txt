@@ -15,10 +15,6 @@ catkin_python_setup()
 catkin_install_python(PROGRAMS
   scripts/uwb_subscriber.py
   scripts/viewer_subscriber.py
-  scripts/lidar2slam_transform.py
-  scripts/lidar2ipe_transform_paper.py
-  scripts/lidar2ipe_transform_viewer.py
-  scripts/determine_in_out.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

@@ -1,6 +1,6 @@
 Not searching for unused variables given on the command line.
-[36m--[0m The C compiler identification is GNU 11.4.0
-[36m--[0m The CXX compiler identification is GNU 11.4.0
+[36m--[0m The C compiler identification is GNU 9.4.0
+[36m--[0m The CXX compiler identification is GNU 9.4.0
 [36m--[0m Check for working C compiler: /usr/bin/cc
 [36m--[0m Check for working C compiler: /usr/bin/cc -- works
 [36m--[0m Detecting C compiler ABI info
@@ -35,7 +35,14 @@ Not searching for unused variables given on the command line.
 [36m--[0m Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
 [36m--[0m Found PkgConfig: /usr/bin/pkg-config (found version "0.29.1")
 [36m--[0m Checking for module 'gtk+-3.0'
-[36m--[0m   Found gtk+-3.0, version 3.24.20
-[36m--[0m Configuring done
-[36m--[0m Generating done
-[36m--[0m Build files have been written to: /home/keti/catkin_ws/build/view
+[36m--[0m   No package 'gtk+-3.0' found
+[31m[1mCMake Error[0m at /usr/share/cmake-3.16/Modules/FindPkgConfig.cmake:463 (message):
+  A required package was not found
+[36mCall Stack (most recent call first):[0m
+  /usr/share/cmake-3.16/Modules/FindPkgConfig.cmake:643 (_pkg_check_modules_internal)
+  CMakeLists.txt:14 (pkg_check_modules)
+
+
+[36m--[0m Configuring incomplete, errors occurred!
+See also "/home/keti/catkin_ws/build/view/CMakeFiles/CMakeOutput.log".
+See also "/home/keti/catkin_ws/build/view/CMakeFiles/CMakeError.log".

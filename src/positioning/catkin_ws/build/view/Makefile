@@ -749,6 +749,33 @@ src/resource.c.s:
 	$(MAKE) -f CMakeFiles/view.dir/build.make CMakeFiles/view.dir/src/resource.c.s
 .PHONY : src/resource.c.s
 
+src/socketmanager.o: src/socketmanager.cpp.o
+
+.PHONY : src/socketmanager.o
+
+# target to build an object file
+src/socketmanager.cpp.o:
+	$(MAKE) -f CMakeFiles/view_node.dir/build.make CMakeFiles/view_node.dir/src/socketmanager.cpp.o
+.PHONY : src/socketmanager.cpp.o
+
+src/socketmanager.i: src/socketmanager.cpp.i
+
+.PHONY : src/socketmanager.i
+
+# target to preprocess a source file
+src/socketmanager.cpp.i:
+	$(MAKE) -f CMakeFiles/view_node.dir/build.make CMakeFiles/view_node.dir/src/socketmanager.cpp.i
+.PHONY : src/socketmanager.cpp.i
+
+src/socketmanager.s: src/socketmanager.cpp.s
+
+.PHONY : src/socketmanager.s
+
+# target to generate assembly for a file
+src/socketmanager.cpp.s:
+	$(MAKE) -f CMakeFiles/view_node.dir/build.make CMakeFiles/view_node.dir/src/socketmanager.cpp.s
+.PHONY : src/socketmanager.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -810,6 +837,9 @@ help:
 	@echo "... src/resource.o"
 	@echo "... src/resource.i"
 	@echo "... src/resource.s"
+	@echo "... src/socketmanager.o"
+	@echo "... src/socketmanager.i"
+	@echo "... src/socketmanager.s"
 .PHONY : help
 
 

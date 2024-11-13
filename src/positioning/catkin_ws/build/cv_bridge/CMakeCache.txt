@@ -62,11 +62,11 @@ CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/c++
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
-CMAKE_CXX_COMPILER_AR:FILEPATH=/usr/bin/gcc-ar-11
+CMAKE_CXX_COMPILER_AR:FILEPATH=/usr/bin/gcc-ar-9
 
 //A wrapper around 'ranlib' adding the appropriate '--plugin' option
 // for the GCC compiler
-CMAKE_CXX_COMPILER_RANLIB:FILEPATH=/usr/bin/gcc-ranlib-11
+CMAKE_CXX_COMPILER_RANLIB:FILEPATH=/usr/bin/gcc-ranlib-9
 
 //Flags used by the CXX compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=
@@ -88,11 +88,11 @@ CMAKE_C_COMPILER:FILEPATH=/usr/bin/cc
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
-CMAKE_C_COMPILER_AR:FILEPATH=/usr/bin/gcc-ar-11
+CMAKE_C_COMPILER_AR:FILEPATH=/usr/bin/gcc-ar-9
 
 //A wrapper around 'ranlib' adding the appropriate '--plugin' option
 // for the GCC compiler
-CMAKE_C_COMPILER_RANLIB:FILEPATH=/usr/bin/gcc-ranlib-11
+CMAKE_C_COMPILER_RANLIB:FILEPATH=/usr/bin/gcc-ranlib-9
 
 //Flags used by the C compiler during all build types.
 CMAKE_C_FLAGS:STRING=
@@ -358,7 +358,7 @@ LSB_RELEASE_EXECUTABLE:FILEPATH=/usr/bin/lsb_release
 NOSETESTS:FILEPATH=/usr/bin/nosetests3
 
 //The directory containing a CMake configuration file for OpenCV.
-OpenCV_DIR:PATH=/usr/local/lib/cmake/opencv4
+OpenCV_DIR:PATH=/usr/lib/aarch64-linux-gnu/cmake/opencv4
 
 //Path to a program.
 PYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3
@@ -388,7 +388,7 @@ RT_LIBRARY:FILEPATH=/usr/lib/aarch64-linux-gnu/librt.so
 SETUPTOOLS_DEB_LAYOUT:BOOL=ON
 
 //Name of the computer/site where compile is being run
-SITE:STRING=keti
+SITE:STRING=ubuntu
 
 //LSB Distrib tag
 UBUNTU:BOOL=TRUE
@@ -704,7 +704,7 @@ CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding Boost
 FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/usr/lib/aarch64-linux-gnu/cmake/Boost-1.71.0/BoostConfig.cmake][cfound components: python ][v1.71.0()]
 //Details about finding OpenCV
-FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[/usr/local][cfound components: opencv_core opencv_imgproc opencv_imgcodecs ][v4.6.0()]
+FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[/usr][cfound components: opencv_core opencv_imgproc opencv_imgcodecs ][v4.2.0()]
 //Details about finding PY_em
 FIND_PACKAGE_MESSAGE_DETAILS_PY_em:INTERNAL=[/usr/lib/python3/dist-packages/em.py][v()]
 //Details about finding PythonInterp

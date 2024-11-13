@@ -1,6 +1,6 @@
 Not searching for unused variables given on the command line.
-[36m--[0m The C compiler identification is GNU 11.4.0
-[36m--[0m The CXX compiler identification is GNU 11.4.0
+[36m--[0m The C compiler identification is GNU 9.4.0
+[36m--[0m The CXX compiler identification is GNU 9.4.0
 [36m--[0m Check for working C compiler: /usr/bin/cc
 [36m--[0m Check for working C compiler: /usr/bin/cc -- works
 [36m--[0m Detecting C compiler ABI info
@@ -19,9 +19,9 @@ Build type: Release
 [36m--[0m Performing Test COMPILER_SUPPORTS_CXX0X
 [36m--[0m Performing Test COMPILER_SUPPORTS_CXX0X - Success
 [36m--[0m Using flag -std=c++14.
-[36m--[0m Found OpenCV: /usr/local (found suitable version "4.6.0", minimum required is "4.2")
+[36m--[0m Found OpenCV: /usr (found suitable version "4.2.0", minimum required is "4.2")
 OPENCV VERSION:
-4.6.0
+4.2.0
 [36m--[0m Using CATKIN_DEVEL_PREFIX: /home/keti/catkin_ws/devel/.private/orb_slam3_ros
 [36m--[0m Using CMAKE_PREFIX_PATH: /home/keti/zed_ros_ws/devel;/home/keti/catkin_ws/devel;/opt/ros/noetic
 [36m--[0m This workspace overlays: /home/keti/zed_ros_ws/devel;/home/keti/catkin_ws/devel;/opt/ros/noetic

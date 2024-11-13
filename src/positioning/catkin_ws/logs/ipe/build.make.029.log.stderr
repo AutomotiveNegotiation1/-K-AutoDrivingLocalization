@@ -1,9 +1,0 @@
-[01m[K/home/keti/catkin_ws/src/ipe/src/ipeinterface.cpp:[m[K In member function ‘[01m[Kvoid IPEInterface::spinFor()[m[K’:
-[01m[K/home/keti/catkin_ws/src/ipe/src/ipeinterface.cpp:249:9:[m[K [01;31m[Kerror: [m[Kno match for ‘[01m[Koperator![m[K’ (operand type is ‘[01m[Kstd::string[m[K’ {aka ‘[01m[Kstd::__cxx11::basic_string<char>[m[K’})
-  249 |     if ([01;31m[K!rosPacket.second.frame_id[m[K)
-      |         [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
-[01m[K/home/keti/catkin_ws/src/ipe/src/ipeinterface.cpp:249:9:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Koperator!(bool)[m[K’ (built-in)
-[01m[K/home/keti/catkin_ws/src/ipe/src/ipeinterface.cpp:249:9:[m[K [01;36m[Knote: [m[K  no known conversion for argument 1 from ‘[01m[Kstd::string[m[K’ {aka ‘[01m[Kstd::__cxx11::basic_string<char>[m[K’} to ‘[01m[Kbool[m[K’
-make[2]: *** [CMakeFiles/ipe.dir/build.make:63: CMakeFiles/ipe.dir/src/ipeinterface.cpp.o] Error 1
-make[1]: *** [CMakeFiles/Makefile2:1166: CMakeFiles/ipe.dir/all] Error 2
-make: *** [Makefile:141: all] Error 2

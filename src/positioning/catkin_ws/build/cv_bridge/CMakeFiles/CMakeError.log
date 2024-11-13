@@ -1,21 +1,21 @@
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
 Change Dir: /home/keti/catkin_ws/build/cv_bridge/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_eec3c/fast && /usr/bin/make -f CMakeFiles/cmTC_eec3c.dir/build.make CMakeFiles/cmTC_eec3c.dir/build
+Run Build Command(s):/usr/bin/make cmTC_1296b/fast && /usr/bin/make -f CMakeFiles/cmTC_1296b.dir/build.make CMakeFiles/cmTC_1296b.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/cv_bridge/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_eec3c.dir/src.c.o
-/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_eec3c.dir/src.c.o   -c /home/keti/catkin_ws/build/cv_bridge/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_eec3c
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eec3c.dir/link.txt --verbose=1
-/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_eec3c.dir/src.c.o  -o cmTC_eec3c 
-/usr/bin/ld: CMakeFiles/cmTC_eec3c.dir/src.c.o: in function `main':
+Building C object CMakeFiles/cmTC_1296b.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_1296b.dir/src.c.o   -c /home/keti/catkin_ws/build/cv_bridge/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_1296b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1296b.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_1296b.dir/src.c.o  -o cmTC_1296b 
+/usr/bin/ld: CMakeFiles/cmTC_1296b.dir/src.c.o: in function `main':
 src.c:(.text+0x48): undefined reference to `pthread_create'
 /usr/bin/ld: src.c:(.text+0x50): undefined reference to `pthread_detach'
 /usr/bin/ld: src.c:(.text+0x5c): undefined reference to `pthread_join'
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_eec3c.dir/build.make:87: cmTC_eec3c] Error 1
+make[1]: *** [CMakeFiles/cmTC_1296b.dir/build.make:87: cmTC_1296b] Error 1
 make[1]: Leaving directory '/home/keti/catkin_ws/build/cv_bridge/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_eec3c/fast] Error 2
+make: *** [Makefile:121: cmTC_1296b/fast] Error 2
 
 
 Source file was:
@@ -41,18 +41,18 @@ int main(void)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: /home/keti/catkin_ws/build/cv_bridge/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_e680e/fast && /usr/bin/make -f CMakeFiles/cmTC_e680e.dir/build.make CMakeFiles/cmTC_e680e.dir/build
+Run Build Command(s):/usr/bin/make cmTC_97d6c/fast && /usr/bin/make -f CMakeFiles/cmTC_97d6c.dir/build.make CMakeFiles/cmTC_97d6c.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/cv_bridge/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_e680e.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_e680e.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
-Linking C executable cmTC_e680e
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e680e.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_e680e.dir/CheckFunctionExists.c.o  -o cmTC_e680e  -lpthreads 
+Building C object CMakeFiles/cmTC_97d6c.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_97d6c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_97d6c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_97d6c.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_97d6c.dir/CheckFunctionExists.c.o  -o cmTC_97d6c  -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_e680e.dir/build.make:87: cmTC_e680e] Error 1
+make[1]: *** [CMakeFiles/cmTC_97d6c.dir/build.make:87: cmTC_97d6c] Error 1
 make[1]: Leaving directory '/home/keti/catkin_ws/build/cv_bridge/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_e680e/fast] Error 2
+make: *** [Makefile:121: cmTC_97d6c/fast] Error 2
 
 
 

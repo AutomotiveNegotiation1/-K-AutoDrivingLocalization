@@ -141,7 +141,7 @@ cv_bridge__utest_EXTERNAL_OBJECTS =
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: test/CMakeFiles/cv_bridge-utest.dir/build.make
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: gtest/lib/libgtest.so
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /home/keti/catkin_ws/devel/.private/cv_bridge/lib/libcv_bridge.so
-/home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /usr/local/lib/libopencv_imgcodecs.so.4.6.0
+/home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /usr/lib/aarch64-linux-gnu/libopencv_imgcodecs.so.4.2.0
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /opt/ros/noetic/lib/librosconsole.so
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /opt/ros/noetic/lib/librosconsole_log4cxx.so
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /opt/ros/noetic/lib/librosconsole_backend_interface.so
@@ -154,8 +154,8 @@ cv_bridge__utest_EXTERNAL_OBJECTS =
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /usr/lib/aarch64-linux-gnu/libboost_system.so.1.71.0
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /usr/lib/aarch64-linux-gnu/libboost_thread.so.1.71.0
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /usr/lib/aarch64-linux-gnu/libconsole_bridge.so.0.4
-/home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /usr/local/lib/libopencv_imgproc.so.4.6.0
-/home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /usr/local/lib/libopencv_core.so.4.6.0
+/home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /usr/lib/aarch64-linux-gnu/libopencv_imgproc.so.4.2.0
+/home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: /usr/lib/aarch64-linux-gnu/libopencv_core.so.4.2.0
 /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest: test/CMakeFiles/cv_bridge-utest.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/keti/catkin_ws/build/cv_bridge/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable /home/keti/catkin_ws/devel/.private/cv_bridge/lib/cv_bridge/cv_bridge-utest"
 	cd /home/keti/catkin_ws/build/cv_bridge/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/cv_bridge-utest.dir/link.txt --verbose=$(VERBOSE)

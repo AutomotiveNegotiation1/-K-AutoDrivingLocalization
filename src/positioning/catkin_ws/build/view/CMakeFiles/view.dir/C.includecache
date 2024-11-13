@@ -56,12 +56,6 @@ ramp_pp.h
 math.h
 -
 
-/home/keti/catkin_ws/src/view/src/resource.c
-gio/gio.h
--
-stdlib.h
--
-
 /usr/include/atk-1.0/atk/atk-enum-types.h
 atk/atkversion.h
 -

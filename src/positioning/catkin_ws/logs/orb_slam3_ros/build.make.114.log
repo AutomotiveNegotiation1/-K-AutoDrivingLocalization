@@ -1,0 +1,21 @@
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_eus
+[  7%] Built target DBoW2
+[ 41%] Built target g2o
+[ 41%] Built target _orb_slam3_ros_generate_messages_check_deps_SaveMap
+[ 47%] Built target orb_slam3_ros_generate_messages_eus
+[ 47%] Built target orb_slam3_ros_generate_messages_lisp
+[ 47%] Built target orb_slam3_ros_generate_messages_nodejs
+[ 47%] Built target orb_slam3_ros_generate_messages_py
+[ 48%] Built target orb_slam3_ros_generate_messages_cpp
+[ 80%] Built target orb_slam3_ros
+[ 80%] Built target orb_slam3_ros_generate_messages
+[ 91%] Built target ros_stereo
+[ 91%] Built target ros_rgbd
+[ 92%] Built target ros_mono_inertial
+[ 93%] Built target ros_rgbd_inertial
+[100%] Built target ros_mono
+[100%] Built target ros_stereo_inertial

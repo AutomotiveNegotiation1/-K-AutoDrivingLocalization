@@ -13,15 +13,14 @@
 
 # The store file is created from the current session, if a file with the same name exists it is deleted
 
-#System.LoadAtlasFromFile: "Session_ORIN_globalB1f_CamFixed_Mono_1K_nf5000"
 
-#System.LoadAtlasFromFile: "Session_ORIN_global_Rear_0717_v1" 
-
+#System.SaveAtlasToFile: "Session_ORIN_Chungra_Rear_1105_v1"  
 #System.LoadAtlasFromFile: "Session_ORIN_Chungra_Rear_0828_v2" 
+System.LoadAtlasFromFile: "Session_ORIN_Chungra_Rear_1112_v2" 
 
-System.LoadAtlasFromFile: "Session_ORIN_Chungra_Rear_0927_v1" 
+#System.SaveAtlasToFile: "Session_ORIN_Chungra_Rear_1112_v2"  
 
-#System.SaveAtlasToFile: "Session_ORIN_Chungra_Rear_0927_v1"  
+
 
 #--------------------------------------------------------------------------------------------
 # Camera Parameters. Adjust them!
@@ -81,4 +80,3 @@ Viewer.ViewpointX: 0.0
 Viewer.ViewpointY: -0.7
 Viewer.ViewpointZ: -1.8
 Viewer.ViewpointF: 500.0
-

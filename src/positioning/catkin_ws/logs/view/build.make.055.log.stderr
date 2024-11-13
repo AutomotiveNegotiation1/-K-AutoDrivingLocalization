@@ -1,18 +1,18 @@
 [01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:[m[K In function ‘[01m[Ktrafficlight_init[m[K’:
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:155:18:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  155 |     tlgImage_usd [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_usd);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:218:18:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K-Wincompatible-pointer-types[m[K]
+  218 |     tlgImage_usd [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_usd);
       |                  [01;35m[K^[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:156:18:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  156 |     tlgImage_ccw [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_ccw);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:219:18:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K-Wincompatible-pointer-types[m[K]
+  219 |     tlgImage_ccw [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_ccw);
       |                  [01;35m[K^[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:157:24:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  157 |     tlgImage_green_usd [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_green_usd);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:220:24:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K-Wincompatible-pointer-types[m[K]
+  220 |     tlgImage_green_usd [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_green_usd);
       |                        [01;35m[K^[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:158:24:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  158 |     tlgImage_green_ccw [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_green_ccw);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:221:24:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K-Wincompatible-pointer-types[m[K]
+  221 |     tlgImage_green_ccw [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_green_ccw);
       |                        [01;35m[K^[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:161:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  161 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_usd[m[K, 1007, 604);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:224:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K-Wincompatible-pointer-types[m[K]
+  224 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_usd[m[K, 1007, 604);
       |                           [01;35m[K^~~~~~~~~~~~[m[K
       |                           [01;35m[K|[m[K
       |                           [01;35m[KGtkImage * {aka struct _GtkImage *}[m[K
@@ -21,8 +21,8 @@ In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
 [01m[K/usr/include/gtk-3.0/gtk/gtkfixed.h:83:57:[m[K [01;36m[Knote: [m[Kexpected ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} but argument is of type ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’}
    83 |                                         [01;36m[KGtkWidget      *widget[m[K,
       |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:162:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  162 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_green_usd[m[K, 1007, 604);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:225:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K-Wincompatible-pointer-types[m[K]
+  225 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_green_usd[m[K, 1007, 604);
       |                           [01;35m[K^~~~~~~~~~~~~~~~~~[m[K
       |                           [01;35m[K|[m[K
       |                           [01;35m[KGtkImage * {aka struct _GtkImage *}[m[K
@@ -31,8 +31,8 @@ In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
 [01m[K/usr/include/gtk-3.0/gtk/gtkfixed.h:83:57:[m[K [01;36m[Knote: [m[Kexpected ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} but argument is of type ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’}
    83 |                                         [01;36m[KGtkWidget      *widget[m[K,
       |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:163:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  163 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_ccw[m[K, 936, 510);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:226:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K-Wincompatible-pointer-types[m[K]
+  226 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_ccw[m[K, 936, 510);
       |                           [01;35m[K^~~~~~~~~~~~[m[K
       |                           [01;35m[K|[m[K
       |                           [01;35m[KGtkImage * {aka struct _GtkImage *}[m[K
@@ -41,8 +41,8 @@ In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
 [01m[K/usr/include/gtk-3.0/gtk/gtkfixed.h:83:57:[m[K [01;36m[Knote: [m[Kexpected ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} but argument is of type ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’}
    83 |                                         [01;36m[KGtkWidget      *widget[m[K,
       |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:164:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  164 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_green_ccw[m[K, 936, 510);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:227:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K-Wincompatible-pointer-types[m[K]
+  227 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_green_ccw[m[K, 936, 510);
       |                           [01;35m[K^~~~~~~~~~~~~~~~~~[m[K
       |                           [01;35m[K|[m[K
       |                           [01;35m[KGtkImage * {aka struct _GtkImage *}[m[K
@@ -52,8 +52,8 @@ In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
    83 |                                         [01;36m[KGtkWidget      *widget[m[K,
       |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
 [01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:[m[K In function ‘[01m[Kcallback_timer[m[K’:
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:175:5:[m[K [01;35m[Kwarning: [m[K‘[01m[Kgtk_widget_get_pointer[m[K’ is deprecated: Use 'gdk_window_get_device_position' instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
-  175 |     [01;35m[Kgtk_widget_get_pointer[m[K(gApp, &x, &y);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:238:5:[m[K [01;35m[Kwarning: [m[K‘[01m[Kgtk_widget_get_pointer[m[K’ is deprecated: Use 'gdk_window_get_device_position' instead [[01;35m[K-Wdeprecated-declarations[m[K]
+  238 |     [01;35m[Kgtk_widget_get_pointer[m[K(gApp, &x, &y);
       |     [01;35m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
 In file included from [01m[K/usr/include/gtk-3.0/gtk/gtkapplication.h:27[m[K,
                  from [01m[K/usr/include/gtk-3.0/gtk/gtkwindow.h:33[m[K,
@@ -61,24 +61,40 @@ In file included from [01m[K/usr/include/gtk-3.0/gtk/gtkapplication.h:27[m[K
                  from [01m[K/usr/include/gtk-3.0/gtk/gtkaboutdialog.h:30[m[K,
                  from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:31[m[K,
                  from [01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:14[m[K:
-[01m[K/usr/include/gtk-3.0/gtk/gtkwidget.h:1121:14:[m[K [01;36m[Knote: [m[Kdeclared here
- 1121 | void         [01;36m[Kgtk_widget_get_pointer[m[K     (GtkWidget      *widget,
-      |              [01;36m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/usr/include/gtk-3.0/gtk/gtkwidget.h:1121:11:[m[K [01;36m[Knote: [m[Kdeclared here
+ 1121 | void      [01;36m[Kgtk_widget_get_pointer[m[K (GtkWidget *widget,
+      |           [01;36m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:[m[K At top level:
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:270:[m[K [01;35m[Kwarning: [m[K"CIRCLE_ENTRY_X" redefined
+  270 | #define CIRCLE_ENTRY_X 1550
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:32:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+   32 | #define CIRCLE_ENTRY_X 1474
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:271:[m[K [01;35m[Kwarning: [m[K"CIRCLE_TOP_Y" redefined
+  271 | #define CIRCLE_TOP_Y 486.25
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:33:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+   33 | #define CIRCLE_TOP_Y 447
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:281:1:[m[K [01;35m[Kwarning: [m[Kuseless storage class specifier in empty declaration
+  281 | [01;35m[K}[m[K ;
+      | [01;35m[K^[m[K
 [01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:[m[K In function ‘[01m[Ktrafficlight_init[m[K’:
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:155:18:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  155 |     tlgImage_usd [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_usd);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:218:18:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K-Wincompatible-pointer-types[m[K]
+  218 |     tlgImage_usd [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_usd);
       |                  [01;35m[K^[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:156:18:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  156 |     tlgImage_ccw [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_ccw);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:219:18:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K-Wincompatible-pointer-types[m[K]
+  219 |     tlgImage_ccw [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_ccw);
       |                  [01;35m[K^[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:157:24:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  157 |     tlgImage_green_usd [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_green_usd);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:220:24:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K-Wincompatible-pointer-types[m[K]
+  220 |     tlgImage_green_usd [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_green_usd);
       |                        [01;35m[K^[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:158:24:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  158 |     tlgImage_green_ccw [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_green_ccw);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:221:24:[m[K [01;35m[Kwarning: [m[Kassignment to ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’} from incompatible pointer type ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} [[01;35m[K-Wincompatible-pointer-types[m[K]
+  221 |     tlgImage_green_ccw [01;35m[K=[m[K gtk_image_new_from_pixbuf(tlpixbuf_green_ccw);
       |                        [01;35m[K^[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:161:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  161 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_usd[m[K, 1007, 604);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:224:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K-Wincompatible-pointer-types[m[K]
+  224 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_usd[m[K, 1007, 604);
       |                           [01;35m[K^~~~~~~~~~~~[m[K
       |                           [01;35m[K|[m[K
       |                           [01;35m[KGtkImage * {aka struct _GtkImage *}[m[K
@@ -87,8 +103,8 @@ In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
 [01m[K/usr/include/gtk-3.0/gtk/gtkfixed.h:83:57:[m[K [01;36m[Knote: [m[Kexpected ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} but argument is of type ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’}
    83 |                                         [01;36m[KGtkWidget      *widget[m[K,
       |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:162:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  162 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_green_usd[m[K, 1007, 604);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:225:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K-Wincompatible-pointer-types[m[K]
+  225 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_green_usd[m[K, 1007, 604);
       |                           [01;35m[K^~~~~~~~~~~~~~~~~~[m[K
       |                           [01;35m[K|[m[K
       |                           [01;35m[KGtkImage * {aka struct _GtkImage *}[m[K
@@ -97,8 +113,8 @@ In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
 [01m[K/usr/include/gtk-3.0/gtk/gtkfixed.h:83:57:[m[K [01;36m[Knote: [m[Kexpected ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} but argument is of type ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’}
    83 |                                         [01;36m[KGtkWidget      *widget[m[K,
       |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:163:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  163 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_ccw[m[K, 936, 510);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:226:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K-Wincompatible-pointer-types[m[K]
+  226 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_ccw[m[K, 936, 510);
       |                           [01;35m[K^~~~~~~~~~~~[m[K
       |                           [01;35m[K|[m[K
       |                           [01;35m[KGtkImage * {aka struct _GtkImage *}[m[K
@@ -107,8 +123,8 @@ In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
 [01m[K/usr/include/gtk-3.0/gtk/gtkfixed.h:83:57:[m[K [01;36m[Knote: [m[Kexpected ‘[01m[KGtkWidget *[m[K’ {aka ‘[01m[Kstruct _GtkWidget *[m[K’} but argument is of type ‘[01m[KGtkImage *[m[K’ {aka ‘[01m[Kstruct _GtkImage *[m[K’}
    83 |                                         [01;36m[KGtkWidget      *widget[m[K,
       |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:164:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wincompatible-pointer-types-Wincompatible-pointer-types]8;;[m[K]
-  164 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_green_ccw[m[K, 936, 510);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:227:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of ‘[01m[Kgtk_fixed_put[m[K’ from incompatible pointer type [[01;35m[K-Wincompatible-pointer-types[m[K]
+  227 |     gtk_fixed_put(gFixed, [01;35m[KtlgImage_green_ccw[m[K, 936, 510);
       |                           [01;35m[K^~~~~~~~~~~~~~~~~~[m[K
       |                           [01;35m[K|[m[K
       |                           [01;35m[KGtkImage * {aka struct _GtkImage *}[m[K
@@ -118,8 +134,8 @@ In file included from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:101[m[K,
    83 |                                         [01;36m[KGtkWidget      *widget[m[K,
       |                                         [01;36m[K~~~~~~~~~~~~~~~~^~~~~~[m[K
 [01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:[m[K In function ‘[01m[Kcallback_timer[m[K’:
-[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:175:5:[m[K [01;35m[Kwarning: [m[K‘[01m[Kgtk_widget_get_pointer[m[K’ is deprecated: Use 'gdk_window_get_device_position' instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
-  175 |     [01;35m[Kgtk_widget_get_pointer[m[K(gApp, &x, &y);
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:238:5:[m[K [01;35m[Kwarning: [m[K‘[01m[Kgtk_widget_get_pointer[m[K’ is deprecated: Use 'gdk_window_get_device_position' instead [[01;35m[K-Wdeprecated-declarations[m[K]
+  238 |     [01;35m[Kgtk_widget_get_pointer[m[K(gApp, &x, &y);
       |     [01;35m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
 In file included from [01m[K/usr/include/gtk-3.0/gtk/gtkapplication.h:27[m[K,
                  from [01m[K/usr/include/gtk-3.0/gtk/gtkwindow.h:33[m[K,
@@ -127,6 +143,33 @@ In file included from [01m[K/usr/include/gtk-3.0/gtk/gtkapplication.h:27[m[K
                  from [01m[K/usr/include/gtk-3.0/gtk/gtkaboutdialog.h:30[m[K,
                  from [01m[K/usr/include/gtk-3.0/gtk/gtk.h:31[m[K,
                  from [01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:14[m[K:
-[01m[K/usr/include/gtk-3.0/gtk/gtkwidget.h:1121:14:[m[K [01;36m[Knote: [m[Kdeclared here
- 1121 | void         [01;36m[Kgtk_widget_get_pointer[m[K     (GtkWidget      *widget,
-      |              [01;36m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/usr/include/gtk-3.0/gtk/gtkwidget.h:1121:11:[m[K [01;36m[Knote: [m[Kdeclared here
+ 1121 | void      [01;36m[Kgtk_widget_get_pointer[m[K (GtkWidget *widget,
+      |           [01;36m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:[m[K At top level:
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:270:[m[K [01;35m[Kwarning: [m[K"CIRCLE_ENTRY_X" redefined
+  270 | #define CIRCLE_ENTRY_X 1550
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:32:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+   32 | #define CIRCLE_ENTRY_X 1474
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:271:[m[K [01;35m[Kwarning: [m[K"CIRCLE_TOP_Y" redefined
+  271 | #define CIRCLE_TOP_Y 486.25
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:33:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+   33 | #define CIRCLE_TOP_Y 447
+      | 
+[01m[K/home/keti/catkin_ws/src/view/src/parking_map.c:281:1:[m[K [01;35m[Kwarning: [m[Kuseless storage class specifier in empty declaration
+  281 | [01;35m[K}[m[K ;
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:66:1:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktypedef[m[K’ was ignored in this declaration
+   66 | [01;35m[Ktypedef[m[K struct euler_point {
+      | [01;35m[K^~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:[m[K In function ‘[01m[Kvoid* spinfor(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:177:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  177 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:[m[K In function ‘[01m[Kvoid* rx_cctv(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:242:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  242 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K

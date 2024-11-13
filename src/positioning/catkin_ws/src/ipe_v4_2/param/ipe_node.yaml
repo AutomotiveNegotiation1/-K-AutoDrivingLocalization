@@ -44,11 +44,11 @@ sub_UWB2: true
 sub_UWB3: true
 
 IMU_on: true
-# add Slam_on parameter (24.10.11 , hy.joo) 
-Slam_on: true 
-test_on: false
 
-kanavi_ip : "192.168.50.112"
+test_on: false
+Slam_on: true
+
+kanavi_ip : "192.168.123.200"
 kanavi_port : 5000
 
 # predefined or manual

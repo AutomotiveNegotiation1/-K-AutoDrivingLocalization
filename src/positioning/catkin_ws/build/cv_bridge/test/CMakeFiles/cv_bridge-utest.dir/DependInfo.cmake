@@ -24,7 +24,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/keti/catkin_ws/src/vision_opencv-opencv4/cv_bridge/include"
   "/opt/ros/noetic/include"
   "/home/keti/catkin_ws/src/vision_opencv-opencv4/cv_bridge/test/../src"
-  "/usr/local/include/opencv4"
+  "/usr/include/opencv4"
   "/usr/src/googletest/googletest/include"
   "/usr/src/googletest/googletest"
   )

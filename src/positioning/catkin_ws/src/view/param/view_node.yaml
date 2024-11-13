@@ -41,4 +41,5 @@ use_lidar: false
 use_cctv: false
 ramp_match: true
 
-
+kanavi_ip: "192.168.123.200"
+kanavi_port: 5000

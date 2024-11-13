@@ -145,6 +145,9 @@ gboolean on_draw(GtkWidget *widget, GdkEventExpose *event, gpointer data);
 
 float vt_uwb_x; 
 float vt_uwb_y;
+float vt_heading;
+
+double kanavi_inout;
 
 struct RAMP_PP_DATA{
     float new_x; 
@@ -310,10 +313,27 @@ void set_slam_orientation(double pitch)
     uwb_angle  = pitch - 3.1415926535; 
 
     g_mutex_unlock(&gmutex);
+    vt_heading = uwb_angle;
 
     isUpdate_uwb = TRUE;
 
     return; 
+}
+
+double determine_indoor(double pose_x, double pose_y, double pose_z) {
+  
+    if (pose_z> 1.0) {
+        //printf("%f : OUTDOOR!\n", pose_z); 
+        
+        kanavi_inout = 1.0 ; 
+        
+        return 1.0; 
+        }
+    else{
+        //printf("%f : INDOOR!\n", pose_z); 
+        kanavi_inout = -1.0;
+        return -1.0; 
+    }
 }
 
 void set_uwb(double _x, double _y, double _angle)
@@ -812,6 +832,9 @@ int map_init(int argc, char **argv)
     gtk_widget_hide(GTK_WIDGET(gImage));
 
     g_thread_new("ros_thread", spinfor, NULL);
+    // add kanavi_broadcast_thread (24.10.23) 
+    //g_thread_new("kanavi_thread", sendto_kanavi, NULL);
+
     if(use_cctv) {
         g_thread_new("get_cctv", rx_cctv, NULL);
     }

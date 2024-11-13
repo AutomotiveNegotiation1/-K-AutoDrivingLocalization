@@ -1,0 +1,1 @@
+/home/keti/catkin_ws/devel/.private/viewer_slam/share/viewer_slam/cmake/viewer_slamConfig.cmake

@@ -1,0 +1,89 @@
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:[m[K In function ‘[01m[Kvoid CPoseCallback(const ConstPtr&)[m[K’:
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:32:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kset_cpose[m[K’ was not declared in this scope
+   32 |     [01;31m[Kset_cpose[m[K(msg->pose.position.x, msg->pose.position.y, msg->pose.orientation.x, msg->pose.orientation.w);
+      |     [01;31m[K^~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:[m[K In function ‘[01m[Kvoid* spinfor(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:60:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kcpose_sub[m[K’ was not declared in this scope; did you mean ‘[01m[Kcpose_usb[m[K’?
+   60 |         [01;31m[Kcpose_sub[m[K = nh.subscribe<geometry_msgs::PoseStamped>("/orb_slam3/camera_pose", 10, CPoseCallbabck);
+      |         [01;31m[K^~~~~~~~~[m[K
+      |         [32m[Kcpose_usb[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:60:92:[m[K [01;31m[Kerror: [m[K‘[01m[KCPoseCallbabck[m[K’ was not declared in this scope; did you mean ‘[01m[KCPoseCallback[m[K’?
+   60 |         cpose_sub = nh.subscribe<geometry_msgs::PoseStamped>("/orb_slam3/camera_pose", 10, [01;31m[KCPoseCallbabck[m[K);
+      |                                                                                            [01;31m[K^~~~~~~~~~~~~~[m[K
+      |                                                                                            [32m[KCPoseCallback[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:76:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+   76 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:[m[K In function ‘[01m[Kvoid* rx_cctv(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:127:13:[m[K [01;31m[Kerror: [m[Kexpected initializer before ‘[01m[K}[m[K’ token
+  127 |             [01;31m[K}[m[K
+      |             [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:130:19:[m[K [01;31m[Kerror: [m[K‘[01m[Kgmutex[m[K’ was not declared in this scope
+  130 |     g_mutex_lock(&[01;31m[Kgmutex[m[K);
+      |                   [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:130:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kg_mutex_lock[m[K’ was not declared in this scope
+  130 |     [01;31m[Kg_mutex_lock[m[K(&gmutex);
+      |     [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:132:19:[m[K [01;31m[Kerror: [m[K‘[01m[Kuwb_tv[m[K’ was not declared in this scope
+  132 |     gettimeofday(&[01;31m[Kuwb_tv[m[K, NULL);
+      |                   [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:134:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kuwb_y[m[K’ was not declared in this scope; did you mean ‘[01m[Kvt_uwb_y[m[K’?
+  134 |     [01;31m[Kuwb_y[m[K = _x;
+      |     [01;31m[K^~~~~[m[K
+      |     [32m[Kvt_uwb_y[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:134:13:[m[K [01;31m[Kerror: [m[K‘[01m[K_x[m[K’ was not declared in this scope
+  134 |     uwb_y = [01;31m[K_x[m[K;
+      |             [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:135:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kuwb_x[m[K’ was not declared in this scope; did you mean ‘[01m[Kvt_uwb_x[m[K’?
+  135 |     [01;31m[Kuwb_x[m[K = _y;
+      |     [01;31m[K^~~~~[m[K
+      |     [32m[Kvt_uwb_x[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:135:13:[m[K [01;31m[Kerror: [m[K‘[01m[K_y[m[K’ was not declared in this scope
+  135 |     uwb_x = [01;31m[K_y[m[K;
+      |             [01;31m[K^~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:136:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kuwb_angle[m[K’ was not declared in this scope
+  136 |     [01;31m[Kuwb_angle[m[K  = _angle+(3.141592653589793/2);
+      |     [01;31m[K^~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:136:18:[m[K [01;31m[Kerror: [m[K‘[01m[K_angle[m[K’ was not declared in this scope
+  136 |     uwb_angle  = [01;31m[K_angle[m[K+(3.141592653589793/2);
+      |                  [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:139:17:[m[K [01;31m[Kerror: [m[K‘[01m[Kphase[m[K’ was not declared in this scope
+  139 |                 [01;31m[Kphase[m[K = 1;
+      |                 [01;31m[K^~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:140:13:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  140 |             [01;35m[K}[m[K
+      |             [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:[m[K At global scope:
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:141:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kp[m[K’ does not name a type
+  141 |             [01;31m[Kp[m[K = strtok(NULL, ",");
+      |             [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:142:9:[m[K [01;31m[Kerror: [m[Kexpected declaration before ‘[01m[K}[m[K’ token
+  142 |         [01;31m[K}[m[K
+      |         [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:145:9:[m[K [01;31m[Kerror: [m[K‘[01m[Knew_pose[m[K’ does not name a type
+  145 |         [01;31m[Knew_pose[m[K.header.frame_id = "map";
+      |         [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:146:9:[m[K [01;31m[Kerror: [m[K‘[01m[Knew_pose[m[K’ does not name a type
+  146 |         [01;31m[Knew_pose[m[K.pose.position.x = cctv_x;
+      |         [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:147:9:[m[K [01;31m[Kerror: [m[K‘[01m[Knew_pose[m[K’ does not name a type
+  147 |         [01;31m[Knew_pose[m[K.pose.position.y = cctv_y;
+      |         [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:148:9:[m[K [01;31m[Kerror: [m[K‘[01m[Knew_pose[m[K’ does not name a type
+  148 |         [01;31m[Knew_pose[m[K.pose.position.z = 0;
+      |         [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:150:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kcctv_pub[m[K’ does not name a type
+  150 |         [01;31m[Kcctv_pub[m[K.publish(new_pose);
+      |         [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:151:17:[m[K [01;31m[Kerror: [m[Kexpected constructor, destructor, or type conversion before ‘[01m[K([m[K’ token
+  151 |         set_cctv[01;31m[K([m[Kcctv_x, cctv_y);
+      |                 [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:152:5:[m[K [01;31m[Kerror: [m[Kexpected declaration before ‘[01m[K}[m[K’ token
+  152 |     [01;31m[K}[m[K
+      |     [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/view/src/main.cpp:153:1:[m[K [01;31m[Kerror: [m[Kexpected declaration before ‘[01m[K}[m[K’ token
+  153 | [01;31m[K}[m[K
+      | [01;31m[K^[m[K
+make[2]: *** [CMakeFiles/view_node.dir/build.make:63: CMakeFiles/view_node.dir/src/main.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:192: CMakeFiles/view_node.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

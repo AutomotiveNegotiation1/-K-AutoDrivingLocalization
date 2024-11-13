@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC   -shared -Wl,-soname,libviewer_slam.so -o /home/keti/catkin_ws/devel/.private/viewer_slam/lib/libviewer_slam.so CMakeFiles/viewer_slam.dir/src/parking_map.c.o CMakeFiles/viewer_slam.dir/src/resource.c.o 

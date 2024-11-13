@@ -1,6 +1,0 @@
-[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/map_param_chungra.cpp:72:24:[m[K [01;31m[Kerror: [m[Karray must be initialized with a brace-enclosed initializer
-   72 | struct0_T Param = {_s, [01;31m[K_sA[m[K, _roll, _pitch, _yaw, _SLAMposInit};
-      |                        [01;31m[K^~~[m[K
-make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:141: CMakeFiles/ipe_v4_2.dir/src/map_param_chungra.cpp.o] Error 1
-make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
-make: *** [Makefile:141: all] Error 2

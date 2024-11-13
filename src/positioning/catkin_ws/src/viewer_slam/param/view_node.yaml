@@ -36,9 +36,9 @@ test_on: true
 #global or robo
 site: robo
 use_ipe: true
-use_traffic_light: false
+use_traffic_light: true
 use_lidar: false
-use_cctv: false
+use_cctv: true
 ramp_match: true
 
 kanavi_ip: "192.168.123.200"

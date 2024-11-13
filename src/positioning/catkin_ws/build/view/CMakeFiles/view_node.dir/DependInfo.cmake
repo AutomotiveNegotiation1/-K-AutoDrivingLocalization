@@ -46,6 +46,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/keti/catkin_ws/src/view/src/main.cpp" "/home/keti/catkin_ws/build/view/CMakeFiles/view_node.dir/src/main.cpp.o"
   "/home/keti/catkin_ws/src/view/src/ramp_pp.cpp" "/home/keti/catkin_ws/build/view/CMakeFiles/view_node.dir/src/ramp_pp.cpp.o"
+  "/home/keti/catkin_ws/src/view/src/socketmanager.cpp" "/home/keti/catkin_ws/build/view/CMakeFiles/view_node.dir/src/socketmanager.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

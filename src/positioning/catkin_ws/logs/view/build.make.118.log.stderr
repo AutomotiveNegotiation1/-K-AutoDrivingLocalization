@@ -1,6 +1,0 @@
-/usr/bin/ld: CMakeFiles/view_node.dir/src/parking_map.c.o:(.bss+0x0): multiple definition of `vt_uwb_x'; CMakeFiles/view_node.dir/src/main.cpp.o:(.bss+0x0): first defined here
-/usr/bin/ld: CMakeFiles/view_node.dir/src/parking_map.c.o:(.bss+0x4): multiple definition of `vt_uwb_y'; CMakeFiles/view_node.dir/src/main.cpp.o:(.bss+0x4): first defined here
-collect2: error: ld returned 1 exit status
-make[2]: *** [CMakeFiles/view_node.dir/build.make:145: /home/keti/catkin_ws/devel/.private/view/lib/view/view_node] Error 1
-make[1]: *** [CMakeFiles/Makefile2:192: CMakeFiles/view_node.dir/all] Error 2
-make: *** [Makefile:141: all] Error 2

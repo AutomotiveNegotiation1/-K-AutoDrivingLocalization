@@ -37,7 +37,7 @@ add_library(${PROJECT_NAME}
 
 )
 target_include_directories(${PROJECT_NAME} PUBLIC )
-set(SOURCES src/main.cpp src/resource.c src/parking_map.c src/ramp_pp.cpp)
+set(SOURCES src/main.cpp src/resource.c src/parking_map.c src/ramp_pp.cpp src/socketmanager.cpp)
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_executable(${PROJECT_NAME}_node ${SOURCES})
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME})

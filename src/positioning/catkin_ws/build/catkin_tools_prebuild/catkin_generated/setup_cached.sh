@@ -8,8 +8,8 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/keti/catkin_ws/devel/.private/catkin_tools_prebuild:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH='/home/keti/zed_ros_ws/devel/lib:/opt/ros/noetic/lib:/opt/ros/noetic/lib/aarch64-linux-gnu:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64'
-export PKG_CONFIG_PATH='/home/keti/zed_ros_ws/devel/lib/pkgconfig:/opt/ros/noetic/lib/pkgconfig:/opt/ros/noetic/lib/aarch64-linux-gnu/pkgconfig'
+export LD_LIBRARY_PATH='/home/keti/zed_ros_ws/devel/lib:/opt/ros/noetic/lib'
+export PKG_CONFIG_PATH='/home/keti/zed_ros_ws/devel/lib/pkgconfig:/opt/ros/noetic/lib/pkgconfig'
 export PWD='/home/keti/catkin_ws/build/catkin_tools_prebuild'
 export PYTHONPATH='/home/keti/zed_ros_ws/devel/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages'
 export ROSLISP_PACKAGE_DIRECTORIES="/home/keti/catkin_ws/devel/.private/catkin_tools_prebuild/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"

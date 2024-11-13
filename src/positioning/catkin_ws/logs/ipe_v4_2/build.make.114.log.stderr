@@ -1,9 +1,0 @@
-[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/slamsubscriber_ipe_v4_2.cpp:[m[K In member function ‘[01m[Kvoid SlamSubscriber::processPacketData(IPEDataPacket&, double, SensorData*)[m[K’:
-[01m[K/home/keti/catkin_ws/src/ipe_v4_2/src/slamsubscriber_ipe_v4_2.cpp:172:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass ros::Publisher[m[K’ has no member named ‘[01m[Kpubslish[m[K’; did you mean ‘[01m[Kpublish[m[K’?
-  172 |     pub_ipe.[01;31m[Kpubslish[m[K(ipe_pth)
-      |             [01;31m[K^~~~~~~~[m[K
-      |             [32m[Kpublish[m[K
-make[2]: *** [CMakeFiles/ipe_v4_2.dir/build.make:128: CMakeFiles/ipe_v4_2.dir/src/slamsubscriber_ipe_v4_2.cpp.o] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [CMakeFiles/Makefile2:209: CMakeFiles/ipe_v4_2.dir/all] Error 2
-make: *** [Makefile:141: all] Error 2

@@ -69,7 +69,7 @@ bool use_cctv;
 bool ramp_match;
 
 RAMP_STATE ramp_state = NOT_IN_RAMP;
-
+NEGO_STATE nego_state = NEGO_INIT;
 // get object from glade
 GtkBuilder *gBuilder;
 GtkWidget *gApp;
@@ -77,7 +77,18 @@ GtkFixed *gFixed;
 GtkDrawingArea *drawingArea;
 GdkPixbuf *pixbuf;
 GtkImage *gImage;
+GdkPixbuf *carnivalPixbuf;
+GdkPixbuf *cctvPixbuf;
+GtkImage *carA;
+GtkImage *carB;
+GtkImage *cctvImage;
+GtkWidget *carALabel;
+GtkWidget *carBLabel;
 
+GtkWidget *gNegoButton;
+GtkWidget *gNegoLabel;
+GtkWidget *gNegoLabel2;
+GtkWidget *gNegoBox;
 
 // traffic light
 GtkImage *tlgImage_usd;
@@ -91,7 +102,6 @@ GdkWindow *draw_window;
 cairo_region_t *cairoRegion;
 bool first = TRUE;
 bool carnival_on = FALSE;
-bool cctv_off = FALSE;
 bool cctv_on = FALSE;
 
 GMutex gmutex;
@@ -103,8 +113,9 @@ double slam_x = 100.0;
 double slam_y = 100.0; 
 
 double uwb_angle = 0;
-double cctv_x = 100.0;
-double cctv_y = 100.0;
+double before_cctv_x = 1000000.0;
+double cctv_x = 0.0;
+double cctv_y = 0.0;
 double cctv_angle = 270;
 bool isUpdate_uwb = FALSE;
 bool isUpdate_cctv = FALSE;
@@ -140,6 +151,7 @@ gint callback_timer(gpointer argv);
 void rotate_point(double _angle, double *new_x, double *new_y);
 gboolean manually_draw();
 gboolean on_draw(GtkWidget *widget, GdkEventExpose *event, gpointer data);
+void draw_rect_on_fixed(GtkFixed *fixed, double x, double y);
 
 float vt_uwb_x; 
 float vt_uwb_y;
@@ -149,6 +161,7 @@ float vt_heading;
 //double kanavi_y;
 //double kanavi_heading;
 double kanavi_inout;
+double ai_inout;
 
 struct RAMP_PP_DATA{
     float new_x; 
@@ -206,12 +219,15 @@ void trafficlight_init()
         return;
     }
     
-    GdkPixbuf *tlpixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_red.png", 86, 22, TRUE, NULL);
-    GdkPixbuf *tlpixbuf_green = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_up.png", 86, 22, TRUE, NULL);
-    GdkPixbuf *tlpixbuf_left = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_left.png", 86, 22, TRUE, NULL);
-    // GdkPixbuf *tlpixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_red.png", 100, 25, TRUE, NULL);
-    // GdkPixbuf *tlpixbuf_green = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_up.png", 100, 25, TRUE, NULL);
-    // GdkPixbuf *tlpixbuf_left = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_left.png", 100, 25, TRUE, NULL);
+    // GdkPixbuf *tlpixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_red.png", 86, 22, TRUE, NULL);
+    // GdkPixbuf *tlpixbuf_green = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_up.png", 86, 22, TRUE, NULL);
+    // GdkPixbuf *tlpixbuf_left = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_left.png", 86, 22, TRUE, NULL);
+    GdkPixbuf *tlpixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_red.png", 101, 31, TRUE, NULL);
+    GdkPixbuf *tlpixbuf_green = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_up.png", 101, 31, TRUE, NULL);
+    GdkPixbuf *tlpixbuf_left = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_left.png", 101, 31, TRUE, NULL);
+    // GdkPixbuf *tlpixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_red.png", 151, 46, TRUE, NULL);
+    // GdkPixbuf *tlpixbuf_green = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_up.png", 151, 46, TRUE, NULL);
+    // GdkPixbuf *tlpixbuf_left = gdk_pixbuf_new_from_resource_at_scale("/glade/draw_tl_left.png", 151, 46, TRUE, NULL);
     
     GdkPixbuf *tlpixbuf_usd = gdk_pixbuf_rotate_simple(tlpixbuf, GDK_PIXBUF_ROTATE_UPSIDEDOWN);
     GdkPixbuf *tlpixbuf_green_usd = gdk_pixbuf_rotate_simple(tlpixbuf_left, GDK_PIXBUF_ROTATE_UPSIDEDOWN);
@@ -225,14 +241,18 @@ void trafficlight_init()
     tlgImage_green_ccw = gtk_image_new_from_pixbuf(tlpixbuf_green_ccw);
 
 
-    gtk_fixed_put(gFixed, tlgImage_usd, 1264, 589);
-    gtk_fixed_put(gFixed, tlgImage_green_usd, 1264, 589);
-    gtk_fixed_put(gFixed, tlgImage_ccw, 1170, 464);
-    gtk_fixed_put(gFixed, tlgImage_green_ccw, 1170, 464);
-    // gtk_fixed_put(gFixed, tlgImage_usd, 1350 - 50, 570 - 10);
-    // gtk_fixed_put(gFixed, tlgImage_green_usd, 1350 - 50, 570 - 10);
-    // gtk_fixed_put(gFixed, tlgImage_ccw, 1210, 420);
-    // gtk_fixed_put(gFixed, tlgImage_green_ccw, 1210, 420);
+    // gtk_fixed_put(gFixed, tlgImage_usd, 1264, 589);
+    // gtk_fixed_put(gFixed, tlgImage_green_usd, 1264, 589);
+    // gtk_fixed_put(gFixed, tlgImage_ccw, 1170, 464);
+    // gtk_fixed_put(gFixed, tlgImage_green_ccw, 1170, 464);
+    gtk_fixed_put(gFixed, tlgImage_usd, 1248, 585);
+    gtk_fixed_put(gFixed, tlgImage_green_usd, 1248, 585);
+    gtk_fixed_put(gFixed, tlgImage_ccw, 1153, 450);
+    gtk_fixed_put(gFixed, tlgImage_green_ccw, 1153, 450);
+    // gtk_fixed_put(gFixed, tlgImage_usd, 1230, 618);
+    // gtk_fixed_put(gFixed, tlgImage_green_usd, 1230, 618);
+    // gtk_fixed_put(gFixed, tlgImage_ccw, 1153, 426);
+    // gtk_fixed_put(gFixed, tlgImage_green_ccw, 1153, 426);
 }
 
 
@@ -322,6 +342,11 @@ void set_slam_position(double _x, double _y) {
     vt_uwb_y = uwb_y; 
     if(use_traffic_light) {
         if((uwb_x > 1270 && uwb_x < 1400) && (uwb_y > 158 && uwb_y < 500)) {
+            if(nego_state == NEGO_INIT) {
+                set_nego_state(NEGO_WAIT_CARNIVAL);
+            } else if(nego_state == NEGO_WAIT_IONIC) {
+                set_nego_state(NEGO_WAIT);
+            }
         // if((uwb_x > 978.92 && uwb_x < 1071.94) && (uwb_y > 317.71 && uwb_y < 516.36)) {
             if(cctv_on) {
                 gtk_widget_hide(GTK_WIDGET(tlgImage_green_usd));
@@ -334,6 +359,9 @@ void set_slam_position(double _x, double _y) {
                 gtk_widget_show(GTK_WIDGET(tlgImage_usd));
             }
         } else {
+            if(nego_state == NEGO_ACTION_CARNIVAL) {
+                set_nego_state(NEGO_FINISH);
+            }
             carnival_on = false;
             gtk_widget_hide(GTK_WIDGET(tlgImage_usd));
             gtk_widget_hide(GTK_WIDGET(tlgImage_green_usd));
@@ -376,27 +404,59 @@ void set_kanavi_msg(double in_out, double _x, double _y)
 
 double determine_indoor(double pose_x, double pose_y, double pose_z) {
   
-    if (pose_z> 1.0) {
+    if (pose_z> 1.0) { // slam says it's outdoor
         //printf("%f : OUTDOOR!\n", pose_z); 
         
         kanavi_inout = 1.0 ; 
         
         return 1.0; 
         }
-    else{
+    else{ // slam says it's indoor 
         //printf("%f : INDOOR!\n", pose_z); 
-        kanavi_inout = -1.0;
+
+        if (ai_inout == 1.0){ //ai says it's outdoor or ramp (24.11.05)
+            kanavi_inout = 1.0; 
+            return 1.0;
+        }
+
+        else if (ai_inout == 0.0){ //ai says it's ramp (24.11.05)
+
+            if (vt_uwb_x > 1400 && vt_uwb_x <1855 && vt_uwb_y > 440 && vt_uwb_y<856){
+                kanavi_inout = -1.0;
+                return -1.0;
+            }
+            else{
+                kanavi_inout = 1.0;  
+                return 1.0;
+            }
+        }
+        /*
+        else if (vt_uwb_x > 200 && vt_uwb_x <1855 && vt_uwb_y > 440 && vt_uwb_y<856){
+            
+            kanavi_inout = -1.0; 
+            return -1.0;
+        }
+        */
+        
+        else if (ai_inout == -1.0){ //ai says it's indoor
+            kanavi_inout = -1.0;
+            return -1.0 ;    
+        }
+        
         return -1.0; 
     }
 }
+double get_dist(double _ax, double _ay, double _bx, double _by)
+{
+    return sqrt(pow(_ax - _bx, 2) + pow(_ay - _by, 2));
+}
+
+void set_carnival_tl(bool _on) {
+    carnival_on = _on;
+}
 
 void set_cctv_tl(bool _on) {
-    if(cctv_on && !_on) {
-        carnival_on = true;
-        cctv_off = true;
-    }
     cctv_on = _on;
-    printf("set cctv : %s\n", _on ? "True" : "False");
 }
 
 void set_cctv(double _x, double _y)
@@ -413,8 +473,9 @@ void set_cctv(double _x, double _y)
     position_offset_cctv(&cctv_x, &cctv_y);
     
     isUpdate_cctv = TRUE;
-    
-
+    if(before_cctv_x < cctv_x) {
+        cctv_x = before_cctv_x;
+    }
     if(site == GLOBAL) {
         if(cctv_x > 150 && cctv_x < 440)
         {
@@ -422,8 +483,13 @@ void set_cctv(double _x, double _y)
             gtk_fixed_move(gFixed, GTK_WIDGET(gImage), cctv_x - center_offset_y, 80 - center_offset_x);
         }
     } else if(site == ROBO) {
-        if(!cctv_off) {
-
+        if(nego_state == NEGO_INIT) {
+            set_nego_state(NEGO_WAIT_IONIC);
+        } else if(nego_state == NEGO_WAIT_CARNIVAL) {
+            set_nego_state(NEGO_WAIT);
+        }
+        if(NEGO_INIT < nego_state && nego_state < NEGO_ACTION_CARNIVAL) {
+            
             if(cctv_x > 1200.0 && cctv_x < 1550.0) {
                 if(cctv_on) {
                     gtk_widget_hide(GTK_WIDGET(tlgImage_ccw));  
@@ -433,15 +499,22 @@ void set_cctv(double _x, double _y)
                     gtk_widget_show(GTK_WIDGET(tlgImage_ccw));
                 }      
             } else {
-                set_cctv_tl(false);
+                if(nego_state == NEGO_NEGOTIATION) {
+                    printf("set_state : action_ionic\n");
+                    set_nego_state(NEGO_ACTION_IONIC);
+                    // send_message_to_server("ionic_pass", 10);
+                }
                 gtk_widget_hide(GTK_WIDGET(tlgImage_ccw));  
                 gtk_widget_hide(GTK_WIDGET(tlgImage_green_ccw));  
             }
             gtk_widget_show(GTK_WIDGET(gImage));
-            gtk_fixed_move(gFixed, GTK_WIDGET(gImage), cctv_x - center_offset_y, 480 - center_offset_x);
+            gtk_fixed_move(gFixed, GTK_WIDGET(gImage), cctv_x , 480 - center_offset_x);
+        } else {
+            gtk_widget_hide(GTK_WIDGET(gImage));
         }
     }
 
+    before_cctv_x = cctv_x;
     g_mutex_unlock(&gmutex);
     cctv_angle = uwb_angle;
     isUpdate_uwb = TRUE;
@@ -508,7 +581,7 @@ gboolean manually_draw()
     
     GdkDrawingContext *drawingContext = gdk_window_begin_draw_frame(draw_window, cairoRegion);
 
-    if (current_mstime - cctv_mstime >= 750)
+    if (current_mstime - cctv_mstime >= 1200)
     {
         gtk_widget_hide(GTK_WIDGET(gImage));
         if(use_traffic_light) {
@@ -689,6 +762,11 @@ int map_init(int argc, char **argv)
 
     g_mutex_init(&gmutex);
 
+    GtkCssProvider *cssProvider = gtk_css_provider_new();
+    gtk_css_provider_load_from_path(cssProvider, "/home/keti/catkin_ws/src/viewer_slam/src/style.css", NULL);
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+
     if(site == ROBO) {
         gBuilder = gtk_builder_new_from_resource("/glade/robo_parking_map.glade");
     } else if(site == GLOBAL) {
@@ -712,16 +790,35 @@ int map_init(int argc, char **argv)
     gtk_widget_set_size_request(GTK_WIDGET(drawingArea), 200, 200);
 
     trafficlight_init();
-    
+    set_nego();
+    cctvPixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/cctv.png", carnival2_width, carnival2_height, TRUE, NULL);
+    carnivalPixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/carnival2.png", carnival2_width, carnival2_height, TRUE, NULL);
     pixbuf = gdk_pixbuf_new_from_resource_at_scale("/glade/ioniq_elec_02.png", ioniq_width, ioniq_height, TRUE, NULL);
-    
+    carA = GTK_IMAGE(gtk_image_new_from_pixbuf(carnivalPixbuf));
+    carB = GTK_IMAGE(gtk_image_new_from_pixbuf(pixbuf));
+    cctvImage = GTK_IMAGE(gtk_image_new_from_pixbuf(cctvPixbuf));
     pixbuf = gdk_pixbuf_rotate_simple(pixbuf, GDK_PIXBUF_ROTATE_COUNTERCLOCKWISE);
     gImage = GTK_IMAGE(gtk_image_new_from_pixbuf(pixbuf));
     gtk_fixed_put(gFixed, GTK_WIDGET(gImage), 100 - center_offset_y, 98 - center_offset_x);
+    gtk_fixed_put(gFixed, GTK_WIDGET(carA), 780, 50);
+    gtk_fixed_put(gFixed, GTK_WIDGET(carB), 960, 37);
+    gtk_fixed_put(gFixed, GTK_WIDGET(cctvImage), 950, 470);
     
-    
+    carALabel = gtk_label_new("A 차량:      ");
+    gtk_fixed_put(gFixed, carALabel, 700, 50);
+    gtk_widget_show(carALabel);
+
+    carBLabel = gtk_label_new("B 차량:      "); 
+    gtk_fixed_put(gFixed, carBLabel, 900, 50);
+    gtk_widget_show(carBLabel);
+
+
+    draw_rect_on_fixed(gFixed, 1150, 390);
     gtk_widget_show(gApp);
     gtk_widget_show(GTK_WIDGET(gImage));
+    gtk_widget_show(GTK_WIDGET(cctvImage));
+    gtk_widget_show(GTK_WIDGET(carA));
+    gtk_widget_show(GTK_WIDGET(carB));
     gtk_widget_show(GTK_WIDGET(drawingArea));
     gtk_widget_hide(GTK_WIDGET(gImage));
 
@@ -737,4 +834,124 @@ int map_init(int argc, char **argv)
 
 
     return EXIT_SUCCESS;
+}
+
+
+//----------------------------------------------------------------------------------------------------------
+
+static gboolean draw_rect_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
+{
+    cairo_set_line_width(cr, 10);
+    cairo_set_source_rgb(cr, 1, 0, 0);
+
+    double dashes[] = {15.0, 15.0};
+    cairo_set_dash(cr, dashes, 2, 0);
+
+    cairo_rectangle(cr, 0, 0, 275, 225);
+    cairo_stroke(cr);
+    // cairo_fill(cr);
+    return FALSE;
+
+}
+
+void draw_rect_on_fixed(GtkFixed *fixed, double x, double y)
+{
+    GtkWidget *drawing_area = gtk_drawing_area_new();
+    gtk_widget_set_size_request(drawing_area, 275, 225);
+    gtk_fixed_put(fixed, drawing_area, x, y);
+    g_signal_connect(G_OBJECT(drawing_area), "draw", G_CALLBACK(draw_rect_callback), NULL);
+    gtk_widget_show(drawing_area);
+}
+
+static gboolean btn_click_callback(GtkWidget *widget, GdkEventButton *event, gpointer data)
+{
+    
+    return FALSE;
+
+}
+
+void set_nego()
+{
+    if(!use_traffic_light) {
+        printf("traffic_light false\n");
+        return;
+    }
+
+    gNegoBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    gtk_widget_set_vexpand(gNegoBox, true);
+
+    gNegoLabel = gtk_label_new("정지");
+    gtk_widget_show(gNegoLabel);
+    gtk_widget_hide(gNegoLabel);
+
+    gNegoLabel2 = gtk_label_new("정지2");
+    // GtkStyleContext *context = gtk_widget_get_style_context(gNegoLabel2);
+    // gtk_style_context_add_class(context, "label2");
+    gtk_widget_show(gNegoLabel2);
+    gtk_widget_hide(gNegoLabel2);
+
+    // gNegoButton = gtk_button_new_with_label("주행협상 시작");
+
+    // g_signal_connect(G_OBJECT(gNegoButton), "clicked", G_CALLBACK(btn_click_callback), NULL);
+    // gtk_widget_show(gNegoButton);
+
+
+    gtk_container_add(GTK_CONTAINER(gNegoBox), gNegoLabel);
+    gtk_container_add(GTK_CONTAINER(gNegoBox), gNegoLabel2);
+    // gtk_container_add(GTK_CONTAINER(gNegoBox), gNegoButton);
+    gtk_widget_set_size_request(GTK_WIDGET(gNegoBox), 350, 200);
+    gtk_fixed_put(gFixed, gNegoBox, 1460, 280);
+    // gtk_container_set_border_width(GTK_CONTAINER(gNegoBox), 100);
+    gtk_widget_show(gNegoBox);
+
+
+}
+void set_nego_state(int state) 
+{
+    nego_state = state;
+    if(nego_state == NEGO_WAIT_CARNIVAL) {
+        set_nego_label("A 차량 정지");
+    } else if(nego_state == NEGO_WAIT_IONIC) {
+        set_nego_label2("B 차량 정지");
+    } else if(nego_state == NEGO_WAIT) {
+        set_nego_label("A 차량 주행의도(좌회전) 전송");
+        set_nego_label2("B 차량 주행의도(직진) 전송");
+        set_change_state("MANEUVER", 8, 1);
+    } else if(nego_state == NEGO_MANEUVER) {
+        set_nego_label("주행협상 중");
+        set_nego_label2("");
+    } else if(nego_state == NEGO_NEGOTIATION) {
+        set_nego_label("A 차량 주행협상 결과: 정지");
+        set_nego_label2("B 차량 주행협상 결과: 직진");
+        set_cctv_tl(true);
+    } else if(nego_state == NEGO_ACTION_IONIC) {
+        set_send_message("ionic_pass", 10, 2);
+    } else if(nego_state == NEGO_ACTION_CARNIVAL) {
+        set_nego_label("A 차량 주행협상 결과: 좌회전");
+        set_nego_label2("");
+        set_carnival_tl(true);
+        set_cctv_tl(false);
+    } else if(nego_state == NEGO_FINISH) {
+        set_send_message("carnival_pass", 13, 2);
+    } else if(nego_state == NEGO_END) {
+        set_nego_label("서비스 종료");
+        before_cctv_x = 1000000.0;
+    }
+} 
+void set_nego_label(char *text) 
+{
+    gtk_label_set_text(gNegoLabel, text);
+    gtk_widget_show(gNegoLabel);
+} 
+void set_nego_label2(char *text) 
+{
+    if(strcmp(text, "") == 0) {
+        gtk_widget_hide(gNegoLabel2);
+    } else {
+        gtk_label_set_text(gNegoLabel2, text);
+        gtk_widget_show(gNegoLabel2);
+    }
+} 
+void set_nego_button_text(char *text) {
+    gtk_button_set_label(GTK_BUTTON(gNegoButton), text);
 }

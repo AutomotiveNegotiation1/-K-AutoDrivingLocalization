@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(cv_bridge_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/keti/catkin_ws/src/vision_opencv-opencv4/cv_bridge/include;/usr/local/include/opencv4 " STREQUAL " ")
+if(NOT "/home/keti/catkin_ws/src/vision_opencv-opencv4/cv_bridge/include;/usr/include/opencv4 " STREQUAL " ")
   set(cv_bridge_INCLUDE_DIRS "")
-  set(_include_dirs "/home/keti/catkin_ws/src/vision_opencv-opencv4/cv_bridge/include;/usr/local/include/opencv4")
+  set(_include_dirs "/home/keti/catkin_ws/src/vision_opencv-opencv4/cv_bridge/include;/usr/include/opencv4")
   if(NOT "https://github.com/ros-perception/vision_opencv/issues " STREQUAL " ")
     set(_report "Check the issue tracker 'https://github.com/ros-perception/vision_opencv/issues' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT "http://www.ros.org/wiki/cv_bridge " STREQUAL " ")
@@ -116,7 +116,7 @@ if(NOT "/home/keti/catkin_ws/src/vision_opencv-opencv4/cv_bridge/include;/usr/lo
   endforeach()
 endif()
 
-set(libraries "cv_bridge;/usr/local/lib/libopencv_core.so.4.6.0;/usr/local/lib/libopencv_imgproc.so.4.6.0;/usr/local/lib/libopencv_imgcodecs.so.4.6.0")
+set(libraries "cv_bridge;/usr/lib/aarch64-linux-gnu/libopencv_core.so.4.2.0;/usr/lib/aarch64-linux-gnu/libopencv_imgproc.so.4.2.0;/usr/lib/aarch64-linux-gnu/libopencv_imgcodecs.so.4.2.0")
 foreach(library ${libraries})
   # keep build configuration keywords, target names and absolute libraries as-is
   if("${library}" MATCHES "^(debug|optimized|general)$")

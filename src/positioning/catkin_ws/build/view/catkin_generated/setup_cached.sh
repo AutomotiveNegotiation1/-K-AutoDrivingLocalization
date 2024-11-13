@@ -8,6 +8,8 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/keti/catkin_ws/devel/.private/view:$CMAKE_PREFIX_PATH"
+export LD_LIBRARY_PATH="/home/keti/catkin_ws/devel/.private/view/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/home/keti/catkin_ws/devel/.private/view/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/keti/catkin_ws/build/view'
 export ROSLISP_PACKAGE_DIRECTORIES="/home/keti/catkin_ws/devel/.private/view/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/home/keti/catkin_ws/src/view:$ROS_PACKAGE_PATH"

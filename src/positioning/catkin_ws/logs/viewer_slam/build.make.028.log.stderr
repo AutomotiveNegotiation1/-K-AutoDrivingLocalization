@@ -1,0 +1,21 @@
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:23:1:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktypedef[m[K’ was ignored in this declaration
+   23 | [01;35m[Ktypedef[m[K struct euler_point {
+      | [01;35m[K^~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* spinfor(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:131:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  131 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* rx_cctv(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:201:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  201 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* sendto_kanavi(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:208:11:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K)[m[K’ token
+  208 |     while([01;31m[K)[m[K {
+      |           [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:229:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  229 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+make[2]: *** [CMakeFiles/viewer_slam_node.dir/build.make:63: CMakeFiles/viewer_slam_node.dir/src/main.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:192: CMakeFiles/viewer_slam_node.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

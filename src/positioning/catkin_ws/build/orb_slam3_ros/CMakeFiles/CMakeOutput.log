@@ -1,4 +1,4 @@
-The system is: Linux - 5.10.104-g018a5562a - aarch64
+The system is: Linux - 5.10.120-tegra - aarch64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
 Compiler: /usr/bin/cc 
 Build flags: 
@@ -28,13 +28,13 @@ The CXX compiler identification is GNU, found in "/home/keti/catkin_ws/build/orb
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_f7b55/fast && /usr/bin/make -f CMakeFiles/cmTC_f7b55.dir/build.make CMakeFiles/cmTC_f7b55.dir/build
+Run Build Command(s):/usr/bin/make cmTC_c3b55/fast && /usr/bin/make -f CMakeFiles/cmTC_c3b55.dir/build.make CMakeFiles/cmTC_c3b55.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f7b55.dir/testCCompiler.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_f7b55.dir/testCCompiler.c.o   -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_f7b55
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f7b55.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_f7b55.dir/testCCompiler.c.o  -o cmTC_f7b55 
+Building C object CMakeFiles/cmTC_c3b55.dir/testCCompiler.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_c3b55.dir/testCCompiler.c.o   -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_c3b55
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c3b55.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_c3b55.dir/testCCompiler.c.o  -o cmTC_c3b55 
 make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
 
 
@@ -42,60 +42,58 @@ make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_79411/fast && /usr/bin/make -f CMakeFiles/cmTC_79411.dir/build.make CMakeFiles/cmTC_79411.dir/build
+Run Build Command(s):/usr/bin/make cmTC_bed2d/fast && /usr/bin/make -f CMakeFiles/cmTC_bed2d.dir/build.make CMakeFiles/cmTC_bed2d.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc   -v -o CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c
+Building C object CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc   -v -o CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 Target: aarch64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
 Thread model: posix
-Supported LTO compression algorithms: zlib zstd
-gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) 
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_79411.dir/'
- /usr/lib/gcc/aarch64-linux-gnu/11/cc1 -quiet -v -imultiarch aarch64-linux-gnu /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_79411.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mlittle-endian -mabi=lp64 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccBDhys5.s
-GNU C17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)
-	compiled by GNU C version 11.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64'
+ /usr/lib/gcc/aarch64-linux-gnu/9/cc1 -quiet -v -imultiarch aarch64-linux-gnu /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mlittle-endian -mabi=lp64 -auxbase-strip CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccTkrGDi.s
+GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)
+	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"
-ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/include-fixed"
-ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/include"
+ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/include-fixed"
+ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/../../../../aarch64-linux-gnu/include"
 #include "..." search starts here:
 #include <...> search starts here:
- /usr/lib/gcc/aarch64-linux-gnu/11/include
+ /usr/lib/gcc/aarch64-linux-gnu/9/include
  /usr/local/include
  /usr/include/aarch64-linux-gnu
  /usr/include
 End of search list.
-GNU C17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)
-	compiled by GNU C version 11.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)
+	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-Compiler executable checksum: acdf79d0d749b313215f07d733ea2fab
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_79411.dir/'
- as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o /tmp/ccBDhys5.s
+Compiler executable checksum: bae83efe2e4e7b8eac1a6149e340cc5c
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64'
+ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o /tmp/ccTkrGDi.s
 GNU assembler version 2.34 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34
-COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.'
-Linking C executable cmTC_79411
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_79411.dir/link.txt --verbose=1
-/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o  -o cmTC_79411 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64'
+Linking C executable cmTC_bed2d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bed2d.dir/link.txt --verbose=1
+/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o  -o cmTC_bed2d 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
-COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper
 Target: aarch64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
 Thread model: posix
-Supported LTO compression algorithms: zlib zstd
-gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) 
-COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_79411' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_79411.'
- /usr/lib/gcc/aarch64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccziYHGH.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_79411 /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/11 -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/11/../../.. CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_79411' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_79411.'
+gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_bed2d' '-mlittle-endian' '-mabi=lp64'
+ /usr/lib/gcc/aarch64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccHc04Xi.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_bed2d /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/9 -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/9/../../.. CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_bed2d' '-mlittle-endian' '-mabi=lp64'
 make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
 
 
@@ -103,80 +101,78 @@ make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/
 Parsed C implicit include dir info from above output: rv=done
   found start of include info
   found start of implicit include info
-    add: [/usr/lib/gcc/aarch64-linux-gnu/11/include]
+    add: [/usr/lib/gcc/aarch64-linux-gnu/9/include]
     add: [/usr/local/include]
     add: [/usr/include/aarch64-linux-gnu]
     add: [/usr/include]
   end of search list found
-  collapse include dir [/usr/lib/gcc/aarch64-linux-gnu/11/include] ==> [/usr/lib/gcc/aarch64-linux-gnu/11/include]
+  collapse include dir [/usr/lib/gcc/aarch64-linux-gnu/9/include] ==> [/usr/lib/gcc/aarch64-linux-gnu/9/include]
   collapse include dir [/usr/local/include] ==> [/usr/local/include]
   collapse include dir [/usr/include/aarch64-linux-gnu] ==> [/usr/include/aarch64-linux-gnu]
   collapse include dir [/usr/include] ==> [/usr/include]
-  implicit include dirs: [/usr/lib/gcc/aarch64-linux-gnu/11/include;/usr/local/include;/usr/include/aarch64-linux-gnu;/usr/include]
+  implicit include dirs: [/usr/lib/gcc/aarch64-linux-gnu/9/include;/usr/local/include;/usr/include/aarch64-linux-gnu;/usr/include]
 
 
 Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/usr/bin/make cmTC_79411/fast && /usr/bin/make -f CMakeFiles/cmTC_79411.dir/build.make CMakeFiles/cmTC_79411.dir/build]
+  ignore line: [Run Build Command(s):/usr/bin/make cmTC_bed2d/fast && /usr/bin/make -f CMakeFiles/cmTC_bed2d.dir/build.make CMakeFiles/cmTC_bed2d.dir/build]
   ignore line: [make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c]
+  ignore line: [Building C object CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [Target: aarch64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [Supported LTO compression algorithms: zlib zstd]
-  ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_79411.dir/']
-  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/11/cc1 -quiet -v -imultiarch aarch64-linux-gnu /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_79411.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mlittle-endian -mabi=lp64 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccBDhys5.s]
-  ignore line: [GNU C17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)]
-  ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+  ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64']
+  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/9/cc1 -quiet -v -imultiarch aarch64-linux-gnu /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mlittle-endian -mabi=lp64 -auxbase-strip CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccTkrGDi.s]
+  ignore line: [GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
   ignore line: [ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"]
-  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/include-fixed"]
-  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/include"]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/include-fixed"]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/../../../../aarch64-linux-gnu/include"]
   ignore line: [#include "..." search starts here:]
   ignore line: [#include <...> search starts here:]
-  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/11/include]
+  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/9/include]
   ignore line: [ /usr/local/include]
   ignore line: [ /usr/include/aarch64-linux-gnu]
   ignore line: [ /usr/include]
   ignore line: [End of search list.]
-  ignore line: [GNU C17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)]
-  ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+  ignore line: [GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-  ignore line: [Compiler executable checksum: acdf79d0d749b313215f07d733ea2fab]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_79411.dir/']
-  ignore line: [ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o /tmp/ccBDhys5.s]
+  ignore line: [Compiler executable checksum: bae83efe2e4e7b8eac1a6149e340cc5c]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64']
+  ignore line: [ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o /tmp/ccTkrGDi.s]
   ignore line: [GNU assembler version 2.34 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.']
-  ignore line: [Linking C executable cmTC_79411]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_79411.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o  -o cmTC_79411 ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64']
+  ignore line: [Linking C executable cmTC_bed2d]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bed2d.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o  -o cmTC_bed2d ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
-  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper]
   ignore line: [Target: aarch64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [Supported LTO compression algorithms: zlib zstd]
-  ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) ]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_79411' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_79411.']
-  link line: [ /usr/lib/gcc/aarch64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccziYHGH.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_79411 /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/11 -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/11/../../.. CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o]
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/collect2] ==> ignore
+  ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_bed2d' '-mlittle-endian' '-mabi=lp64']
+  link line: [ /usr/lib/gcc/aarch64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccHc04Xi.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_bed2d /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/9 -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/9/../../.. CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/collect2] ==> ignore
     arg [-plugin] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so] ==> ignore
-    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccziYHGH.res] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccHc04Xi.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -197,19 +193,19 @@ Parsed C implicit link information from above output:
     arg [-znow] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_79411] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o] ==> ignore
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib]
+    arg [cmTC_bed2d] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib]
     arg [-L/lib/aarch64-linux-gnu] ==> dir [/lib/aarch64-linux-gnu]
     arg [-L/lib/../lib] ==> dir [/lib/../lib]
     arg [-L/usr/lib/aarch64-linux-gnu] ==> dir [/usr/lib/aarch64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../..]
-    arg [CMakeFiles/cmTC_79411.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../..]
+    arg [CMakeFiles/cmTC_bed2d.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--push-state] ==> ignore
     arg [--as-needed] ==> ignore
@@ -221,31 +217,31 @@ Parsed C implicit link information from above output:
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
     arg [--pop-state] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o] ==> ignore
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11] ==> [/usr/lib/gcc/aarch64-linux-gnu/11]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib] ==> [/usr/lib]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o] ==> ignore
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9] ==> [/usr/lib/gcc/aarch64-linux-gnu/9]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib] ==> [/usr/lib]
   collapse library dir [/lib/aarch64-linux-gnu] ==> [/lib/aarch64-linux-gnu]
   collapse library dir [/lib/../lib] ==> [/lib]
   collapse library dir [/usr/lib/aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
   collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../..] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../..] ==> [/usr/lib]
   implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
-  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/11;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
+  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/9;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
   implicit fwks: []
 
 
 Determining if the CXX compiler works passed with the following output:
 Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_921bc/fast && /usr/bin/make -f CMakeFiles/cmTC_921bc.dir/build.make CMakeFiles/cmTC_921bc.dir/build
+Run Build Command(s):/usr/bin/make cmTC_c6323/fast && /usr/bin/make -f CMakeFiles/cmTC_c6323.dir/build.make CMakeFiles/cmTC_c6323.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_921bc.dir/testCXXCompiler.cxx.o
-/usr/bin/c++     -o CMakeFiles/cmTC_921bc.dir/testCXXCompiler.cxx.o -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_921bc
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_921bc.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_921bc.dir/testCXXCompiler.cxx.o  -o cmTC_921bc 
+Building CXX object CMakeFiles/cmTC_c6323.dir/testCXXCompiler.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTC_c6323.dir/testCXXCompiler.cxx.o -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_c6323
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c6323.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_c6323.dir/testCXXCompiler.cxx.o  -o cmTC_c6323 
 make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
 
 
@@ -253,64 +249,62 @@ make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_46596/fast && /usr/bin/make -f CMakeFiles/cmTC_46596.dir/build.make CMakeFiles/cmTC_46596.dir/build
+Run Build Command(s):/usr/bin/make cmTC_03981/fast && /usr/bin/make -f CMakeFiles/cmTC_03981.dir/build.make CMakeFiles/cmTC_03981.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++    -v -o CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp
+Building CXX object CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++    -v -o CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 Target: aarch64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
 Thread model: posix
-Supported LTO compression algorithms: zlib zstd
-gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) 
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_46596.dir/'
- /usr/lib/gcc/aarch64-linux-gnu/11/cc1plus -quiet -v -imultiarch aarch64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_46596.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mlittle-endian -mabi=lp64 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/cczYpRbX.s
-GNU C++17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)
-	compiled by GNU C version 11.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'
+ /usr/lib/gcc/aarch64-linux-gnu/9/cc1plus -quiet -v -imultiarch aarch64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mlittle-endian -mabi=lp64 -auxbase-strip CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccKa45P2.s
+GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)
+	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-ignoring duplicate directory "/usr/include/aarch64-linux-gnu/c++/11"
+ignoring duplicate directory "/usr/include/aarch64-linux-gnu/c++/9"
 ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"
-ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/include-fixed"
-ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/include"
+ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/include-fixed"
+ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/../../../../aarch64-linux-gnu/include"
 #include "..." search starts here:
 #include <...> search starts here:
- /usr/include/c++/11
- /usr/include/aarch64-linux-gnu/c++/11
- /usr/include/c++/11/backward
- /usr/lib/gcc/aarch64-linux-gnu/11/include
+ /usr/include/c++/9
+ /usr/include/aarch64-linux-gnu/c++/9
+ /usr/include/c++/9/backward
+ /usr/lib/gcc/aarch64-linux-gnu/9/include
  /usr/local/include
  /usr/include/aarch64-linux-gnu
  /usr/include
 End of search list.
-GNU C++17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)
-	compiled by GNU C version 11.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)
+	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-Compiler executable checksum: 61abd6ea4d363bad17e319bc08aaddfc
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_46596.dir/'
- as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o /tmp/cczYpRbX.s
+Compiler executable checksum: 76f300a9566415b293c4e87b0a05621d
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'
+ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccKa45P2.s
 GNU assembler version 2.34 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34
-COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.'
-Linking CXX executable cmTC_46596
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_46596.dir/link.txt --verbose=1
-/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_46596 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'
+Linking CXX executable cmTC_03981
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_03981.dir/link.txt --verbose=1
+/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_03981 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
-COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper
 Target: aarch64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
 Thread model: posix
-Supported LTO compression algorithms: zlib zstd
-gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) 
-COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_46596' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_46596.'
- /usr/lib/gcc/aarch64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccmYztae.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_46596 /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/11 -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/11/../../.. CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_46596' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_46596.'
+gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_03981' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'
+ /usr/lib/gcc/aarch64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccZlxUCK.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_03981 /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/9 -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/9/../../.. CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_03981' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'
 make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
 
 
@@ -318,90 +312,88 @@ make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/
 Parsed CXX implicit include dir info from above output: rv=done
   found start of include info
   found start of implicit include info
-    add: [/usr/include/c++/11]
-    add: [/usr/include/aarch64-linux-gnu/c++/11]
-    add: [/usr/include/c++/11/backward]
-    add: [/usr/lib/gcc/aarch64-linux-gnu/11/include]
+    add: [/usr/include/c++/9]
+    add: [/usr/include/aarch64-linux-gnu/c++/9]
+    add: [/usr/include/c++/9/backward]
+    add: [/usr/lib/gcc/aarch64-linux-gnu/9/include]
     add: [/usr/local/include]
     add: [/usr/include/aarch64-linux-gnu]
     add: [/usr/include]
   end of search list found
-  collapse include dir [/usr/include/c++/11] ==> [/usr/include/c++/11]
-  collapse include dir [/usr/include/aarch64-linux-gnu/c++/11] ==> [/usr/include/aarch64-linux-gnu/c++/11]
-  collapse include dir [/usr/include/c++/11/backward] ==> [/usr/include/c++/11/backward]
-  collapse include dir [/usr/lib/gcc/aarch64-linux-gnu/11/include] ==> [/usr/lib/gcc/aarch64-linux-gnu/11/include]
+  collapse include dir [/usr/include/c++/9] ==> [/usr/include/c++/9]
+  collapse include dir [/usr/include/aarch64-linux-gnu/c++/9] ==> [/usr/include/aarch64-linux-gnu/c++/9]
+  collapse include dir [/usr/include/c++/9/backward] ==> [/usr/include/c++/9/backward]
+  collapse include dir [/usr/lib/gcc/aarch64-linux-gnu/9/include] ==> [/usr/lib/gcc/aarch64-linux-gnu/9/include]
   collapse include dir [/usr/local/include] ==> [/usr/local/include]
   collapse include dir [/usr/include/aarch64-linux-gnu] ==> [/usr/include/aarch64-linux-gnu]
   collapse include dir [/usr/include] ==> [/usr/include]
-  implicit include dirs: [/usr/include/c++/11;/usr/include/aarch64-linux-gnu/c++/11;/usr/include/c++/11/backward;/usr/lib/gcc/aarch64-linux-gnu/11/include;/usr/local/include;/usr/include/aarch64-linux-gnu;/usr/include]
+  implicit include dirs: [/usr/include/c++/9;/usr/include/aarch64-linux-gnu/c++/9;/usr/include/c++/9/backward;/usr/lib/gcc/aarch64-linux-gnu/9/include;/usr/local/include;/usr/include/aarch64-linux-gnu;/usr/include]
 
 
 Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/usr/bin/make cmTC_46596/fast && /usr/bin/make -f CMakeFiles/cmTC_46596.dir/build.make CMakeFiles/cmTC_46596.dir/build]
+  ignore line: [Run Build Command(s):/usr/bin/make cmTC_03981/fast && /usr/bin/make -f CMakeFiles/cmTC_03981.dir/build.make CMakeFiles/cmTC_03981.dir/build]
   ignore line: [make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++    -v -o CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Building CXX object CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++    -v -o CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [Target: aarch64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [Supported LTO compression algorithms: zlib zstd]
-  ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_46596.dir/']
-  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/11/cc1plus -quiet -v -imultiarch aarch64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_46596.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mlittle-endian -mabi=lp64 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/cczYpRbX.s]
-  ignore line: [GNU C++17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)]
-  ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+  ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64']
+  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/9/cc1plus -quiet -v -imultiarch aarch64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mlittle-endian -mabi=lp64 -auxbase-strip CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccKa45P2.s]
+  ignore line: [GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-  ignore line: [ignoring duplicate directory "/usr/include/aarch64-linux-gnu/c++/11"]
+  ignore line: [ignoring duplicate directory "/usr/include/aarch64-linux-gnu/c++/9"]
   ignore line: [ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"]
-  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/include-fixed"]
-  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/include"]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/include-fixed"]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/../../../../aarch64-linux-gnu/include"]
   ignore line: [#include "..." search starts here:]
   ignore line: [#include <...> search starts here:]
-  ignore line: [ /usr/include/c++/11]
-  ignore line: [ /usr/include/aarch64-linux-gnu/c++/11]
-  ignore line: [ /usr/include/c++/11/backward]
-  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/11/include]
+  ignore line: [ /usr/include/c++/9]
+  ignore line: [ /usr/include/aarch64-linux-gnu/c++/9]
+  ignore line: [ /usr/include/c++/9/backward]
+  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/9/include]
   ignore line: [ /usr/local/include]
   ignore line: [ /usr/include/aarch64-linux-gnu]
   ignore line: [ /usr/include]
   ignore line: [End of search list.]
-  ignore line: [GNU C++17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)]
-  ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+  ignore line: [GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-  ignore line: [Compiler executable checksum: 61abd6ea4d363bad17e319bc08aaddfc]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_46596.dir/']
-  ignore line: [ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o /tmp/cczYpRbX.s]
+  ignore line: [Compiler executable checksum: 76f300a9566415b293c4e87b0a05621d]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64']
+  ignore line: [ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccKa45P2.s]
   ignore line: [GNU assembler version 2.34 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.']
-  ignore line: [Linking CXX executable cmTC_46596]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_46596.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_46596 ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64']
+  ignore line: [Linking CXX executable cmTC_03981]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_03981.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_03981 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
-  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper]
   ignore line: [Target: aarch64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [Supported LTO compression algorithms: zlib zstd]
-  ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) ]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_46596' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_46596.']
-  link line: [ /usr/lib/gcc/aarch64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccmYztae.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_46596 /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/11 -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/11/../../.. CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o]
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/collect2] ==> ignore
+  ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_03981' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64']
+  link line: [ /usr/lib/gcc/aarch64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccZlxUCK.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_03981 /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/9 -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/9/../../.. CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/collect2] ==> ignore
     arg [-plugin] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so] ==> ignore
-    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccmYztae.res] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccZlxUCK.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -422,19 +414,19 @@ Parsed CXX implicit link information from above output:
     arg [-znow] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_46596] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o] ==> ignore
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib]
+    arg [cmTC_03981] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib]
     arg [-L/lib/aarch64-linux-gnu] ==> dir [/lib/aarch64-linux-gnu]
     arg [-L/lib/../lib] ==> dir [/lib/../lib]
     arg [-L/usr/lib/aarch64-linux-gnu] ==> dir [/usr/lib/aarch64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../..]
-    arg [CMakeFiles/cmTC_46596.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../..]
+    arg [CMakeFiles/cmTC_03981.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -442,31 +434,31 @@ Parsed CXX implicit link information from above output:
     arg [-lc] ==> lib [c]
     arg [-lgcc_s] ==> lib [gcc_s]
     arg [-lgcc] ==> lib [gcc]
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o] ==> ignore
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11] ==> [/usr/lib/gcc/aarch64-linux-gnu/11]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib] ==> [/usr/lib]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o] ==> ignore
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9] ==> [/usr/lib/gcc/aarch64-linux-gnu/9]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib] ==> [/usr/lib]
   collapse library dir [/lib/aarch64-linux-gnu] ==> [/lib/aarch64-linux-gnu]
   collapse library dir [/lib/../lib] ==> [/lib]
   collapse library dir [/usr/lib/aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
   collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../..] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../..] ==> [/usr/lib]
   implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
-  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/11;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
+  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/9;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
   implicit fwks: []
 
 
 Performing C++ SOURCE FILE Test COMPILER_SUPPORTS_CXX14 succeeded with the following output:
 Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_45119/fast && /usr/bin/make -f CMakeFiles/cmTC_45119.dir/build.make CMakeFiles/cmTC_45119.dir/build
+Run Build Command(s):/usr/bin/make cmTC_be4e7/fast && /usr/bin/make -f CMakeFiles/cmTC_be4e7.dir/build.make CMakeFiles/cmTC_be4e7.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_45119.dir/src.cxx.o
-/usr/bin/c++    -DCOMPILER_SUPPORTS_CXX14   -std=c++14 -o CMakeFiles/cmTC_45119.dir/src.cxx.o -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_45119
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_45119.dir/link.txt --verbose=1
-/usr/bin/c++   -DCOMPILER_SUPPORTS_CXX14    -rdynamic CMakeFiles/cmTC_45119.dir/src.cxx.o  -o cmTC_45119 
+Building CXX object CMakeFiles/cmTC_be4e7.dir/src.cxx.o
+/usr/bin/c++    -DCOMPILER_SUPPORTS_CXX14   -std=c++14 -o CMakeFiles/cmTC_be4e7.dir/src.cxx.o -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_be4e7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_be4e7.dir/link.txt --verbose=1
+/usr/bin/c++   -DCOMPILER_SUPPORTS_CXX14    -rdynamic CMakeFiles/cmTC_be4e7.dir/src.cxx.o  -o cmTC_be4e7 
 make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
 
 
@@ -475,13 +467,13 @@ int main() { return 0; }
 Performing C++ SOURCE FILE Test COMPILER_SUPPORTS_CXX0X succeeded with the following output:
 Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_f2b26/fast && /usr/bin/make -f CMakeFiles/cmTC_f2b26.dir/build.make CMakeFiles/cmTC_f2b26.dir/build
+Run Build Command(s):/usr/bin/make cmTC_4a678/fast && /usr/bin/make -f CMakeFiles/cmTC_4a678.dir/build.make CMakeFiles/cmTC_4a678.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_f2b26.dir/src.cxx.o
-/usr/bin/c++    -DCOMPILER_SUPPORTS_CXX0X   -std=c++0x -o CMakeFiles/cmTC_f2b26.dir/src.cxx.o -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_f2b26
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f2b26.dir/link.txt --verbose=1
-/usr/bin/c++   -DCOMPILER_SUPPORTS_CXX0X    -rdynamic CMakeFiles/cmTC_f2b26.dir/src.cxx.o  -o cmTC_f2b26 
+Building CXX object CMakeFiles/cmTC_4a678.dir/src.cxx.o
+/usr/bin/c++    -DCOMPILER_SUPPORTS_CXX0X   -std=c++0x -o CMakeFiles/cmTC_4a678.dir/src.cxx.o -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_4a678
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4a678.dir/link.txt --verbose=1
+/usr/bin/c++   -DCOMPILER_SUPPORTS_CXX0X    -rdynamic CMakeFiles/cmTC_4a678.dir/src.cxx.o  -o cmTC_4a678 
 make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
 
 
@@ -490,13 +482,13 @@ int main() { return 0; }
 Determining if the include file pthread.h exists passed with the following output:
 Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_94b82/fast && /usr/bin/make -f CMakeFiles/cmTC_94b82.dir/build.make CMakeFiles/cmTC_94b82.dir/build
+Run Build Command(s):/usr/bin/make cmTC_97c95/fast && /usr/bin/make -f CMakeFiles/cmTC_97c95.dir/build.make CMakeFiles/cmTC_97c95.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_94b82.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_94b82.dir/CheckIncludeFile.c.o   -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_94b82
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_94b82.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_94b82.dir/CheckIncludeFile.c.o  -o cmTC_94b82 
+Building C object CMakeFiles/cmTC_97c95.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_97c95.dir/CheckIncludeFile.c.o   -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_97c95
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_97c95.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_97c95.dir/CheckIncludeFile.c.o  -o cmTC_97c95 
 make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
 
 
@@ -504,13 +496,13 @@ make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/
 Determining if the function pthread_create exists in the pthread passed with the following output:
 Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_343a7/fast && /usr/bin/make -f CMakeFiles/cmTC_343a7.dir/build.make CMakeFiles/cmTC_343a7.dir/build
+Run Build Command(s):/usr/bin/make cmTC_eda51/fast && /usr/bin/make -f CMakeFiles/cmTC_eda51.dir/build.make CMakeFiles/cmTC_eda51.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_343a7.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_343a7.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
-Linking C executable cmTC_343a7
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_343a7.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_343a7.dir/CheckFunctionExists.c.o  -o cmTC_343a7  -lpthread 
+Building C object CMakeFiles/cmTC_eda51.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_eda51.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_eda51
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eda51.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_eda51.dir/CheckFunctionExists.c.o  -o cmTC_eda51  -lpthread 
 make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
 
 
@@ -518,61 +510,59 @@ make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/
 Detecting C OpenMP compiler ABI info compiled with the following output:
 Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_3ac98/fast && /usr/bin/make -f CMakeFiles/cmTC_3ac98.dir/build.make CMakeFiles/cmTC_3ac98.dir/build
+Run Build Command(s):/usr/bin/make cmTC_4502f/fast && /usr/bin/make -f CMakeFiles/cmTC_4502f.dir/build.make CMakeFiles/cmTC_4502f.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o
-/usr/bin/cc   -fopenmp -v   -o CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o   -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
+Building C object CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o
+/usr/bin/cc   -fopenmp -v   -o CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o   -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.c
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 Target: aarch64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
 Thread model: posix
-Supported LTO compression algorithms: zlib zstd
-gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) 
-COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_3ac98.dir/'
- /usr/lib/gcc/aarch64-linux-gnu/11/cc1 -quiet -v -imultiarch aarch64-linux-gnu -D_REENTRANT /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.c -quiet -dumpdir CMakeFiles/cmTC_3ac98.dir/ -dumpbase OpenMPTryFlag.c.c -dumpbase-ext .c -mlittle-endian -mabi=lp64 -version -fopenmp -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccnTwZ3V.s
-GNU C17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)
-	compiled by GNU C version 11.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread'
+ /usr/lib/gcc/aarch64-linux-gnu/9/cc1 -quiet -v -imultiarch aarch64-linux-gnu -D_REENTRANT /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.c -quiet -dumpbase OpenMPTryFlag.c -mlittle-endian -mabi=lp64 -auxbase-strip CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o -version -fopenmp -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccrd1JdG.s
+GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)
+	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"
-ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/include-fixed"
-ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/include"
+ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/include-fixed"
+ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/../../../../aarch64-linux-gnu/include"
 #include "..." search starts here:
 #include <...> search starts here:
- /usr/lib/gcc/aarch64-linux-gnu/11/include
+ /usr/lib/gcc/aarch64-linux-gnu/9/include
  /usr/local/include
  /usr/include/aarch64-linux-gnu
  /usr/include
 End of search list.
-GNU C17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)
-	compiled by GNU C version 11.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)
+	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-Compiler executable checksum: acdf79d0d749b313215f07d733ea2fab
-COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_3ac98.dir/'
- as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o /tmp/ccnTwZ3V.s
+Compiler executable checksum: bae83efe2e4e7b8eac1a6149e340cc5c
+COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread'
+ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o /tmp/ccrd1JdG.s
 GNU assembler version 2.34 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34
-COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.'
-Linking C executable cmTC_3ac98
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3ac98.dir/link.txt --verbose=1
-/usr/bin/cc  -fopenmp -v    -rdynamic CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o  -o cmTC_3ac98  -v 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread'
+Linking C executable cmTC_4502f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4502f.dir/link.txt --verbose=1
+/usr/bin/cc  -fopenmp -v    -rdynamic CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o  -o cmTC_4502f  -v 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
-COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper
 Target: aarch64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
 Thread model: posix
-Supported LTO compression algorithms: zlib zstd
-gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) 
-COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/
-Reading specs from /usr/lib/gcc/aarch64-linux-gnu/11/libgomp.spec
-COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_3ac98' '-v' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'cmTC_3ac98.'
- /usr/lib/gcc/aarch64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/cclmLLpn.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_3ac98 /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/11 -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/11/../../.. CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o -lgomp -lgcc --push-state --as-needed -lgcc_s --pop-state -lpthread -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_3ac98' '-v' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'cmTC_3ac98.'
+gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/
+Reading specs from /usr/lib/gcc/aarch64-linux-gnu/9/libgomp.spec
+COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_4502f' '-v' '-mlittle-endian' '-mabi=lp64' '-pthread'
+ /usr/lib/gcc/aarch64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/cc5Eg1J9.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_4502f /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/9 -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/9/../../.. CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o -lgomp -lgcc --push-state --as-needed -lgcc_s --pop-state -lpthread -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_4502f' '-v' '-mlittle-endian' '-mabi=lp64' '-pthread'
 make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
 
 
@@ -581,65 +571,63 @@ Parsed C OpenMP implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/usr/bin/make cmTC_3ac98/fast && /usr/bin/make -f CMakeFiles/cmTC_3ac98.dir/build.make CMakeFiles/cmTC_3ac98.dir/build]
+  ignore line: [Run Build Command(s):/usr/bin/make cmTC_4502f/fast && /usr/bin/make -f CMakeFiles/cmTC_4502f.dir/build.make CMakeFiles/cmTC_4502f.dir/build]
   ignore line: [make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o]
-  ignore line: [/usr/bin/cc   -fopenmp -v   -o CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o   -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.c]
+  ignore line: [Building C object CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o]
+  ignore line: [/usr/bin/cc   -fopenmp -v   -o CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o   -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.c]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [Target: aarch64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [Supported LTO compression algorithms: zlib zstd]
-  ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_3ac98.dir/']
-  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/11/cc1 -quiet -v -imultiarch aarch64-linux-gnu -D_REENTRANT /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.c -quiet -dumpdir CMakeFiles/cmTC_3ac98.dir/ -dumpbase OpenMPTryFlag.c.c -dumpbase-ext .c -mlittle-endian -mabi=lp64 -version -fopenmp -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccnTwZ3V.s]
-  ignore line: [GNU C17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)]
-  ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+  ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread']
+  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/9/cc1 -quiet -v -imultiarch aarch64-linux-gnu -D_REENTRANT /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.c -quiet -dumpbase OpenMPTryFlag.c -mlittle-endian -mabi=lp64 -auxbase-strip CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o -version -fopenmp -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccrd1JdG.s]
+  ignore line: [GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
   ignore line: [ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"]
-  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/include-fixed"]
-  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/include"]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/include-fixed"]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/../../../../aarch64-linux-gnu/include"]
   ignore line: [#include "..." search starts here:]
   ignore line: [#include <...> search starts here:]
-  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/11/include]
+  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/9/include]
   ignore line: [ /usr/local/include]
   ignore line: [ /usr/include/aarch64-linux-gnu]
   ignore line: [ /usr/include]
   ignore line: [End of search list.]
-  ignore line: [GNU C17 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)]
-  ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+  ignore line: [GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-  ignore line: [Compiler executable checksum: acdf79d0d749b313215f07d733ea2fab]
-  ignore line: [COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_3ac98.dir/']
-  ignore line: [ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o /tmp/ccnTwZ3V.s]
+  ignore line: [Compiler executable checksum: bae83efe2e4e7b8eac1a6149e340cc5c]
+  ignore line: [COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread']
+  ignore line: [ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o /tmp/ccrd1JdG.s]
   ignore line: [GNU assembler version 2.34 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.']
-  ignore line: [Linking C executable cmTC_3ac98]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3ac98.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc  -fopenmp -v    -rdynamic CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o  -o cmTC_3ac98  -v ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-pthread']
+  ignore line: [Linking C executable cmTC_4502f]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4502f.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc  -fopenmp -v    -rdynamic CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o  -o cmTC_4502f  -v ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
-  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper]
   ignore line: [Target: aarch64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [Supported LTO compression algorithms: zlib zstd]
-  ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) ]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [Reading specs from /usr/lib/gcc/aarch64-linux-gnu/11/libgomp.spec]
-  ignore line: [COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_3ac98' '-v' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'cmTC_3ac98.']
-  link line: [ /usr/lib/gcc/aarch64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/cclmLLpn.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_3ac98 /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/11 -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/11/../../.. CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o -lgomp -lgcc --push-state --as-needed -lgcc_s --pop-state -lpthread -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o]
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/collect2] ==> ignore
+  ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+  ignore line: [Reading specs from /usr/lib/gcc/aarch64-linux-gnu/9/libgomp.spec]
+  ignore line: [COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_4502f' '-v' '-mlittle-endian' '-mabi=lp64' '-pthread']
+  link line: [ /usr/lib/gcc/aarch64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/cc5Eg1J9.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_4502f /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/9 -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/9/../../.. CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o -lgomp -lgcc --push-state --as-needed -lgcc_s --pop-state -lpthread -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/collect2] ==> ignore
     arg [-plugin] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so] ==> ignore
-    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/cclmLLpn.res] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/cc5Eg1J9.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lpthread] ==> ignore
@@ -661,19 +649,19 @@ Parsed C OpenMP implicit link information from above output:
     arg [-znow] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_3ac98] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o] ==> ignore
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib]
+    arg [cmTC_4502f] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib]
     arg [-L/lib/aarch64-linux-gnu] ==> dir [/lib/aarch64-linux-gnu]
     arg [-L/lib/../lib] ==> dir [/lib/../lib]
     arg [-L/usr/lib/aarch64-linux-gnu] ==> dir [/usr/lib/aarch64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../..]
-    arg [CMakeFiles/cmTC_3ac98.dir/OpenMPTryFlag.c.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../..]
+    arg [CMakeFiles/cmTC_4502f.dir/OpenMPTryFlag.c.o] ==> ignore
     arg [-lgomp] ==> lib [gomp]
     arg [-lgcc] ==> lib [gcc]
     arg [--push-state] ==> ignore
@@ -687,83 +675,81 @@ Parsed C OpenMP implicit link information from above output:
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
     arg [--pop-state] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o] ==> ignore
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11] ==> [/usr/lib/gcc/aarch64-linux-gnu/11]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib] ==> [/usr/lib]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o] ==> ignore
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9] ==> [/usr/lib/gcc/aarch64-linux-gnu/9]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib] ==> [/usr/lib]
   collapse library dir [/lib/aarch64-linux-gnu] ==> [/lib/aarch64-linux-gnu]
   collapse library dir [/lib/../lib] ==> [/lib]
   collapse library dir [/usr/lib/aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
   collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../..] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../..] ==> [/usr/lib]
   implicit libs: [gomp;gcc;gcc_s;pthread;c;gcc;gcc_s]
-  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/11;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
+  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/9;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
   implicit fwks: []
 
 
 Detecting CXX OpenMP compiler ABI info compiled with the following output:
 Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_b26dc/fast && /usr/bin/make -f CMakeFiles/cmTC_b26dc.dir/build.make CMakeFiles/cmTC_b26dc.dir/build
+Run Build Command(s):/usr/bin/make cmTC_098b2/fast && /usr/bin/make -f CMakeFiles/cmTC_098b2.dir/build.make CMakeFiles/cmTC_098b2.dir/build
 make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o
-/usr/bin/c++    -std=c++14 -fopenmp -v   -o CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+Building CXX object CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o
+/usr/bin/c++    -std=c++14 -fopenmp -v   -o CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 Target: aarch64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
 Thread model: posix
-Supported LTO compression algorithms: zlib zstd
-gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) 
-COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_b26dc.dir/'
- /usr/lib/gcc/aarch64-linux-gnu/11/cc1plus -quiet -v -imultiarch aarch64-linux-gnu -D_GNU_SOURCE -D_REENTRANT /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp -quiet -dumpdir CMakeFiles/cmTC_b26dc.dir/ -dumpbase OpenMPTryFlag.cpp.cpp -dumpbase-ext .cpp -mlittle-endian -mabi=lp64 -std=c++14 -version -fopenmp -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/cceWSs6V.s
-GNU C++14 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)
-	compiled by GNU C version 11.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread'
+ /usr/lib/gcc/aarch64-linux-gnu/9/cc1plus -quiet -v -imultiarch aarch64-linux-gnu -D_GNU_SOURCE -D_REENTRANT /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp -quiet -dumpbase OpenMPTryFlag.cpp -mlittle-endian -mabi=lp64 -auxbase-strip CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o -std=c++14 -version -fopenmp -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/cconr87G.s
+GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)
+	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-ignoring duplicate directory "/usr/include/aarch64-linux-gnu/c++/11"
+ignoring duplicate directory "/usr/include/aarch64-linux-gnu/c++/9"
 ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"
-ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/include-fixed"
-ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/include"
+ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/include-fixed"
+ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/../../../../aarch64-linux-gnu/include"
 #include "..." search starts here:
 #include <...> search starts here:
- /usr/include/c++/11
- /usr/include/aarch64-linux-gnu/c++/11
- /usr/include/c++/11/backward
- /usr/lib/gcc/aarch64-linux-gnu/11/include
+ /usr/include/c++/9
+ /usr/include/aarch64-linux-gnu/c++/9
+ /usr/include/c++/9/backward
+ /usr/lib/gcc/aarch64-linux-gnu/9/include
  /usr/local/include
  /usr/include/aarch64-linux-gnu
  /usr/include
 End of search list.
-GNU C++14 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)
-	compiled by GNU C version 11.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)
+	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-Compiler executable checksum: 61abd6ea4d363bad17e319bc08aaddfc
-COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_b26dc.dir/'
- as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o /tmp/cceWSs6V.s
+Compiler executable checksum: 76f300a9566415b293c4e87b0a05621d
+COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread'
+ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o /tmp/cconr87G.s
 GNU assembler version 2.34 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34
-COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.'
-Linking CXX executable cmTC_b26dc
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b26dc.dir/link.txt --verbose=1
-/usr/bin/c++   -std=c++14 -fopenmp -v    -rdynamic CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o  -o cmTC_b26dc  -v 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread'
+Linking CXX executable cmTC_098b2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_098b2.dir/link.txt --verbose=1
+/usr/bin/c++   -std=c++14 -fopenmp -v    -rdynamic CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o  -o cmTC_098b2  -v 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
-COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper
 Target: aarch64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
 Thread model: posix
-Supported LTO compression algorithms: zlib zstd
-gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) 
-COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/
-Reading specs from /usr/lib/gcc/aarch64-linux-gnu/11/libgomp.spec
-COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_b26dc' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'cmTC_b26dc.'
- /usr/lib/gcc/aarch64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccIp8jkk.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_b26dc /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/11 -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/11/../../.. CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o -lstdc++ -lm -lgomp -lgcc_s -lgcc -lpthread -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_b26dc' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'cmTC_b26dc.'
+gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/
+Reading specs from /usr/lib/gcc/aarch64-linux-gnu/9/libgomp.spec
+COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_098b2' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread'
+ /usr/lib/gcc/aarch64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/cceU14F7.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_098b2 /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/9 -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/9/../../.. CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o -lstdc++ -lm -lgomp -lgcc_s -lgcc -lpthread -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_098b2' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread'
 make[1]: Leaving directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp'
 
 
@@ -772,69 +758,67 @@ Parsed CXX OpenMP implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/usr/bin/make cmTC_b26dc/fast && /usr/bin/make -f CMakeFiles/cmTC_b26dc.dir/build.make CMakeFiles/cmTC_b26dc.dir/build]
+  ignore line: [Run Build Command(s):/usr/bin/make cmTC_098b2/fast && /usr/bin/make -f CMakeFiles/cmTC_098b2.dir/build.make CMakeFiles/cmTC_098b2.dir/build]
   ignore line: [make[1]: Entering directory '/home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o]
-  ignore line: [/usr/bin/c++    -std=c++14 -fopenmp -v   -o CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp]
+  ignore line: [Building CXX object CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o]
+  ignore line: [/usr/bin/c++    -std=c++14 -fopenmp -v   -o CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o -c /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [Target: aarch64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [Supported LTO compression algorithms: zlib zstd]
-  ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_b26dc.dir/']
-  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/11/cc1plus -quiet -v -imultiarch aarch64-linux-gnu -D_GNU_SOURCE -D_REENTRANT /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp -quiet -dumpdir CMakeFiles/cmTC_b26dc.dir/ -dumpbase OpenMPTryFlag.cpp.cpp -dumpbase-ext .cpp -mlittle-endian -mabi=lp64 -std=c++14 -version -fopenmp -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/cceWSs6V.s]
-  ignore line: [GNU C++14 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)]
-  ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+  ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread']
+  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/9/cc1plus -quiet -v -imultiarch aarch64-linux-gnu -D_GNU_SOURCE -D_REENTRANT /home/keti/catkin_ws/build/orb_slam3_ros/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp -quiet -dumpbase OpenMPTryFlag.cpp -mlittle-endian -mabi=lp64 -auxbase-strip CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o -std=c++14 -version -fopenmp -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/cconr87G.s]
+  ignore line: [GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-  ignore line: [ignoring duplicate directory "/usr/include/aarch64-linux-gnu/c++/11"]
+  ignore line: [ignoring duplicate directory "/usr/include/aarch64-linux-gnu/c++/9"]
   ignore line: [ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"]
-  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/include-fixed"]
-  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/include"]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/include-fixed"]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/9/../../../../aarch64-linux-gnu/include"]
   ignore line: [#include "..." search starts here:]
   ignore line: [#include <...> search starts here:]
-  ignore line: [ /usr/include/c++/11]
-  ignore line: [ /usr/include/aarch64-linux-gnu/c++/11]
-  ignore line: [ /usr/include/c++/11/backward]
-  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/11/include]
+  ignore line: [ /usr/include/c++/9]
+  ignore line: [ /usr/include/aarch64-linux-gnu/c++/9]
+  ignore line: [ /usr/include/c++/9/backward]
+  ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/9/include]
   ignore line: [ /usr/local/include]
   ignore line: [ /usr/include/aarch64-linux-gnu]
   ignore line: [ /usr/include]
   ignore line: [End of search list.]
-  ignore line: [GNU C++14 (Ubuntu 11.4.0-2ubuntu1~20.04) version 11.4.0 (aarch64-linux-gnu)]
-  ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+  ignore line: [GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (aarch64-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-  ignore line: [Compiler executable checksum: 61abd6ea4d363bad17e319bc08aaddfc]
-  ignore line: [COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_b26dc.dir/']
-  ignore line: [ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o /tmp/cceWSs6V.s]
+  ignore line: [Compiler executable checksum: 76f300a9566415b293c4e87b0a05621d]
+  ignore line: [COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread']
+  ignore line: [ as -v -EL -mabi=lp64 -o CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o /tmp/cconr87G.s]
   ignore line: [GNU assembler version 2.34 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.']
-  ignore line: [Linking CXX executable cmTC_b26dc]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b26dc.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++   -std=c++14 -fopenmp -v    -rdynamic CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o  -o cmTC_b26dc  -v ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-o' 'CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread']
+  ignore line: [Linking CXX executable cmTC_098b2]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_098b2.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++   -std=c++14 -fopenmp -v    -rdynamic CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o  -o cmTC_098b2  -v ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
-  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper]
   ignore line: [Target: aarch64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-2ubuntu1~20.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [Supported LTO compression algorithms: zlib zstd]
-  ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-2ubuntu1~20.04) ]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/11/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [Reading specs from /usr/lib/gcc/aarch64-linux-gnu/11/libgomp.spec]
-  ignore line: [COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_b26dc' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread' '-dumpdir' 'cmTC_b26dc.']
-  link line: [ /usr/lib/gcc/aarch64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccIp8jkk.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_b26dc /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/11 -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/11/../../.. CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o -lstdc++ -lm -lgomp -lgcc_s -lgcc -lpthread -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o]
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/collect2] ==> ignore
+  ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/9/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+  ignore line: [Reading specs from /usr/lib/gcc/aarch64-linux-gnu/9/libgomp.spec]
+  ignore line: [COLLECT_GCC_OPTIONS='-std=c++14' '-fopenmp' '-v' '-rdynamic' '-o' 'cmTC_098b2' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-pthread']
+  link line: [ /usr/lib/gcc/aarch64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/cceU14F7.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_098b2 /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/9 -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/9/../../.. CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o -lstdc++ -lm -lgomp -lgcc_s -lgcc -lpthread -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/collect2] ==> ignore
     arg [-plugin] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/liblto_plugin.so] ==> ignore
-    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/11/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccIp8jkk.res] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/9/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/cceU14F7.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lpthread] ==> ignore
@@ -856,19 +840,19 @@ Parsed CXX OpenMP implicit link information from above output:
     arg [-znow] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_b26dc] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/Scrt1.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crti.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/crtbeginS.o] ==> ignore
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib]
+    arg [cmTC_098b2] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/Scrt1.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/crtbeginS.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib]
     arg [-L/lib/aarch64-linux-gnu] ==> dir [/lib/aarch64-linux-gnu]
     arg [-L/lib/../lib] ==> dir [/lib/../lib]
     arg [-L/usr/lib/aarch64-linux-gnu] ==> dir [/usr/lib/aarch64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
-    arg [-L/usr/lib/gcc/aarch64-linux-gnu/11/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../..]
-    arg [CMakeFiles/cmTC_b26dc.dir/OpenMPTryFlag.cpp.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/9/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../..]
+    arg [CMakeFiles/cmTC_098b2.dir/OpenMPTryFlag.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgomp] ==> lib [gomp]
@@ -878,18 +862,18 @@ Parsed CXX OpenMP implicit link information from above output:
     arg [-lc] ==> lib [c]
     arg [-lgcc_s] ==> lib [gcc_s]
     arg [-lgcc] ==> lib [gcc]
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/crtendS.o] ==> ignore
-    arg [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu/crtn.o] ==> ignore
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11] ==> [/usr/lib/gcc/aarch64-linux-gnu/11]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../../../lib] ==> [/usr/lib]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/crtendS.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu/crtn.o] ==> ignore
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9] ==> [/usr/lib/gcc/aarch64-linux-gnu/9]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../../../lib] ==> [/usr/lib]
   collapse library dir [/lib/aarch64-linux-gnu] ==> [/lib/aarch64-linux-gnu]
   collapse library dir [/lib/../lib] ==> [/lib]
   collapse library dir [/usr/lib/aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
   collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
-  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/11/../../..] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/9/../../..] ==> [/usr/lib]
   implicit libs: [stdc++;m;gomp;gcc_s;gcc;pthread;c;gcc_s;gcc]
-  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/11;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
+  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/9;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
   implicit fwks: []
 
 

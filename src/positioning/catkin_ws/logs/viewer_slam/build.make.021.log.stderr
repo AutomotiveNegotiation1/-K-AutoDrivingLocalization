@@ -1,0 +1,237 @@
+In file included from [01m[K/home/keti/catkin_ws/src/viewer_slam/include/parking_map.h:4[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:17[m[K:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:[m[K In function ‘[01m[Ksendto_kanavi[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:20:2:[m[K [01;31m[Kerror: [m[Kstorage class specified for parameter ‘[01m[KSITE[m[K’
+   20 | }[01;31m[KSITE[m[K;
+      |  [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:22:14:[m[K [01;31m[Kerror: [m[Kstorage class specified for parameter ‘[01m[Kvt_uwb_x[m[K’
+   22 | extern float [01;31m[Kvt_uwb_x[m[K;
+      |              [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:23:14:[m[K [01;31m[Kerror: [m[Kstorage class specified for parameter ‘[01m[Kvt_uwb_y[m[K’
+   23 | extern float [01;31m[Kvt_uwb_y[m[K;
+      |              [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:25:15:[m[K [01;31m[Kerror: [m[Kstorage class specified for parameter ‘[01m[Kkanavi_x[m[K’
+   25 | extern double [01;31m[Kkanavi_x[m[K;
+      |               [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:26:15:[m[K [01;31m[Kerror: [m[Kstorage class specified for parameter ‘[01m[Kkanavi_y[m[K’
+   26 | extern double [01;31m[Kkanavi_y[m[K;
+      |               [01;31m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:27:15:[m[K [01;31m[Kerror: [m[Kstorage class specified for parameter ‘[01m[Kkanavi_heading[m[K’
+   27 | extern double [01;31m[Kkanavi_heading[m[K;
+      |               [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:28:15:[m[K [01;31m[Kerror: [m[Kstorage class specified for parameter ‘[01m[Kkanavi_inout[m[K’
+   28 | extern double [01;31m[Kkanavi_inout[m[K;
+      |               [01;31m[K^~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:17[m[K:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/parking_map.h:19:23:[m[K [01;31m[Kerror: [m[Kexpected declaration specifiers or ‘[01m[K...[m[K’ before ‘[01m[KSITE[m[K’
+   19 |     void set_rosparam([01;31m[KSITE[m[K _site, bool _use_traffic_light, bool _use_ipe, bool _use_lidar, bool _use_cctv, bool _ramp_match);
+      |                       [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:48:1:[m[K [01;35m[Kwarning: [m[Kempty declaration
+   48 | [01;35m[Kenum[m[K PAINT
+      | [01;35m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:61:2:[m[K [01;31m[Kerror: [m[Kstorage class specified for parameter ‘[01m[KRAMP_STATE[m[K’
+   61 | }[01;31m[KRAMP_STATE[m[K;
+      |  [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:64:1:[m[K [01;31m[Kerror: [m[Kexpected declaration specifiers before ‘[01m[KSITE[m[K’
+   64 | [01;31m[KSITE[m[K site;
+      | [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:71:1:[m[K [01;31m[Kerror: [m[Kexpected declaration specifiers before ‘[01m[KRAMP_STATE[m[K’
+   71 | [01;31m[KRAMP_STATE[m[K ramp_state = NOT_IN_RAMP;
+      | [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:92:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kfirst[m[K’ is initialized
+   92 | [01;31m[Kbool[m[K first = TRUE;
+      | [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:93:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcarnival_on[m[K’ is initialized
+   93 | [01;31m[Kbool[m[K carnival_on = FALSE;
+      | [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:94:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcctv_off[m[K’ is initialized
+   94 | [01;31m[Kbool[m[K cctv_off = FALSE;
+      | [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:95:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcctv_on[m[K’ is initialized
+   95 | [01;31m[Kbool[m[K cctv_on = FALSE;
+      | [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:99:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kuwb_x[m[K’ is initialized
+   99 | [01;31m[Kdouble[m[K uwb_x = 100.0;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:100:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kuwb_y[m[K’ is initialized
+  100 | [01;31m[Kdouble[m[K uwb_y = 100.0;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:102:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kslam_x[m[K’ is initialized
+  102 | [01;31m[Kdouble[m[K slam_x = 100.0;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:103:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kslam_y[m[K’ is initialized
+  103 | [01;31m[Kdouble[m[K slam_y = 100.0;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:105:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kuwb_angle[m[K’ is initialized
+  105 | [01;31m[Kdouble[m[K uwb_angle = 0;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:106:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcctv_x[m[K’ is initialized
+  106 | [01;31m[Kdouble[m[K cctv_x = 100.0;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:107:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcctv_y[m[K’ is initialized
+  107 | [01;31m[Kdouble[m[K cctv_y = 100.0;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:108:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcctv_angle[m[K’ is initialized
+  108 | [01;31m[Kdouble[m[K cctv_angle = 270;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:109:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[KisUpdate_uwb[m[K’ is initialized
+  109 | [01;31m[Kbool[m[K isUpdate_uwb = FALSE;
+      | [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:110:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[KisUpdate_cctv[m[K’ is initialized
+  110 | [01;31m[Kbool[m[K isUpdate_cctv = FALSE;
+      | [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:118:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcarnival_width[m[K’ is initialized
+  118 | [01;31m[Kdouble[m[K carnival_width = 25.83; // 155
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:119:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcarnival_height[m[K’ is initialized
+  119 | [01;31m[Kdouble[m[K carnival_height = 53.83; // 323
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:120:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcarnival2_width[m[K’ is initialized
+  120 | [01;31m[Kdouble[m[K carnival2_width = 78.25; // 626
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:121:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcarnival2_height[m[K’ is initialized
+  121 | [01;31m[Kdouble[m[K carnival2_height = 62.625; // 501
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:122:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcar_width[m[K’ is initialized
+  122 | [01;31m[Kdouble[m[K car_width = 29.77;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:123:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kcar_height[m[K’ is initialized
+  123 | [01;31m[Kdouble[m[K car_height = 43.18;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:124:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kioniq_width[m[K’ is initialized
+  124 | [01;31m[Kdouble[m[K ioniq_width = 117.375;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:125:1:[m[K [01;31m[Kerror: [m[Kparameter ‘[01m[Kioniq_height[m[K’ is initialized
+  125 | [01;31m[Kdouble[m[K ioniq_height = 93.9375;
+      | [01;31m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:144:7:[m[K [01;31m[Kerror: [m[Kredefinition of parameter ‘[01m[Kvt_uwb_x[m[K’
+  144 | float [01;31m[Kvt_uwb_x[m[K;
+      |       [01;31m[K^~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/viewer_slam/include/parking_map.h:4[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:17[m[K:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:22:14:[m[K [01;36m[Knote: [m[Kprevious definition of ‘[01m[Kvt_uwb_x[m[K’ was here
+   22 | extern float [01;36m[Kvt_uwb_x[m[K;
+      |              [01;36m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:145:7:[m[K [01;31m[Kerror: [m[Kredefinition of parameter ‘[01m[Kvt_uwb_y[m[K’
+  145 | float [01;31m[Kvt_uwb_y[m[K;
+      |       [01;31m[K^~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/viewer_slam/include/parking_map.h:4[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:17[m[K:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:23:14:[m[K [01;36m[Knote: [m[Kprevious definition of ‘[01m[Kvt_uwb_y[m[K’ was here
+   23 | extern float [01;36m[Kvt_uwb_y[m[K;
+      |              [01;36m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:147:8:[m[K [01;31m[Kerror: [m[Kredefinition of parameter ‘[01m[Kkanavi_x[m[K’
+  147 | double [01;31m[Kkanavi_x[m[K;
+      |        [01;31m[K^~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/viewer_slam/include/parking_map.h:4[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:17[m[K:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:25:15:[m[K [01;36m[Knote: [m[Kprevious definition of ‘[01m[Kkanavi_x[m[K’ was here
+   25 | extern double [01;36m[Kkanavi_x[m[K;
+      |               [01;36m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:148:8:[m[K [01;31m[Kerror: [m[Kredefinition of parameter ‘[01m[Kkanavi_y[m[K’
+  148 | double [01;31m[Kkanavi_y[m[K;
+      |        [01;31m[K^~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/viewer_slam/include/parking_map.h:4[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:17[m[K:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:26:15:[m[K [01;36m[Knote: [m[Kprevious definition of ‘[01m[Kkanavi_y[m[K’ was here
+   26 | extern double [01;36m[Kkanavi_y[m[K;
+      |               [01;36m[K^~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:149:8:[m[K [01;31m[Kerror: [m[Kredefinition of parameter ‘[01m[Kkanavi_heading[m[K’
+  149 | double [01;31m[Kkanavi_heading[m[K;
+      |        [01;31m[K^~~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/viewer_slam/include/parking_map.h:4[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:17[m[K:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:27:15:[m[K [01;36m[Knote: [m[Kprevious definition of ‘[01m[Kkanavi_heading[m[K’ was here
+   27 | extern double [01;36m[Kkanavi_heading[m[K;
+      |               [01;36m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:150:8:[m[K [01;31m[Kerror: [m[Kredefinition of parameter ‘[01m[Kkanavi_inout[m[K’
+  150 | double [01;31m[Kkanavi_inout[m[K;
+      |        [01;31m[K^~~~~~~~~~~~[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/viewer_slam/include/parking_map.h:4[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:17[m[K:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:28:15:[m[K [01;36m[Knote: [m[Kprevious definition of ‘[01m[Kkanavi_inout[m[K’ was here
+   28 | extern double [01;36m[Kkanavi_inout[m[K;
+      |               [01;36m[K^~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:152:1:[m[K [01;35m[Kwarning: [m[Kempty declaration
+  152 | [01;35m[Kstruct[m[K RAMP_PP_DATA{
+      | [01;35m[K^~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:158:56:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  158 | struct RAMP_PP_DATA ramp_post_process(float x, float y)[01;31m[K{[m[K
+      |                                                        [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:202:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  202 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:239:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  239 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:249:19:[m[K [01;31m[Kerror: [m[Kexpected declaration specifiers or ‘[01m[K...[m[K’ before ‘[01m[KSITE[m[K’
+  249 | void set_rosparam([01;31m[KSITE[m[K _site, bool _use_traffic_light, bool _use_ipe, bool _use_lidar, bool _use_cctv, bool _ramp_match)
+      |                   [01;31m[K^~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:259:[m[K [01;35m[Kwarning: [m[K"CIRCLE_ENTRY_X" redefined
+  259 | #define CIRCLE_ENTRY_X 1550
+      | 
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:24:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+   24 | #define CIRCLE_ENTRY_X 1474
+      | 
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:260:[m[K [01;35m[Kwarning: [m[K"CIRCLE_TOP_Y" redefined
+  260 | #define CIRCLE_TOP_Y 486.25
+      | 
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:25:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+   25 | #define CIRCLE_TOP_Y 447
+      | 
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:266:1:[m[K [01;35m[Kwarning: [m[Kempty declaration
+  266 | [01;35m[Ktypedef[m[K struct euler_point {
+      | [01;35m[K^~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:272:82:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  272 | struct euler_point euler_from_quaternion(double x, double y, double z, double w) [01;31m[K{[m[K
+      |                                                                                  [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:293:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  293 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:308:46:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  308 | void set_slam_position(double _x, double _y) [01;31m[K{[m[K
+      |                                              [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:345:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  345 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:374:70:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  374 | double determine_indoor(double pose_x, double pose_y, double pose_z) [01;31m[K{[m[K
+      |                                                                      [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:386:28:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  386 | void set_cctv_tl(bool _on) [01;31m[K{[m[K
+      |                            [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:396:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  396 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:443:48:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  443 | void position_offset_slam(double *x, double *y)[01;31m[K{[m[K
+      |                                                [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:479:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  479 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:492:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  492 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:551:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  551 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:558:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  558 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:582:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  582 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:680:1:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K=[m[K’, ‘[01m[K,[m[K’, ‘[01m[K;[m[K’, ‘[01m[Kasm[m[K’ or ‘[01m[K__attribute__[m[K’ before ‘[01m[K{[m[K’ token
+  680 | [01;31m[K{[m[K
+      | [01;31m[K^[m[K
+In file included from [01m[K/home/keti/catkin_ws/src/viewer_slam/include/parking_map.h:4[m[K,
+                 from [01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:17[m[K:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/include/main.h:10:11:[m[K [01;31m[Kerror: [m[Kold-style parameter declarations in prototyped function definition
+   10 |     void *[01;31m[Ksendto_kanavi[m[K(void *data)
+      |           [01;31m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/parking_map.c:733:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K{[m[K’ at end of input
+  733 | }
+      | 
+make[2]: *** [CMakeFiles/viewer_slam.dir/build.make:63: CMakeFiles/viewer_slam.dir/src/parking_map.c.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:243: CMakeFiles/viewer_slam.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

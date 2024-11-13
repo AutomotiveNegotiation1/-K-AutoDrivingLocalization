@@ -5,6 +5,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/view_node.dir/src/parking_map.c.o"
   "CMakeFiles/view_node.dir/src/ramp_pp.cpp.o"
   "CMakeFiles/view_node.dir/src/resource.c.o"
+  "CMakeFiles/view_node.dir/src/socketmanager.cpp.o"
 )
 
 # Per-language clean rules from dependency scanning.

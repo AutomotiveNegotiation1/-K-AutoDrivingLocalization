@@ -1,0 +1,21 @@
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:23:1:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktypedef[m[K’ was ignored in this declaration
+   23 | [01;35m[Ktypedef[m[K struct euler_point {
+      | [01;35m[K^~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* spinfor(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:103:42:[m[K [01;31m[Kerror: [m[K‘[01m[Kuwb_angle[m[K’ was not declared in this scope
+  103 |         viewer_pose.pose.orientation.x = [01;31m[Kuwb_angle[m[K;
+      |                                          [01;31m[K^~~~~~~~~[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:135:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  135 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* rx_cctv(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:205:1:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+  205 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:[m[K In function ‘[01m[Kvoid* sendto_kanavi(void*)[m[K’:
+[01m[K/home/keti/catkin_ws/src/viewer_slam/src/main.cpp:226:71:[m[K [01;31m[Kerror: [m[K‘[01m[Kuwb_angle[m[K’ was not declared in this scope
+  226 |         oss << inout_ox <<","<< vt_uwb_x << "," << vt_uwb_y << "," << [01;31m[Kuwb_angle[m[K;
+      |                                                                       [01;31m[K^~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/viewer_slam_node.dir/build.make:63: CMakeFiles/viewer_slam_node.dir/src/main.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:192: CMakeFiles/viewer_slam_node.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

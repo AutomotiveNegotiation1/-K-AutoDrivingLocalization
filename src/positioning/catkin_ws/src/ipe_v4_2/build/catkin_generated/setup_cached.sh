@@ -10,6 +10,7 @@
 export CMAKE_PREFIX_PATH="/home/keti/catkin_ws/src/ipe_v4_2/build/devel:$CMAKE_PREFIX_PATH"
 export LD_LIBRARY_PATH="/home/keti/catkin_ws/src/ipe_v4_2/build/devel/lib:$LD_LIBRARY_PATH"
 export PKG_CONFIG_PATH="/home/keti/catkin_ws/src/ipe_v4_2/build/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PWD='/home/keti/catkin_ws/src/ipe_v4_2/build'
 export PYTHONPATH="/home/keti/catkin_ws/src/ipe_v4_2/build/devel/lib/python3/dist-packages:$PYTHONPATH"
 export ROSLISP_PACKAGE_DIRECTORIES="/home/keti/catkin_ws/src/ipe_v4_2/build/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/home/keti/catkin_ws/src/ipe_v4_2:$ROS_PACKAGE_PATH"
