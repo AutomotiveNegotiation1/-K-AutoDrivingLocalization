@@ -1,9 +1,8 @@
 KETI Indoor Positioning Estimation(IPE) 시스템 
 ===============================================
-개요 
+시스템 개요 
 ------------
-UWB와 Monocular Camera 센서 융합 기반 실내 위치 추정 시스템 
-실내외 융합 측위를 위한 AI 비전 기반 실내/외 판별 시스템  
+본 리파지토리는 UWB와 Monocular Camera 센서 융합 기반 실내 위치 추정 시스템(이하 IPE 시스템)에 해당한다. IPE는 ROS  
 ![img](/image/github_ipe.jpg)
 
 실내측위시스템 설치 및 빌드
