@@ -1,5 +1,10 @@
 KETI Indoor Positioning Estimation(IPE) 시스템 
 ===============================================
+개요 
+------------
+UWB와 Monocular Camera 센서 융합 기반 실내 위치 추정 시스템 
+실내외 융합 측위를 위한 AI 비전 기반 실내/외 판별 시스템  
+![img](/image/github_ipe.jpg)
 
 실내측위시스템 설치 및 빌드
 ------------------------- 
@@ -31,7 +36,13 @@ roslaunch ipe.launch
 # launch viewer 
 cd ../../view/launch 
 roslaunch view.launch 
+
+# launch DeepL vision based in/out determine system 
+cd ../inout_deepl/scripts 
+rosrun inout_deepl determine_inout.py 
 ```
 
-
+Financial Support
+------------------ 
+This work was supported by Institute of Information & communications Technology Planning & Evaluation (IITP) grant funded by the Korea government (MSIT) (No. 2021-0-01140, Development of ultra high-speed V2X communication-based autonomous driving service technologies).
 
